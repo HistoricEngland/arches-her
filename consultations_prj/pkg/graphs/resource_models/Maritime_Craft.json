@@ -3942,7 +3942,7 @@
                 },
                 {
                     "config": {
-                        "rdmCollection": "30d9ae59-fcc5-4395-891d-635a8edc02eb"
+                        "rdmCollection": null
                     },
                     "datatype": "concept",
                     "description": "Represents a single node in a graph",
@@ -3962,7 +3962,7 @@
                 },
                 {
                     "config": {
-                        "rdmCollection": "fb1a3563-c45e-417d-926a-3c90bdba38a8"
+                        "rdmCollection": null
                     },
                     "datatype": "concept",
                     "description": "Represents a single node in a graph",
@@ -4092,7 +4092,7 @@
                 },
                 {
                     "config": {
-                        "rdmCollection": "8dd3419d-7dbc-4ec2-a2c5-68e775cf7736"
+                        "rdmCollection": null
                     },
                     "datatype": "concept",
                     "description": null,
@@ -7062,5 +7062,11 @@
             "template_id": "50000000-0000-0000-0000-000000000002",
             "version": ""
         }
-    ]
+    ],
+    "metadata": {
+        "db": "PostgreSQL 11.2 on x86_64-pc-linux-musl, compiled by gcc (Alpine 8.2.0) 8.2.0, 64-bit",
+        "git hash": "fatal: ambiguous argument '%ai'': unknown revision or path not in the working tree.",
+        "os": "Windows",
+        "os version": "7"
+    }
 }

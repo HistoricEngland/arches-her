@@ -266,7 +266,7 @@
                 },
                 {
                     "config": {
-                        "rdmCollection": "8dd3419d-7dbc-4ec2-a2c5-68e775cf7736"
+                        "rdmCollection": null
                     },
                     "datatype": "concept",
                     "description": null,
