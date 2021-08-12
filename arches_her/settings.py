@@ -44,8 +44,15 @@ CELERY_SEARCH_EXPORT_EXPIRES = 60 * 3  # seconds
 CELERY_SEARCH_EXPORT_CHECK = 15  # seconds
 
 CELERY_BEAT_SCHEDULE = {
-    "delete-expired-search-export": {"task": "arches.app.tasks.delete_file", "schedule": CELERY_SEARCH_EXPORT_CHECK,},
-    "notification": {"task": "arches.app.tasks.message", "schedule": CELERY_SEARCH_EXPORT_CHECK, "args": ("Celery Beat is Running",),},
+    "delete-expired-search-export": {
+        "task": "arches.app.tasks.delete_file",
+        "schedule": CELERY_SEARCH_EXPORT_CHECK,
+    },
+    "notification": {
+        "task": "arches.app.tasks.message",
+        "schedule": CELERY_SEARCH_EXPORT_CHECK,
+        "args": ("Celery Beat is Running",),
+    },
 }
 
 DATABASES = {
@@ -75,21 +82,145 @@ STATIC_ROOT = ""
 
 RESOURCE_IMPORT_LOG = os.path.join(APP_ROOT, "logs", "resource_import.log")
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {"console": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",},},
-    "handlers": {
-        "file": {
-            "level": "WARNING",  # DEBUG, INFO, WARNING, ERROR
-            "class": "logging.FileHandler",
-            "filename": os.path.join(APP_ROOT, "arches.log"),
-            "formatter": "console",
-        },
-        "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "console",},
-    },
-    "loggers": {"arches": {"handlers": ["file", "console"], "level": "DEBUG", "propagate": True}},
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {"console": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",},},
+#     "handlers": {
+#         "file": {
+#             "level": "WARNING",  # DEBUG, INFO, WARNING, ERROR
+#             "class": "logging.FileHandler",
+#             "filename": os.path.join(APP_ROOT, "arches.log"),
+#             "formatter": "console",
+#         },
+#         "console": {"level": "DEBUG", "class": "logging.StreamHandler", "formatter": "console",},
+#     },
+#     "loggers": {"arches": {"handlers": ["file", "console"], "level": "DEBUG", "propagate": True}},
+# }
+
+############# APPINSIGHTS INTEGRATION USING OPENCENSUS #############
+
+MIDDLEWARE = MIDDLEWARE + [
+    "opencensus.ext.django.middleware.OpencensusMiddleware",
+]
+OPENCENSUS = {
+    "TRACE": {
+        "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
+        "EXPORTER": """opencensus.ext.azure.trace_exporter.AzureExporter(
+            service_name='arches_her',
+        )""",
+    }
 }
+# Add the integrations to use get Postgresql, ElastcSearch requests (httplib) and logging
+from opencensus.trace import config_integration
+
+INTEGRATIONS = [
+    "postgresql",
+    "httplib",
+    "logging",
+]
+config_integration.trace_integrations(INTEGRATIONS)
+
+APPINSIGHTS_KEY = "#{SETTINGS_APPINSIGHTS_KEY}#"  # *** Application Insights key ***
+
+# Set the AppInsights Key as an env variable so it can be used by the logging system
+os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] = "InstrumentationKey=" + APPINSIGHTS_KEY
+
+LOGGING = {
+    "disable_existing_loggers": True,  # False, #<-- if true then make sure that you have a django and py.warnings logger
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+    "formatters": {
+        "simple": {"format": "[%(asctime)s] %(levelname)s %(message)s", "datefmt": "%Y-%m-%d %H:%M:%S"},
+        "verbose": {"format": "[%(asctime)s] %(levelname)s %(message)s [%(name)s.%(funcName)s:%(lineno)d]", "datefmt": "%Y-%m-%d %H:%M:%S"},
+        "azure_verbose": {
+            "format": "[%(asctime)s] %(levelname)s %(message)s [%(name)s.%(funcName)s:%(lineno)d] traceId=%(traceId)s spanId=%(spanId)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        # "file": { #<-- uncomment if the logging needs to be written to file.
+        #    "class": "logging.FileHandler",
+        #    "filename": "/arches_her/logs/arches.log",
+        #    "level": "DEBUG",
+        #    "formatter": 'verbose'
+        # },
+        "console": {  # writes to the console
+            "class": "logging.StreamHandler",
+            "level": "INFO",  # <--
+            "filters": ["require_debug_true"],  # <-- settings.DEBUG must = True for console to work
+            "formatter": "verbose",
+        },
+        "azure": {  # exports to Azure Monitor. Needs OPENCENSUS elements configured
+            "level": "INFO",
+            "filters": ["require_debug_false"],  # <-- settings.DEBUG must = False for Azure to receive
+            "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+            "formatter": "azure_verbose",
+            "instrumentation_key": APPINSIGHTS_KEY,
+        },
+    },
+    "root": {
+        "handlers": [
+            "azure",
+            "console",
+        ],
+        "level": "INFO",
+    },
+    "loggers": {
+        "arches": {
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+        },
+        "django": {  # <-- must have one django
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+        },
+        "django.server": {
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "django.requests": {
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "py.warnings": {  # <-- replicate default
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+        },
+        "": {  # <-- catchall
+            "handlers": [
+                "azure",
+                "console",
+            ],
+            "level": "INFO",
+        },
+    },
+    "version": 1,
+}
+###############################################################################
 
 MIDDLEWARE = [
     "arches_her.utils.consultations_middleware.RedirectToConsultations",
@@ -98,7 +229,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     #'arches.app.utils.middleware.TokenMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "arches.app.utils.middleware.ModifyAuthorizationHeader",
@@ -133,7 +264,10 @@ CACHES = {
     #         'MAX_ENTRIES': 1000
     #     }
     # }
-    "default": {"BACKEND": "django.core.cache.backends.memcached.MemcachedCache", "LOCATION": "127.0.0.1:11211",}
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
 }
 
 # Identify the usernames and duration (seconds) for which you want to cache the time wheel
