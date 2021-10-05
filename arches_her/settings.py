@@ -171,7 +171,7 @@ MOBILE_DEFAULT_ONLINE_BASEMAP = {"default": "mapbox://styles/mapbox/streets-v9"}
 APP_TITLE = "Arches-HER"
 COPYRIGHT_TEXT = "All Rights Reserved."
 COPYRIGHT_YEAR = "2020"
-DOCKER = False
+DOCKER = True
 
 try:
     from .package_settings import *

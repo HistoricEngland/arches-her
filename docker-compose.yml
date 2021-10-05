@@ -5,11 +5,12 @@ services:
       image: fargeo/aher
       build:
         context: ..
-        dockerfile: arches_her/Dockerfile
+        dockerfile: arches-her/Dockerfile
       command: run_arches
       volumes:
         - ../arches/:/web_root/arches
         - ./:/web_root/arches_her
+        #- ../keystone-data/:/web_root/keystone-data
       env_file:
         - ./docker/env_file.env
       ports:
@@ -23,8 +24,8 @@ services:
       tty: true
 
     aher_livereload:
-      profiles:
-        - livereload
+      #profiles:
+      #  - livereload
       container_name: aher_livereload
       image: fargeo/aher
       build:
