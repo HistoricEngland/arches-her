@@ -90,17 +90,15 @@ services:
         - 5673:5672
         - 15673:15672
 
-    koop_aher:
-      container_name: koop_aher
-      image: ryana86/arches-koop:1.0
+    pgfeatureserv_aher:
+      container_name: pg_feat_aher
+      image: pramsey/pg_featureserv:latest
       ports:
-        - 3000:3000
-      volumes:
-      - ./arches_her/pkg/koop:/usr/src/app/config
-      env_file:
-        - ./docker/env_file.env
+        - 9000:9000
+      environment:
+        - DATABASE_URL=postgresql://arches_featureservices:arches_featureservices@db_aher/aher    
       depends_on:
-        - aher
+        - db_aher
     
 
 volumes:
