@@ -49,6 +49,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
             self.files = ko.observableArray();
             self.archive = ko.observableArray();
             self.assets = ko.observableArray();
+            self.assets_rob = ko.observableArray();
             self.translation = ko.observableArray();
             self.period = ko.observableArray();
             self.visible = {
