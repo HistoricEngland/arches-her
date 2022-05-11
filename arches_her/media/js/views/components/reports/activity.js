@@ -68,8 +68,6 @@ define([
                 assets: 'associated heritage assets and areas'
             }
 
-            self.cards = {};
-            self.locationCards = {};
             self.nameCards = {};
             self.resourcesCards = {};
             self.classificationCards = {};

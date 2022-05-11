@@ -4,8 +4,8 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Keystone - Application Area</title>
-		{% include 'html_export/milligram.htm' %}
+      <title>Application Area</title>
+      {% include 'html_export/milligram.htm' %}
       {% include 'html_export/custom_style.htm' %}
    </head>
    <body>
@@ -200,11 +200,15 @@
         {% if resource_data|has_key:"Associated Application Area" %}
         <section>
            <div class="container">
-              <h3>Associated Application Areas</h3>
+              <h3>Associated Application Area</h3>
               <div class="row">
                  <div class="column">
                     <div class="keeptogether">
-                       {{ resource_data|val_from_key:"Associated Application Area" |val_from_key:"@display_value" }}
+                       <ul>
+                          {% for assocApp in resource_data|val_from_key:"Associated Application Area" %}
+                          <li>{{ assocApp|val_from_key:"@display_value" }}</li>
+                          {% endfor %}
+                          </ul>
                     </div>
                  </div>
               </div>
@@ -221,7 +225,11 @@
               <div class="row">
                  <div class="column">
                     <div class="keeptogether">
-                       {{ resource_data|val_from_key:"Associated Consultations"|val_from_key:"@display_value" }}
+                       <ul>
+                          {% for assocCon in resource_data|val_from_key:"Associated Consultations" %}
+                          <li>{{ assocCon|val_from_key:"@display_value" }}</li>
+                          {% endfor %}
+                          </ul>
                     </div>
                  </div>
               </div>
@@ -238,7 +246,11 @@
               <div class="row">
                  <div class="column">
                     <div class="keeptogether">
-                       {{ resource_data|val_from_key:"Associated Heritage Assets, Areas and Artefacts"|val_from_key:"@display_value" }}
+                       <ul>
+                       {% for assocAAAVA in resource_data|val_from_key:"Associated Heritage Assets, Areas and Artefacts" %}
+                       <li>{{ assocAAAVA|val_from_key:"@display_value" }}</li>
+                       {% endfor %}
+                       </ul>
                     </div>
                  </div>
               </div>
@@ -255,7 +267,11 @@
               <div class="row">
                  <div class="column">
                     <div class="keeptogether">
-                       {{ resource_data|val_from_key:"Associated Activities"|val_from_key:"@display_value" }}
+                       <ul>
+                          {% for assocAct in resource_data|val_from_key:"Associated Activities" %}
+                          <li>{{ assocAct|val_from_key:"@display_value" }}</li>
+                          {% endfor %}
+                          </ul>
                     </div>
                  </div>
               </div>

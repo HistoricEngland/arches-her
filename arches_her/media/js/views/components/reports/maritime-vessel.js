@@ -56,8 +56,7 @@ define([
             self.classificationDataConfig = {
                 maritimeProduction: 'construction phases',
                 components: undefined,
-                dimensions: 'asset dimensions',
-                usePhase: 'use phases'
+                dimensions: 'dimensions'
             };
 
             self.descriptionDataConfig = {
@@ -105,8 +104,7 @@ define([
 
                 self.classificationCards = {
                     production: self.cards?.['construction phases'],
-                    dimensions: self.cards?.['asset dimensions'],
-                    usePhase: self.cards?.['use phase']
+                    dimensions: self.cards?.['asset dimensions']
                 };
 
                 self.assessmentCards = {

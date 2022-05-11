@@ -1,10 +1,10 @@
 {
     "name": "arches-her",
     "repository": {
-        "url": "git@github.com:HistoricEngland/arches.git",
+        "url": "git@github.com:archesproject/arches.git",
         "type": "git"
     },
     "dependencies": {
-        "arches": "HistoricEngland/arches#dev/6.1.x"
+        "arches": "archesproject/arches#dev/6.1.x"
     }
 }
