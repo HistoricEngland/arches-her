@@ -11643,7 +11643,7 @@
                     },
                     "function_id": "60000000-0000-0000-0000-000000000001",
                     "graph_id": "b8032b00-594d-11e9-9cf0-18cf5eb368c4",
-                    "id": "13ede020-afd3-11ec-b01d-acde48001122"
+                    "id": "2dd56f84-e0f3-11ec-a35a-0242ac140008"
                 }
             ],
             "graphid": "b8032b00-594d-11e9-9cf0-18cf5eb368c4",
@@ -19253,24 +19253,6 @@
                 {
                     "alias": "status",
                     "config": {
-                        "options": [
-                            {
-                                "children": [],
-                                "collector": "",
-                                "conceptid": "07829e4f-1810-43ed-bcde-1e807ff55f92",
-                                "id": "dad5c9ef-65ee-497a-be4a-f8d3aed61d74",
-                                "sortorder": "",
-                                "text": "Casualty"
-                            },
-                            {
-                                "children": [],
-                                "collector": "",
-                                "conceptid": "20abb36c-9b94-477c-981d-abda1691e12b",
-                                "id": "949f7b94-c699-4ab5-99dd-9e0453b88d81",
-                                "sortorder": "",
-                                "text": "Known Site"
-                            }
-                        ],
                         "rdmCollection": "1f4d8420-7123-4695-bb36-b929b1ed4b85"
                     },
                     "datatype": "concept",
@@ -21778,5 +21760,11 @@
             "template_id": "655f86f0-643a-4df4-be8b-9e9030d2ff94",
             "version": ""
         }
-    ]
+    ],
+    "metadata": {
+        "db": "PostgreSQL 12.2 (Debian 12.2-2.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit",
+        "git hash": "/bin/sh: 1: git: not found",
+        "os": "Linux",
+        "os version": "5.10.16.3-microsoft-standard-WSL2"
+    }
 }
