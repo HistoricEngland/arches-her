@@ -5,7 +5,10 @@
 {% block body %}
 <!-- Associated Actors -->
 <div class="aher-report-section">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.people)}, css: {'fa-angle-double-right': visible.people(), 'fa-angle-double-up': !visible.people()}" class="fa toggle"></i> {% trans "Associated People and Organizations" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.people)}, css: {'fa-angle-double-right': visible.people(), 'fa-angle-double-up': !visible.people()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated People and Organizations section"></i>
+        {% trans "Associated People and Organizations" %}
+    </h2>
     <a href="#" data-bind="{if: cards.people, click: function(){addNewTile(cards.people)}}" class="aher-report-a"><i class="fa fa-mail-reply"></i> {% trans "Add People/Organizations" %}</a>
 
     <!-- Collapsible content -->
