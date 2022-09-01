@@ -81,7 +81,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": "",
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Consultation Location",
                     "nodegroup_id": "152aa058-936d-11ea-b517-f875a44e0e11",
                     "sortorder": 9,
@@ -107,7 +107,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Proposal",
                     "nodegroup_id": "1b0e15e9-8864-11ea-b5f3-f875a44e0e11",
                     "sortorder": 3,
@@ -236,7 +236,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Consultation Dates",
                     "nodegroup_id": "40eff4c9-893a-11ea-ac3a-f875a44e0e11",
                     "sortorder": 2,
@@ -314,7 +314,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": "Enter the resource name and its respective type.",
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Consultation Names",
                     "nodegroup_id": "4ad66f55-951f-11ea-b2e2-f875a44e0e11",
                     "sortorder": 0,
@@ -379,7 +379,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Application Type",
                     "nodegroup_id": "54de6acc-8895-11ea-9067-f875a44e0e11",
                     "sortorder": 5,
@@ -408,7 +408,7 @@
                     "helptitle": null,
                     "instructions": null,
                     "is_editable": true,
-                    "name": "Associated Monuments and Areas",
+                    "name": "Associated Heritage Assets and Areas",
                     "nodegroup_id": "58a2b98f-a255-11e9-9a30-00224800b26d",
                     "sortorder": 21,
                     "visible": true
@@ -433,7 +433,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Contested Heritage Assignment",
                     "nodegroup_id": "599d7da2-eec2-11eb-9575-a87eeabdefba",
                     "sortorder": 22,
@@ -485,7 +485,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Consultation Status",
                     "nodegroup_id": "6a773228-db20-11e9-b6dd-784f435179ea",
                     "sortorder": 17,
@@ -522,7 +522,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Development Type",
                     "nodegroup_id": "73fdfe62-8895-11ea-a058-f875a44e0e11",
                     "sortorder": 7,
@@ -570,7 +570,7 @@
                     "helptext": null,
                     "helptitle": null,
                     "instructions": null,
-                    "is_editable": false,
+                    "is_editable": true,
                     "name": "Consultation Type",
                     "nodegroup_id": "771bb1e2-8895-11ea-8446-f875a44e0e11",
                     "sortorder": 10,
@@ -3801,11 +3801,11 @@
                     "card_id": "58a79b8f-a255-11e9-bea3-00224800b26d",
                     "config": {
                         "defaultResourceInstance": [],
-                        "label": "Monument or Area",
+                        "label": "Heritage Assets",
                         "placeholder": null
                     },
                     "id": "8aaeeb71-a255-11e9-b025-00224800b26d",
-                    "label": "Monument or Area",
+                    "label": "Heritage Assets",
                     "node_id": "58a2b98f-a255-11e9-9a30-00224800b26d",
                     "sortorder": 0,
                     "visible": true,
@@ -8491,16 +8491,6 @@
             "functions_x_graphs": [
                 {
                     "config": {
-                        "cons_comp_date_nodeid": "40eff4ce-893a-11ea-ae2e-f875a44e0e11",
-                        "cons_status_bool_nodeid": "6a773228-db20-11e9-b6dd-784f435179ea",
-                        "triggering_nodegroups": []
-                    },
-                    "function_id": "96efa95a-1e2c-4562-ac1f-b415796f9f75",
-                    "graph_id": "8d41e49e-a250-11e9-9eab-00224800b26d",
-                    "id": "6a136330-2869-11ed-a03a-0242ac140008"
-                },
-                {
-                    "config": {
                         "descriptor_types": {
                             "description": {
                                 "nodegroup_id": "82f8a163-951a-11ea-b58e-f875a44e0e11",
@@ -8519,12 +8509,22 @@
                     },
                     "function_id": "60000000-0000-0000-0000-000000000001",
                     "graph_id": "8d41e49e-a250-11e9-9eab-00224800b26d",
-                    "id": "b5fd401e-285e-11ed-8a62-0242ac140008"
+                    "id": "2eae0002-d2c1-11ec-99d0-a87eeabdefba"
+                },
+                {
+                    "config": {
+                        "cons_comp_date_nodeid": "40eff4ce-893a-11ea-ae2e-f875a44e0e11",
+                        "cons_status_bool_nodeid": "6a773228-db20-11e9-b6dd-784f435179ea",
+                        "triggering_nodegroups": []
+                    },
+                    "function_id": "96efa95a-1e2c-4562-ac1f-b415796f9f75",
+                    "graph_id": "8d41e49e-a250-11e9-9eab-00224800b26d",
+                    "id": "2eae3d92-d2c1-11ec-852a-a87eeabdefba"
                 }
             ],
             "graphid": "8d41e49e-a250-11e9-9eab-00224800b26d",
             "iconclass": "fa fa-briefcase",
-            "is_editable": false,
+            "is_editable": true,
             "isactive": true,
             "isresource": true,
             "jsonldcontext": null,
@@ -10763,16 +10763,16 @@
                     "sortorder": 0
                 },
                 {
-                    "alias": "related_monuments_and_areas",
+                    "alias": "related_heritage_assets_and_areas",
                     "config": {
                         "graphs": [
                             {
                                 "graphid": "076f9381-7b00-11e9-8d6b-80000b44d1d9",
-                                "name": "Monument"
+                                "name": "Heritage Asset"
                             },
                             {
                                 "graphid": "979aaf0b-7042-11ea-9674-287fcf6a5e72",
-                                "name": "Area"
+                                "name": "Heritage Area"
                             }
                         ],
                         "searchDsl": "",
@@ -10781,13 +10781,13 @@
                     "datatype": "resource-instance-list",
                     "description": null,
                     "exportable": true,
-                    "fieldname": "Assoc_Mons",
+                    "fieldname": "Assoc_HAs",
                     "graph_id": "8d41e49e-a250-11e9-9eab-00224800b26d",
                     "is_collector": true,
                     "isrequired": false,
                     "issearchable": true,
                     "istopnode": false,
-                    "name": "Related Monuments and Areas",
+                    "name": "Related Heritage Assets and Areas",
                     "nodegroup_id": "58a2b98f-a255-11e9-9a30-00224800b26d",
                     "nodeid": "58a2b98f-a255-11e9-9a30-00224800b26d",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing",
@@ -15475,9 +15475,9 @@
         }
     ],
     "metadata": {
-        "db": "PostgreSQL 12.2 (Debian 12.2-2.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit",
-        "git hash": "/bin/sh: 1: git: not found",
-        "os": "Linux",
-        "os version": "5.10.16.3-microsoft-standard-WSL2"
+        "db": "PostgreSQL 12.2 (Debian 12.2-1.pgdg100+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit",
+        "git hash": "fatal: ambiguous argument '%ai'': unknown revision or path not in the working tree.",
+        "os": "Windows",
+        "os version": "10"
     }
 }
