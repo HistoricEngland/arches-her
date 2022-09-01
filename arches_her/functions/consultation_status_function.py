@@ -84,6 +84,7 @@ class ConsultationStatusFunction(BaseFunction):
                             self.logger.error(e,"Could not handle boolean tile after confirmation completion date node is present")
                             return
                     else:
+                        self.handle_boolean_tile(tile,cons_status_bool_nodeid,cons_status_bool_nodeid,True)
                         return
             else:
                 self.handle_boolean_tile(tile,cons_status_bool_nodeid,cons_status_bool_nodeid,True)
