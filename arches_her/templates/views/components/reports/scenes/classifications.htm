@@ -17,8 +17,11 @@
 }"></div>
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.artefactProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Production Phases" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Production Phases section"></i>
+        {% trans "Production Phases" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
     <!-- Collapsible content -->
     <div data-bind="visible: visible.production" class="aher-report-collapsible-container pad-lft">
 
@@ -87,8 +90,11 @@
 
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.production">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.production" class="aher-report-collapsible-container pad-lft">
@@ -164,8 +170,11 @@
 
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.aircraftProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.production" class="aher-report-collapsible-container pad-lft">
@@ -246,8 +255,11 @@
 
 <!-- Maritime Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.maritimeProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.production, click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.production" class="aher-report-collapsible-container pad-lft">
@@ -332,8 +344,11 @@
 
 <!-- Dimensions -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dimensions">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.dimensions)}" class="fa fa-angle-double-right toggle"></i> {% trans "Dimensions" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.dimensions, click: function(){addNewTile(cards.dimensions)}"><i class="fa fa-mail-reply"></i> {% trans "Add Dimension" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dimensions)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dimensions section"></i>
+        {% trans "Dimensions" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.dimensions, click: function(){addNewTile(cards.dimensions)}"><i class="fa fa-mail-reply"></i> {% trans "Add Dimension" %}</a>
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.dimensions" class="aher-report-collapsible-container pad-lft">
@@ -386,8 +401,11 @@
 
 <!-- Components -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.components">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.components)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Components" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.components, click: function(){addNewTile(cards.components)}"><i class="fa fa-mail-reply"></i> {% trans "Add Component" %}</a>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.components)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Components section"></i>
+        {% trans "Construction Components" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.components, click: function(){addNewTile(cards.components)}"><i class="fa fa-mail-reply"></i> {% trans "Add Component" %}</a>
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.components" class="aher-report-collapsible-container pad-lft">
@@ -442,8 +460,11 @@
 
 <!-- Use Phases -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.usePhase">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.usePhase)}" class="fa fa-angle-double-right toggle"></i> {% trans "Use Phases" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.usePhase, click: function(){addNewTile(cards.usePhase)}">
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.usePhase)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Use Phases section"></i>
+        {% trans "Use Phases" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.usePhase, click: function(){addNewTile(cards.usePhase)}">
         <i class="fa fa-mail-reply"></i> 
         <span data-bind="ifnot: cards.usePhase.tiles().length">{% trans "Add Use Phase" %}</span>
         <span data-bind="if: cards.usePhase.tiles().length">{% trans "Edit Use Phase" %}</span>
@@ -510,8 +531,11 @@
 
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.organizationFormation">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.organizationFormation)}" class="fa fa-angle-double-right toggle"></i> {% trans "Organization Formation" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.organizationFormation, click: function(){addNewTile(cards.organizationFormation)}">
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.organizationFormation)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Organization Formation section"></i>
+        {% trans "Organization Formation" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.organizationFormation, click: function(){addNewTile(cards.organizationFormation)}">
         <i class="fa fa-mail-reply"></i> 
         <span data-bind="ifnot: cards.organizationFormation.tiles().length">{% trans "Add Dates" %}</span>
         <span data-bind="if: cards.organizationFormation.tiles().length">{% trans "Edit Dates" %}</span>
@@ -568,8 +592,11 @@
 
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dates">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.dates)}" class="fa fa-angle-double-right toggle"></i> {% trans "Dates" %}</h2>
-    <a class="aher-report-a" data-bind="if: cards.dates, click: function(){addNewTile(cards.dates)}">
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dates)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dates section"></i>
+        {% trans "Dates" %}
+    </h2>
+    <a href="#" class="aher-report-a" data-bind="if: cards.dates, click: function(){addNewTile(cards.dates)}">
         <i class="fa fa-mail-reply"></i> 
         <span data-bind="ifnot: cards.dates.tiles().length">{% trans "Add Dates" %}</span>
         <span data-bind="if: cards.dates.tiles().length">{% trans "Edit Dates" %}</span>
