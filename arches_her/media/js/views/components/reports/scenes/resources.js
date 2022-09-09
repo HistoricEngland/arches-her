@@ -83,7 +83,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                         return { activity, resourceUrl, tileid };
                     }));
                 }
-                
+
                 const associatedConsultationsNode = self.getRawNodeValue(params.data(), self.dataConfig.consultations, 'instance_details');
                 if(Array.isArray(associatedConsultationsNode)){
                     const tileid = self.getTileId(self.getRawNodeValue(params.data(), self.dataConfig.consultations));
