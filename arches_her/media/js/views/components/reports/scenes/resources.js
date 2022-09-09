@@ -97,7 +97,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                 
                 const userCanViewConsultations = () => {
                     if (params.cards.consultations?.nodegroupid) {
-                        return window.fetch(`/api/nodegroup/${params.cards.consultations.nodegroupid}`)
+                        return window.fetch(arches.urls.api_nodegroup(params.cards.consultations.nodegroupid))
                         .then(function(response) {
                             if (response.ok && response.status === 200) {
                                 return true;
