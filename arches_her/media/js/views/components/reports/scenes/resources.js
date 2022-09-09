@@ -50,11 +50,11 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
             self.add = params.addTile || self.addNewTile;
             self.activities = ko.observableArray();
             self.consultations = ko.observableArray();
+            self.consultations_message = ko.observable(null);
             self.files = ko.observableArray();
             self.archive = ko.observableArray();
             self.actors = ko.observableArray();
             self.assets = ko.observableArray();
-            self.assets_rob = ko.observableArray();
             self.translation = ko.observableArray();
             self.applicationArea = ko.observableArray();
             self.period = ko.observableArray();
@@ -83,7 +83,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                         return { activity, resourceUrl, tileid };
                     }));
                 }
-
+                
                 const associatedConsultationsNode = self.getRawNodeValue(params.data(), self.dataConfig.consultations, 'instance_details');
                 if(Array.isArray(associatedConsultationsNode)){
                     const tileid = self.getTileId(self.getRawNodeValue(params.data(), self.dataConfig.consultations));
@@ -92,6 +92,13 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                         const resourceUrl = self.getResourceLink(x);
                         return { consultation, resourceUrl, tileid };
                     }));
+                }
+                
+                
+                if (!params.userCanViewConsultations) {
+                    self.consultations_message = ko.observable('You do not have permission to view this data');
+                } else if (associatedConsultationsNode === undefined || associatedConsultationsNode.length === 0) {
+                    self.consultations_message = ko.observable('No consultations for this resource');
                 }
 
 
