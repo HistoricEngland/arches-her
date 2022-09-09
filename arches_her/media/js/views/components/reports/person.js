@@ -89,7 +89,6 @@ define([
             self.documentationCards = {};
             self.existenceCards = {};
             self.resourcesCards = {};
-            self.user_can_view_consultations = false;
             self.communicationCards = {};
             self.eventCards = {};
             self.contactCards = {};
@@ -150,11 +149,8 @@ define([
                     files: self.cards?.['associated digital file(s)'],
                     assets: self.cards?.['associated monuments, areas and artefacts']
                 };
-
             }
-            
-            self.user_can_view_consultations = self.reportMetadata()?.['user_can_view_consultations'];
-            
+
             const nameNode = self.getRawNodeValue(self.resource(), 'name');
             if(Array.isArray(nameNode)){
                 self.names(nameNode.map(node => {

@@ -95,7 +95,22 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                 }
                 
                 
-                if (!params.userCanViewConsultations) {
+                const userCanViewConsultations = () => {
+                    if (params.cards.consultations?.nodegroupid) {
+                        return window.fetch('/api/nodegroup/' + params.cards.consultations.nodegroupid)
+                        .then(function(response) {
+                            if (response.ok && response.status === 200) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        })
+                    } else {
+                        return false;
+                    }
+                }
+                
+                if (!userCanViewConsultations()) {
                     self.consultations_message = ko.observable('You do not have permission to view this data');
                 } else if (associatedConsultationsNode === undefined || associatedConsultationsNode.length === 0) {
                     self.consultations_message = ko.observable('No consultations for this resource');
