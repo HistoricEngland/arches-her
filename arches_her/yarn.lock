@@ -1123,9 +1123,9 @@ ansi-styles@~1.0.0:
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-1.0.0.tgz#cb102df1c56f5123eab8b67cd7b98027a0279178"
   integrity sha1-yxAt8cVvUSPquLZ817mAJ6AnkXg=
 
-arches@archesproject/arches#dev/6.1.x:
-  version "6.0.1"
-  resolved "https://codeload.github.com/archesproject/arches/tar.gz/c3c1c94714adbf437534d923821369997058965c"
+arches@HistoricEngland/arches#aj_select2_v4:
+  version "6.1.0"
+  resolved "https://codeload.github.com/HistoricEngland/arches/tar.gz/d2bc8b3017ea7801c9d1764ee6cd04d4ba822066"
   dependencies:
     "@mapbox/geojson-extent" "0.3.2"
     "@mapbox/geojsonhint" "^3.0.0"
@@ -1143,7 +1143,7 @@ arches@archesproject/arches#dev/6.1.x:
     cytoscape "^3.18.2"
     cytoscape-cola "^2.4.0"
     d3 "^6.1.1"
-    datatables.net "~1.10.12"
+    datatables.net "~1.10.22"
     datatables.net-bs "~1.10.12"
     datatables.net-buttons "^1.5.4"
     datatables.net-buttons-bs "^1.5.4"
@@ -1179,7 +1179,7 @@ arches@archesproject/arches#dev/6.1.x:
     requirejs "~2.3.2"
     requirejs-plugins "1.0.2"
     requirejs-text "2.0.12"
-    select2 "3.5.1"
+    select2 "4.1.0-rc.0"
     underscore "1.9.1"
     uuidjs "^3.3.0"
 
@@ -1698,10 +1698,17 @@ datatables.net-responsive@~2.1.0:
     datatables.net ">=1.10.9"
     jquery ">=1.7"
 
-datatables.net@1.10.20, datatables.net@>=1.10.9, datatables.net@^1.10.15, datatables.net@~1.10.12:
+datatables.net@1.10.20, datatables.net@>=1.10.9, datatables.net@^1.10.15:
   version "1.10.20"
   resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.10.20.tgz#9d65ecc3c83cbe7baa4fa5a053405c8fe42c1350"
   integrity sha512-4E4S7tTU607N3h0fZPkGmAtr9mwy462u+VJ6gxYZ8MxcRIjZqHy3Dv1GNry7i3zQCktTdWbULVKBbkAJkuHEnQ==
+  dependencies:
+    jquery ">=1.7"
+
+datatables.net@~1.10.22:
+  version "1.10.25"
+  resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.10.25.tgz#fc03a239e08f91d1d64ba101aa54daf4086d162c"
+  integrity sha512-y0+C7all+MC/h1acwnjErhaJPjYGKpWTvbXrfEUbR8+P+nnhgjNn5nL1udgsTwBObMhlj1KITNBRrM/ZLSoj+Q==
   dependencies:
     jquery ">=1.7"
 
@@ -2862,10 +2869,10 @@ safe-buffer@~5.2.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-select2@3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/select2/-/select2-3.5.1.tgz#f2819489bbc65fd6d328be72bbe2b95dd7e87cfe"
-  integrity sha1-8oGUibvGX9bTKL5yu+K5XdfofP4=
+select2@4.1.0-rc.0:
+  version "4.1.0-rc.0"
+  resolved "https://registry.yarnpkg.com/select2/-/select2-4.1.0-rc.0.tgz#ba3cd3901dda0155e1c0219ab41b74ba51ea22d8"
+  integrity sha512-Hr9TdhyHCZUtwznEH2CBf7967mEM0idtJ5nMtjvk3Up5tPukOLXbHUNmh10oRfeNIhj+3GD3niu+g6sVK+gK0A==
 
 "semver@2 || 3 || 4 || 5":
   version "5.7.1"

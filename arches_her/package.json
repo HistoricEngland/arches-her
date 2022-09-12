@@ -5,6 +5,6 @@
         "type": "git"
     },
     "dependencies": {
-        "arches": "HistoricEngland/arches#dev/6.1.x"
+        "arches": "HistoricEngland/arches#aj_select2_v4"
     }
 }
