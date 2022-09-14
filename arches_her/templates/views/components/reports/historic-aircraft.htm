@@ -78,16 +78,6 @@
                     }
                 }"></div>
             </div>
-            <!-- Assessments Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'assessments'">
-                <div data-bind="component: {
-                    name: 'views/components/reports/scenes/assessments',
-                    params: {
-                        data: resource,
-                        cards: assessmentCards,
-                    }
-                }"></div>
-            </div>
             <!-- Status/Owner Tab -->
             <div class="aher-report-page" data-bind="if: activeSection() === 'status'">
                 <div data-bind="component: {
@@ -100,8 +90,11 @@
             <!-- Journeys -->
             <div class="aher-report-page" data-bind="if: activeSection() === 'journey'">
                 <div class="aher-report-section">
-                    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.flights)}, css: {'fa-angle-double-right': visible.flights(), 'fa-angle-double-up': !visible.flights()}" class="fa toggle"></i> {% trans "Flights" %}</h2>
-                    <a class="aher-report-a" data-bind="{if: cards.flights, event:{ mousedown:function(d, e){addNewTile(cards.flights, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: flights().length">{% trans "Edit Flight" %}</span><span data-bind="ifnot: flights().length">{% trans "Add Flight" %}</span></a>
+                    <h2 class="aher-report-section-title">
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.flights)}, css: {'fa-angle-double-right': visible.flights(), 'fa-angle-double-up': !visible.flights()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Flights section"></i>
+                        {% trans "Flights" %}
+                    </h2>
+                    <a href="#" class="aher-report-a" data-bind="{if: cards.flights, event:{ mousedown:function(d, e){addNewTile(cards.flights, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: flights().length">{% trans "Edit Flight" %}</span><span data-bind="ifnot: flights().length">{% trans "Add Flight" %}</span></a>
 
                     <!-- Collapsible content -->
                     <div data-bind="visible: visible.flights" class="aher-report-collapsible-container pad-lft">
@@ -116,11 +109,11 @@
                             <div class="firstchild-container">
                                 <!-- flight Table -->
                                 <div class="aher-table pad-btm">
-                                    <table class="table table-striped" cellspacing="0" width="100%">
+                                    <p class="aher-table-aria-describedby" id="flight-table_info">Flight table.</p>
+                                    <table id="flight-table" class="table table-striped" cellspacing="0" width="100%">
                                         <thead>
                                             <tr class="aher-table-header">
                                                 <th>{% trans "Type" %}</th>
-                                                <th>{% trans "Display Date" %}</th>
                                                 <th>{% trans "Departure" %}</th>
                                                 <th>{% trans "Destination" %}</th>
                                                 <th>{% trans "Cargo Type" %}</th>
@@ -129,24 +122,23 @@
                                                 <th class="none">{% trans "Arrival Date" %}</th>
                                                 <th class="none">{% trans "Date Qualifier" %}</th>
                                                 <th class="none">{% trans "Crew" %}</th>
-                                                <th class="aher-table-control all"></th>
+                                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                                             </tr>
                                         </thead>
                                         <tbody data-bind="dataTablesForEach: {data: flights, dataTableOptions: flightsTableConfig}">
                                             <tr>
                                                 <td data-bind="text: flightType"></td>
-                                                <td data-bind="text: flightDisplayDate"></td>
                                                 <td data-bind="text: flightDeparture"></td>
                                                 <td data-bind="text: flightDestination"></td>
                                                 <td data-bind="text: cargoType"></td>
-                                                <td data-bind="text: flightDescription"></td>
+                                                <td data-bind="html: flightDescription"></td>
                                                 <td data-bind="text: flightDepartureDate"></td>
                                                 <td data-bind="text: flightArrivalDate"></td>
                                                 <td data-bind="text: flightDateQualifier"></td>
                                                 <td>
                                                     <!-- ko foreach: { data: crew, as: 'member' } -->
                                                     <div>
-                                                        <span data-bind="text: member.name"></span> - <span data-bind="text: member.role"></span>
+                                                        <a class="aher-table-link" data-bind="text: member.name, attr: {href: member.link}"></a> - <span data-bind="text: member.role"></span>
                                                     </div>
                                                     <!-- /ko -->
                                                 </td>
@@ -171,8 +163,11 @@
                 </div>
 
                 <div class="aher-report-section">
-                    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.lastFlight)}, css: {'fa-angle-double-right': visible.lastFlight(), 'fa-angle-double-up': !visible.lastFlight()}" class="fa toggle"></i> {% trans "Last Flight" %}</h2>
-                    <a class="aher-report-a" data-bind="{if: cards.lastFlight, event:{ mousedown:function(d, e){addNewTile(cards.lastFlight, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: lastFlight().length">{% trans "Edit Last Flight" %}</span><span data-bind="ifnot: lastFlight().length">{% trans "Add Flight" %}</span></a>
+                    <h2 class="aher-report-section-title">
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.lastFlight)}, css: {'fa-angle-double-right': visible.lastFlight(), 'fa-angle-double-up': !visible.lastFlight()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Last Flight section"></i>
+                        {% trans "Last Flight" %}
+                    </h2>
+                    <a href="#" class="aher-report-a" data-bind="{if: cards.lastFlight, event:{ mousedown:function(d, e){addNewTile(cards.lastFlight, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: lastFlight().length">{% trans "Edit Last Flight" %}</span><span data-bind="ifnot: lastFlight().length">{% trans "Add Flight" %}</span></a>
 
                     <!-- Collapsible content -->
                     <div data-bind="visible: visible.lastFlight" class="aher-report-collapsible-container pad-lft">
@@ -187,7 +182,8 @@
                             <div class="firstchild-container">
                                 <!-- last flight Table -->
                                 <div class="aher-table pad-btm">
-                                    <table class="table table-striped" cellspacing="0" width="100%">
+                                    <p class="aher-table-aria-describedby" id="last-flight-table_info">Last flight table.</p>
+                                    <table id="last-flight-table" class="table table-striped" cellspacing="0" width="100%">
                                         <thead>
                                             <tr class="aher-table-header">
                                                 <th>{% trans "Type" %}</th>
@@ -205,7 +201,7 @@
                                                 <th class="none">{% trans "Date Qualifier" %}</th>
                                                 <th class="none">{% trans "Crash Site Type" %}</th>
                                                 <th class="none">{% trans "Crew" %}</th>
-                                                <th class="aher-table-control all"></th>
+                                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                                             </tr>
                                         </thead>
                                         <tbody data-bind="dataTablesForEach: {data: lastFlight, dataTableOptions: lastFlightTableConfig}">
@@ -218,10 +214,16 @@
                                                 <td data-bind="text: departureName"></td>
                                                 <td data-bind="text: destinationName"></td>
                                                 <td data-bind="text: mannerOfLoss"></td>
-                                                <td>
-                                                    <a class="aher-table-link" data-bind="text: crashSite, attr: {href: crashSiteLink}"></a>
+                                                <td data-bind="foreach: crashSites">
+                                                    <span data-bind="visible: $index() > 0">, </span>
+                                                    <!-- ko if: crashSiteLink -->
+                                                    <a class="aher-table-link" data-bind="text: crashSiteName, attr: {href: crashSiteLink}"></a>
+                                                    <!-- /ko -->
+                                                    <!-- ko ifnot: crashSiteLink -->
+                                                    <span data-bind="text: crashSiteName"></span>
+                                                    <!-- /ko -->
                                                 </td>
-                                                <td data-bind="text: description"></td>
+                                                <td data-bind="html: description"></td>
                                                 <td data-bind="text: departureNameCurrency"></td>
                                                 <td data-bind="text: destinationNameCurrency"></td>
                                                 <td data-bind="text: dateQualifier"></td>
@@ -234,11 +236,11 @@
                                                     <!-- /ko -->
                                                 </td>
                                                 <td class="aher-table-control">
-                                                    <div data-bind="if: $parent.cards.lastFlight">
-                                                        <a data-bind="click: function() {$parent.editTile(tileid, $parent.cards.lastFlight)}">
+                                                    <div data-bind="if: $parent.cards.flights">
+                                                        <a data-bind="click: function() {$parent.editTile(tileid, $parent.cards.flights)}">
                                                             <i class="fa fa-mail-reply"></i>
                                                         </a>
-                                                        <a data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.lastFlight)">
+                                                        <a data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.flights)">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </div>
