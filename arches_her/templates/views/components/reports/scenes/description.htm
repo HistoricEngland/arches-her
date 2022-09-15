@@ -121,7 +121,9 @@
         <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.audience)}, css: {'fa-angle-double-right': visible.audience(), 'fa-angle-double-up': !visible.audience()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Audience section"></i>
         {% trans "Audience" %}
     </h2>
-    <a href="#" data-bind="{if: cards.audience, click: function(){addNewTile(cards.audience)}}"  class="aher-report-a"><i class="fa fa-mail-reply"></i> {% trans "Add Audience" %}</a>
+    <!-- ko if: cards.audience -->
+    <a href="#" data-bind="click: function(){addNewTile(cards.audience)}" class="aher-report-a"><i class="fa fa-mail-reply"></i> {% trans "Add Audience" %}</a>
+    <!-- /ko -->
 
     <!-- Collapsible content -->
     <div data-bind="visible: visible.audience" class="aher-report-collapsible-container pad-lft">

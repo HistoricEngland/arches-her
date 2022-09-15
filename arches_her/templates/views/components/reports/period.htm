@@ -74,7 +74,7 @@
                         {% trans "Alternative Names" %}
                     </h2>
                     <span data-bind="if: cards.name && (!names().length || cards.name.cardinality == 'n')">
-                        <a class="aher-report-a" data-bind="click: function(){addNewTile(cards.name)}"><i class="fa fa-mail-reply"></i> {% trans "Add Name" %}</a>
+                        <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.name)}"><i class="fa fa-mail-reply"></i> {% trans "Add Name" %}</a>
                     </span>
                 
                     <!-- Collapsible content -->
