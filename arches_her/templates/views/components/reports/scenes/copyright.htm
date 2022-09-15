@@ -4,7 +4,10 @@
 
 {% block body %}
 <div class="aher-report-section">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.copyright)}, css: {'fa-angle-double-right': visible.copyright(), 'fa-angle-double-up': !visible.copyright()}" class="fa toggle"></i> {% trans "Copyright" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.copyright)}, css: {'fa-angle-double-right': visible.copyright(), 'fa-angle-double-up': !visible.copyright()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Copyright section"></i>
+        {% trans "Copyright" %}
+    </h2>
     <span data-bind="if: cards.copyright && (!copyright().length || cards.copyright.cardinality == 'n')">
         <a href="#" class="aher-report-a" data-bind="click: function(){add(cards.copyright)}"><i class="fa fa-mail-reply"></i> {% trans "Add Copyright" %}</a>
     </span>
@@ -20,13 +23,14 @@
         <div class="aher-report-subsection" >
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="copyright-table_info">Copyright table.</p>
+                    <table id="copyright-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Holder" %}</th>
                                 <th>{% trans "Type" %}</th>
                                 <th class="none">{% trans "Note" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: { data: copyright, dataTableOptions: copyrightTableConfig }">

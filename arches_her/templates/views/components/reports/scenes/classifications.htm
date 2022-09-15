@@ -17,7 +17,10 @@
 }"></div>
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.artefactProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Production Phases" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Production Phases section"></i>
+        {% trans "Production Phases" %}
+    </h2>
     <!-- ko if: cards.production -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
     <!-- /ko -->
@@ -34,7 +37,8 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="construction-phase-table_info">Construction phase table.</p>
+                    <table id="construction-phase-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Artefact Type" %}</th>
@@ -49,7 +53,7 @@
                                 <th class="none">{% trans "Material" %}</th>
                                 <th class="none">{% trans "Production Technique" %}</th>
                                 <th class="none">{% trans "Phase Description" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: production, dataTableOptions: artefactProdTableConfiguration}">
@@ -89,7 +93,10 @@
 
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.production">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
     <!-- ko if: cards.production -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
     <!-- /ko -->
@@ -106,7 +113,8 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="construction-phase-table_info">Construction phase table.</p>
+                    <table id="construction-phase-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Type" %}</th>
@@ -124,7 +132,7 @@
                                 <th class="none">{% trans "Covering Material" %}</th>
                                 <th class="none">{% trans "Construction Technique" %}</th>
                                 <th class="none">{% trans "Phase Description" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: production, dataTableOptions: conPhasesTableConfig}">
@@ -167,7 +175,10 @@
 
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.aircraftProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
     <!-- ko if: cards.production -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
     <!-- /ko -->
@@ -183,7 +194,8 @@
         <div class="aher-report-subsection">
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="construction-phase-table_info">Construction phase table.</p>
+                    <table id="construction-phase-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Period" %}</th>
@@ -204,7 +216,7 @@
                                 <th class="none">{% trans "Construction Method" %}</th>
                                 <th class="none">{% trans "Phase Description" %}</th>
                                 <th class="none">{% trans "Place of Manufacture" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: production, dataTableOptions: aircraftConstructionConfig}">
@@ -250,7 +262,10 @@
 
 <!-- Maritime Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.maritimeProduction">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Phases" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        {% trans "Construction Phases" %}
+    </h2>
     <!-- ko if: cards.production -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.production)}"><i class="fa fa-mail-reply"></i> {% trans "Add Phase" %}</a>
     <!-- /ko -->
@@ -266,7 +281,8 @@
         <div class="aher-report-subsection">
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="construction-phase-table_info">Construction phase table.</p>
+                    <table id="construction-phase-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Period" %}</th>
@@ -289,7 +305,7 @@
                                 <th class="none">{% trans "Construction Method" %}</th>
                                 <th class="none">{% trans "Phase Description" %}</th>
                                 <th class="none">{% trans "Builder" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: production, dataTableOptions: maritimeProductionConfig}">
@@ -337,7 +353,10 @@
 
 <!-- Dimensions -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dimensions">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.dimensions)}" class="fa fa-angle-double-right toggle"></i> {% trans "Dimensions" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dimensions)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dimensions section"></i>
+        {% trans "Dimensions" %}
+    </h2>
     <!-- ko if: cards.dimensions -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.dimensions)}"><i class="fa fa-mail-reply"></i> {% trans "Add Dimension" %}</a>
     <!-- /ko -->
@@ -346,21 +365,22 @@
     <div data-bind="visible: visible.dimensions" class="aher-report-collapsible-container pad-lft">
 
         <!-- ko ifnot: dimensions().length -->
-        <div class="aher-nodata-note">No construction phases for this resource</div>
+        <div class="aher-nodata-note">No dimensions for this resource</div>
         <!-- /ko -->
 
         <!-- ko if: dimensions().length -->
         <div class="aher-report-subsection">
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="dimension-table_info">Dimension table.</p>
+                    <table id="dimension-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Type" %}</th>
                                 <th>{% trans "Measurement Unit" %}</th>
                                 <th>{% trans "Value" %}</th>
                                 <th class="none">{% trans "Type Qualifier" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: dimensions, dataTableOptions: dimensionTableConfig}">
@@ -392,7 +412,10 @@
 
 <!-- Components -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.components">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.components)}" class="fa fa-angle-double-right toggle"></i> {% trans "Construction Components" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.components)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Components section"></i>
+        {% trans "Construction Components" %}
+    </h2>
     <!-- ko if: cards.components -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.components)}"><i class="fa fa-mail-reply"></i> {% trans "Add Component" %}</a>
     <!-- /ko -->
@@ -409,7 +432,8 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="construction-component-table_info">Construction component table.</p>
+                    <table id="construction-component-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Construction Phase" %}</th>
@@ -417,7 +441,7 @@
                                 <th>{% trans "Technique" %}</th>
                                 <th>{% trans "Material" %}</th>
                                 <th class="medium">{% trans "Evidence" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: components, dataTableOptions: componentsTableConfig}">
@@ -449,7 +473,10 @@
 
 <!-- Use Phases -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.usePhase">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.usePhase)}" class="fa fa-angle-double-right toggle"></i> {% trans "Use Phases" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.usePhase)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Use Phases section"></i>
+        {% trans "Use Phases" %}
+    </h2>
     <!-- ko if: cards.usePhase -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.usePhase)}">
         <i class="fa fa-mail-reply"></i> 
@@ -470,7 +497,8 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="use-phase-table_info">Use phase table.</p>
+                    <table id="use-phase-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Type" %}</th>
@@ -482,7 +510,7 @@
                                 <th class="none">{% trans "Use Evidence" %}</th>
                                 <th class="none">{% trans "Description Type" %}</th>
                                 <th class="none">{% trans "Description" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: usePhases, dataTableOptions: usePhasesTableConfig}">
@@ -518,7 +546,10 @@
 
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.organizationFormation">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.organizationFormation)}" class="fa fa-angle-double-right toggle"></i> {% trans "Organization Formation" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.organizationFormation)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Organization Formation section"></i>
+        {% trans "Organization Formation" %}
+    </h2>
     <!-- ko if: cards.organizationFormation -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.organizationFormation)}">
         <i class="fa fa-mail-reply"></i> 
@@ -539,14 +570,15 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="organization-formation-table_info">Organization formation table.</p>
+                    <table id="organization-formation-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Organization Type" %}</th>
                                 <th>{% trans "Start Date" %}</th>
                                 <th>{% trans "End Date" %}</th>
                                 <th>{% trans "Date Qualifier" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: organizationFormation, dataTableOptions: organizationFormationTableConfig}">
@@ -577,7 +609,10 @@
 
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dates">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.dates)}" class="fa fa-angle-double-right toggle"></i> {% trans "Dates" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dates)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dates section"></i>
+        {% trans "Dates" %}
+    </h2>
     <!-- ko if: cards.dates -->
     <a href="#" class="aher-report-a" data-bind="if: cards.dates, click: function(){addNewTile(cards.dates)}">
         <i class="fa fa-mail-reply"></i> 
@@ -598,12 +633,13 @@
             
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="date-table_info">Date table.</p>
+                    <table id="date-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Start Date" %}</th>
                                 <th>{% trans "End Date" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: dates, dataTableOptions: datesTableConfig}">

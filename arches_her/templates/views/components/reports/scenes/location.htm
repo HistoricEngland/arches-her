@@ -5,7 +5,10 @@
 {% block body %}
 <!-- Geometry/Map -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.geometry">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.coordinates)}, css: {'fa-angle-double-right': visible.coordinates(), 'fa-angle-double-up': !visible.coordinates()}" class="fa toggle"></i> {% trans "Geospatial Coordinates" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.coordinates)}, css: {'fa-angle-double-right': visible.coordinates(), 'fa-angle-double-up': !visible.coordinates()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Geospatial Coordinates section"></i>
+        {% trans "Geospatial Coordinates" %}
+    </h2>
     <!-- ko if: cards.locationGeometry && !coordinateData || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.locationGeometry || locationRoot)}">
         <i class="fa fa-mail-reply"></i> {% trans "Add Geometry" %}
@@ -138,7 +141,10 @@
 
 <!-- Addresses -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.addresses">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.addresses)}, css: {'fa-angle-double-right': visible.addresses(), 'fa-angle-double-up': !visible.addresses()}" class="fa toggle"></i> {% trans "Addresses" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.addresses)}, css: {'fa-angle-double-right': visible.addresses(), 'fa-angle-double-up': !visible.addresses()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Addresses section"></i>
+        {% trans "Addresses" %}
+    </h2>
     <!-- ko if: cards.addresses || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.addresses || locationRoot)}"><i class="fa fa-mail-reply"></i> {% trans "Add Address" %}</a>
     <!-- /ko -->
@@ -156,7 +162,8 @@
             <div class="firstchild-container">
                 <!-- Address Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="address-table_info">Address table.</p>
+                    <table id="address-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Street Number" %}</th>
@@ -172,7 +179,7 @@
                                 <th class="none">{% trans "County" %}</th>
                                 <th class="none">{% trans "Full Address" %}</th>
                                 <th class="none">{% trans "Currency" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: addresses, dataTableOptions: addressTableConfig}">
@@ -212,7 +219,10 @@
 
 <!-- Location Description -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.locationDescription">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.descriptions)}, css: {'fa-angle-double-right': visible.descriptions(), 'fa-angle-double-up': !visible.descriptions()}" class="fa toggle"></i> {% trans "Location Descriptions" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.descriptions)}, css: {'fa-angle-double-right': visible.descriptions(), 'fa-angle-double-up': !visible.descriptions()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Location Descriptions section"></i>
+        {% trans "Location Descriptions" %}
+    </h2>
     <!-- ko if: cards.locationDescriptions || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.locationDescriptions || locationRoot)}"><i class="fa fa-mail-reply"></i> {% trans "Add Description" %}</a>
     <!-- /ko -->
@@ -231,12 +241,13 @@
             <div class="firstchild-container">
                 <!-- Statements Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="location-description-table_info">Location description table.</p>
+                    <table id="location-description-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Description" %}</th>
                                 <th>{% trans "Type" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: descriptions, dataTableOptions: locDescriptionsTableConfig }">
@@ -264,7 +275,10 @@
 
 <!-- Admin Areas -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.administrativeAreas">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.administrativeAreas)}, css: {'fa-angle-double-right': visible.administrativeAreas(), 'fa-angle-double-up': !visible.administrativeAreas()}" class="fa toggle"></i> {% trans "Administrative Areas" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.administrativeAreas)}, css: {'fa-angle-double-right': visible.administrativeAreas(), 'fa-angle-double-up': !visible.administrativeAreas()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Administrative Areas section"></i>
+        {% trans "Administrative Areas" %}
+    </h2>
     <!-- ko if: cards.administrativeAreas || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.administrativeAreas || locationRoot)}"><i class="fa fa-mail-reply"></i> {% trans "Add Area" %}</a>
     <!-- /ko -->
@@ -282,13 +296,14 @@
             <div class="firstchild-container">
                 <!-- Statements Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="administrative-area-table_info">Administrative area table.</p>
+                    <table id="administrative-area-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Name" %}</th>
                                 <th>{% trans "Type" %}</th>
                                 <th>{% trans "Currency" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: administrativeAreas, dataTableOptions: adminAreasTableConfig }">
@@ -318,7 +333,10 @@
 
 <!-- National Grid References -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.nationalGrid">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.nationalGrid)}, css: {'fa-angle-double-right': visible.nationalGrid(), 'fa-angle-double-up': !visible.nationalGrid()}" class="fa toggle"></i> {% trans "National Grid References" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.nationalGrid)}, css: {'fa-angle-double-right': visible.nationalGrid(), 'fa-angle-double-up': !visible.nationalGrid()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse National Grid References section"></i>
+        {% trans "National Grid References" %}
+    </h2>
     <!-- ko if: cards.nationalGridReferences || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.nationalGridReferences || locationRoot)}"><i class="fa fa-mail-reply"></i> {% trans "Add Grid Reference" %}</a>
     <!-- /ko -->
@@ -336,11 +354,12 @@
             <div class="firstchild-container">
                 <!-- Statements Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="national-grid-reference-table_info">National grid reference table.</p>
+                    <table id="national-grid-reference-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "National Grid Reference" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: nationalGridReferences, dataTableOptions: gridReferencesTableConfig}">
@@ -368,7 +387,10 @@
 
 <!-- Named Locations -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.namedLocations">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.namedLocations)}, css: {'fa-angle-double-right': visible.namedLocations(), 'fa-angle-double-up': !visible.namedLocations()}" class="fa toggle"></i> {% trans "Named Locations" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.namedLocations)}, css: {'fa-angle-double-right': visible.namedLocations(), 'fa-angle-double-up': !visible.namedLocations()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Named Locations section"></i>
+        {% trans "Named Locations" %}
+    </h2>
     <!-- ko if: cards.namedLocations || locationRoot -->
     <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.namedLocations || locationRoot)}"><i class="fa fa-mail-reply"></i> {% trans "Add Location" %}</a>
     <!-- /ko -->
@@ -386,11 +408,12 @@
             <div class="firstchild-container">
                 <!-- named Locations Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="named-location-table_info">Named location table.</p>
+                    <table id="named-location-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Placename" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: namedLocations, dataTableOptions: namedLocationsTableConfig }">
