@@ -40,7 +40,7 @@
             <div class="aher-report-page" data-bind="if: activeSection() === 'person-name'">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.names)}, css: {'fa-angle-double-right': visible.names(), 'fa-angle-double-up': !visible.names()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.names)}, css: {'fa-angle-double-right': visible.names(), 'fa-angle-double-up': !visible.names()}, attr: {'aria-expanded': visible.names() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
                         {% trans "Names" %}
                     </h2>
                     <span data-bind="if: cards.names && (!names().length || cards.names.cardinality == 'n')">

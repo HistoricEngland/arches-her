@@ -6,7 +6,7 @@
 <!-- ko ifnot: hideNames() -->
 <div data-bind="visible: !!dataConfig.name" class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.names)}, css: {'fa-angle-double-right': visible.names(), 'fa-angle-double-up': !visible.names()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.names)}, css: {'fa-angle-double-right': visible.names(), 'fa-angle-double-up': !visible.names()}, attr: {'aria-expanded': visible.names() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
         {% trans "Names" %}
     </h2>
     <span data-bind="if: cards.name && (!names().length || cards.name.cardinality == 'n')">
@@ -100,7 +100,7 @@
 <!-- ko ifnot: hideCrossReferences() -->
 <div data-bind="visible: !!dataConfig.xref" class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.crossReferences)}, css: {'fa-angle-double-right': visible.crossReferences(), 'fa-angle-double-up': !visible.crossReferences()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse External Cross References section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.crossReferences)}, css: {'fa-angle-double-right': visible.crossReferences(), 'fa-angle-double-up': !visible.crossReferences()}, attr: {'aria-expanded': visible.crossReferences() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse External Cross References section"></i>
         {% trans "External Cross References" %}
     </h2>
     <!-- ko if: cards.externalCrossReferences -->
@@ -164,7 +164,7 @@
 <!-- System Reference Numbers section -->
 <div class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.systemReferenceNumbers)}, css: {'fa-angle-double-right': visible.systemReferenceNumbers(), 'fa-angle-double-up': !visible.systemReferenceNumbers()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse System Reference Numbers section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.systemReferenceNumbers)}, css: {'fa-angle-double-right': visible.systemReferenceNumbers(), 'fa-angle-double-up': !visible.systemReferenceNumbers()}, attr: {'aria-expanded': visible.systemReferenceNumbers() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse System Reference Numbers section"></i>
         {% trans "System Reference Numbers" %}
     </h2>
     <!-- ko if: cards.systemReferenceNumbers -->

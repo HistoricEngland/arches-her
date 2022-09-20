@@ -18,7 +18,7 @@
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.artefactProduction">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Production Phases section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}, attr: {'aria-expanded': visible.production() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Production Phases section"></i>
         {% trans "Production Phases" %}
     </h2>
     <!-- ko if: cards.production -->
@@ -94,7 +94,7 @@
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.production">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}, attr: {'aria-expanded': visible.production() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
         {% trans "Construction Phases" %}
     </h2>
     <!-- ko if: cards.production -->
@@ -176,7 +176,7 @@
 <!-- Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.aircraftProduction">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}, attr: {'aria-expanded': visible.production() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
         {% trans "Construction Phases" %}
     </h2>
     <!-- ko if: cards.production -->
@@ -263,7 +263,7 @@
 <!-- Maritime Construction Phases -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.maritimeProduction">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.production)}, attr: {'aria-expanded': visible.production() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Phases section"></i>
         {% trans "Construction Phases" %}
     </h2>
     <!-- ko if: cards.production -->
@@ -354,7 +354,7 @@
 <!-- Dimensions -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dimensions">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dimensions)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dimensions section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dimensions)}, attr: {'aria-expanded': visible.dimensions() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dimensions section"></i>
         {% trans "Dimensions" %}
     </h2>
     <!-- ko if: cards.dimensions -->
@@ -413,7 +413,7 @@
 <!-- Components -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.components">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.components)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Components section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.components)}, attr: {'aria-expanded': visible.components() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Construction Components section"></i>
         {% trans "Construction Components" %}
     </h2>
     <!-- ko if: cards.components -->
@@ -474,7 +474,7 @@
 <!-- Use Phases -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.usePhase">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.usePhase)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Use Phases section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.usePhase)}, attr: {'aria-expanded': visible.usePhase() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Use Phases section"></i>
         {% trans "Use Phases" %}
     </h2>
     <!-- ko if: cards.usePhase -->
@@ -547,7 +547,7 @@
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.organizationFormation">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.organizationFormation)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Organization Formation section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.organizationFormation)}, attr: {'aria-expanded': visible.organizationFormation() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Organization Formation section"></i>
         {% trans "Organization Formation" %}
     </h2>
     <!-- ko if: cards.organizationFormation -->
@@ -610,7 +610,7 @@
 <!-- Dates -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.dates">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dates)}" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dates section"></i>
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.dates)}, attr: {'aria-expanded': visible.dates() ? 'false' : 'true' }" class="fa fa-angle-double-right toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Dates section"></i>
         {% trans "Dates" %}
     </h2>
     <!-- ko if: cards.dates -->

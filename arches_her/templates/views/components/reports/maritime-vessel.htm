@@ -78,7 +78,7 @@
                 }"></div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.nationalities)}, css: {'fa-angle-double-right': visible.nationalities(), 'fa-angle-double-up': !visible.nationalities()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Nationalities section"></i>
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.nationalities)}, css: {'fa-angle-double-right': visible.nationalities(), 'fa-angle-double-up': !visible.nationalities()}, attr: {'aria-expanded': visible.nationalities() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Nationalities section"></i>
                         {% trans "Nationalities" %}
                     </h2>
                     <!-- ko if: cards.nationalities -->
@@ -132,7 +132,7 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.owners)}, css: {'fa-angle-double-right': visible.owners(), 'fa-angle-double-up': !visible.owners()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Owners section"></i>
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.owners)}, css: {'fa-angle-double-right': visible.owners(), 'fa-angle-double-up': !visible.owners()}, attr: {'aria-expanded': visible.owners() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Owners section"></i>
                         {% trans "Owners" %}
                     </h2>
                     <!-- ko if: cards.owners -->
@@ -198,7 +198,7 @@
             <div class="aher-report-page" data-bind="if: activeSection() === 'journey'">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.voyages)}, css: {'fa-angle-double-right': visible.voyages(), 'fa-angle-double-up': !visible.voyages()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Voyages section"></i>
+                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.voyages)}, css: {'fa-angle-double-right': visible.voyages(), 'fa-angle-double-up': !visible.voyages()}, attr: {'aria-expanded': visible.voyages() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Voyages section"></i>
                         {% trans "Voyages" %}
                     </h2>
                     <!-- ko if: cards.voyages -->
