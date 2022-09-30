@@ -42,7 +42,8 @@
                 <div class="firstchild-container">
                     <!-- designation table  -->
                     <div class="aher-table" style="max-width: 100%">
-                        <table class="table table-striped designation" cellspacing="0" width="100%">
+                        <p class="aher-table-aria-describedby" id="designation-protection-table_info">Designation/protection detail table.</p>
+                        <table id="designation-protection-table" class="table table-striped designation" cellspacing="0" width="100%">
                             <thead>
                                 <tr class="aher-table-header">
                                     <th>{% trans "Designation Name" %}</th>
@@ -54,7 +55,7 @@
                                     <th class="none">{% trans "Amendment Date" %}</th>
                                     <th class="none">{% trans "Display Date" %}</th>
                                     <th class="none">{% trans "Reference" %}</th>
-                                    <th class="aher-table-control all"></th>
+                                    <th class="aher-table-control all">{% trans "Actions" %}</th>
                                 </tr>
                             </thead>
                             <tbody data-bind="dataTablesForEach: {data: designations, dataTableOptions: designationTableConfig}">
@@ -114,7 +115,8 @@
             <div class="firstchild-container">
                 <!-- Area Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="area-assignment-table_info">Area assignment table.</p>
+                    <table id="area-assignment-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Status" %}</th>
@@ -124,7 +126,7 @@
                                 <th>{% trans "SHINE Form" %}</th>
                                 <th class="none">{% trans "SHINE Significance" %}</th>
                                 <th class="none">{% trans "Reference" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach:{ data: areaAssignment, dataTableOptions: areaAssignmentsTableConfig}" >
@@ -176,7 +178,8 @@
             <div class="firstchild-container">
                 <!-- Land Use Table -->
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="land-use-classification-table_info">Land use classification table.</p>
+                    <table id="land-use-classification-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Land Use" %}</th>
@@ -185,7 +188,7 @@
                                 <th class="none">{% trans "Sub-soil" %}</th>
                                 <th class="none">{% trans "Geology" %}</th>
                                 <th class="none">{% trans "Reference" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: {data: landUseClassification, dataTableOptions: landUseTableConfig}">
