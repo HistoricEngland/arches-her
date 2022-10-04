@@ -59,6 +59,8 @@ class ActiveConsultationsView(View):
         order_config = {  # if this is not up-to-date sorting will break
             "Log Date: Newest to Oldest": ("Log Date", True),
             "Log Date: Oldest to Newest": ("Log Date", False),
+            "Target Date: Newest to Oldest": ("Target Date Start", True),
+            "Target Date: Oldest to Newest": ("Target Date Start", False),
             "Casework Officer: A to Z": ("Casework Officer", False),
             "Casework Officer: Z to A": ("Casework Officer", True),
             "Consultation Type: A to Z": ("Consultation Type", False),
@@ -75,22 +77,24 @@ class ActiveConsultationsView(View):
         if filtered_consultations is not None:
             if page_num == -1:
                 grouped_tile_list = build_resource_dict(
-                    filtered_consultations, self.active_cons_node_list, datatype_factory, layout="table"
+                    filtered_consultations, self.active_cons_node_list, datatype_factory, keyword=keyword, layout="table"
                 )
-                return JSONResponse({"results": grouped_tile_list})
             elif page_num >= 1:
                 grouped_tile_list = build_resource_dict(
                     filtered_consultations, self.active_cons_node_list, datatype_factory, keyword=keyword
                 )
-                if order_param in list(order_config.keys()) and order_param is not None:
-                    try:
-                        grouped_tile_list = sorted(
-                            grouped_tile_list,
-                            key=lambda resource: self.remove_prn_prefix(order_param, resource[order_config[order_param][0]]),
-                            reverse=order_config[order_param][1],
-                        )
-                    except KeyError as e:
-                        print("Error: ", e)
+            if order_param in list(order_config.keys()) and order_param is not None:
+                try:
+                    grouped_tile_list = sorted(
+                        grouped_tile_list,
+                        key=lambda resource: self.remove_prn_prefix(order_param, resource[order_config[order_param][0]]),
+                        reverse=order_config[order_param][1],
+                    )
+                except KeyError as e:
+                    print("Error: ", e)
+            if page_num == -1:
+                return JSONResponse({"results": grouped_tile_list})
+            else:
                 return self.get_paginated_data(grouped_tile_list, page_ct, page_num)
 
         return HttpResponseNotFound()
