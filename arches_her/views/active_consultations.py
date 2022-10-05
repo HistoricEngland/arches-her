@@ -40,7 +40,7 @@ class ActiveConsultationsView(View):
             "Consultation Name": "4ad69684-951f-11ea-b5c3-f875a44e0e11",
             "Consultation Type": "771bb1e2-8895-11ea-8446-f875a44e0e11",
             "Proposal Text": "1b0e15ec-8864-11ea-8493-f875a44e0e11",
-            "Target Date": "7224417b-893a-11ea-b383-f875a44e0e11",
+            "Target Date Start": "7224417b-893a-11ea-b383-f875a44e0e11",
             "Casework Officer": "4ea4a197-184f-11eb-9152-f875a44e0e11",
             "Log Date": "40eff4cd-893a-11ea-b0cc-f875a44e0e11",
         }
