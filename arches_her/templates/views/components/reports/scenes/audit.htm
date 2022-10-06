@@ -1,12 +1,15 @@
-{% extends "views/report-templates/default.htm" %} 
-{% load i18n %} 
+{% extends "views/report-templates/default.htm" %}
+{% load i18n %}
 {% block report %}
 
 {% block body %}
 <div class="aher-report-section">
-    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.audit)}, css: {'fa-angle-double-right': visible.audit(), 'fa-angle-double-up': !visible.audit()}" class="fa toggle"></i> {% trans "Audit Metadata" %}</h2>
+    <h2 class="aher-report-section-title">
+        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.audit)}, css: {'fa-angle-double-right': visible.audit(), 'fa-angle-double-up': !visible.audit()}, attr: {'aria-expanded': visible.audit() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Audit Metadata section"></i>
+        {% trans "Audit Metadata" %}
+    </h2>
     <span data-bind="if: cards.audit && (!audit() || cards.audit.cardinality == 'n')">
-        <a class="aher-report-a" data-bind="click: function(){add(cards.audit)}"><i class="fa fa-mail-reply"></i> {% trans "Add Audit" %}</a>
+        <a href="#" class="aher-report-a" data-bind="click: function(){add(cards.audit)}"><i class="fa fa-mail-reply"></i> {% trans "Add Audit" %}</a>
     </span>
 
     <!-- Collapsible content -->
@@ -15,12 +18,13 @@
         <!-- ko ifnot: audit() -->
         <div class="aher-nodata-note">No audit for this resource</div>
         <!-- /ko -->
-        
+
         <!-- ko if: audit() -->
         <div class="aher-report-subsection" >
             <div class="firstchild-container">
                 <div class="aher-table pad-btm">
-                    <table class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="audit-metadata-table_info">Audit metadata table.</p>
+                    <table id="audit-metadata-table" class="table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Note" %}</th>
@@ -29,7 +33,7 @@
                                 <th>{% trans "Update Date" %}</th>
                                 <th>{% trans "Updater" %}</th>
                                 <th>{% trans "Validation" %}</th>
-                                <th class="aher-table-control all"></th>
+                                <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
                         <tbody data-bind="dataTablesForEach: { data: audit, dataTableOptions: auditTableConfig }">
@@ -42,10 +46,10 @@
                                 <td data-bind="text: validation"></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards && $parent.cards.audit">
-                                        <a data-bind="click: function() {$parent.edit(tileid, $parent.cards.audit)}">
+                                        <a href="#" data-bind="click: function() {$parent.edit(tileid, $parent.cards.audit)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a data-bind="click: $parent.delete.bind($data, tileid, $parent.cards.audit)">
+                                        <a href="#" data-bind="click: $parent.delete.bind($data, tileid, $parent.cards.audit)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -57,7 +61,7 @@
             </div>
         </div>
         <!-- /ko -->
- 
+
     </div>
 </div>
 <div data-bind="component: {

@@ -12,7 +12,7 @@ define([
     return ko.components.register('active-consultations',  {
         viewModel: function(params) {
             var self = this;
-            this.resourceEditorURL = '/arches-her' + arches.urls.resource_editor;
+            this.resourceEditorURL = arches.urls.resource_editor;
             this.moment = moment;
             this.layout = ko.observable('grid');
             this.setLayout = function(layout){ self.layout(layout); };
@@ -250,7 +250,9 @@ define([
                 ajax: {
                     type: "GET",
                     url: arches.urls.root + 'activeconsultations',
-                    data: {"page": -1},
+                    data: {
+                        "page": -1
+                    },
                     dataSrc: function(data) {
                         var results = [], consultations = data["results"];
                         consultations.forEach( function(consultation) {
