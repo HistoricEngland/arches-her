@@ -131,11 +131,11 @@
     <!-- Collapsible content -->
     <div data-bind="visible: visible.consultations" class="aher-report-collapsible-container pad-lft">
 
-        <!-- ko ifnot: consultations().length -->
-        <div class="aher-nodata-note">No consultations for this resource</div>
+        <!-- ko if: consultations_message() !== null -->
+        <div data-bind="text: consultations_message" class="aher-nodata-note"></div>
         <!-- /ko -->
 
-        <!-- ko if: consultations().length -->
+        <!-- ko if: consultations_message() === null && consultations().length -->
         <div class="aher-report-subsection">
             <div class="firstchild-container">
                 <div class="aher-table" data-bind="">
