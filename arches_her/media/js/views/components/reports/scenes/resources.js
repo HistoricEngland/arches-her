@@ -111,9 +111,9 @@ define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable'
                 }
                 
                 if (!userCanViewConsultations()) {
-                    self.consultations_message = ko.observable('You do not have permission to view this data');
+                    self.consultations_message('You do not have permission to view this data');
                 } else if (associatedConsultationsNode === undefined || associatedConsultationsNode.length === 0) {
-                    self.consultations_message = ko.observable('No consultations for this resource');
+                    self.consultations_message('No consultations for this resource');
                 }
 
 
