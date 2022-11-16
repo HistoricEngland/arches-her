@@ -246,7 +246,9 @@ class FileTemplateView(View):
             mitigation = {}
             condition = {}
             if str(tile.nodegroup_id) == action_nodegroup_id:
-                mitigation_scopenote = mitigation_scope_dict.get(mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id), ""), "")
+                mitigation_scopenote = mitigation_scope_dict.get(
+                    mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id), ""), ""
+                )
                 if len(mitigation_scopenote) > 0:
                     mitigation_scopenote = "<br>" + mitigation_scopenote
                 mitigation["content"] = "<p>{}</p><p>{}</p>".format(get_value_from_tile(tile, action_node_id), mitigation_scopenote)
@@ -355,7 +357,7 @@ class FileTemplateView(View):
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
-            mapping_dict["Archaeological Priority Area"] = "The planning application is not in an area of archaeological interest."
+            mapping_dict["Archaeological Priority Area"] = "The planning application is not in an Archaeological Priority Area."
         else:
             mapping_dict[
                 "Archaeological Priority Area"
