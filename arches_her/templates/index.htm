@@ -36,15 +36,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" />
 
-    <link rel='stylesheet' type='text/css'
-        href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css">
-
-    <link href="{% static 'css/unify.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link href="{% static 'css/index.css' %}" rel="stylesheet">
-    <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
+    <!--<link href="{% static 'css/index.css' %}" rel="stylesheet">-->
+    <link href="{% static 'css/branding.css' %}" rel="stylesheet">
 
+    <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
     <script type="text/javascript">
         // ##### APPINSIGHTS MONITORING #####
         var aikey = '#{appinsights-key}#';
@@ -55,59 +52,51 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         else {
             console.log("aikey not valid - app insights not instantiated");
         }
-            //####################################
+        //####################################
     </script>
 
 </head>
 
-<!--
-The #page-top ID is part of the scrolling feature.
-The data-spy and data-target are part of the built-in Bootstrap scrollspy function.
--->
+<body id="body" class="landing-page">
 
-<body id="body" data-spy="scroll" data-target=".splash-nav" class="demo-lightbox-gallery">
-
-    <!--=== Header ===-->
-    <nav class="cons-splash-nav navbar" role="navigation">
-        <div class="nav-container">
-            <div class="navbar-brand-disco">
-                <div class="navbar-brand-disco-icon-container" style="">
-                    <img class="navbar-brand-disco-icon" src="{% static 'img/landing/arches_logo_dark.png' %}" style=""
-                        alt="Arches Logo">
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/" class="navbar-brand header-bar__logo-link" aria-label="Link to homepage">
+                        <img class="header-bar__logo-image" src="{{ STATIC_URL }}img/HE_Logo_RGB.svg" alt="Historic England logo">
+                    </a>
                 </div>
-                <div class="application-name">
-                    <h2>{{app_title}}</h2>
-                    <!-- <span>Data Integration for Science and Conservation</span> -->
-                </div>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <div class="menu-container">
-                    <ul class="nav navbar-nav cons-splash-list">
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="/">Home</a>
+                        </li>
                         {% for p in plugins %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url p.slug %}">{{ p.name }}</a>
                         </li>
                         {% endfor %}
-
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'search_home' %}">{% trans "Find" %}</a>
                         </li>
-
                         {% if user|can_create_resource_instance and user.username != 'anonymous' %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
                         </li>
                         {% endif %}
-
                         {% if user|can_create_graph and user.username != 'anonymous' %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'graph' '' %}" target="_blank">{% trans "Graphs" %}</a>
                         </li>
                         {% endif %}
-
-                        <li class="page-scroll">
+                        <li>
                             {% if user.username == 'anonymous' %}
                             <a class="application-login" id="auth-link"
                                 href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans "Login" %}</a>
@@ -117,181 +106,100 @@ The data-spy and data-target are part of the built-in Bootstrap scrollspy functi
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
+                            <a href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
                             {% endif %}
                         </li>
                     </ul>
                 </div>
             </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-    <!--=== End Header ===-->
+        </nav>
+    </header>
 
-    <!-- Intro Section -->
-    <section id="intro-cons" class="intro-section" style="">
-        <div class="fullscreenbanner-container">
-            <div class="fullscreenbanner">
-                <ul>
-                    <!-- SLIDE 1 -->
-                    <li data-transition="fade" data-slotamount="9" data-masterspeed="0" data-title="Slide 1">
-                        <!-- MAIN IMAGE -->
-                        <img src="{% static 'img/landing/the_shard.jpg' %}" alt="slidebg1" data-bgfit="cover"
-                            data-bgposition="center center" data-bgrepeat="no-repeat">
-
-                        <!-- LAYERS -->
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="-50"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-1">{% trans "Consultations at GLAAS..." %}</a></h2>
-                            <p>{% trans "How the Greater London Archaeology Advisory Service manages development" %}</p>
-                        </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="450"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-2">{% trans "Search and Discover..." %}</a></h2>
-                            <p>{% trans "Find and review information on our current and past consultations" %}</p>
-                        </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="950"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-3">{% trans "Get Involved..." %}</a></h2>
-                            <p>{% trans "Want to help? Here's how you can participate" %}</p>
-                        </div>
-
-                        <!-- Gradient -->
-                        <div class="image-gradient"></div>
-
-                        <!-- Attribution -->
-                        <div class="image-attribution" style="">
-                            <span class="">{% trans "The Shard | https://www.flickr.com/photos/cathedraljack/ | Attribution 2.0 Generic (CC BY 2.0)" %}</span>
-                        </div>
-                    </li>
-
-                </ul>
-                <div class="tp-bannertimer tp-bottom"></div>
-            </div>
-        </div>
-    </section>
-    <!-- End Intro Section -->
-
-    <!-- Page Custom Content -->
-    <div class="custom-content-container">
-        <!-- Info Block 1 -->
-        <div id="info-block-1" class="app-info-block">
-            <h2 class="">{% trans "Consultations at GLAAS" %}</h2>
-
-        </div>
-        <!-- End Info Block 1 -->
-
-        <!-- Info Block 2 -->
-        <div id="info-block-2" class="app-info-block">
-            <h2 class="">{% trans "Find and Review Consultations" %}</h2>
-
-        </div>
-        <!-- End Info Block 2 -->
-
-        <!-- Info Block 3 -->
-        <div id="info-block-3" class="app-info-block">
-            <h2 class="">{% trans "Working with GLAAS" %}</h2>
-
-        </div>
-        <!-- End Info Block 3 -->
-
-    </div>
-    <!-- End Page Custome Content -->
-
-    <!-- Footer -->
-    <div class="app-footer">
-
-        <!-- footer content container -->
-        <div class="app-footer-content-container">
-
-            <!-- branding column -->
-            <div class="app-footer-branding">
-                <img class="app-footer-image" src='/media/img/projects/consultations/HE_Logo_White.svg'
-                    title="Historic England" alt="Historic England">
-
-                <div class="organization-address">
-                    Greater London Archaeological Advisory Service<br>
-                    Historic England<br>
-                    4th floor, Cannon Bridge House<br>
-                    25 Dowgate Hill<br>
-                    London<br>
-                    EC4R 2YA
+    <main>
+        <div class="container">
+            <div class="row featurette1">
+                <div class="featurette1-left-container">
+                    <h1>Greater London Historic Environment Record<br/>(GLHER)</h1>
+                    <p class="lead">The online heritage information and management system for London.</p>
+                </div>
+                <div class="featurette1-right-container pull-right">
+                    <img src="{% static 'img/landing/featurette1.png' %}" alt="..." class="img-rounded img-responsive">
                 </div>
             </div>
-
-            <!-- Info Column -->
-            <div class="app-footer-info">
-                <h2 class="app-footer-heading">{% trans "Guides and Documentation" %}</h2>
+            <div class="row featurette2">
+                <h2>On this page</h2>
+                <ol>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">How to use</a></li>
+                    <li><a href="#">Volunteering with GLHER</a></li>
+                    <li><a href="#">Heritage Themes</a></li>
+                </ol>
+            </div>
+            <div class="row featurette3">
+                <h2>About</h2>
+                <p class="subtitle">What is the Greater London Historic Environment Reocrd (GLHER)?</p>
+                <p>The GLHER is a comprehensive and dynamic resource for the historic environment of the
+                    Capital city. From the earliest human occupation to the present day, GLHER data promotes
+                    better understanding of London's rich heritage, and supports development and regeneration
+                    through the work of the Greater London Archaeological Advisory Service (GLAAS).</p>
+                <div class="row featurette3-row">
+                        <div class="thumbnail featurette3-first-block">
+                            <img src="{% static 'img/landing/about-left.png' %}" alt="...">
+                            <div class="caption">
+                                <p><a href="#">Find out more about the role of the Greater London Historic Environment Record</a></p>
+                            </div>
+                        </div>
+                        <div class="thumbnail featurette3-second-block">
+                            <img src="{% static 'img/landing/about-right.png' %}" alt="...">
+                            <div class="caption">
+                                <p><a href="#">To find out more about the work of the Great London Archaeology Advisory Service</a></p>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="row featurette4">
+                <h2>How to use the GLHER</h2>
+                <p>Please read the GLHER <a href="">Access and Charging Policy</a>.</p>
+            </div>
+            <div class="row featurette5">
+                
+            </div>
+            <div class="row featurette6">
+                
+            </div>
+            <div class="row featurette7">
+                
             </div>
         </div>
-    </div>
-    <!-- End Footer -->
+    </main>
 
-    <!-- Copyright Panel -->
-    <div class="copyright-container">
-
-
-        <!-- Arches link -->
-        <div class="app-footer-links">
-            <a class="link-spacing" href="">{% trans "Terms & Conditions" %}</a>
-            <a class="link-spacing" href="">{% trans "Privacy Policy" %}</a>
-            <a class="app-footer-arches-link" href="www.archesproject.org">Powered by Arches</a>
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <p>Footer top</p>                    
+            </div>
         </div>
-    </div>
-    <!-- End Copyright Container -->
 
-
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-container">
+                    <div class="col-xs-12 col-sm-8">
+                        <a href="#">Accessibility</a>
+                        <a href="#">Manage Cookies</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <p class="copyright">&copy; Historic England 2021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.4.0/jquery-migrate.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.3.8/SmoothScroll.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-    <script src="{% static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js' %}"></script>
-    <script src="{% static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
-    <script src="{% static 'plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js' %}"></script>
-    <script src="{% static 'plugins/one.app.js' %}"></script>
-    <script src="{% static 'plugins/pace-loader.js' %}"></script>
-    <script src="{% static 'plugins/owl-carousel.js' %}"></script>
-    <script src="{% static 'plugins/style-switcher.js' %}"></script>
-    <script src="{% static 'plugins/revolution-slider.js' %}"></script>
-    <script src="{% static 'plugins/cube-portfolio-lightbox.js' %}"></script>
-    <script src="{% static 'packages/knockout/build/output/knockout-latest.js' %}"></script>
-
-
-    <script>
-        jQuery(document).ready(function () {
-            App.init();
-            App.initCounter();
-            App.initParallaxBg();
-            OwlCarousel.initOwlCarousel();
-            StyleSwitcher.initStyleSwitcher();
-            RevolutionSlider.initRSfullScreen();
-        });
-
-        var ViewModel = function (first, last) {
-            this.showAuthMenu = ko.observable(false);
-        };
-        ko.applyBindings(new ViewModel());
-
-    </script>
 
 </body>
 
