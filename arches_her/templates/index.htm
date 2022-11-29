@@ -160,7 +160,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <div class="row featurette4">
                 <h2>How to use the GLHER</h2>
                 <p>Please read the GLHER <a href="#">Access and Charging Policy</a>.</p>
-                <div><p>Embedded video in here</p></div>
+                <div class="row featurette4-row">
+                    <!--<embed src="{% static 'img/landing/london.mp4' %}" autostart="false" height="600" width="868" /></embed>-->
+                    <video controls poster="{% static 'img/landing/video-placeholder.png' %}">
+                        <source src="{% static 'img/landing/london.mp4' %}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
                 <p>A detailed guide for general users is available to download here: <a href="#">GLHER User Guide</a>.</p>
             </div>
             <div class="row featurette5">
@@ -180,19 +186,19 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 <p>Find out more about London’s heritage.</p>
                 <div class="row featurette6-row">
                     <div class="thumbnail featurette-image-block">
-                        <img src="/media/img/landing/statue.png" alt="Photo of Roman Southwark">
+                        <img src="{% static 'img/landing/statue.png' %}" alt="Photo of Roman Southwark">
                         <div class="caption">
                             <a href="#">Roman Southwark</a>
                         </div>
                     </div>
                     <div class="thumbnail featurette-image-block featurette6-mid-block">
-                        <img src="/media/img/landing/bowie.png" alt="Photo of Musical London">
+                        <img src="{% static 'img/landing/bowie.png' %}" alt="Photo of Musical London">
                         <div class="caption">
                             <a href="#">Musical London</a>
                         </div>
                     </div>
                     <div class="thumbnail featurette-image-block">
-                        <img src="/media/img/landing/cartoon.png" alt="Image of a cartoon">
+                        <img src="{% static 'img/landing/cartoon.png'    %}" alt="Image of a cartoon">
                         <div class="caption">
                             <a href="#">HE or Local Authority/community project</a>
                         </div>

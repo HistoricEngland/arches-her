@@ -124,6 +124,12 @@
     font-size: 2.1rem;
 }
 
+.landing-page video {
+    width: 100%;
+    min-width: 300px;
+    border-radius: 10px;
+}
+
 /* Landing Page - End */
 
 /* Featuretttes - Start*/
@@ -204,7 +210,8 @@
     font-size: 2.2rem;
 }
 
-.featurette3-row {
+.featurette3-row,
+.featurette4-row {
     margin-left: -113px;
     margin-right: -113px;
     margin-top: 30px;
