@@ -14,13 +14,19 @@
 }
 
 .landing-page p,
-.landing-page a,
+.landing-page a:not(.caption a),
 .landing-page li {
-    font-size: 18px;
+    font-size: 1.8rem;
 }
 
-.landing-page a {
+.landing-page a:not(.btn-primary):not(footer a) {
     color: #2579A4;
+}
+
+.landing-page .btn-primary {
+    height: 51px;
+    font-weight: 300;
+    line-height: 1.5;
 }
 
 .landing-page .navbar-nav>li>a {
@@ -30,6 +36,7 @@
 
 .landing-page .container {
     width: 100%;
+    max-width: 1440px;
     padding: 0 64px;
 }
 
@@ -92,22 +99,41 @@
 }
 
 .landing-page h1 {
-    font-size: 48px;
+    font-size: 4.8rem;
     color: #555555;
 }
 
 .landing-page h2 {
-    font-size: 42px;
+    font-size: 3.4rem;
+    margin-bottom: 20px;
+    color: #555555;
+}
+
+.landing-page h3 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
     color: #555555;
 }
 
 .landing-page li {
-    font-size: 18px;
+    font-size: 1.8rem;
+}
+
+.landing-page .caption {
+    padding: 20px 17px 20px 20px;
+    font-size: 2.1rem;
 }
 
 /* Landing Page - End */
 
 /* Featuretttes - Start*/
+
+.featurette-image-block {
+    box-shadow: 0px 3px 6px #00000029;
+    max-width: 424px;
+    padding: 0;
+    display: inline-block;
+}
 
 .featurette1-left-container,
 .featurette1-right-container {
@@ -139,7 +165,7 @@
 }
 
 .featurette1 p {
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 
 .row.featurette2 {
@@ -167,29 +193,44 @@
 }
 
 .row.featurette3,
-.row.featurette4 {
+.row.featurette4,
+.row.featurette5,
+.row.featurette6,
+.row.featurette7 {
     margin: 50px auto 0 auto;
 }
 
 .featurette3 .subtitle {
-    font-size: 22px;
+    font-size: 2.2rem;
 }
 
 .featurette3-row {
     margin-left: -113px;
     margin-right: -113px;
-}
-
-.featurette3-first-block,
-.featurette3-second-block {
-    box-shadow: 0px 3px 6px #00000029;
-    max-width: 424px;
-    padding: 0;
-    display: inline-block;
+    margin-top: 30px;
 }
 
 .featurette3-first-block {
     margin-right: 20px;
+}
+
+.featurette6-row {
+    margin-left: -336px;
+    margin-right: -336px;
+    margin-top: 30px;
+}
+
+.featurette6-row .featurette6-mid-block {
+    margin: 0 20px;
+}
+
+.featurette7 .jumbotron {
+    padding: 20px;
+    background: #F9F7F6;
+}
+
+.featurette7 h3 {
+    margin-top: 0;
 }
 
 /* Featurettes - End */
@@ -203,7 +244,7 @@
 .landing-page footer p,
 .landing-page footer a {
     color: #fff;
-    font-size: 18px;
+    font-size: 1.8rem;
 }
 
 .landing-page footer a {
@@ -272,7 +313,7 @@
     .landing-page .navbar-nav>li>a {
         padding-left: 8px;
         padding-right: 8px;
-        font-size: 16px;
+        font-size: 1.6rem;
     }
 }
 
