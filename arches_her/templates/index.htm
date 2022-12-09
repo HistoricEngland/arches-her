@@ -98,8 +98,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                         {% endif %}
                         <li>
                             {% if user.username == 'anonymous' %}
-                            <a class="application-login" id="auth-link"
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans "Login" %}</a>
+                            <a class="btn btn-primary btn-lg" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}"><img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
                             {% else %}
                             <a class="auth-welcome" href="{% url 'user_profile_manager' %}">
                                 {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
@@ -119,7 +119,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <div class="container">
             <div class="row featurette1">
                 <div class="featurette1-left-container">
-                    <h1>Greater London Historic Environment Record<br/>(GLHER)</h1>
+                    <h1>Greater London Historic Environment Record<br/>
+                        (GLHER)</h1>
                     <p class="lead">The online heritage information and management system for London.</p>
                 </div>
                 <div class="featurette1-right-container pull-right">
@@ -183,7 +184,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="row featurette6">
                 <h2>Heritage Themes</h2>
-                <p>Find out more about London’s heritage.</p>
+                <p>Find out more about London's heritage.</p>
                 <div class="row featurette6-row">
                     <div class="thumbnail featurette-image-block">
                         <img src="{% static 'img/landing/statue.png' %}" alt="Photo of Roman Southwark">
@@ -198,7 +199,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="thumbnail featurette-image-block">
-                        <img src="{% static 'img/landing/cartoon.png'    %}" alt="Image of a cartoon">
+                        <img src="{% static 'img/landing/cartoon.png' %}" alt="Image of a cartoon">
                         <div class="caption">
                             <a href="#">HE or Local Authority/community project</a>
                         </div>
@@ -209,22 +210,40 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 <h2>Contact Us</h2>
                 <div class="jumbotron">
                     <h3>The Greater London Historic Environment Record</h3>
-                    <p><strong>Website</strong><br/>
-                        <a href="#">Website The Greater London Historic Environment Record</a></p>
-                    <div class="row">
+                    <div class="row website-details">
+                        <div class="col-xs-1">
+                            <img src="{% static 'img/landing/contact-website.svg' %}" width="25" height="25" alt="Website icon">
+                        </div>
+                        <div class="col-xs-11">
+                            <p><strong>Website</strong><br/>
+                                <a href="#">Website The Greater London Historic Environment Record</a></p>
+                        </div>
+                    </div>
+                    <div class="row address-phone">
                         <div class="col-sm-6">
-                            <p><strong>Address</strong><br>
+                            <div class="contact-icon">
+                                <img src="{% static 'img/landing/contact-address.svg' %}" width="25" height="25" alt="Address icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Address</strong><br>
                                 Historic England 4th Floor<br>
                                 Cannon Bridge House<br>
                                 25 Dowgate Hill<br>
                                 London<br>
                                 EC4R 2YA</p>
+                            </div>
+                            
                         </div>
                         <div class="col-sm-6">
-                            <p><strong>Phone number</strong><br>
-                                0207 973 3731<br>
-                                0207 973 3214<br>
-                                0207 973 3691</p>
+                            <div class="contact-icon">
+                                <img src="{% static 'img/landing/contact-phone.svg' %}" width="25" height="25" alt="Phone icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Phone number</strong><br>
+                                    0207 973 3731<br>
+                                    0207 973 3214<br>
+                                    0207 973 3691</p>
+                            </div>
                         </div>
                     </div>
                     <p><a class="btn btn-primary btn-lg" href="#" role="button">View on map</a></p>
@@ -236,20 +255,47 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <footer>
         <div class="footer-top">
             <div class="container">
-                <p>Footer top</p>                    
+                <div class="row footer-top-first-row">
+                    <div class="col-sm-4">
+                        <a href="#">
+                            <img class="footer-he-logo" src="{% static 'img/landing/footer-he-logo-white.svg' %}" alt="Historic England logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#">
+                            <img class="footer-getty-logo" src="{% static 'img/landing/footer-getty-logo-white.png' %}" alt="The Getty logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="#">
+                            <img class="footer-arches-logo" src="{% static 'img/landing/footer-arches-logo-white.png' %}" alt="Arches Project logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8 col-sm-9 glher-text-container">
+                        <p class="glaas-title">Greater London Archaeology Advisory Service<br/>
+                            (GLAAS)</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 footer-top-contact-details">
+                        <p><strong>Contact Us</strong></p>
+                        <p>For enquiry, please contact<br/>
+                            <a href="mailto:Glaas@historicEngland.org.uk">Glaas@historicEngland.org.uk</a></p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="footer-bottom">
             <div class="container">
                 <div class="footer-container">
-                    <div class="col-xs-12 col-sm-8">
+                    <div class="col-xs-12 col-sm-8 footer-links">
                         <a href="#">Accessibility</a>
                         <a href="#">Manage Cookies</a>
                         <a href="#">Privacy Policy</a>
                         <a href="#">Terms &amp; Conditions</a>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
+                    <div class="col-xs-12 col-sm-4 footer-copyright">
                         <p class="copyright">&copy; Historic England 2021</p>
                     </div>
                 </div>
