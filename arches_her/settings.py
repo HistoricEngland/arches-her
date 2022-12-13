@@ -43,7 +43,7 @@ SEARCH_EXPORT_LIMIT = 15000  # The maximum documents ElasticSearch will return i
 # Elasticsearch connection settings for using Elastic Cloud
 #
 # ELASTICSEARCH_CONNECTION_OPTIONS = {
-#    "cloud_id": get_env_variable(<deployment name:deployment guid>),
+#    "cloud_id": <deployment name:deployment guid>,
 #    "ca_certs": False,
 #    "verify_certs": False,
 #    "ssl_show_warn": False,
