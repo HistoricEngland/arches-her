@@ -57,8 +57,8 @@ if USER_ELASTICSEARCH_PREFIX:
 # Elasticsearch connection settings for using Elastic Cloud
 # Requires following environment variables:
 # ELASTIC_CLOUD_ID: deployment_name:deployment_GUID
-# ELASTIC USER: the user for authentication credentials
-# ELASTIC PASSWORD: the password for authenticaion credentials
+# ELASTIC_USER: the user for authentication credentials
+# ELASTIC_PASSWORD: the password for authenticaion credentials
 #
 # ELASTICSEARCH_CONNECTION_OPTIONS = {
 #    "cloud_id": get_env_variable("ELASTIC_CLOUD_ID"),
