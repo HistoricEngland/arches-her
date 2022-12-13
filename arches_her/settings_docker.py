@@ -47,12 +47,27 @@ CELERY_BROKER_URL = "amqp://{}:{}@rabbitmq_aher".format(
 )  # RabbitMQ --> "amqp://guest:guest@localhost",  Redis --> "redis://localhost:6379/0"
 
 # CANTALOUPE_HTTP_ENDPOINT = "http://{}:{}".format(get_env_variable("CANTALOUPE_HOST"), get_env_variable("CANTALOUPE_PORT"))
-ELASTICSEARCH_HTTP_PORT = get_env_variable("ESPORT")
-ELASTICSEARCH_HOSTS = [{"host": get_env_variable("ESHOST"), "port": ELASTICSEARCH_HTTP_PORT}]
+ELASTICSEARCH_HTTP_PORT = ast.literal_eval(get_env_variable("ESPORT"))
+ELASTICSEARCH_HOSTS = [{"scheme": "http", "host": get_env_variable("ESHOST"), "port": ELASTICSEARCH_HTTP_PORT}] # DEV
 
 USER_ELASTICSEARCH_PREFIX = get_optional_env_variable("ELASTICSEARCH_PREFIX")
 if USER_ELASTICSEARCH_PREFIX:
     ELASTICSEARCH_PREFIX = USER_ELASTICSEARCH_PREFIX
+
+# Elasticsearch connection settings for using Elastic Cloud
+# Requires following environment variables:
+# ELASTIC_CLOUD_ID: deployment_name:deployment_GUID
+# ELASTIC USER: the user for authentication credentials
+# ELASTIC PASSWORD: the password for authenticaion credentials
+#
+# ELASTICSEARCH_CONNECTION_OPTIONS = {
+#    "cloud_id": get_env_variable("ELASTIC_CLOUD_ID"),
+#    "ca_certs": False,
+#    "verify_certs": False,
+#    "ssl_show_warn": False,
+#    "timeout": 60,
+#    "http_auth": (get_env_variable("ELASTIC_USER"), get_env_variable("ELASTIC_PASSWORD")),
+# }
 
 ALLOWED_HOSTS = get_env_variable("DOMAIN_NAMES").split()
 

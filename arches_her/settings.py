@@ -40,6 +40,17 @@ ELASTICSEARCH_PREFIX = "arches_her"
 SEARCH_EXPORT_IMMEDIATE_DOWNLOAD_THRESHOLD = 2000  # The maximum number of instances a user can download from search export without celery
 SEARCH_EXPORT_LIMIT = 15000  # The maximum documents ElasticSearch will return in an export - **System Settings**
 
+# Elasticsearch connection settings for using Elastic Cloud
+#
+# ELASTICSEARCH_CONNECTION_OPTIONS = {
+#    "cloud_id": get_env_variable(<deployment name:deployment guid>),
+#    "ca_certs": False,
+#    "verify_certs": False,
+#    "ssl_show_warn": False,
+#    "timeout": 60,
+#    "http_auth": (<user name>, <user password>),
+# }
+
 BYPASS_CARDINALITY_TILE_VALIDATION = False
 
 CELERY_BROKER_URL = "amqp://guest:guest@localhost"
