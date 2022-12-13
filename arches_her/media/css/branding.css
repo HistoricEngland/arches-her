@@ -5,7 +5,7 @@
     font-size: 1.125rem;
     font-weight: 300;
     overflow-x: hidden;
-    min-width: 375px;
+    min-width: 100vw;
 }
 
 .landing-page a:focus,
@@ -33,7 +33,7 @@
 
 .landing-page .navbar-nav>li>a {
     font-weight: 400;
-    line-height: 45px;
+    line-height: 49px;
 }
 
 .landing-page .container {
@@ -73,7 +73,7 @@
     width: 200px;
 }
 
-.landing-page #auth-link {
+.landing-page #auth-link:not(.navbar-collapse.collapse.in #auth-link) {
     height: 50px;
     background-color: #E3EFFA;
     border: 1px solid #0D2937;
@@ -95,6 +95,37 @@
     margin-right: 5px;
 }
 
+.landing-page .no-transition {
+    -webkit-transition: height 0;
+    -moz-transition: height 0;
+    -ms-transition: height 0;
+    -o-transition: height 0;
+    transition: height 0;
+}
+
+.landing-page .navbar-collapse.collapse.in {
+    z-index: 9999;
+    position: absolute;
+    top: 58px;
+    right: 31px;
+    width: 40vw;
+    background: #fff;
+    overflow-x: hidden;
+    padding: 20px!important;
+}
+
+.landing-page .navbar-collapse.collapse.in li a {
+    line-height: 20px;
+}
+
+.landing-page .navbar-collapse.collapse.in .navbar-nav {
+    margin: 0;
+}
+
+.landing-page ul.nav li a {
+    font-size: 1.6rem!important;
+}
+
 /* Header - End */
 
 /* Landing Page - Start */
@@ -106,7 +137,7 @@
 }
 
 .landing-page .navbar-toggle {
-    margin: 20px 15px 0;
+    margin: 23px 15px 0;
     padding: 0;
 }
 
@@ -171,10 +202,10 @@
 }
 
 .featurette1-left-container {
-    width: 442px;
+    width: 444px;
     position: absolute;
     left: 0;
-    top: 98px;
+    top: 132px;
     border-radius: 10px;
     background-color: #fff;
     padding: 0 20px 0 0;
@@ -410,25 +441,35 @@
     }
 }
 
+@media screen and (min-width: 768px) {
+    .mobile-menu-sign-in {
+        display: none!important;
+    }
+}
+
 @media screen and (max-width: 1000px) {
     .landing-page .navbar-nav>li>a {
         padding-left: 8px;
         padding-right: 8px;
         font-size: 1.6rem;
     }
+
+    .landing-page ul.nav li a {
+        font-size: 1.3rem!important;
+    }
 }
 
-@media screen and (min-width: 1000px)  and (max-width: 1439px) {
+@media screen and (min-width: 1000px) and (max-width: 1439px) {
     .landing-page .container {
         padding: 0 60px;
         max-width: 1000px;
     }
 
     .featurette1-left-container {
-        width: 730px;
+        width: calc(100% - 148px);
         top: 436px;
         margin-left: 74px;
-        padding: 0px 115px;
+        padding: 0px 102px;
     }
 
     .featurette1-right-container {
@@ -498,7 +539,7 @@
     }
 }
 
-@media screen and (min-width: 800px)  and (max-width: 999px) {
+@media screen and (min-width: 768px) and (max-width: 999px) {
     .landing-page .container {
         padding: 0 50px;
         max-width: 800px;
@@ -522,7 +563,7 @@
     }
 
     .featurette1-left-container {
-        width: 620px;
+        width: calc(100% - 60px);
         top: 330px;
         margin-left: 30px;
         padding: 0px 20px;
@@ -596,7 +637,7 @@
     }
 }
 
-@media screen and (min-width: 375px)  and (max-width: 799px) {
+@media screen and (min-width: 375px) and (max-width: 767px) {
     .landing-page .row {
         margin-left: 0;
         margin-right: 0;
@@ -679,7 +720,7 @@
     }
 
     .row.featurette2 {
-        margin-top: 70vw;
+        margin-top: 253px;
     }
 
     .featurette2 ol {
@@ -747,8 +788,37 @@
 }
 
 @media screen and (max-width: 374px) {
-    /*.landing-page .container {
+    .landing-page .container {
         padding: 0;
+        max-width: 100vw;
+    }
+
+    .landing-page .img-rounded,
+    .featurette1-left-container {
+        border-radius: 0;
+    }
+
+    .landing-page h1 {
+        font-size: 2.8rem;
+    }
+
+    .landing-page h2 {
+        font-size: 2.4rem;
+    }
+
+    .featurette1-left-container {
+        top: 205px;
+    }
+    .featurette1-right-container {
+        width: 100vw;
+    }
+
+    .featurette2 ol {
+        column-count: 1;
+    }
+
+    .row.featurette2 {
+        margin: 235px auto 0 auto;
     }
 
     .featurette3-row, .featurette4-row {
@@ -769,7 +839,7 @@
     .row.featurette6,
     .row.featurette7 {
         max-width: 100vw;
-    }*/
+    }
 }
 
 /* Media Queries - End */

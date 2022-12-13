@@ -73,7 +73,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                         <img class="header-bar__logo-image" src="{{ STATIC_URL }}img/HE_Logo_RGB.svg" alt="Historic England logo">
                     </a>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
+                <div id="navbar" class="navbar-collapse collapse no-transition">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active">
                             <a href="/">Home</a>
@@ -98,8 +98,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                         {% endif %}
                         <li>
                             {% if user.username == 'anonymous' %}
-                            <a class="btn btn-primary btn-lg" id="auth-link"
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}"><img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
+                            <a class="btn btn-primary btn-lg hidden-xs" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
+                            <a class="mobile-menu-sign-in visible-xs-*" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user hidden-xs">{% trans "Sign in" %}</a>
                             {% else %}
                             <a class="auth-welcome" href="{% url 'user_profile_manager' %}">
                                 {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
@@ -130,14 +134,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <div class="row featurette2">
                 <h2>On this page</h2>
                 <ol>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">How to use</a></li>
-                    <li><a href="#">Volunteering with GLHER</a></li>
-                    <li><a href="#">Heritage Themes</a></li>
+                    <li><a href="#bm-about">About</a></li>
+                    <li><a href="#bm-how-to-use">How to use</a></li>
+                    <li><a href="#bm-volunteering">Volunteering with GLHER</a></li>
+                    <li><a href="#bm-themes">Heritage Themes</a></li>
                 </ol>
             </div>
             <div class="row featurette3">
-                <h2>About</h2>
+                <h2 id="bm-about">About</h2>
                 <p class="subtitle">What is the Greater London Historic Environment Reocrd (GLHER)?</p>
                 <p>The GLHER is a comprehensive and dynamic resource for the historic environment of the
                     Capital city. From the earliest human occupation to the present day, GLHER data promotes
@@ -159,7 +163,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
             <div class="row featurette4">
-                <h2>How to use the GLHER</h2>
+                <h2 id="bm-how-to-use">How to use the GLHER</h2>
                 <p>Please read the GLHER <a href="#">Access and Charging Policy</a>.</p>
                 <div class="row featurette4-row">
                     <!--<embed src="{% static 'img/landing/london.mp4' %}" autostart="false" height="600" width="868" /></embed>-->
@@ -171,7 +175,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 <p>A detailed guide for general users is available to download here: <a href="#">GLHER User Guide</a>.</p>
             </div>
             <div class="row featurette5">
-                <h2>Volunteering with GLHER</h2>
+                <h2 id="bm-volunteering">Volunteering with GLHER</h2>
                 <p>We have opportunities for enthusiastic volunteers, of all ages and backgrounds, to help enhance the Greater London
                     Historic Environment Record. Some are looking for work experience or a change of career, others do it just for
                     fun, but all our volunteers play a critical role developing this resource. Past and current projects include:</p>
@@ -183,7 +187,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     </ul>
             </div>
             <div class="row featurette6">
-                <h2>Heritage Themes</h2>
+                <h2 id="bm-themes">Heritage Themes</h2>
                 <p>Find out more about London's heritage.</p>
                 <div class="row featurette6-row">
                     <div class="thumbnail featurette-image-block">
@@ -306,6 +310,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.4.0/jquery-migrate.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(window).on('resize', function(e) {
+            if ($(window).width() > 767) {
+                let navbarelem = document.getElementById('navbar');
+                navbarelem.classList.remove('in');
+            }
+        });
+    </script>
 
 </body>
 
