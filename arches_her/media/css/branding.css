@@ -164,6 +164,12 @@
     margin-bottom: 10px;
 }
 
+#login-form .errorlist {
+    color: red;
+    font-size: 1.4rem;
+    margin-bottom: 19px;
+}
+
 /* Login Page - End */
 
 /* Media Queries - Start */
