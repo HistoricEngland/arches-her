@@ -34,7 +34,7 @@
     background: #fff;
 }
 
-.scroll-y footer {
+.scroll-y footer, .aher-table-aria-describedby {
     display: none !important;
 }
 
@@ -56,10 +56,8 @@
 
 .aher-report-toolbar {
     width: 100%;
-    height: 50px;
     background: #f5f5f5;
     border-bottom: 1px solid #ddd;
-    position: fixed;
     z-index: 10;
 }
 .aher-report-subsection-two-column {
@@ -78,7 +76,7 @@
     font-size: 17px;
     font-weight: 500;
     margin-top: 0px;
-    padding: 15px 0 5px 25px;
+    padding: 15px 25px 5px 25px;
     color: #555;
     margin-bottom: 13px;
 }
@@ -89,7 +87,7 @@
 
 .aher-report-name {
     padding-right: 5px;
-    color: #888;
+    color: #595959;
     font-size: 14px;
 }
 
@@ -98,11 +96,7 @@
 }
 
 .aher-report-anchor-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    position: fixed;
     width: 100%;
-    margin-top: 50px;
     z-index: 10;
 }
 
@@ -122,9 +116,14 @@
 }
 
 .aher-report-a {
-    color: steelblue !important;
+    color: #315B7D !important;
     font-size: 13px;
     padding: 3px 8px;
+}
+
+.aher-report-a:focus,
+.aher-report-a:hover {
+    text-decoration: underline;
 }
 
 .aher-report-a.disabled {
@@ -163,7 +162,6 @@ li, .aher-report-a.active:hover {
     overflow: auto;
     display: flex;
     flex-direction: column;
-    margin-top: 95px;
     flex: 1;
     flex-direction: column
 }
@@ -344,7 +342,7 @@ i.toggle:hover {
 }
 
 .aher-table .table td {
-    color: #777;
+    color: #595959;
     font-size: 13px;
     padding: 3px 8px;
 }
@@ -506,14 +504,14 @@ h3.shim:hover {
     padding-bottom: 50px;
 }
 
-.aher-block-attributes h4 {
+.aher-block-attributes h4, .aher-block-attributes span {
     font-size: 15px;
     font-weight: 400;
     margin: 2px 0px;
     display: inline-block;
 }
 
-.aher-block-attributes h6 {
+.aher-block-attributes h6, .aher-block-attributes .h6 {
     font-size: 14px;
     font-weight: 400;
     color: #2f527a;
@@ -547,6 +545,7 @@ h3.shim:hover {
 .aher-block-attributes.top-line {
     border-top: 1px solid #ddd;
     margin-top: 3px;
+    padding-bottom: 10px;
 }
 
 .aher-card-control{
@@ -563,7 +562,7 @@ h3.shim:hover {
     min-height: 50px;
 }
 
-.aher-report-subsection-firstchild h5 {
+.aher-report-subsection-firstchild h4 {
     display: inline-block;
     font-size: 14px;
     font-weight: 500;
@@ -586,7 +585,7 @@ h3.shim:hover {
     padding-left: 0px;
 }
 
-.aher-report-subsection-firstchild.outdent h5 {
+.aher-report-subsection-firstchild.outdent h4 {
     margin-left: 0px;
 }
 
@@ -647,7 +646,7 @@ h3.shim:hover {
 
 .aher-nodata-note {
     font-size: 14px;
-    color: #888;
+    color: #595959;
     margin-bottom: 20px;
     margin-left: 10px;
     display: inline-block;
@@ -662,7 +661,7 @@ h3.shim:hover {
 }
 
 .aher-table-link {
-    color:  steelblue;
+    color:  #435A70;
     text-decoration: underline;
 }
 
@@ -704,7 +703,7 @@ h3.shim:hover {
 }
 
 .aher-summary-report .aher-summary-block .aher-block-attributes:last-of-type {
-    padding-bottom: 10px; 
+    padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -716,6 +715,7 @@ h3.shim:hover {
 .aher-block-attributes {
     font-size: 14px;
     line-height: 1.25;
+    padding-top: 10px;
 }
 
 .aher-block-attributes.highlighted {
@@ -737,13 +737,13 @@ h3.shim:hover {
 }
 
 .aher-block-value {
-    color: #777;
+    color: #595959;
     display: inline-block;
     font-size: 15px;
 }
 
 .aher-block-value a {
-    color: #777;
+    color: #595959;
 }
 
 a.aher-block-value-url {
@@ -871,13 +871,7 @@ a.aher-block-value-url {
 }
 
 .aher-summary-report-header {
-    height: 50px;
-    background: #fff;
-    position: fixed;
-    top: 101px;
-    width: 100%;
-    margin-bottom: 60px;
-    z-index: 10;
+    padding-right: 15px;
 }
 
 .aher-summary-report-title {
@@ -887,11 +881,12 @@ a.aher-block-value-url {
     margin-top: 20px;
     border-bottom: 1px solid #ddd;
     display: inline-block;
+    padding-bottom: 5px;
 }
 
 .model-summary-report {
     background: #fff;
-    padding: 55px 30px 30px 30px;
+    padding: 0 30px 30px 30px;
 }
 
 .graph-designer .aher-report-toolbar {
@@ -904,4 +899,36 @@ a.aher-block-value-url {
 
 .graph-designer .aher-tabbed-report {
     margin-top: auto;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
+    top: inherit !important;
+    left: inherit;
+    height: inherit;
+    width: inherit;
+    display: inline-block;
+    position: relative;
+    color: steelblue;
+    border: none;
+    border-radius: 0;
+    box-shadow: inherit;
+    box-sizing: inherit;
+    text-align: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    content: '\25BC  Show details';
+    background-color: inherit;
+    padding-right: 10px;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
+    content: '\25B2  Hide details';
+    background-color: inherit;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child {
+    padding-left: 0;
 }
