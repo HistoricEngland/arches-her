@@ -232,32 +232,51 @@ class FileTemplateView(View):
         conditions = []
 
         # Action and Mitigations.
+
         action_nodegroup_id = "a5e15f5c-51a3-11eb-b240-f875a44e0e11"
         action_node_id = "bfd39106-51a3-11eb-9104-f875a44e0e11"
         action_type_node_id = "e2585f8a-51a3-11eb-a7be-f875a44e0e11"
+        mitgations_concept_id = "f60c394e-c99f-4c91-9f68-791465036cde"
+
         mitigations = []
 
         mitigation_scope_dict = {}
-        mitigation_notes_path = os.path.join(settings.APP_ROOT, "docx/Mitigation Scope Notes.json")
-        with open(mitigation_notes_path, "rb") as openfile:
-            mitigation_scope_dict = json.loads(openfile.read())
+
+        concepts_from_mitigation_group = models.Relation.objects.filter(conceptfrom=mitgations_concept_id)
+        for mitigation_concept in concepts_from_mitigation_group:
+            mitigation_concept_to_value = models.Value.objects.filter(concept=mitigation_concept.conceptto_id)
+            for mitigation_value in mitigation_concept_to_value:
+                if str(mitigation_value.valuetype_id) == "prefLabel":
+                    mitigation_scope_dict[mitigation_value.value] = str(mitigation_value.valueid)
+                elif str(mitigation_value.valuetype_id) == "scopeNote":
+                    value_id = models.Value.objects.filter(concept=mitigation_value.concept_id, valuetype="prefLabel")
+                    mitigation_scope_dict[str(value_id[0].valueid)] = mitigation_value.value
+                else:
+                    pass
 
         for tile in tiles:
             mitigation = {}
             condition = {}
             if str(tile.nodegroup_id) == action_nodegroup_id:
-                mitigation_scopenote = mitigation_scope_dict.get(mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id), ""), "")
-                if len(mitigation_scopenote) > 0:
-                    mitigation_scopenote = "<br>" + mitigation_scopenote
-                mitigation["content"] = "<p>{}</p><p>{}</p>".format(get_value_from_tile(tile, action_node_id), mitigation_scopenote)
+
+                mitigation_scopenote = mitigation_scope_dict.get(
+                    mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id)), ""
+                )
+
+                # if len(mitigation_scopenote) > 0:
+                #     mitigation_scopenote = "<i>" + mitigation_scopenote + "</i>"
+                insert_break = len(mitigation_scopenote) > 0
+                mitigation[
+                    "content"
+                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id)}"
                 mitigation["type"] = get_value_from_tile(tile, action_type_node_id)
             elif str(tile.nodegroup_id) == advice_nodegroup_id:
-                condition["content"] = "<p>{}</p>".format(get_value_from_tile(tile, advice_node_id))
+                condition["content"] = get_value_from_tile(tile, advice_node_id)
                 template_name = self.get_template_path(self.request._post["template_id"])
                 if template_name == "WSI Amend Letter.docx" or template_name == "WSI Approval Letter.docx":
                     condition["type"] = ""
                 else:
-                    condition["type"] = get_value_from_tile(tile, advice_type_node_id)
+                    condition["type"] = f"{get_value_from_tile(tile, advice_type_node_id)}"
             else:
                 for key, value in list(template_dict.items()):
                     if value in tile.data:
@@ -348,20 +367,26 @@ class FileTemplateView(View):
             mapping_dict["Signature"] = mapping_dict["Casework Officer"]
 
         for mitigation in mitigations:
-            mapping_dict["Mitigation"] += "<b>{}</b>{}<br><br>".format(mitigation["type"], mitigation["content"])
+            add_break = len(mitigation["content"]) > 0
+            mapping_dict[
+                "Mitigation"
+            ] += f'<br><b>{mitigation["type"]}</b>{"<br>"if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
 
         for condition in conditions:
-            mapping_dict["Condition"] += "<b>{}</b>{}<br><br>".format(condition["type"], condition["content"])
+            mapping_dict["Condition"] += "<b>{}</b>{}<br>".format(condition["type"], condition["content"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
-            mapping_dict["Archaeological Priority Area"] = "The planning application is not in an area of archaeological interest."
+            mapping_dict["Archaeological Priority Area"] = "The planning application is not in an Archaeological Priority Area."
         else:
             mapping_dict[
                 "Archaeological Priority Area"
             ] = "The planning application lies in an area of archaeological interest (Archaeological Priority Area) identified in the Local Plan: {}".format(
                 associate_heritage
             )
+
+        if mapping_dict["Assessment of Significance"] != "":
+            mapping_dict["Assessment of Significance"] += "<br>"
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
         for key in mapping_dict:
@@ -500,6 +525,7 @@ class DocumentHTMLParser(HTMLParser):
         return hyperlink
 
     def insert_into_paragraph_and_feed(self, html):
+        html = html.replace("\n\n", "<br>")
         self.run = self.paragraph.add_run()
         self.feed(html)
 
