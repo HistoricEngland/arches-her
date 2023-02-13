@@ -588,19 +588,11 @@
     text-align: right;
 }
 
-.landing-page footer .footer-he-logo {
-    max-width: 233px;
-    height: auto;
-}
-
-.landing-page footer .footer-getty-logo {
-    max-width: 280px;
-    height: auto;
-}
-
+.landing-page footer .footer-he-logo,
+.landing-page footer .footer-getty-logo,
 .landing-page footer .footer-arches-logo {
-    max-width: 130px;
-    height: auto;
+    max-height: 40px;
+    width: auto;
 }
 
 .landing-page .footer-top-first-row {
@@ -828,21 +820,13 @@
         margin: 0 0 0 22px;
     }
 
-    .landing-page footer .footer-he-logo {
-        max-width: 174px;
-        height: auto;
-    }
-    
-    .landing-page footer .footer-getty-logo {
-        max-width: 251px;
-        height: auto;
-    }
-    
+    .landing-page footer .footer-he-logo,
+    .landing-page footer .footer-getty-logo,
     .landing-page footer .footer-arches-logo {
-        max-width: 117px;
-        height: auto;
+        max-height: 30px;
+        width: auto;
     }
-
+    
     .landing-page footer .glher-text-container {
         width: 66.66666667%;
     }
@@ -967,19 +951,11 @@
         margin-top: 40px;
     }
 
-    .landing-page footer .footer-he-logo {
-        max-width: 183px;
-        height: auto;
-    }
-
-    .landing-page footer .footer-getty-logo {
-        max-width: 251px;
-        height: auto;
-    }
-
+    .landing-page footer .footer-he-logo,
+    .landing-page footer .footer-getty-logo,
     .landing-page footer .footer-arches-logo {
-        max-width: 117px;
-        height: auto;
+        max-height: 37px;
+        width: auto;
     }
 
     .landing-page footer .footer-getty-logo {
