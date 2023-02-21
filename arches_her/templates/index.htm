@@ -55,6 +55,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         //####################################
     </script>
 
+    <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.5.min.js"></script>
+    <script src="{{ STATIC_URL }}js/cookieControl.js"></script>
+
 </head>
 
 <body id="body" class="landing-page">
@@ -147,11 +150,22 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                     Capital city. From the earliest human occupation to the present day, GLHER data promotes
                     better understanding of London's rich heritage, and supports development and regeneration
                     through the work of the Greater London Archaeological Advisory Service (GLAAS).</p>
+                <p>The online GLHER is constantly updated by the HER Team and volunteers. It is suitable
+                    for general and basic research, and will be of interest to local residents, community
+                    groups, and visitors to London.</p>
+                <p>Those interested in more complex research, or for commercial purposes (chargeable
+                    HER searches such as development, planning, or land management enquires) may use it
+                    for preliminary assessment, but should request a full search through our online
+                    booking system as additional data is provided, or available, by the HER as part of
+                    <a href="https://www.smartsurvey.co.uk/sGLHER-search-request/" target="_blank">these searches</a>.</p>
+                <p>For further information and advice on commercial HER searches, and the GLHER in
+                    general, please <a href="https://historicengland.org.uk/content/docs/planning/glher­ access-and-charging-policy-2020/" target="_blank">read
+                    the GLHER Access and Charging Policy here</a>, or contact the HER team directly for advice.</p>
                 <div class="row featurette3-row">
                     <div class="thumbnail featurette-image-block featurette3-first-block">
                         <img src="{% static 'img/landing/about-left.png' %}" alt="...">
                         <div class="caption">
-                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">Find out more about the role of the Greater London Historic Environment Record</a>
+                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/#Section1Text" target="_blank">Find out more about the role of the Greater London Historic Environment Record</a>
                         </div>
                     </div>
                     <div class="thumbnail featurette-image-block featurette3-second-block">
@@ -163,28 +177,29 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
             <div class="row featurette4">
-                <h2 id="bm-how-to-use">How to use the GLHER</h2>
-                <p>Please read the GLHER <a href="#">Access and Charging Policy</a>.</p>
+                <h2 id="bm-how-to-use">How to use the GLHER online</h2>
                 <div class="row featurette4-row">
-                    <!--<embed src="{% static 'img/landing/london.mp4' %}" autostart="false" height="600" width="868" /></embed>-->
                     <video controls poster="{% static 'img/landing/video-placeholder.png' %}">
                         <source src="{% static 'img/landing/london.mp4' %}">
                         Your browser does not support the video tag.
                     </video>
                 </div>
-                <p>A detailed guide for general users is available to download here: <a href="#">GLHER User Guide</a>.</p>
+                <p>A detailed guide for general users is available to download here: <a href="https://rise.articulate.com/share/1ynrLdvjIPVLpvbfJCBxIKUB_bOa1OJX#/lessons/9aLiKLu2ll6bMaf1PSiYglzWMxVehmXk" target="_blank">GLHER User Guide</a>.</p>
             </div>
             <div class="row featurette5">
                 <h2 id="bm-volunteering">Volunteering with GLHER</h2>
-                <p>We have opportunities for enthusiastic volunteers, of all ages and backgrounds, to help enhance the Greater London
-                    Historic Environment Record. Some are looking for work experience or a change of career, others do it just for
-                    fun, but all our volunteers play a critical role developing this resource. Past and current projects include:</p>
-                    <ul>
-                        <li>historic parks and gardens</li>
-                        <li>archaeological excavation burial sampling strategies</li>
-                        <li>London workhouses, and</li>
-                        <li>World War One hospital sites</li>
-                    </ul>
+                <p>We have opportunities for enthusiastic volunteers, of all ages and backgrounds, to enhance the Greater London
+                    Historic Environment Record, and help protect and promote London's rich and diverse heritage.</p>
+                <p>Whether this is for work experience, starting out on a career in the cultural heritage sector, or just for fun,
+                    we can provide full training and support.</p>
+                <p>Past and current volunteer projects include:</p>
+                <ul>
+                    <li>London's historic parks and gardens</li>
+                    <li>First World War auxiliary hospitals, and</li>
+                    <li>Thames foreshore sites and finds</li>
+                </ul>
+                <p>Other projects are in development, and we are also interested to hear suggestions for future projects.</p>
+                <p>For more information please contact the HER Team.</p>
             </div>
             <div class="row featurette6">
                 <h2 id="bm-themes">Heritage Themes</h2>
@@ -230,11 +245,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                             </div>
                             <div class="contact-details">
                                 <p><strong>Address</strong><br>
-                                Historic England 4th Floor<br>
-                                Cannon Bridge House<br>
-                                25 Dowgate Hill<br>
-                                London<br>
-                                EC4R 2YA</p>
+                                    Historic England 4th Floor<br>
+                                    Cannon Bridge House<br>
+                                    25 Dowgate Hill<br>
+                                    London<br>
+                                    EC4R 2YA</p>
                             </div>
                             
                         </div>
@@ -294,10 +309,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             <div class="container">
                 <div class="footer-container">
                     <div class="col-xs-12 col-sm-8 footer-links">
-                        <a href="#">Accessibility</a>
-                        <a href="#">Manage Cookies</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms &amp; Conditions</a>
+                        <a href="https://historicengland.org.uk/access/" target="_blank">Accessibility</a>
+                        <a href="#" onclick="CookieControl.open();">Manage Cookies</a>
+                        <a href="https://historicengland.org.uk/terms/privacy/" target="_blank">Privacy Policy</a>
+                        <a href="https://historicengland.org.uk/terms/" target="_blank">Terms &amp; Conditions</a>
                     </div>
                     <div class="col-xs-12 col-sm-4 footer-copyright">
                         <p class="copyright">&copy; Historic England 2021</p>
