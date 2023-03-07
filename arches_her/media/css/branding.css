@@ -172,6 +172,105 @@
 
 /* Login Page - End */
 
+/* Cookie Management - Start */
+
+#ccc #ccc-title,
+#ccc .ccc-notify-text h3,
+#ccc h2,
+#ccc h3 {
+    font-weight: 400!important;
+}
+
+#ccc-title,
+.ccc-title {
+    font-size: 28px!important;
+}
+
+#ccc #ccc-content h3 {
+    font-size: 22px!important;
+}
+
+#ccc,
+#ccc p {
+    font-size: 18px!important;
+    font-weight: 250!important;
+}
+
+.ccc-he-link {
+    text-decoration: underline!important;
+}
+
+.ccc-he-link:hover,
+.ccc-he-link:focus,
+#ccc a:hover,
+#ccc a:focus {
+    color: #000!important;
+    background-color: #fff!important;
+}
+
+#ccc .ccc-notify-button {
+    border: 2px solid;
+    border-radius: 4px;
+    padding: 8px 16px!important;
+    margin: 4px 8px 4px 0;
+    line-height: 1.5em;
+    cursor: pointer;
+}
+
+#ccc .ccc-accept-button,
+#ccc .ccc-close-button,
+#ccc .ccc-content--dark .ccc-button-solid {
+    border-color: #0d2937!important;
+    background: #e3effa!important;
+    border-width: 1px!important;
+    font-weight: 400!important;
+}
+
+#ccc .ccc-content--dark .ccc-button-solid span {
+    background: inherit!important;
+    font-weight: inherit!important;
+}
+
+#ccc .ccc-notify-button:hover,
+#ccc .ccc-notify-button:focus,
+#ccc .ccc-close-button:hover,
+#ccc .ccc-close-button:focus {
+    color: #0d2937!important;
+    background: #fff!important;
+}
+
+#ccc .checkbox-toggle-toggle {
+    border: 1px solid #555;
+    background-color: #fff!important;
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-on {
+    color: #19516d!important;
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-off {
+    color: #88191d!important;
+}
+
+#ccc .checkbox-toggle--slider .checkbox-toggle-off,
+#ccc .checkbox-toggle--slider .checkbox-toggle-on {
+    font-size: 18px!important;
+    font-weight: 400!important;
+    opacity: 1!important;
+}
+
+#ccc input:hover~.checkbox-toggle-toggle,
+#ccc input:focus~.checkbox-toggle-toggle {
+    background-color: #f2b708!important;
+}
+
+#ccc a:focus,
+#ccc button:focus {
+    outline: 2px solid #ec6625!important;
+}
+
+/* Cookie Management - End */
+
 /* Media Queries - Start */
 
 @media screen and (max-width: 768px) {
@@ -588,19 +687,11 @@
     text-align: right;
 }
 
-.landing-page footer .footer-he-logo {
-    max-width: 233px;
-    height: auto;
-}
-
-.landing-page footer .footer-getty-logo {
-    max-width: 280px;
-    height: auto;
-}
-
+.landing-page footer .footer-he-logo,
+.landing-page footer .footer-getty-logo,
 .landing-page footer .footer-arches-logo {
-    max-width: 130px;
-    height: auto;
+    max-height: 40px;
+    width: auto;
 }
 
 .landing-page .footer-top-first-row {
@@ -828,21 +919,13 @@
         margin: 0 0 0 22px;
     }
 
-    .landing-page footer .footer-he-logo {
-        max-width: 174px;
-        height: auto;
-    }
-    
-    .landing-page footer .footer-getty-logo {
-        max-width: 251px;
-        height: auto;
-    }
-    
+    .landing-page footer .footer-he-logo,
+    .landing-page footer .footer-getty-logo,
     .landing-page footer .footer-arches-logo {
-        max-width: 117px;
-        height: auto;
+        max-height: 30px;
+        width: auto;
     }
-
+    
     .landing-page footer .glher-text-container {
         width: 66.66666667%;
     }
@@ -967,19 +1050,11 @@
         margin-top: 40px;
     }
 
-    .landing-page footer .footer-he-logo {
-        max-width: 183px;
-        height: auto;
-    }
-
-    .landing-page footer .footer-getty-logo {
-        max-width: 251px;
-        height: auto;
-    }
-
+    .landing-page footer .footer-he-logo,
+    .landing-page footer .footer-getty-logo,
     .landing-page footer .footer-arches-logo {
-        max-width: 117px;
-        height: auto;
+        max-height: 37px;
+        width: auto;
     }
 
     .landing-page footer .footer-getty-logo {
