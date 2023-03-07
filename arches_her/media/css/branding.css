@@ -13,6 +13,15 @@
     outline: 2px solid #EC6625!important;
 }
 
+.toggle-leftnav-container {
+    padding: 10px 0 10px 10px;
+}
+
+.brand-icon {
+    width: 30px !important;
+    height: 30px !important;
+}
+
 /* General - End */
 
 /* Header - Start */
