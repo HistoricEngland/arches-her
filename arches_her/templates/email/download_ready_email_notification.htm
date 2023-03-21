@@ -23,10 +23,12 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <p>Dear {{username}},</p>
+                                                    {% if username != "" %}
+                                                        <p>Dear {{username}},</p>
+                                                    {% endif %}
                                                     <p>Your request to download a set of search results is now ready. You have until {{expiration}} to access this download, after which time it'll be deleted.</p>
                                                     {% if link != "" %}
-                                                    <p><a class="btn" href="{{email_link}}">{{button_text}}</a></p>
+                                                        <p><a class="btn" href="{{email_link}}">{{button_text}}</a></p>
                                                     {% endif %}
                                                     <p>If you experience any problems then please email <a href="mailto:{{contact_email}}">{{contact_email}}</a></p>
                                                 </td>

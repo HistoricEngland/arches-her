@@ -17,9 +17,12 @@
                                         <tbody>
                                             <tr>
                                                 <td>
+                                                    {% if username != "" %}
+                                                        <p>Dear {{username}},</p>
+                                                    {% endif %}
                                                     <p>{{greeting}}</p>
                                                     {% if link != "" %}
-                                                    <p><a class="btn" href="{{link}}">{{button_text}}</a></p>
+                                                        <p><a class="btn" href="{{link}}">{{button_text}}</a></p>
                                                     {% endif %}
                                                     <p>If you experience any problems then please email <a href="mailto:{{contact_email}}">{{contact_email}}</a></p>
                                                 </td>
