@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'custom_email_css.htm' %}
+</head>
+<body>
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" bgcolor="#fff">
+        <tbody>
+            <tr>
+                <td>
+                    {% include 'custom_email_header.htm' %}
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table border="0" width="600" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    {% if username != "" %}
+                                                        <p>Dear {{username}},</p>
+                                                    {% endif %}
+                                                    <p>{{greeting}}</p>
+                                                    {% if link != "" %}
+                                                        <p><a class="btn" href="{{link}}">{{link_text}}</a></p>
+                                                    {% endif %}
+                                                    <p>If you experience any problems then please email <a href="mailto:{{contact_email}}">{{contact_email}}</a></p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% include 'custom_email_footer.htm' %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

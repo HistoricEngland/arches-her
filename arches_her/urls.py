@@ -9,6 +9,7 @@ from arches_her.views.resource import ResourceDescriptors
 from arches_her.views.active_consultations import ActiveConsultationsView
 from arches.app.views import main
 from arches.app.views.user import UserManagerView
+from arches.app.views.auth import PasswordResetView
 
 uuid_regex = settings.UUID_REGEX
 
@@ -21,6 +22,10 @@ urlpatterns = [
     url(r'^plugins/active-consultations$', RedirectView.as_view(url='/'+settings.APP_PATHNAME+'/plugins/active-consultations')),
     url(r'^resource/descriptors/(?P<resourceid>%s|())$' % uuid_regex, ResourceDescriptors.as_view(), name="resource_descriptors"),
     url(r'^'+settings.APP_PATHNAME+'/index.htm', IndexView.as_view(), name='home'),
+    url(
+    r"^password_reset/$",
+    PasswordResetView.as_view(html_email_template_name="registration/password_reset_html_email.html",extra_email_context={'app_title':settings.APP_TITLE,'contact_website':settings.CONTACT_WEBSITE,'contact_email':settings.CONTACT_EMAIL}),
+    name="password_reset",),
     url(r'^', include('arches.urls')),
     url(r'^'+settings.APP_PATHNAME+'/user$', UserManagerView.as_view(), name="user_profile_manager"),
     url(r'^filetemplate', FileTemplateView.as_view(), name='filetemplate'),
@@ -32,5 +37,5 @@ urlpatterns = [
     url(r'^'+settings.APP_PATHNAME+'/plugins/site-visit', PluginView.as_view(), name='site-visit'),
     url(r'^'+settings.APP_PATHNAME+'/plugins/correspondence-workflow', PluginView.as_view(), name='correspondence-workflow'),
     url(r'^'+settings.APP_PATHNAME+'/plugins/communication-workflow', PluginView.as_view(), name='communication-workflow'),
-    url(r'^'+settings.APP_PATHNAME+'/plugins/init-workflow', PluginView.as_view(), name='init-workflow'),
+    url(r'^'+settings.APP_PATHNAME+'/plugins/init-workflow', PluginView.as_view(), name='init-workflow')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
