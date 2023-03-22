@@ -1088,6 +1088,35 @@
     .footer-copyright {
         margin-top: 20px;
     }
+
+    .toggle-leftnav-container {
+        padding: 0;
+        z-index: inherit;
+        min-height: 50px;
+    }
+
+    .toggle-leftnav-container .navbar-brand {
+        position: relative;
+        top: calc(50% - 13px);
+        left: calc(50% - 10px);
+        min-height: 50px;
+        max-height: 50px;
+    }
+
+    .toggle-leftnav-container .navbar-brand .brand-icon {
+        float: none;
+    }
+
+    #mainnav-container.menu-expanded .toggle-leftnav-container {
+        width: 100%;
+        background-color: #2d3c4b;
+        z-index: 4000;
+    }
+
+    #mainnav-container.menu-expanded .toggle-leftnav-container .navbar-brand {
+        top: 15px;
+        left: 20px;
+    }
 }
 
 @media screen and (max-width: 374px) {
