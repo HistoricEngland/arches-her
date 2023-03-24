@@ -22,6 +22,19 @@
     height: 30px !important;
 }
 
+.brand-title {
+    top: -5px!important;
+}
+
+#circle,
+#circle-outline {
+    margin-top: 0;
+}
+
+#circle-outline {
+    margin-top: -2px;
+}
+
 /* General - End */
 
 /* Header - Start */
