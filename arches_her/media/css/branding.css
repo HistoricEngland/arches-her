@@ -17,15 +17,6 @@
     outline: 2px solid #EC6625!important;
 }
 
-.toggle-leftnav-container {
-    padding: 10px 0 10px 10px;
-}
-
-.brand-icon {
-    width: 30px !important;
-    height: 30px !important;
-}
-
 /* General - End */
 
 /* Header - Start */
@@ -1175,3 +1166,92 @@
 }
 
 /* Media Queries - End */
+
+/***********************************************************************************/
+/* General                                                                         */
+/***********************************************************************************/
+
+/* General - Start */
+
+.brand-title {
+    top: 0;
+    left: 5px;
+    min-height: 0;
+    height: auto;
+    line-height: normal;
+}
+
+.toggle-leftnav-container {
+    padding: 0;
+}
+
+#mainnav-container.menu-expanded .toggle-leftnav-container {
+    padding: 0 0 0 10px;
+}
+
+.toggle-leftnav-container .navbar-brand {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+
+.brand-icon {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+#circle,
+#circle-outline {
+    margin-top: 0;
+}
+
+#circle-outline {
+    margin-top: -2px;
+}
+
+@media screen and (min-width: 375px) and (max-width: 767px) {
+    #mainnav-container.menu-expanded .navbar-brand {
+        width: 100%;
+        justify-content: left;
+    }
+
+    #mainnav-container.menu-expanded .navbar-brand .brand-title {
+        top: inherit;
+        left: 5px;
+        min-height: 0;
+    }
+
+    #mainnav-container.menu-expanded .toggle-leftnav-container {
+        width: 100%;
+        background-color: #2d3c4b;
+        z-index: 4000;
+        padding-left: 10px;
+    }
+}
+
+@media screen and (max-width: 374px) {
+    #mainnav-container.menu-expanded .navbar-brand {
+        display: inline-flex;
+        justify-content: left;
+        align-items: center;
+        width: 100%;
+    }
+
+    #mainnav-container.menu-expanded .navbar-brand .brand-title {
+        top: inherit;
+        left: 5px;
+        min-height: 0;
+    }
+    
+    #mainnav-container.menu-expanded .toggle-leftnav-container {
+        width: 100%;
+        background-color: #2d3c4b;
+        z-index: 4000;
+        padding-top: 5px;
+    }
+}
+
+/* General - End */
