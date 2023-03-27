@@ -23,8 +23,7 @@
 
                                     {% block navheader %}
                                     <div class="toggle-leftnav-container">
-                                        <!--<a id="menu-toggle" href="#" class="navbar-brand" data-bind="click: function () { navExpanded(!navExpanded()); }" onclick="if($('#container').hasClass('mainnav-sm')){$('#mainnav-container').removeClass('menu-expanded');}else{$('#mainnav-container').addClass('menu-expanded');}" onkeyup="if($('#container').hasClass('mainnav-sm')){$('#mainnav-container').removeClass('menu-expanded');}else{$('#mainnav-container').addClass('menu-expanded');}">-->
-                                        <a id="menu-toggle" href="#" class="navbar-brand" data-bind="click: function () { navExpanded(!navExpanded()); }">
+                                        <a id="menu-toggle" href="#" class="navbar-brand" data-bind="click: function () { navExpanded(!navExpanded()); }" onclick="if($('#container').hasClass('mainnav-lg')){$('#mainnav-container').removeClass('menu-expanded');}else{$('#mainnav-container').addClass('menu-expanded');}" onkeyup="if($('#container').hasClass('mainnav-sm')){$('#mainnav-container').removeClass('menu-expanded');}else{$('#mainnav-container').addClass('menu-expanded');}">
                                             <img src="{{ STATIC_URL }}img/HE_Brand_Mark_White.svg" alt="Open/close menu" class="brand-icon">
                                             <span class="brand-title">
                                                 <span class="brand-text">{{ app_name }}</span>
