@@ -43,15 +43,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <link href="{% static 'favicons/icon-hires.png' %}" rel="icon" sizes="192x192" />
     <link href="{% static 'favicons/icon-normal.png' %}" rel="icon" sizes="128x128" />
 
-    <link rel='stylesheet' type='text/css'
-        href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css">
-
-    <link href="{% static 'css/unify.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link href="{% static 'css/index.css' %}" rel="stylesheet">
-    <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
+    <!--<link href="{% static 'css/index.css' %}" rel="stylesheet">-->
+    <link href="{% static 'css/branding.css' %}" rel="stylesheet">
 
+    <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
     <script type="text/javascript">
         // ##### APPINSIGHTS MONITORING #####
         var aikey = '#{appinsights-key}#';
@@ -62,242 +59,290 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         else {
             console.log("aikey not valid - app insights not instantiated");
         }
-            //####################################
+        //####################################
     </script>
+
+    <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.5.min.js"></script>
+    <script src="{{ STATIC_URL }}js/cookieControl.js"></script>
 
 </head>
 
-<!--
-The #page-top ID is part of the scrolling feature.
-The data-spy and data-target are part of the built-in Bootstrap scrollspy function.
--->
+<body id="body" class="landing-page">
 
-<body id="body" data-spy="scroll" data-target=".splash-nav" class="demo-lightbox-gallery">
-
-    <!--=== Header ===-->
-    <nav class="cons-splash-nav navbar" role="navigation">
-        <div class="nav-container">
-            <div class="navbar-brand-disco">
-                <div class="navbar-brand-disco-icon-container" style="">
-                    <img class="navbar-brand-disco-icon" src="{% static 'img/landing/arches_logo_dark.png' %}" style=""
-                        alt="Arches Logo">
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/" class="navbar-brand header-bar__logo-link" aria-label="Link to homepage">
+                        <img class="header-bar__logo-image" src="{{ STATIC_URL }}img/HE_Logo_RGB.svg" alt="Historic England logo">
+                    </a>
                 </div>
-                <div class="application-name">
-                    <h2>{{app_title}}</h2>
-                    <!-- <span>Data Integration for Science and Conservation</span> -->
-                </div>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
-                <div class="menu-container">
-                    <ul class="nav navbar-nav cons-splash-list">
+                <div id="navbar" class="navbar-collapse collapse no-transition">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="/">Home</a>
+                        </li>
                         {% for p in plugins %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url p.slug %}">{{ p.name }}</a>
                         </li>
                         {% endfor %}
-
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'search_home' %}">{% trans "Find" %}</a>
                         </li>
-
                         {% if user|can_create_resource_instance and user.username != 'anonymous' %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
                         </li>
                         {% endif %}
-
                         {% if user|can_create_graph and user.username != 'anonymous' %}
-                        <li class="page-scroll">
+                        <li>
                             <a href="{% url 'graph' '' %}" target="_blank">{% trans "Graphs" %}</a>
                         </li>
                         {% endif %}
-
-                        <li class="page-scroll">
+                        <li>
                             {% if user.username == 'anonymous' %}
-                            <a class="application-login" id="auth-link"
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans "Login" %}</a>
+                            <a class="btn btn-primary btn-lg hidden-xs" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
+                            <a class="mobile-menu-sign-in visible-xs-*" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user hidden-xs">{% trans "Sign in" %}</a>
                             {% else %}
                             <a class="auth-welcome" href="{% url 'user_profile_manager' %}">
                                 {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
                             </a>
                         </li>
                         <li>
-                            <a
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
+                            <a href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
                             {% endif %}
                         </li>
                     </ul>
                 </div>
             </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-    <!--=== End Header ===-->
+        </nav>
+    </header>
 
-    <!-- Intro Section -->
-    <section id="intro-cons" class="intro-section" style="">
-        <div class="fullscreenbanner-container">
-            <div class="fullscreenbanner">
-                <ul>
-                    <!-- SLIDE 1 -->
-                    <li data-transition="fade" data-slotamount="9" data-masterspeed="0" data-title="Slide 1">
-                        <!-- MAIN IMAGE -->
-                        <img src="{% static 'img/landing/the_shard.jpg' %}" alt="slidebg1" data-bgfit="cover"
-                            data-bgposition="center center" data-bgrepeat="no-repeat">
-
-                        <!-- LAYERS -->
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="-50"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-1">{% trans "Consultations at GLAAS..." %}</a></h2>
-                            <p>{% trans "How the Greater London Archaeology Advisory Service manages development" %}</p>
-                        </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="450"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-2">{% trans "Search and Discover..." %}</a></h2>
-                            <p>{% trans "Find and review information on our current and past consultations" %}</p>
-                        </div>
-
-                        <!-- NEW LAYER -->
-                        <div class="tp-caption sft start text-bold disco-caption" delay="4500" data-x="950"
-                            data-hoffset="0" data-y="450" data-speed="800" data-start="100" data-easing="Back.easeInOut"
-                            data-endspeed="300">
-                            <h2><a href="#info-block-3">{% trans "Get Involved..." %}</a></h2>
-                            <p>{% trans "Want to help? Here's how you can participate" %}</p>
-                        </div>
-
-                        <!-- Gradient -->
-                        <div class="image-gradient"></div>
-
-                        <!-- Attribution -->
-                        <div class="image-attribution" style="">
-                            <span class="">{% trans "The Shard | https://www.flickr.com/photos/cathedraljack/ | Attribution 2.0 Generic (CC BY 2.0)" %}</span>
-                        </div>
-                    </li>
-
-                </ul>
-                <div class="tp-bannertimer tp-bottom"></div>
-            </div>
-        </div>
-    </section>
-    <!-- End Intro Section -->
-
-    <!-- Page Custom Content -->
-    <div class="custom-content-container">
-        <!-- Info Block 1 -->
-        <div id="info-block-1" class="app-info-block">
-            <h2 class="">{% trans "Consultations at GLAAS" %}</h2>
-
-        </div>
-        <!-- End Info Block 1 -->
-
-        <!-- Info Block 2 -->
-        <div id="info-block-2" class="app-info-block">
-            <h2 class="">{% trans "Find and Review Consultations" %}</h2>
-
-        </div>
-        <!-- End Info Block 2 -->
-
-        <!-- Info Block 3 -->
-        <div id="info-block-3" class="app-info-block">
-            <h2 class="">{% trans "Working with GLAAS" %}</h2>
-
-        </div>
-        <!-- End Info Block 3 -->
-
-    </div>
-    <!-- End Page Custome Content -->
-
-    <!-- Footer -->
-    <div class="app-footer">
-
-        <!-- footer content container -->
-        <div class="app-footer-content-container">
-
-            <!-- branding column -->
-            <div class="app-footer-branding">
-                <img class="app-footer-image" src='/media/img/projects/consultations/HE_Logo_White.svg'
-                    title="Historic England" alt="Historic England">
-
-                <div class="organization-address">
-                    Greater London Archaeological Advisory Service<br>
-                    Historic England<br>
-                    4th floor, Cannon Bridge House<br>
-                    25 Dowgate Hill<br>
-                    London<br>
-                    EC4R 2YA
+    <main>
+        <div class="container">
+            <div class="row featurette1">
+                <div class="featurette1-left-container">
+                    <h1>Greater London Historic Environment Record<br/>
+                        (GLHER)</h1>
+                    <p class="lead">The online heritage information and management system for London.</p>
+                </div>
+                <div class="featurette1-right-container pull-right">
+                    <img src="{% static 'img/landing/featurette1.png' %}" alt="Photo of the London landscape" class="img-rounded img-responsive">
                 </div>
             </div>
-
-            <!-- Info Column -->
-            <div class="app-footer-info">
-                <h2 class="app-footer-heading">{% trans "Guides and Documentation" %}</h2>
+            <div class="row featurette2">
+                <h2>On this page</h2>
+                <ol>
+                    <li><a href="#bm-about">About</a></li>
+                    <li><a href="#bm-how-to-use">How to use</a></li>
+                    <li><a href="#bm-volunteering">Volunteering with GLHER</a></li>
+                    <li><a href="#bm-themes">Heritage Themes</a></li>
+                </ol>
+            </div>
+            <div class="row featurette3">
+                <h2 id="bm-about">About</h2>
+                <p class="subtitle">What is the Greater London Historic Environment Record (GLHER)?</p>
+                <p>The GLHER is a comprehensive and dynamic resource for the historic environment of the
+                    Capital city. From the earliest human occupation to the present day, GLHER data promotes
+                    better understanding of London's rich heritage, and supports development and regeneration
+                    through the work of the Greater London Archaeological Advisory Service (GLAAS).</p>
+                <p>The online GLHER is constantly updated by the HER Team and volunteers. It is suitable
+                    for general and basic research, and will be of interest to local residents, community
+                    groups, and visitors to London.</p>
+                <p>Those interested in more complex research, or for commercial purposes (chargeable
+                    HER searches such as development, planning, or land management enquires) may use it
+                    for preliminary assessment, but should request a full search through our online
+                    booking system as additional data is provided, or available, by the HER as part of
+                    <a href="https://www.smartsurvey.co.uk/s/GLHER-search-request/" target="_blank">these searches</a>.</p>
+                <p>For further information and advice on commercial HER searches, and the GLHER in
+                    general, please <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/#Charges" target="_blank">read
+                    the GLHER Access and Charging Policy here</a>, or contact the HER team directly for advice.</p>
+                <div class="row featurette3-row">
+                    <div class="thumbnail featurette-image-block featurette3-first-block">
+                        <img src="{% static 'img/landing/about-left.png' %}" alt="Photo of a London bridge over the river Thames">
+                        <div class="caption">
+                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/#Section1Text" target="_blank">Find out more about the role of the Greater London Historic Environment Record</a>
+                        </div>
+                    </div>
+                    <div class="thumbnail featurette-image-block featurette3-second-block">
+                        <img src="{% static 'img/landing/about-right.png' %}" alt="Photo of the London skyline">
+                        <div class="caption">
+                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/" target="_blank">To find out more about the work of the Great London Archaeology Advisory Service</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row featurette4">
+                <h2 id="bm-how-to-use">How to use the GLHER online</h2>
+                <div class="row featurette4-row">
+                    <video controls poster="{% static 'img/landing/video-placeholder.png' %}">
+                        <source src="{% static 'img/landing/london.mp4' %}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <p>A detailed guide for general users is available to download here: <a href="https://rise.articulate.com/share/1ynrLdvjIPVLpvbfJCBxIKUB_bOa1OJX#/lessons/9aLiKLu2ll6bMaf1PSiYglzWMxVehmXk" target="_blank">GLHER User Guide</a>.</p>
+            </div>
+            <div class="row featurette5">
+                <h2 id="bm-volunteering">Volunteering with GLHER</h2>
+                <p>We have opportunities for enthusiastic volunteers, of all ages and backgrounds, to enhance the Greater London
+                    Historic Environment Record, and help protect and promote London's rich and diverse heritage.</p>
+                <p>Whether this is for work experience, starting out on a career in the cultural heritage sector, or just for fun,
+                    we can provide full training and support.</p>
+                <p>Past and current volunteer projects include:</p>
+                <ul>
+                    <li>London's historic parks and gardens</li>
+                    <li>First World War auxiliary hospitals, and</li>
+                    <li>Thames foreshore sites and finds</li>
+                </ul>
+                <p>Other projects are in development, and we are also interested to hear suggestions for future projects.</p>
+                <p>For more information please contact the HER Team.</p>
+            </div>
+            <div class="row featurette6">
+                <h2 id="bm-themes">Heritage Themes</h2>
+                <p>Find out more about London's heritage.</p>
+                <div class="row featurette6-row">
+                    <div class="thumbnail featurette-image-block">
+                        <img src="{% static 'img/landing/statue.png' %}" alt="Photo of Roman London">
+                        <div class="caption">
+                            <a href="https://glher.historicengland.org.uk/search?paging-filter=4&format=tilecsv&reportlink=false&precision=6&total=874&tiles=true&term-filter=%5B%7B%22context%22%3A%22f917eb4a-4c25-402e-a28c-4df30569c666%22%2C%22context_label%22%3A%22London%20Borough%22%2C%22id%22%3A100%2C%22text%22%3A%22Southwark%22%2C%22type%22%3A%22concept%22%2C%22value%22%3A%22ac8a2420-5eef-4a5d-9eb1-48278fbd3fb1%22%2C%22inverted%22%3Afalse%7D%5D&advanced-search=%5B%7B%22op%22%3A%22and%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%5B%2217a25c50-799d-4ea7-bd0f-0994e30c1f63%22%5D%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%7D%5D" target="_blank">Roman London</a>
+                        </div>
+                    </div>
+                    <div class="thumbnail featurette-image-block featurette6-mid-block">
+                        <img src="{% static 'img/landing/bowie.png' %}" alt="Photo of Musical London">
+                        <div class="caption">
+                            <a href="https://keystone.historicengland.org.uk/search?paging-filter=1&format=tilecsv&reportlink=false&precision=6&total=202852&tiles=true&advanced-search=%5B%7B%22op%22%3A%22and%22%2C%22676d47ff-9c1c-11ea-b07f-f875a44e0e11%22%3A%7B%22op%22%3A%22!%22%2C%22val%22%3A%22British%20Library%20Centre%20for%20Conservation%20(21st%20Century%20Library%20and%20Office)%22%7D%2C%22676d47fc-9c1c-11ea-b5b0-f875a44e0e11%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22676d47fd-9c1c-11ea-9d73-f875a44e0e11%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%7D%2C%7B%22op%22%3A%22and%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22bbea3dcf-04c8-4478-b6c4-97a552ffe250%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%22b2133e67-efdc-11eb-b3ea-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6b-efdc-11eb-aa04-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22bbea3dcf-04c8-4478-b6c4-97a552ffe250%22%7D%2C%22b2133e6c-efdc-11eb-8c3c-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6d-efdc-11eb-b877-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6f-efdc-11eb-a120-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%22b2133e71-efdc-11eb-a6f7-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e72-efdc-11eb-a68d-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e75-efdc-11eb-af28-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22f70d0eab-b50d-486b-b02e-109c1d79fd08%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%22b2133e67-efdc-11eb-b3ea-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6b-efdc-11eb-aa04-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22f70d0eab-b50d-486b-b02e-109c1d79fd08%22%7D%2C%22b2133e6c-efdc-11eb-8c3c-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6d-efdc-11eb-b877-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6f-efdc-11eb-a120-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%22b2133e71-efdc-11eb-a6f7-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e72-efdc-11eb-a68d-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e75-efdc-11eb-af28-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%7D%5D" target="_blank">Musical London</a>
+                        </div>
+                    </div>
+                    <div class="thumbnail featurette-image-block">
+                        <img src="{% static 'img/landing/project.png' %}" alt="Image to be confirmed">
+                        <div class="caption">
+                            <a href="#">HE or Local Authority/community project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row featurette7">
+                <h2>Contact Us</h2>
+                <div class="jumbotron">
+                    <h3>The Greater London Historic Environment Record</h3>
+                    <div class="row website-details">
+                        <div class="col-xs-1">
+                            <img src="{% static 'img/landing/contact-website.svg' %}" width="25" height="25" alt="Website icon">
+                        </div>
+                        <div class="col-xs-11">
+                            <p><strong>Website</strong><br/>
+                                <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">Website The Greater London Historic Environment Record</a></p>
+                        </div>
+                    </div>
+                    <div class="row address-phone">
+                        <div class="col-sm-6">
+                            <div class="contact-icon">
+                                <img src="{% static 'img/landing/contact-address.svg' %}" width="25" height="25" alt="Address icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Address</strong><br>
+                                    Historic England 4th Floor<br>
+                                    Cannon Bridge House<br>
+                                    25 Dowgate Hill<br>
+                                    London<br>
+                                    EC4R 2YA</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="contact-icon">
+                                <img src="{% static 'img/landing/contact-phone.svg' %}" width="25" height="25" alt="Phone icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Phone number</strong><br>
+                                    0207 973 3731<br>
+                                    0207 973 3214<br>
+                                    0207 973 3691</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">View on map</a></p>
+                </div>
+                <div>
+                    <p>All photographs used on this page are &copy; Historic England Archive</p>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- End Footer -->
+    </main>
 
-    <!-- Copyright Panel -->
-    <div class="copyright-container">
-
-
-        <!-- Arches link -->
-        <div class="app-footer-links">
-            <a class="link-spacing" href="">{% trans "Terms & Conditions" %}</a>
-            <a class="link-spacing" href="">{% trans "Privacy Policy" %}</a>
-            <a class="app-footer-arches-link" href="www.archesproject.org">Powered by Arches</a>
+    <footer>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row footer-top-first-row">
+                    <div class="col-sm-4">
+                        <a href="#">
+                            <img class="footer-he-logo" src="{% static 'img/landing/footer-he-logo-white.svg' %}" alt="Historic England logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#">
+                            <img class="footer-getty-logo" src="{% static 'img/landing/footer-getty-logo-white.png' %}" alt="The Getty logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="#">
+                            <img class="footer-arches-logo" src="{% static 'img/landing/footer-arches-logo-white.png' %}" alt="Arches Project logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8 col-sm-9 glher-text-container">
+                        <p class="glaas-title">Greater London Archaeology Advisory Service<br/>
+                            (GLAAS)</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 footer-top-contact-details">
+                        <p><strong>Contact Us</strong></p>
+                        <p>For enquiry, please contact<br/>
+                            <a href="mailto:Glaas@historicEngland.org.uk">Glaas@historicEngland.org.uk</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <!-- End Copyright Container -->
 
-
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-container">
+                    <div class="col-xs-12 col-sm-8 footer-links">
+                        <a href="https://historicengland.org.uk/access/" target="_blank">Accessibility</a>
+                        <a href="#" onclick="CookieControl.open();">Manage Cookies</a>
+                        <a href="https://historicengland.org.uk/terms/privacy/" target="_blank">Privacy Policy</a>
+                        <a href="https://historicengland.org.uk/terms/" target="_blank">Terms &amp; Conditions</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 footer-copyright">
+                        <p class="copyright">&copy; Historic England 2021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.4.0/jquery-migrate.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.3.8/SmoothScroll.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-    <script src="{% static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js' %}"></script>
-    <script src="{% static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
-    <script src="{% static 'plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js' %}"></script>
-    <script src="{% static 'plugins/one.app.js' %}"></script>
-    <script src="{% static 'plugins/pace-loader.js' %}"></script>
-    <script src="{% static 'plugins/owl-carousel.js' %}"></script>
-    <script src="{% static 'plugins/style-switcher.js' %}"></script>
-    <script src="{% static 'plugins/revolution-slider.js' %}"></script>
-    <script src="{% static 'plugins/cube-portfolio-lightbox.js' %}"></script>
-    <script src="{% static 'packages/knockout/build/output/knockout-latest.js' %}"></script>
-
 
     <script>
-        jQuery(document).ready(function () {
-            App.init();
-            App.initCounter();
-            App.initParallaxBg();
-            OwlCarousel.initOwlCarousel();
-            StyleSwitcher.initStyleSwitcher();
-            RevolutionSlider.initRSfullScreen();
+        $(window).on('resize', function(e) {
+            if ($(window).width() > 767) {
+                let navbarelem = document.getElementById('navbar');
+                navbarelem.classList.remove('in');
+            }
         });
-
-        var ViewModel = function (first, last) {
-            this.showAuthMenu = ko.observable(false);
-        };
-        ko.applyBindings(new ViewModel());
-
     </script>
 
 </body>
