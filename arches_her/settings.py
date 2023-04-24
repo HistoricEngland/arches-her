@@ -205,6 +205,20 @@ SEARCH_COMPONENT_LOCATIONS = [
 
 ACCESSIBILITY_MODE = True
 
+
+# Contact settings
+CONTACT_EMAIL = "#"
+CONTACT_WEBSITE = "#"
+
+# Extra contexts for email
+
+from datetime import datetime, timedelta
+
+EXTRA_EMAIL_CONTEXT = {"contact_email":CONTACT_EMAIL,
+                 "contact_website":CONTACT_WEBSITE,
+                 "expiration":(datetime.now() + timedelta(seconds=CELERY_SEARCH_EXPORT_EXPIRES)).strftime("%A, %d %B %Y")
+}
+
 try:
     from .package_settings import *
 except ImportError:
