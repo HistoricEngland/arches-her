@@ -52,17 +52,17 @@ class HEPrimaryDescriptors(AbstractPrimaryDescriptorsFunction):
                 from nodes n1
                 inner join nodes n2 on n1.nodegroupid = n2.nodegroupid
                 inner join tiles t on n1.nodegroupid = t.nodegroupid
-                where n1.name = 'System Reference Numbers'
-                and n2.name = 'Primary Reference Number'
-                and n1.graphid = '{resource.graph_id}'
-                and t.resourceinstanceid = '{resource.resourceinstanceid}'
+                where n1.name = %s
+                and n2.name = %s
+                and n1.graphid = %s
+                and t.resourceinstanceid = %s
                 )
                 select objects.value
                 from tile_value, jsonb_each(tiledata) objects
                 where objects.key::text = nodeid::text"""
             try:
                 with connection.cursor() as cursor:
-                    cursor.execute(sql)
+                    cursor.execute(sql,['System Reference Numbers','Primary Reference Number',str(resource.graph_id),str(resource.resourceinstanceid)])
                     row = cursor.fetchone()
                     if row and row[0] is not None:
                         primary_reference_number = str(row[0])
