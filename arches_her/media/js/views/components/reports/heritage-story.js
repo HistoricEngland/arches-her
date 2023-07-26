@@ -41,7 +41,7 @@ define([
                 activities: undefined,
                 consultations: undefined,
                 files: undefined,
-                assets: 'associated heritage assets, areas and artefacts',
+                assets: 'associated monuments, areas and artefacts',
                 translation: 'translation',
                 period: 'temporal coverage',
                 archive: undefined,
