@@ -45,7 +45,8 @@ define([
                 translation: 'translation',
                 period: 'temporal coverage',
                 archive: undefined,
-                actors: 'associated actors'
+                actors: 'associated actors',
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.locationDataConfig = {
