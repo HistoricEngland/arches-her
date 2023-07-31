@@ -81,7 +81,8 @@ define([
                 files: 'digital file(s)',
                 consultations: undefined,
                 archive: undefined,
-                actors: undefined
+                actors: undefined,
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.nameCards = {};

@@ -41,11 +41,12 @@ define([
                 activities: undefined,
                 consultations: undefined,
                 files: undefined,
-                assets: 'associated heritage assets, areas and artefacts',
+                assets: 'associated monuments, areas and artefacts',
                 translation: 'translation',
                 period: 'temporal coverage',
                 archive: undefined,
-                actors: 'associated actors'
+                actors: 'associated actors',
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.locationDataConfig = {
