@@ -69,7 +69,7 @@ define([
                 files: 'digital file(s)',
                 activities: 'associated activities',
                 consultations: 'associated consultations',
-                assets: 'associated monuments, area and artefacts',
+                assets: 'associated monuments, areas and artefacts',
                 period: undefined,
                 actors: undefined,
                 archive: 'associated archives',
