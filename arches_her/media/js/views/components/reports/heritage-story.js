@@ -38,9 +38,9 @@ define([
             };
 
             self.resourceDataConfig = {
-                activities: undefined,
+                activities: 'associated activities',
                 consultations: undefined,
-                files: undefined,
+                files: 'digital file(s)',
                 assets: 'associated monuments, areas and artefacts',
                 translation: 'translation',
                 period: 'temporal coverage',
