@@ -76,22 +76,26 @@ class FileTemplateView(View):
         self.resource.load_tiles()
 
         template_name = self.get_template_path(template_id)
+        filename, file_extension = os.path.splitext(template_name)
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
-        if os.path.exists(os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")) is False:
-            os.mkdir(os.path.join(settings.APP_ROOT, "uploadedfiles", "docx"))
+        uploaded_docx_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")
+        if not os.path.exists(uploaded_docx_path):
+            os.mkdir(uploaded_docx_path)
 
         try:
             self.doc = Document(template_path)
-        except:
+        except FileNotFoundError:
             return HttpResponseNotFound("No Template Found")
 
         self.edit_letter(self.resource, datatype_factory)
 
-        date = datetime.today()
-        date = date.strftime("%Y") + "-" + date.strftime("%m") + "-" + date.strftime("%d")
-        new_file_name = date + "_" + template_name
-        new_file_path = os.path.join(settings.APP_ROOT, "uploadedfiles/docx", new_file_name)
+        current_datetime = datetime.today()
+        date = current_datetime.strftime("%Y-%m-%d")
+        time = current_datetime.strftime("%H%M%S%f")
+
+        new_file_name = f"{date}_{filename}_{time}{file_extension}"
+        new_file_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx", new_file_name)
 
         new_req = HttpRequest()
         new_req.method = "POST"
