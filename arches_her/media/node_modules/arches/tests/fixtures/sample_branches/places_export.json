@@ -1,0 +1,298 @@
+{
+    "graph": [{
+        "subtitle": "Locations, addresses, admin areas",
+        "mapfeaturecolor": "rgba(70,17,181,0.25)",
+        "isresource": false,
+        "forms_x_cards": [],
+        "reports": [],
+        "iconclass": "fa fa-map-marker",
+        "nodegroups": [{
+            "cardinality": "1",
+            "legacygroupid": null,
+            "nodegroupid": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "parentnodegroup_id": null
+        }, {
+            "cardinality": "n",
+            "legacygroupid": null,
+            "nodegroupid": "76e67f54-96f0-11e6-bde9-6c4008b05c4c",
+            "parentnodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c"
+        }, {
+            "cardinality": "n",
+            "legacygroupid": null,
+            "nodegroupid": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "parentnodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c"
+        }, {
+            "cardinality": "n",
+            "legacygroupid": null,
+            "nodegroupid": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "parentnodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c"
+        }, {
+            "cardinality": "1",
+            "legacygroupid": null,
+            "nodegroupid": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "parentnodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c"
+        }],
+        "author": " ",
+        "deploymentfile": null,
+        "forms": [],
+        "version": "",
+        "nodes": [{
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E48_Place_Name",
+            "nodeid": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "datatype": "string",
+            "nodegroup_id": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "config": null,
+            "parentproperty": "P87_is_identified_by",
+            "name": "Admin Area"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E55_Type",
+            "nodeid": "633cc94a-96f0-11e6-be61-6c4008b05c4c",
+            "datatype": "concept",
+            "nodegroup_id": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "config": {
+                "rdmCollection": "195cea79-116f-47d7-8da7-f049cfbe4be4"
+            },
+            "parentproperty": "P1i_identifies",
+            "name": "Admin Area Type"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "SP15_Geometry",
+            "nodeid": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "datatype": "geojson-feature-collection",
+            "nodegroup_id": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "config": {"pointColor": "rgba(130, 130, 130, 0.7)", "pointHaloColor": "rgba(200, 200, 200, 0.5)", "radius": 2, "haloRadius": 4, "lineColor": "rgba(130, 130, 130, 0.7)", "lineHaloColor": "rgba(200, 200, 200, 0.5)", "weight": 2, "haloWeight": 4, "fillColor": "rgba(130, 130, 130, 0.5)", "outlineColor": "rgba(200, 200, 200, 0.7)", "outlineWeight": 2, "layerActivated": true, "addToMap": false, "layerIcon": "", "layerName": "", "clusterDistance": 20, "clusterMaxZoom": 5, "clusterMinPoints": 3, "advancedStyling": false, "advancedStyle": ""},
+            "parentproperty": "P67i_is_referred_to_by",
+            "name": "Geometry"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E44_Place_Appellation",
+            "nodeid": "967b9051-96f0-11e6-9ee4-6c4008b05c4c",
+            "datatype": "string",
+            "nodegroup_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "config": null,
+            "parentproperty": "P1_is_identified_by",
+            "name": "Address"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E45_Address",
+            "nodeid": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "datatype": "semantic",
+            "nodegroup_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "config": null,
+            "parentproperty": "L54_is_same-as",
+            "name": "Addresses"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E48_Place_Name",
+            "nodeid": "76e67f54-96f0-11e6-bde9-6c4008b05c4c",
+            "datatype": "string",
+            "nodegroup_id": "76e67f54-96f0-11e6-bde9-6c4008b05c4c",
+            "config": null,
+            "parentproperty": "P87_is_identified_by",
+            "name": "Parcel"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "istopnode": false,
+            "ontologyclass": "E55_Type",
+            "nodeid": "ae0cd7d9-96f0-11e6-8446-6c4008b05c4c",
+            "datatype": "concept",
+            "nodegroup_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "config": {
+                "rdmCollection": "5e967d72-9603-42a3-97ea-87fd89517d02"
+            },
+            "parentproperty": "P2_has_type",
+            "name": "Address Type"
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "",
+            "istopnode": true,
+            "ontologyclass": "E53_Place",
+            "nodeid": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "datatype": "semantic",
+            "nodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "config": null,
+            "parentproperty": "",
+            "name": "Places"
+        }],
+        "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd",
+        "description": "Location description of a resource.  Includes map, addresses, admin areas, and property ownership",
+        "edges": [{
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "23b80a1e-96f0-11e6-99f5-6c4008b05c4c",
+            "domainnode_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "rangenode_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "ontologyproperty": "L54_is_same-as",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "76e68121-96f0-11e6-84ca-6c4008b05c4c",
+            "domainnode_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "rangenode_id": "76e67f54-96f0-11e6-bde9-6c4008b05c4c",
+            "ontologyproperty": "P87_is_identified_by",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "967b924f-96f0-11e6-b0a1-6c4008b05c4c",
+            "domainnode_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "rangenode_id": "967b9051-96f0-11e6-9ee4-6c4008b05c4c",
+            "ontologyproperty": "P1_is_identified_by",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "32bfaff8-96f0-11e6-9cc0-6c4008b05c4c",
+            "domainnode_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "rangenode_id": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "ontologyproperty": "P67i_is_referred_to_by",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "633ccb47-96f0-11e6-b4b2-6c4008b05c4c",
+            "domainnode_id": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "rangenode_id": "633cc94a-96f0-11e6-be61-6c4008b05c4c",
+            "ontologyproperty": "P1i_identifies",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "ae0cd9e1-96f0-11e6-b164-6c4008b05c4c",
+            "domainnode_id": "967b9051-96f0-11e6-9ee4-6c4008b05c4c",
+            "rangenode_id": "ae0cd7d9-96f0-11e6-8446-6c4008b05c4c",
+            "ontologyproperty": "P2_has_type",
+            "description": null
+        }, {
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "name": null,
+            "edgeid": "4e77a0d4-96f0-11e6-a04e-6c4008b05c4c",
+            "domainnode_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "rangenode_id": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "ontologyproperty": "P87_is_identified_by",
+            "description": null
+        }],
+        "maplinewidth": 1,
+        "mappointsize": 4,
+        "graphid": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+        "name": "Places",
+        "cards_x_nodes_x_widgets": [{
+            "functions": [],
+            "card_id": "434d29f3-96f0-11e6-9a9b-6c4008b05c4c",
+            "label": "Geometry",
+            "widget_id": "10000000-0000-0000-0000-000000000007",
+            "node_id": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "sortorder": 0,
+            "config": "{\"resourcePointSize\":4,\"bearing\":0,\"resourceColor\":\"rgba(70,17,181,0.25)\",\"geometryTypes\":[{\"text\":\"Point\",\"id\":\"Point\"},{\"text\":\"Line\",\"id\":\"Line\"},{\"text\":\"Polygon\",\"id\":\"Polygon\"}],\"geocoder\":\"10000000-0000-0000-0000-010000000000\",\"pitch\":0,\"geocoderVisible\":true,\"zoom\":10,\"geocodePlaceholder\":\"Search\",\"minZoom\":0,\"centerX\":-122.3979693,\"resourceLineWidth\":1,\"overlayConfigs\":[],\"overlayOpacity\":0.0,\"mapControlsHidden\":false,\"maxZoom\":20,\"centerY\":37.79,\"basemap\":\"streets\",\"label\":\"Geometry\"}",
+            "id": "7e086247-9d3a-11e6-80f2-6c4008b05c4c"
+        }],
+        "cards": [{
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "name": "Admin Area",
+            "nodegroup_id": "4e779f11-96f0-11e6-a5de-6c4008b05c4c",
+            "visible": true,
+            "helpenabled": false,
+            "helptext": null,
+            "sortorder": 2,
+            "cardid": "5d5b8afd-96f0-11e6-9d02-6c4008b05c4c",
+            "helptitle": null,
+            "active": true,
+            "instructions": null
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "name": "Parcel",
+            "nodegroup_id": "76e67f54-96f0-11e6-bde9-6c4008b05c4c",
+            "visible": true,
+            "helpenabled": false,
+            "helptext": null,
+            "sortorder": 3,
+            "cardid": "89ae1dde-96f0-11e6-89d0-6c4008b05c4c",
+            "helptitle": null,
+            "active": true,
+            "instructions": null
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Location description of a resource.  Includes map, addresses, admin areas, and property ownership",
+            "name": "Places",
+            "nodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "visible": true,
+            "helpenabled": false,
+            "helptext": null,
+            "sortorder": null,
+            "cardid": "02c34985-96f0-11e6-bc90-6c4008b05c4c",
+            "helptitle": null,
+            "active": true,
+            "instructions": null
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "name": "Addresses",
+            "nodegroup_id": "23b80835-96f0-11e6-88f8-6c4008b05c4c",
+            "visible": true,
+            "helpenabled": false,
+            "helptext": null,
+            "sortorder": 1,
+            "cardid": "2f1810e8-96f0-11e6-9ab0-6c4008b05c4c",
+            "helptitle": null,
+            "active": true,
+            "instructions": null
+        }, {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "Represents a single node in a graph",
+            "name": "Geometry",
+            "nodegroup_id": "32bfad82-96f0-11e6-ad94-6c4008b05c4c",
+            "visible": true,
+            "helpenabled": false,
+            "helptext": null,
+            "sortorder": 0,
+            "cardid": "434d29f3-96f0-11e6-9a9b-6c4008b05c4c",
+            "helptitle": null,
+            "active": true,
+            "instructions": null
+        }],
+        "root": {
+            "functions": [],
+            "graph_id": "02c2ce82-96f0-11e6-a300-6c4008b05c4c",
+            "description": "",
+            "istopnode": true,
+            "ontologyclass": "E53_Place",
+            "nodeid": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "datatype": "semantic",
+            "nodegroup_id": "02c2cbc7-96f0-11e6-a964-6c4008b05c4c",
+            "config": null,
+            "name": "Places"
+        },
+        "deploymentdate": null
+    }]
+}

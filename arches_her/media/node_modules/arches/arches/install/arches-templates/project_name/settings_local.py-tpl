@@ -1,0 +1,4 @@
+try:
+    from .{{ project_name }}.settings import *
+except ImportError:
+    pass

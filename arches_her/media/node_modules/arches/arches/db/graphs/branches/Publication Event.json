@@ -1,0 +1,171 @@
+{
+    "graph": [
+        {
+            "author": " GCI", 
+            "cards": [
+                {
+                    "active": true, 
+                    "cardid": "abfca17b-a78f-11e6-84a5-026d961c88e6", 
+                    "description": "This branch describes the publication of an Information Resource.\n\nConnects to Information Resource (E73) with -P128", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "helpenabled": false, 
+                    "helptext": null, 
+                    "helptitle": null, 
+                    "instructions": null, 
+                    "name": "Publication Event", 
+                    "nodegroup_id": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                    "sortorder": null, 
+                    "visible": true
+                }, 
+                {
+                    "active": true, 
+                    "cardid": "c86a20cb-a790-11e6-84a5-026d961c88e6", 
+                    "description": "", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "helpenabled": false, 
+                    "helptext": null, 
+                    "helptitle": null, 
+                    "instructions": "Select the date of the publication for the information resource.", 
+                    "name": "Publication Date", 
+                    "nodegroup_id": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "sortorder": 0, 
+                    "visible": true
+                }
+            ], 
+            "cards_x_nodes_x_widgets": [], 
+            "deploymentdate": null, 
+            "deploymentfile": null, 
+            "description": "This branch describes the publication of an Information Resource.\n\nConnects to Information Resource (E73) with -P128", 
+            "edges": [
+                {
+                    "description": null, 
+                    "domainnode_id": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "edgeid": "c86a20cf-a790-11e6-84a5-026d961c88e6", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "name": null, 
+                    "ontologyproperty": "http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span", 
+                    "rangenode_id": "c86a20cc-a790-11e6-84a5-026d961c88e6"
+                }, 
+                {
+                    "description": null, 
+                    "domainnode_id": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                    "edgeid": "c86a20d0-a790-11e6-84a5-026d961c88e6", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "name": null, 
+                    "ontologyproperty": "http://www.cidoc-crm.org/cidoc-crm/P92i_was_brought_into_existence_by", 
+                    "rangenode_id": "c86a20c9-a790-11e6-84a5-026d961c88e6"
+                }, 
+                {
+                    "description": null, 
+                    "domainnode_id": "c86a20cc-a790-11e6-84a5-026d961c88e6", 
+                    "edgeid": "c86a20ce-a790-11e6-84a5-026d961c88e6", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "name": null, 
+                    "ontologyproperty": "http://www.cidoc-crm.org/cidoc-crm/P78_is_identified_by", 
+                    "rangenode_id": "c86a20cd-a790-11e6-84a5-026d961c88e6"
+                }
+            ], 
+            "forms": [], 
+            "forms_x_cards": [], 
+            "functions": [], 
+            "graphid": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+            "iconclass": "", 
+            "isresource": false, 
+            "mapfeaturecolor": "#FF0000", 
+            "maplinewidth": 1, 
+            "mappointsize": 3, 
+            "name": "Publication Event", 
+            "nodegroups": [
+                {
+                    "cardinality": "1", 
+                    "legacygroupid": null, 
+                    "nodegroupid": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "parentnodegroup_id": "abfca178-a78f-11e6-84a5-026d961c88e6"
+                }, 
+                {
+                    "cardinality": "1", 
+                    "legacygroupid": null, 
+                    "nodegroupid": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                    "parentnodegroup_id": null
+                }
+            ], 
+            "nodes": [
+                {
+                    "config": null, 
+                    "datatype": "semantic", 
+                    "description": "", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "is_collector": true, 
+                    "istopnode": false, 
+                    "name": "Publication Event", 
+                    "nodegroup_id": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "nodeid": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E12_Production", 
+                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P92i_was_brought_into_existence_by"
+                }, 
+                {
+                    "config": null, 
+                    "datatype": "semantic", 
+                    "description": "", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "is_collector": true, 
+                    "istopnode": true, 
+                    "name": "Publication", 
+                    "nodegroup_id": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                    "nodeid": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E84_Information_Carrier", 
+                    "parentproperty": ""
+                }, 
+                {
+                    "config": null, 
+                    "datatype": "semantic", 
+                    "description": "Represents a single node in a graph", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "is_collector": false, 
+                    "istopnode": false, 
+                    "name": "Time Span Publication Event", 
+                    "nodegroup_id": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "nodeid": "c86a20cc-a790-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span", 
+                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span"
+                }, 
+                {
+                    "config": null, 
+                    "datatype": "date", 
+                    "description": "Represents a single node in a graph", 
+                    "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                    "is_collector": false, 
+                    "istopnode": false, 
+                    "name": "Date of Publication", 
+                    "nodegroup_id": "c86a20c9-a790-11e6-84a5-026d961c88e6", 
+                    "nodeid": "c86a20cd-a790-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E50_Date", 
+                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P78_is_identified_by"
+                }
+            ], 
+            "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd", 
+            "reports": [], 
+            "root": {
+                "config": null, 
+                "datatype": "semantic", 
+                "description": "", 
+                "graph_id": "abfca179-a78f-11e6-84a5-026d961c88e6", 
+                "is_collector": true, 
+                "istopnode": true, 
+                "name": "Publication", 
+                "nodegroup_id": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                "nodeid": "abfca178-a78f-11e6-84a5-026d961c88e6", 
+                "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E84_Information_Carrier", 
+                "parentproperty": ""
+            }, 
+            "subtitle": "Describes the publication of an Information Resource", 
+            "version": ""
+        }
+    ], 
+    "metadata": {
+        "db": "PostgreSQL 9.6.0 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 5.3.1-14ubuntu2) 5.3.1 20160413, 64-bit", 
+        "git hash": "ff93bd9 2017-01-24 10:17:51 -0800", 
+        "os": "Linux", 
+        "os version": "4.4.0-45-generic"
+    }
+}

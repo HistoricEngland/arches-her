@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SelectWoo</title>
+    <link rel="stylesheet" href="../dist/css/select2.css" type="text/css" />
+    <meta charset="utf-8">
+
+    <!-- <script src="jquery-3.4.1.js"></script> -->
+    <!-- Test with 3.6.0 due to focus fix introduced in 3.6.0 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script src="../dist/js/select2.full.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            $('.select2-ajax').select2({
+                ajax: {
+                  url: "https://reqres.in/api/users?page=2",
+                  dataType: "json",
+                  delay: 250,
+                  processResults: function(data) {
+                    // Map results to what select2 expects
+                    var data = $.map(data.data, function(obj) {
+                      obj.text = obj.text || obj.first_name + ' ' + obj.last_name;
+                      return obj;
+                    });
+
+                    return {
+                      results: data
+                    };
+                  }
+                }
+            });
+
+            $('.select2-ajax-min-entry').select2({
+                minimumInputLength: 2,
+                ajax: {
+                  url: "https://reqres.in/api/users?page=2",
+                  dataType: "json",
+                  delay: 250,
+                  processResults: function(data) {
+                    // Map results to what select2 expects
+                    var data = $.map(data.data, function(obj) {
+                      obj.text = obj.text || obj.first_name + ' ' + obj.last_name;
+                      return obj;
+                    });
+
+                    return {
+                      results: data
+                    };
+                  }
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .select2-container {
+            width: 300px !important;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin: 40px 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>SelectWoo testing area</h1>
+
+        <h2>Single selection</h2>
+
+        <h3>Single selection (no placeholder)</h3>
+        <label for="example-1">Pick your sauce</label>
+        <select class="select2" id="example-1" name="example-1" data-label="Pick your sauce">
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+
+        <h3>Single selection (with placeholder)</h3>
+        <label for="example-2">Pick your sauce</label>
+        <select class="select2" id="example-2" name="example-2" data-placeholder="Please choose" data-label="Pick your sauce">
+            <option label="Choose"></option>
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+
+        <h3>Single selection (Disabled, with placeholder)</h3>
+        <label for="example-3">Pick your sauce</label>
+        <select class="select2" id="example-3" name="example-3" data-placeholder="Please choose" data-label="Pick your sauce" disabled="disabled">
+            <option label="Choose"></option>
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+
+        <h3>Single selection (Disabled, no placeholder)</h3>
+        <label for="example-4">Pick your sauce</label>
+        <select class="select2" id="example-4" name="example-4" data-label="Pick your sauce" disabled="disabled">
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+
+        <h3>Single selection with ajax</h3>
+        <label for="example-5">Select users</label>
+        <select class="select2-ajax" id="example-5" name="example-5" data-label="Select users" data-placeholder="Please choose"></select>
+
+        <h3>Single selection with ajax (Disabled)</h3>
+        <label for="example-6">Select users</label>
+        <select class="select2-ajax" id="example-6" name="example-6" data-label="Select users" data-placeholder="Please choose" disabled="disabled"></select>
+
+        <hr/>
+
+        <h2>Multiple selection</h2>
+
+        <h3>Native select</h3>
+        <label for="example-native">Select users</label>
+        <select id="example-native" name="example-native">
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Native select (multiple)</h3>
+        <label for="example-native-multiple">Select users</label>
+        <select id="example-native-multiple" name="example-native-multiple" multiple>
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Multiple selection (no placeholder)</h3>
+        <label for="example-7">Select users</label>
+        <select class="select2" id="example-7" name="example-7" data-label="Select users" multiple>
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Multiple selection (with placeholder)</h3>
+        <label for="example-8">Select users</label>
+        <select class="select2" id="example-8" name="example-8" data-label="Select users" data-placeholder="Please choose one or more" multiple>
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Multiple selection (Disabled, no placeholder)</h3>
+        <label for="example-9">Select users</label>
+        <select class="select2" id="example-9" name="example-9" data-label="Select users" multiple disabled="disabled">
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Multiple selection (Disabled, with placeholder)</h3>
+        <label for="example-10">Select users</label>
+        <select class="select2" id="example-10" name="example-10" data-label="Select users" data-placeholder="Please choose one or more" multiple disabled="disabled">
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+
+        <h3>Multiple selection with ajax</h3>
+        <label for="example-11">Select users</label>
+        <select class="select2-ajax" id="example-11" name="example-11" data-label="Select users" data-placeholder="Please choose" multiple></select>
+
+        <h3>Multiple selection with ajax (Disabled)</h3>
+        <label for="example-12">Select users</label>
+        <select class="select2-ajax" id="example-12" name="example-12" data-label="Select users" data-placeholder="Please choose" multiple disabled="disabled"></select>
+
+        <h3>Multiple selection with ajax and minimum entry</h3>
+        <label for="example-13">Select users</label>
+        <select class="select2-ajax-min-entry" id="example-13" name="example-13" data-label="Select users" data-placeholder="Please choose" multiple></select>
+
+        <h3>Multiple selection with ajax and minimum entry (Disabled)</h3>
+        <label for="example-14">Select users</label>
+        <select class="select2-ajax-min-entry" id="example-14" name="example-14" data-label="Select users" data-placeholder="Please choose" multiple disabled="disabled"></select>
+
+        <hr/>
+
+        <h2>Aria-describedby tests</h2>
+
+        <h3>Single selection (with placeholder)</h3>
+        <label for="example-15">Pick your sauce</label>
+        <select class="select2" id="example-15" name="example-15" data-placeholder="Please choose" data-label="Pick your sauce" aria-describedby="described-by-text-1">
+            <option label="Choose"></option>
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+        <p id="described-by-text-1">described by text</p>
+
+        <h3>Single selection (without placeholder)</h3>
+        <label for="example-16">Pick your sauce</label>
+        <select class="select2" id="example-16" name="example-16" data-label="Pick your sauce" aria-describedby="described-by-text-2">
+            <option value="ketchup">Ketchup</option>
+            <option value="hot">Hot</option>
+            <option value="bbq">BBQ</option>
+        </select>
+        <p id="described-by-text-2">described by text</p>
+
+        <h3>Multiple selection (with placeholder)</h3>
+        <label for="example-17">Select users</label>
+        <select class="select2" id="example-17" name="example-17" data-label="Select users" data-placeholder="Please choose one or more" aria-describedby="described-by-text-3" multiple>
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+        <p id="described-by-text-3">described by text 3</p>
+
+        <h3>Multiple selection (without placeholder)</h3>
+        <label for="example-18">Select users</label>
+        <select class="select2" id="example-18" name="example-18" data-label="Select users" multiple aria-describedby="described-by-text-4">
+            <option value="bob">Bob</option>
+            <option value="sally">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+        <p id="described-by-text-4">described by text 4</p>
+
+        <h3>Multiple selection (with placeholder and preselected options)</h3>
+        <label for="example-19">Select users</label>
+        <select class="select2" id="example-19" name="example-19" data-label="Select users" data-placeholder="Please choose one or more" aria-describedby="described-by-text-5" multiple>
+            <option value="bob" selected="selected">Bob</option>
+            <option value="sally" selected="selected">Sally</option>
+            <option value="fred">Fred</option>
+        </select>
+        <p id="described-by-text-5">described by text 5</p>
+    </main>
+</body>
+</html>

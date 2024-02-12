@@ -1,0 +1,2213 @@
+{
+  "status": "done",
+  "assets": {
+    "0caab1fe468bdb6380cd.png": {
+      "name": "0caab1fe468bdb6380cd.png",
+      "path": "/web_root/arches_her/arches_her/media/build/0caab1fe468bdb6380cd.png",
+      "publicPath": "/static/0caab1fe468bdb6380cd.png"
+    },
+    "c12d7b13b8f44ddc0bb9.png": {
+      "name": "c12d7b13b8f44ddc0bb9.png",
+      "path": "/web_root/arches_her/arches_her/media/build/c12d7b13b8f44ddc0bb9.png",
+      "publicPath": "/static/c12d7b13b8f44ddc0bb9.png"
+    },
+    "d6d876ba34a7c86e64d0.png": {
+      "name": "d6d876ba34a7c86e64d0.png",
+      "path": "/web_root/arches_her/arches_her/media/build/d6d876ba34a7c86e64d0.png",
+      "publicPath": "/static/d6d876ba34a7c86e64d0.png"
+    },
+    "e61d5db689dc74712132.png": {
+      "name": "e61d5db689dc74712132.png",
+      "path": "/web_root/arches_her/arches_her/media/build/e61d5db689dc74712132.png",
+      "publicPath": "/static/e61d5db689dc74712132.png"
+    },
+    "js/arches_arches_app_media_js_bindings_color-picker_js-arches_arches_app_media_js_models_node_js-f5fbc2.chunk.js": {
+      "name": "js/arches_arches_app_media_js_bindings_color-picker_js-arches_arches_app_media_js_models_node_js-f5fbc2.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_bindings_color-picker_js-arches_arches_app_media_js_models_node_js-f5fbc2.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_bindings_color-picker_js-arches_arches_app_media_js_models_node_js-f5fbc2.chunk.js"
+    },
+    "js/arches_arches_app_media_js_bindings_datatable_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_bindings_datatable_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_bindings_datatable_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_bindings_datatable_js.chunk.js"
+    },
+    "js/arches_arches_app_media_js_bindings_hover_js-arches_arches_app_media_js_viewmodels_alert-json-b1c481.chunk.js": {
+      "name": "js/arches_arches_app_media_js_bindings_hover_js-arches_arches_app_media_js_viewmodels_alert-json-b1c481.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_bindings_hover_js-arches_arches_app_media_js_viewmodels_alert-json-b1c481.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_bindings_hover_js-arches_arches_app_media_js_viewmodels_alert-json-b1c481.chunk.js"
+    },
+    "js/arches_arches_app_media_js_models_abstract_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_models_abstract_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_models_abstract_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_models_abstract_js.chunk.js"
+    },
+    "js/arches_arches_app_media_js_utils_load-component-dependencies_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_utils_load-component-dependencies_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_utils_load-component-dependencies_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_utils_load-component-dependencies_js.chunk.js"
+    },
+    "js/arches_arches_app_media_js_views_base-manager_js-media_node_modules_moment_locale_sync_recursive_.chunk.js": {
+      "name": "js/arches_arches_app_media_js_views_base-manager_js-media_node_modules_moment_locale_sync_recursive_.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_views_base-manager_js-media_node_modules_moment_locale_sync_recursive_.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_views_base-manager_js-media_node_modules_moment_locale_sync_recursive_.chunk.js"
+    },
+    "js/arches_arches_app_media_js_views_graph_function-manager_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_views_graph_function-manager_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_views_graph_function-manager_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_views_graph_function-manager_js.chunk.js"
+    },
+    "js/arches_arches_app_media_js_views_rdm_concept-report_js-arches_arches_app_media_js_views_rdm_c-a5c09f.chunk.js": {
+      "name": "js/arches_arches_app_media_js_views_rdm_concept-report_js-arches_arches_app_media_js_views_rdm_c-a5c09f.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_views_rdm_concept-report_js-arches_arches_app_media_js_views_rdm_c-a5c09f.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_views_rdm_concept-report_js-arches_arches_app_media_js_views_rdm_c-a5c09f.chunk.js"
+    },
+    "js/arches_arches_app_media_js_views_resource_report_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_views_resource_report_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_views_resource_report_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_views_resource_report_js.chunk.js"
+    },
+    "js/arches_arches_app_media_js_views_resource_resource-edit-history-data_js.chunk.js": {
+      "name": "js/arches_arches_app_media_js_views_resource_resource-edit-history-data_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches_arches_app_media_js_views_resource_resource-edit-history-data_js.chunk.js",
+      "publicPath": "/static/js/arches_arches_app_media_js_views_resource_resource-edit-history-data_js.chunk.js"
+    },
+    "js/arches.js": {
+      "name": "js/arches.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/arches.js",
+      "publicPath": "/static/js/arches.js"
+    },
+    "js/bindings/chosen.js": {
+      "name": "js/bindings/chosen.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/chosen.js",
+      "publicPath": "/static/js/bindings/chosen.js"
+    },
+    "js/bindings/ckeditor.js": {
+      "name": "js/bindings/ckeditor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/ckeditor.js",
+      "publicPath": "/static/js/bindings/ckeditor.js"
+    },
+    "js/bindings/clipboard.js": {
+      "name": "js/bindings/clipboard.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/clipboard.js",
+      "publicPath": "/static/js/bindings/clipboard.js"
+    },
+    "js/bindings/codemirror.js": {
+      "name": "js/bindings/codemirror.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/codemirror.js",
+      "publicPath": "/static/js/bindings/codemirror.js"
+    },
+    "js/bindings/color-picker.js": {
+      "name": "js/bindings/color-picker.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/color-picker.js",
+      "publicPath": "/static/js/bindings/color-picker.js"
+    },
+    "js/bindings/cytoscape.js": {
+      "name": "js/bindings/cytoscape.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/cytoscape.js",
+      "publicPath": "/static/js/bindings/cytoscape.js"
+    },
+    "js/bindings/datatable.js": {
+      "name": "js/bindings/datatable.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/datatable.js",
+      "publicPath": "/static/js/bindings/datatable.js"
+    },
+    "js/bindings/datepicker.js": {
+      "name": "js/bindings/datepicker.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/datepicker.js",
+      "publicPath": "/static/js/bindings/datepicker.js"
+    },
+    "js/bindings/dragDrop.js": {
+      "name": "js/bindings/dragDrop.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/dragDrop.js",
+      "publicPath": "/static/js/bindings/dragDrop.js"
+    },
+    "js/bindings/dropzone.js": {
+      "name": "js/bindings/dropzone.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/dropzone.js",
+      "publicPath": "/static/js/bindings/dropzone.js"
+    },
+    "js/bindings/fadeVisible.js": {
+      "name": "js/bindings/fadeVisible.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/fadeVisible.js",
+      "publicPath": "/static/js/bindings/fadeVisible.js"
+    },
+    "js/bindings/formattedNumber.js": {
+      "name": "js/bindings/formattedNumber.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/formattedNumber.js",
+      "publicPath": "/static/js/bindings/formattedNumber.js"
+    },
+    "js/bindings/gallery.js": {
+      "name": "js/bindings/gallery.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/gallery.js",
+      "publicPath": "/static/js/bindings/gallery.js"
+    },
+    "js/bindings/hover.js": {
+      "name": "js/bindings/hover.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/hover.js",
+      "publicPath": "/static/js/bindings/hover.js"
+    },
+    "js/bindings/key-events-click.js": {
+      "name": "js/bindings/key-events-click.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/key-events-click.js",
+      "publicPath": "/static/js/bindings/key-events-click.js"
+    },
+    "js/bindings/leaflet.js": {
+      "name": "js/bindings/leaflet.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/leaflet.js",
+      "publicPath": "/static/js/bindings/leaflet.js"
+    },
+    "js/bindings/let.js": {
+      "name": "js/bindings/let.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/let.js",
+      "publicPath": "/static/js/bindings/let.js"
+    },
+    "js/bindings/map-controls.js": {
+      "name": "js/bindings/map-controls.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/map-controls.js",
+      "publicPath": "/static/js/bindings/map-controls.js"
+    },
+    "js/bindings/mapbox-gl.js": {
+      "name": "js/bindings/mapbox-gl.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/mapbox-gl.js",
+      "publicPath": "/static/js/bindings/mapbox-gl.js"
+    },
+    "js/bindings/moment-date.js": {
+      "name": "js/bindings/moment-date.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/moment-date.js",
+      "publicPath": "/static/js/bindings/moment-date.js"
+    },
+    "js/bindings/nouislider.js": {
+      "name": "js/bindings/nouislider.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/nouislider.js",
+      "publicPath": "/static/js/bindings/nouislider.js"
+    },
+    "js/bindings/related-resources-graph.js": {
+      "name": "js/bindings/related-resources-graph.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/related-resources-graph.js",
+      "publicPath": "/static/js/bindings/related-resources-graph.js"
+    },
+    "js/bindings/resizable-sidepanel.js": {
+      "name": "js/bindings/resizable-sidepanel.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/resizable-sidepanel.js",
+      "publicPath": "/static/js/bindings/resizable-sidepanel.js"
+    },
+    "js/bindings/scroll-to-file.js": {
+      "name": "js/bindings/scroll-to-file.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/scroll-to-file.js",
+      "publicPath": "/static/js/bindings/scroll-to-file.js"
+    },
+    "js/bindings/scrollTo.js": {
+      "name": "js/bindings/scrollTo.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/scrollTo.js",
+      "publicPath": "/static/js/bindings/scrollTo.js"
+    },
+    "js/bindings/select2-query.js": {
+      "name": "js/bindings/select2-query.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/select2-query.js",
+      "publicPath": "/static/js/bindings/select2-query.js"
+    },
+    "js/bindings/slide.js": {
+      "name": "js/bindings/slide.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/slide.js",
+      "publicPath": "/static/js/bindings/slide.js"
+    },
+    "js/bindings/smartresize.js": {
+      "name": "js/bindings/smartresize.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/smartresize.js",
+      "publicPath": "/static/js/bindings/smartresize.js"
+    },
+    "js/bindings/sortable.js": {
+      "name": "js/bindings/sortable.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/sortable.js",
+      "publicPath": "/static/js/bindings/sortable.js"
+    },
+    "js/bindings/term-search.js": {
+      "name": "js/bindings/term-search.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/term-search.js",
+      "publicPath": "/static/js/bindings/term-search.js"
+    },
+    "js/bindings/time-wheel.js": {
+      "name": "js/bindings/time-wheel.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/bindings/time-wheel.js",
+      "publicPath": "/static/js/bindings/time-wheel.js"
+    },
+    "js/card-components.js": {
+      "name": "js/card-components.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/card-components.js",
+      "publicPath": "/static/js/card-components.js"
+    },
+    "js/datatype-config-components.js": {
+      "name": "js/datatype-config-components.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/datatype-config-components.js",
+      "publicPath": "/static/js/datatype-config-components.js"
+    },
+    "js/file-renderers.js": {
+      "name": "js/file-renderers.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/file-renderers.js",
+      "publicPath": "/static/js/file-renderers.js"
+    },
+    "js/function-templates.js": {
+      "name": "js/function-templates.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/function-templates.js",
+      "publicPath": "/static/js/function-templates.js"
+    },
+    "js/geocoder-templates.js": {
+      "name": "js/geocoder-templates.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/geocoder-templates.js",
+      "publicPath": "/static/js/geocoder-templates.js"
+    },
+    "js/models/abstract.js": {
+      "name": "js/models/abstract.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/abstract.js",
+      "publicPath": "/static/js/models/abstract.js"
+    },
+    "js/models/card-widget.js": {
+      "name": "js/models/card-widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/card-widget.js",
+      "publicPath": "/static/js/models/card-widget.js"
+    },
+    "js/models/card.js": {
+      "name": "js/models/card.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/card.js",
+      "publicPath": "/static/js/models/card.js"
+    },
+    "js/models/concept-parents.js": {
+      "name": "js/models/concept-parents.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/concept-parents.js",
+      "publicPath": "/static/js/models/concept-parents.js"
+    },
+    "js/models/concept.js": {
+      "name": "js/models/concept.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/concept.js",
+      "publicPath": "/static/js/models/concept.js"
+    },
+    "js/models/config.js": {
+      "name": "js/models/config.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/config.js",
+      "publicPath": "/static/js/models/config.js"
+    },
+    "js/models/function-x-graph.js": {
+      "name": "js/models/function-x-graph.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/function-x-graph.js",
+      "publicPath": "/static/js/models/function-x-graph.js"
+    },
+    "js/models/function.js": {
+      "name": "js/models/function.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/function.js",
+      "publicPath": "/static/js/models/function.js"
+    },
+    "js/models/graph.js": {
+      "name": "js/models/graph.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/graph.js",
+      "publicPath": "/static/js/models/graph.js"
+    },
+    "js/models/node.js": {
+      "name": "js/models/node.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/node.js",
+      "publicPath": "/static/js/models/node.js"
+    },
+    "js/models/report.js": {
+      "name": "js/models/report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/report.js",
+      "publicPath": "/static/js/models/report.js"
+    },
+    "js/models/tile.js": {
+      "name": "js/models/tile.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/tile.js",
+      "publicPath": "/static/js/models/tile.js"
+    },
+    "js/models/value.js": {
+      "name": "js/models/value.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/models/value.js",
+      "publicPath": "/static/js/models/value.js"
+    },
+    "js/plugins.js": {
+      "name": "js/plugins.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/plugins.js",
+      "publicPath": "/static/js/plugins.js"
+    },
+    "js/rdm.js": {
+      "name": "js/rdm.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/rdm.js",
+      "publicPath": "/static/js/rdm.js"
+    },
+    "js/report-templates.js": {
+      "name": "js/report-templates.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/report-templates.js",
+      "publicPath": "/static/js/report-templates.js"
+    },
+    "js/reports/default.js": {
+      "name": "js/reports/default.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/reports/default.js",
+      "publicPath": "/static/js/reports/default.js"
+    },
+    "js/reports/image.js": {
+      "name": "js/reports/image.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/reports/image.js",
+      "publicPath": "/static/js/reports/image.js"
+    },
+    "js/reports/map-header.js": {
+      "name": "js/reports/map-header.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/reports/map-header.js",
+      "publicPath": "/static/js/reports/map-header.js"
+    },
+    "js/reports/map.js": {
+      "name": "js/reports/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/reports/map.js",
+      "publicPath": "/static/js/reports/map.js"
+    },
+    "js/reports/tabbed.js": {
+      "name": "js/reports/tabbed.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/reports/tabbed.js",
+      "publicPath": "/static/js/reports/tabbed.js"
+    },
+    "js/resource-types.js": {
+      "name": "js/resource-types.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/resource-types.js",
+      "publicPath": "/static/js/resource-types.js"
+    },
+    "js/search-components.js": {
+      "name": "js/search-components.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/search-components.js",
+      "publicPath": "/static/js/search-components.js"
+    },
+    "js/utils.js": {
+      "name": "js/utils.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils.js",
+      "publicPath": "/static/js/utils.js"
+    },
+    "js/utils/aria.js": {
+      "name": "js/utils/aria.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/aria.js",
+      "publicPath": "/static/js/utils/aria.js"
+    },
+    "js/utils/back-to-top.js": {
+      "name": "js/utils/back-to-top.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/back-to-top.js",
+      "publicPath": "/static/js/utils/back-to-top.js"
+    },
+    "js/utils/dispose.js": {
+      "name": "js/utils/dispose.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/dispose.js",
+      "publicPath": "/static/js/utils/dispose.js"
+    },
+    "js/utils/load-component-dependencies.js": {
+      "name": "js/utils/load-component-dependencies.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/load-component-dependencies.js",
+      "publicPath": "/static/js/utils/load-component-dependencies.js"
+    },
+    "js/utils/map-configurator.js": {
+      "name": "js/utils/map-configurator.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/map-configurator.js",
+      "publicPath": "/static/js/utils/map-configurator.js"
+    },
+    "js/utils/map-popup-provider.js": {
+      "name": "js/utils/map-popup-provider.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/map-popup-provider.js",
+      "publicPath": "/static/js/utils/map-popup-provider.js"
+    },
+    "js/utils/ontology.js": {
+      "name": "js/utils/ontology.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/ontology.js",
+      "publicPath": "/static/js/utils/ontology.js"
+    },
+    "js/utils/resource.js": {
+      "name": "js/utils/resource.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/resource.js",
+      "publicPath": "/static/js/utils/resource.js"
+    },
+    "js/utils/set-csrf-token.js": {
+      "name": "js/utils/set-csrf-token.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/utils/set-csrf-token.js",
+      "publicPath": "/static/js/utils/set-csrf-token.js"
+    },
+    "js/vendors-media_node_modules_backbone_backbone-min_js-media_node_modules_bootstrap_dist_js_boot-822b64.chunk.js": {
+      "name": "js/vendors-media_node_modules_backbone_backbone-min_js-media_node_modules_bootstrap_dist_js_boot-822b64.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_backbone_backbone-min_js-media_node_modules_bootstrap_dist_js_boot-822b64.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_backbone_backbone-min_js-media_node_modules_bootstrap_dist_js_boot-822b64.chunk.js"
+    },
+    "js/vendors-media_node_modules_bootstrap-colorpicker_dist_js_bootstrap-colorpicker_min_js-media_n-d138ec.chunk.js": {
+      "name": "js/vendors-media_node_modules_bootstrap-colorpicker_dist_js_bootstrap-colorpicker_min_js-media_n-d138ec.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_bootstrap-colorpicker_dist_js_bootstrap-colorpicker_min_js-media_n-d138ec.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_bootstrap-colorpicker_dist_js_bootstrap-colorpicker_min_js-media_n-d138ec.chunk.js"
+    },
+    "js/vendors-media_node_modules_ckeditor4_adapters_jquery_js-media_node_modules_ckeditor4_ckeditor_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_ckeditor4_adapters_jquery_js-media_node_modules_ckeditor4_ckeditor_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_ckeditor4_adapters_jquery_js-media_node_modules_ckeditor4_ckeditor_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_ckeditor4_adapters_jquery_js-media_node_modules_ckeditor4_ckeditor_js.chunk.js"
+    },
+    "js/vendors-media_node_modules_codemirror_mode_javascript_javascript_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_codemirror_mode_javascript_javascript_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_codemirror_mode_javascript_javascript_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_codemirror_mode_javascript_javascript_js.chunk.js"
+    },
+    "js/vendors-media_node_modules_datatables_net-buttons-bs_js_buttons_bootstrap_min_js-media_node_m-d7d553.chunk.js": {
+      "name": "js/vendors-media_node_modules_datatables_net-buttons-bs_js_buttons_bootstrap_min_js-media_node_m-d7d553.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_datatables_net-buttons-bs_js_buttons_bootstrap_min_js-media_node_m-d7d553.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_datatables_net-buttons-bs_js_buttons_bootstrap_min_js-media_node_m-d7d553.chunk.js"
+    },
+    "js/vendors-media_node_modules_dropzone_dist_min_dropzone-amd-module_min_js-media_node_modules_jq-8f1604.chunk.js": {
+      "name": "js/vendors-media_node_modules_dropzone_dist_min_dropzone-amd-module_min_js-media_node_modules_jq-8f1604.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_dropzone_dist_min_dropzone-amd-module_min_js-media_node_modules_jq-8f1604.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_dropzone_dist_min_dropzone-amd-module_min_js-media_node_modules_jq-8f1604.chunk.js"
+    },
+    "js/vendors-media_node_modules_jquery-validation_dist_jquery_validate_min_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_jquery-validation_dist_jquery_validate_min_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_jquery-validation_dist_jquery_validate_min_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_jquery-validation_dist_jquery_validate_min_js.chunk.js"
+    },
+    "js/vendors-media_node_modules_mapbox_geojson-extent_geojson-extent_js-media_node_modules_mapbox_-805ae5.chunk.js": {
+      "name": "js/vendors-media_node_modules_mapbox_geojson-extent_geojson-extent_js-media_node_modules_mapbox_-805ae5.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_mapbox_geojson-extent_geojson-extent_js-media_node_modules_mapbox_-805ae5.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_mapbox_geojson-extent_geojson-extent_js-media_node_modules_mapbox_-805ae5.chunk.js"
+    },
+    "js/vendors-media_node_modules_mapbox_mapbox-gl-draw_dist_mapbox-gl-draw_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_mapbox_mapbox-gl-draw_dist_mapbox-gl-draw_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_mapbox_mapbox-gl-draw_dist_mapbox-gl-draw_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_mapbox_mapbox-gl-draw_dist_mapbox-gl-draw_js.chunk.js"
+    },
+    "js/vendors-media_node_modules_mapbox_mapbox-gl-geocoder_dist_mapbox-gl-geocoder_min_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_mapbox_mapbox-gl-geocoder_dist_mapbox-gl-geocoder_min_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_mapbox_mapbox-gl-geocoder_dist_mapbox-gl-geocoder_min_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_mapbox_mapbox-gl-geocoder_dist_mapbox-gl-geocoder_min_js.chunk.js"
+    },
+    "js/vendors-media_node_modules_mapbox-gl_dist_mapbox-gl_js.chunk.js": {
+      "name": "js/vendors-media_node_modules_mapbox-gl_dist_mapbox-gl_js.chunk.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/vendors-media_node_modules_mapbox-gl_dist_mapbox-gl_js.chunk.js",
+      "publicPath": "/static/js/vendors-media_node_modules_mapbox-gl_dist_mapbox-gl_js.chunk.js"
+    },
+    "js/view-data.js": {
+      "name": "js/view-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/view-data.js",
+      "publicPath": "/static/js/view-data.js"
+    },
+    "js/viewmodels/alert-json.js": {
+      "name": "js/viewmodels/alert-json.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/alert-json.js",
+      "publicPath": "/static/js/viewmodels/alert-json.js"
+    },
+    "js/viewmodels/alert.js": {
+      "name": "js/viewmodels/alert.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/alert.js",
+      "publicPath": "/static/js/viewmodels/alert.js"
+    },
+    "js/viewmodels/base-import-view-model.js": {
+      "name": "js/viewmodels/base-import-view-model.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/base-import-view-model.js",
+      "publicPath": "/static/js/viewmodels/base-import-view-model.js"
+    },
+    "js/viewmodels/card-component.js": {
+      "name": "js/viewmodels/card-component.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/card-component.js",
+      "publicPath": "/static/js/viewmodels/card-component.js"
+    },
+    "js/viewmodels/card-constraints.js": {
+      "name": "js/viewmodels/card-constraints.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/card-constraints.js",
+      "publicPath": "/static/js/viewmodels/card-constraints.js"
+    },
+    "js/viewmodels/card-multi-select.js": {
+      "name": "js/viewmodels/card-multi-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/card-multi-select.js",
+      "publicPath": "/static/js/viewmodels/card-multi-select.js"
+    },
+    "js/viewmodels/card.js": {
+      "name": "js/viewmodels/card.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/card.js",
+      "publicPath": "/static/js/viewmodels/card.js"
+    },
+    "js/viewmodels/concept-select.js": {
+      "name": "js/viewmodels/concept-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/concept-select.js",
+      "publicPath": "/static/js/viewmodels/concept-select.js"
+    },
+    "js/viewmodels/concept-widget.js": {
+      "name": "js/viewmodels/concept-widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/concept-widget.js",
+      "publicPath": "/static/js/viewmodels/concept-widget.js"
+    },
+    "js/viewmodels/domain-widget.js": {
+      "name": "js/viewmodels/domain-widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/domain-widget.js",
+      "publicPath": "/static/js/viewmodels/domain-widget.js"
+    },
+    "js/viewmodels/excel-file-export.js": {
+      "name": "js/viewmodels/excel-file-export.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/excel-file-export.js",
+      "publicPath": "/static/js/viewmodels/excel-file-export.js"
+    },
+    "js/viewmodels/excel-file-import.js": {
+      "name": "js/viewmodels/excel-file-import.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/excel-file-import.js",
+      "publicPath": "/static/js/viewmodels/excel-file-import.js"
+    },
+    "js/viewmodels/file-widget.js": {
+      "name": "js/viewmodels/file-widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/file-widget.js",
+      "publicPath": "/static/js/viewmodels/file-widget.js"
+    },
+    "js/viewmodels/function.js": {
+      "name": "js/viewmodels/function.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/function.js",
+      "publicPath": "/static/js/viewmodels/function.js"
+    },
+    "js/viewmodels/graph-settings.js": {
+      "name": "js/viewmodels/graph-settings.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/graph-settings.js",
+      "publicPath": "/static/js/viewmodels/graph-settings.js"
+    },
+    "js/viewmodels/map-controls.js": {
+      "name": "js/viewmodels/map-controls.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/map-controls.js",
+      "publicPath": "/static/js/viewmodels/map-controls.js"
+    },
+    "js/viewmodels/map-editor.js": {
+      "name": "js/viewmodels/map-editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/map-editor.js",
+      "publicPath": "/static/js/viewmodels/map-editor.js"
+    },
+    "js/viewmodels/map-filter.js": {
+      "name": "js/viewmodels/map-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/map-filter.js",
+      "publicPath": "/static/js/viewmodels/map-filter.js"
+    },
+    "js/viewmodels/map-report.js": {
+      "name": "js/viewmodels/map-report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/map-report.js",
+      "publicPath": "/static/js/viewmodels/map-report.js"
+    },
+    "js/viewmodels/map.js": {
+      "name": "js/viewmodels/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/map.js",
+      "publicPath": "/static/js/viewmodels/map.js"
+    },
+    "js/viewmodels/node-value-select.js": {
+      "name": "js/viewmodels/node-value-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/node-value-select.js",
+      "publicPath": "/static/js/viewmodels/node-value-select.js"
+    },
+    "js/viewmodels/photo-gallery.js": {
+      "name": "js/viewmodels/photo-gallery.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/photo-gallery.js",
+      "publicPath": "/static/js/viewmodels/photo-gallery.js"
+    },
+    "js/viewmodels/provisional-tile.js": {
+      "name": "js/viewmodels/provisional-tile.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/provisional-tile.js",
+      "publicPath": "/static/js/viewmodels/provisional-tile.js"
+    },
+    "js/viewmodels/remote-domain-widget.js": {
+      "name": "js/viewmodels/remote-domain-widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/remote-domain-widget.js",
+      "publicPath": "/static/js/viewmodels/remote-domain-widget.js"
+    },
+    "js/viewmodels/report.js": {
+      "name": "js/viewmodels/report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/report.js",
+      "publicPath": "/static/js/viewmodels/report.js"
+    },
+    "js/viewmodels/resource-instance-select.js": {
+      "name": "js/viewmodels/resource-instance-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/resource-instance-select.js",
+      "publicPath": "/static/js/viewmodels/resource-instance-select.js"
+    },
+    "js/viewmodels/tabbed-report.js": {
+      "name": "js/viewmodels/tabbed-report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/tabbed-report.js",
+      "publicPath": "/static/js/viewmodels/tabbed-report.js"
+    },
+    "js/viewmodels/tile.js": {
+      "name": "js/viewmodels/tile.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/tile.js",
+      "publicPath": "/static/js/viewmodels/tile.js"
+    },
+    "js/viewmodels/widget.js": {
+      "name": "js/viewmodels/widget.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/widget.js",
+      "publicPath": "/static/js/viewmodels/widget.js"
+    },
+    "js/viewmodels/workflow-step.js": {
+      "name": "js/viewmodels/workflow-step.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/workflow-step.js",
+      "publicPath": "/static/js/viewmodels/workflow-step.js"
+    },
+    "js/viewmodels/workflow.js": {
+      "name": "js/viewmodels/workflow.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/workflow.js",
+      "publicPath": "/static/js/viewmodels/workflow.js"
+    },
+    "js/viewmodels/xy-input.js": {
+      "name": "js/viewmodels/xy-input.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/viewmodels/xy-input.js",
+      "publicPath": "/static/js/viewmodels/xy-input.js"
+    },
+    "js/views/base-manager.js": {
+      "name": "js/views/base-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/base-manager.js",
+      "publicPath": "/static/js/views/base-manager.js"
+    },
+    "js/views/components/cards/default.js": {
+      "name": "js/views/components/cards/default.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/default.js",
+      "publicPath": "/static/js/views/components/cards/default.js"
+    },
+    "js/views/components/cards/file-renderers/imagereader.js": {
+      "name": "js/views/components/cards/file-renderers/imagereader.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/file-renderers/imagereader.js",
+      "publicPath": "/static/js/views/components/cards/file-renderers/imagereader.js"
+    },
+    "js/views/components/cards/file-renderers/pdfreader.js": {
+      "name": "js/views/components/cards/file-renderers/pdfreader.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/file-renderers/pdfreader.js",
+      "publicPath": "/static/js/views/components/cards/file-renderers/pdfreader.js"
+    },
+    "js/views/components/cards/file-viewer.js": {
+      "name": "js/views/components/cards/file-viewer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/file-viewer.js",
+      "publicPath": "/static/js/views/components/cards/file-viewer.js"
+    },
+    "js/views/components/cards/grouping.js": {
+      "name": "js/views/components/cards/grouping.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/grouping.js",
+      "publicPath": "/static/js/views/components/cards/grouping.js"
+    },
+    "js/views/components/cards/iiif-card.js": {
+      "name": "js/views/components/cards/iiif-card.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/iiif-card.js",
+      "publicPath": "/static/js/views/components/cards/iiif-card.js"
+    },
+    "js/views/components/cards/map.js": {
+      "name": "js/views/components/cards/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/map.js",
+      "publicPath": "/static/js/views/components/cards/map.js"
+    },
+    "js/views/components/cards/photo-gallery-card.js": {
+      "name": "js/views/components/cards/photo-gallery-card.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/photo-gallery-card.js",
+      "publicPath": "/static/js/views/components/cards/photo-gallery-card.js"
+    },
+    "js/views/components/cards/related-resources-map.js": {
+      "name": "js/views/components/cards/related-resources-map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/related-resources-map.js",
+      "publicPath": "/static/js/views/components/cards/related-resources-map.js"
+    },
+    "js/views/components/cards/select-feature-layers.js": {
+      "name": "js/views/components/cards/select-feature-layers.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/select-feature-layers.js",
+      "publicPath": "/static/js/views/components/cards/select-feature-layers.js"
+    },
+    "js/views/components/cards/select-related-feature-layers.js": {
+      "name": "js/views/components/cards/select-related-feature-layers.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/cards/select-related-feature-layers.js",
+      "publicPath": "/static/js/views/components/cards/select-related-feature-layers.js"
+    },
+    "js/views/components/datatypes/boolean.js": {
+      "name": "js/views/components/datatypes/boolean.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/boolean.js",
+      "publicPath": "/static/js/views/components/datatypes/boolean.js"
+    },
+    "js/views/components/datatypes/concept.js": {
+      "name": "js/views/components/datatypes/concept.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/concept.js",
+      "publicPath": "/static/js/views/components/datatypes/concept.js"
+    },
+    "js/views/components/datatypes/date.js": {
+      "name": "js/views/components/datatypes/date.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/date.js",
+      "publicPath": "/static/js/views/components/datatypes/date.js"
+    },
+    "js/views/components/datatypes/domain-value.js": {
+      "name": "js/views/components/datatypes/domain-value.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/domain-value.js",
+      "publicPath": "/static/js/views/components/datatypes/domain-value.js"
+    },
+    "js/views/components/datatypes/edtf.js": {
+      "name": "js/views/components/datatypes/edtf.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/edtf.js",
+      "publicPath": "/static/js/views/components/datatypes/edtf.js"
+    },
+    "js/views/components/datatypes/file-list.js": {
+      "name": "js/views/components/datatypes/file-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/file-list.js",
+      "publicPath": "/static/js/views/components/datatypes/file-list.js"
+    },
+    "js/views/components/datatypes/geojson-feature-collection.js": {
+      "name": "js/views/components/datatypes/geojson-feature-collection.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/geojson-feature-collection.js",
+      "publicPath": "/static/js/views/components/datatypes/geojson-feature-collection.js"
+    },
+    "js/views/components/datatypes/node-value.js": {
+      "name": "js/views/components/datatypes/node-value.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/node-value.js",
+      "publicPath": "/static/js/views/components/datatypes/node-value.js"
+    },
+    "js/views/components/datatypes/number.js": {
+      "name": "js/views/components/datatypes/number.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/number.js",
+      "publicPath": "/static/js/views/components/datatypes/number.js"
+    },
+    "js/views/components/datatypes/resource-instance.js": {
+      "name": "js/views/components/datatypes/resource-instance.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/resource-instance.js",
+      "publicPath": "/static/js/views/components/datatypes/resource-instance.js"
+    },
+    "js/views/components/datatypes/string.js": {
+      "name": "js/views/components/datatypes/string.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/string.js",
+      "publicPath": "/static/js/views/components/datatypes/string.js"
+    },
+    "js/views/components/datatypes/url.js": {
+      "name": "js/views/components/datatypes/url.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/datatypes/url.js",
+      "publicPath": "/static/js/views/components/datatypes/url.js"
+    },
+    "js/views/components/etl_modules/base-bulk-string-editor.js": {
+      "name": "js/views/components/etl_modules/base-bulk-string-editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/base-bulk-string-editor.js",
+      "publicPath": "/static/js/views/components/etl_modules/base-bulk-string-editor.js"
+    },
+    "js/views/components/etl_modules/branch-excel-exporter.js": {
+      "name": "js/views/components/etl_modules/branch-excel-exporter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/branch-excel-exporter.js",
+      "publicPath": "/static/js/views/components/etl_modules/branch-excel-exporter.js"
+    },
+    "js/views/components/etl_modules/branch-excel-importer.js": {
+      "name": "js/views/components/etl_modules/branch-excel-importer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/branch-excel-importer.js",
+      "publicPath": "/static/js/views/components/etl_modules/branch-excel-importer.js"
+    },
+    "js/views/components/etl_modules/bulk-case-editor.js": {
+      "name": "js/views/components/etl_modules/bulk-case-editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/bulk-case-editor.js",
+      "publicPath": "/static/js/views/components/etl_modules/bulk-case-editor.js"
+    },
+    "js/views/components/etl_modules/bulk-data-deletion.js": {
+      "name": "js/views/components/etl_modules/bulk-data-deletion.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/bulk-data-deletion.js",
+      "publicPath": "/static/js/views/components/etl_modules/bulk-data-deletion.js"
+    },
+    "js/views/components/etl_modules/bulk-replace-editor.js": {
+      "name": "js/views/components/etl_modules/bulk-replace-editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/bulk-replace-editor.js",
+      "publicPath": "/static/js/views/components/etl_modules/bulk-replace-editor.js"
+    },
+    "js/views/components/etl_modules/bulk-trim-editor.js": {
+      "name": "js/views/components/etl_modules/bulk-trim-editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/bulk-trim-editor.js",
+      "publicPath": "/static/js/views/components/etl_modules/bulk-trim-editor.js"
+    },
+    "js/views/components/etl_modules/import-single-csv.js": {
+      "name": "js/views/components/etl_modules/import-single-csv.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/import-single-csv.js",
+      "publicPath": "/static/js/views/components/etl_modules/import-single-csv.js"
+    },
+    "js/views/components/etl_modules/tile-excel-exporter.js": {
+      "name": "js/views/components/etl_modules/tile-excel-exporter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/tile-excel-exporter.js",
+      "publicPath": "/static/js/views/components/etl_modules/tile-excel-exporter.js"
+    },
+    "js/views/components/etl_modules/tile-excel-importer.js": {
+      "name": "js/views/components/etl_modules/tile-excel-importer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/etl_modules/tile-excel-importer.js",
+      "publicPath": "/static/js/views/components/etl_modules/tile-excel-importer.js"
+    },
+    "js/views/components/functions/local-file-storage.js": {
+      "name": "js/views/components/functions/local-file-storage.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/functions/local-file-storage.js",
+      "publicPath": "/static/js/views/components/functions/local-file-storage.js"
+    },
+    "js/views/components/functions/primary-descriptors.js": {
+      "name": "js/views/components/functions/primary-descriptors.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/functions/primary-descriptors.js",
+      "publicPath": "/static/js/views/components/functions/primary-descriptors.js"
+    },
+    "js/views/components/geocoders/base-geocoder.js": {
+      "name": "js/views/components/geocoders/base-geocoder.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/geocoders/base-geocoder.js",
+      "publicPath": "/static/js/views/components/geocoders/base-geocoder.js"
+    },
+    "js/views/components/geocoders/mapbox.js": {
+      "name": "js/views/components/geocoders/mapbox.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/geocoders/mapbox.js",
+      "publicPath": "/static/js/views/components/geocoders/mapbox.js"
+    },
+    "js/views/components/icon-selector.js": {
+      "name": "js/views/components/icon-selector.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/icon-selector.js",
+      "publicPath": "/static/js/views/components/icon-selector.js"
+    },
+    "js/views/components/iiif-annotation.js": {
+      "name": "js/views/components/iiif-annotation.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/iiif-annotation.js",
+      "publicPath": "/static/js/views/components/iiif-annotation.js"
+    },
+    "js/views/components/iiif-viewer.js": {
+      "name": "js/views/components/iiif-viewer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/iiif-viewer.js",
+      "publicPath": "/static/js/views/components/iiif-viewer.js"
+    },
+    "js/views/components/language-switcher.js": {
+      "name": "js/views/components/language-switcher.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/language-switcher.js",
+      "publicPath": "/static/js/views/components/language-switcher.js"
+    },
+    "js/views/components/map.js": {
+      "name": "js/views/components/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/map.js",
+      "publicPath": "/static/js/views/components/map.js"
+    },
+    "js/views/components/nodegroup-selector.js": {
+      "name": "js/views/components/nodegroup-selector.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/nodegroup-selector.js",
+      "publicPath": "/static/js/views/components/nodegroup-selector.js"
+    },
+    "js/views/components/notification.js": {
+      "name": "js/views/components/notification.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/notification.js",
+      "publicPath": "/static/js/views/components/notification.js"
+    },
+    "js/views/components/plugins/etl-manager.js": {
+      "name": "js/views/components/plugins/etl-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/plugins/etl-manager.js",
+      "publicPath": "/static/js/views/components/plugins/etl-manager.js"
+    },
+    "js/views/components/plugins/manifest-manager.js": {
+      "name": "js/views/components/plugins/manifest-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/plugins/manifest-manager.js",
+      "publicPath": "/static/js/views/components/plugins/manifest-manager.js"
+    },
+    "js/views/components/plugins/map.js": {
+      "name": "js/views/components/plugins/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/plugins/map.js",
+      "publicPath": "/static/js/views/components/plugins/map.js"
+    },
+    "js/views/components/related-instance-creator.js": {
+      "name": "js/views/components/related-instance-creator.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/related-instance-creator.js",
+      "publicPath": "/static/js/views/components/related-instance-creator.js"
+    },
+    "js/views/components/related-resources-graph.js": {
+      "name": "js/views/components/related-resources-graph.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/related-resources-graph.js",
+      "publicPath": "/static/js/views/components/related-resources-graph.js"
+    },
+    "js/views/components/resource-report-abstract.js": {
+      "name": "js/views/components/resource-report-abstract.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/resource-report-abstract.js",
+      "publicPath": "/static/js/views/components/resource-report-abstract.js"
+    },
+    "js/views/components/search/advanced-search.js": {
+      "name": "js/views/components/search/advanced-search.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/advanced-search.js",
+      "publicPath": "/static/js/views/components/search/advanced-search.js"
+    },
+    "js/views/components/search/base-filter.js": {
+      "name": "js/views/components/search/base-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/base-filter.js",
+      "publicPath": "/static/js/views/components/search/base-filter.js"
+    },
+    "js/views/components/search/map-filter.js": {
+      "name": "js/views/components/search/map-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/map-filter.js",
+      "publicPath": "/static/js/views/components/search/map-filter.js"
+    },
+    "js/views/components/search/paging-filter.js": {
+      "name": "js/views/components/search/paging-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/paging-filter.js",
+      "publicPath": "/static/js/views/components/search/paging-filter.js"
+    },
+    "js/views/components/search/provisional-filter.js": {
+      "name": "js/views/components/search/provisional-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/provisional-filter.js",
+      "publicPath": "/static/js/views/components/search/provisional-filter.js"
+    },
+    "js/views/components/search/related-resources-filter.js": {
+      "name": "js/views/components/search/related-resources-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/related-resources-filter.js",
+      "publicPath": "/static/js/views/components/search/related-resources-filter.js"
+    },
+    "js/views/components/search/resource-type-filter.js": {
+      "name": "js/views/components/search/resource-type-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/resource-type-filter.js",
+      "publicPath": "/static/js/views/components/search/resource-type-filter.js"
+    },
+    "js/views/components/search/saved-searches.js": {
+      "name": "js/views/components/search/saved-searches.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/saved-searches.js",
+      "publicPath": "/static/js/views/components/search/saved-searches.js"
+    },
+    "js/views/components/search/search-export.js": {
+      "name": "js/views/components/search/search-export.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/search-export.js",
+      "publicPath": "/static/js/views/components/search/search-export.js"
+    },
+    "js/views/components/search/search-result-details.js": {
+      "name": "js/views/components/search/search-result-details.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/search-result-details.js",
+      "publicPath": "/static/js/views/components/search/search-result-details.js"
+    },
+    "js/views/components/search/search-results.js": {
+      "name": "js/views/components/search/search-results.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/search-results.js",
+      "publicPath": "/static/js/views/components/search/search-results.js"
+    },
+    "js/views/components/search/sort-results.js": {
+      "name": "js/views/components/search/sort-results.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/sort-results.js",
+      "publicPath": "/static/js/views/components/search/sort-results.js"
+    },
+    "js/views/components/search/term-filter.js": {
+      "name": "js/views/components/search/term-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/term-filter.js",
+      "publicPath": "/static/js/views/components/search/term-filter.js"
+    },
+    "js/views/components/search/time-filter.js": {
+      "name": "js/views/components/search/time-filter.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/search/time-filter.js",
+      "publicPath": "/static/js/views/components/search/time-filter.js"
+    },
+    "js/views/components/simple-switch.js": {
+      "name": "js/views/components/simple-switch.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/simple-switch.js",
+      "publicPath": "/static/js/views/components/simple-switch.js"
+    },
+    "js/views/components/widgets/concept-checkbox.js": {
+      "name": "js/views/components/widgets/concept-checkbox.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/concept-checkbox.js",
+      "publicPath": "/static/js/views/components/widgets/concept-checkbox.js"
+    },
+    "js/views/components/widgets/concept-multiselect.js": {
+      "name": "js/views/components/widgets/concept-multiselect.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/concept-multiselect.js",
+      "publicPath": "/static/js/views/components/widgets/concept-multiselect.js"
+    },
+    "js/views/components/widgets/concept-radio.js": {
+      "name": "js/views/components/widgets/concept-radio.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/concept-radio.js",
+      "publicPath": "/static/js/views/components/widgets/concept-radio.js"
+    },
+    "js/views/components/widgets/concept-select.js": {
+      "name": "js/views/components/widgets/concept-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/concept-select.js",
+      "publicPath": "/static/js/views/components/widgets/concept-select.js"
+    },
+    "js/views/components/widgets/datepicker.js": {
+      "name": "js/views/components/widgets/datepicker.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/datepicker.js",
+      "publicPath": "/static/js/views/components/widgets/datepicker.js"
+    },
+    "js/views/components/widgets/domain-checkbox.js": {
+      "name": "js/views/components/widgets/domain-checkbox.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/domain-checkbox.js",
+      "publicPath": "/static/js/views/components/widgets/domain-checkbox.js"
+    },
+    "js/views/components/widgets/domain-multiselect.js": {
+      "name": "js/views/components/widgets/domain-multiselect.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/domain-multiselect.js",
+      "publicPath": "/static/js/views/components/widgets/domain-multiselect.js"
+    },
+    "js/views/components/widgets/domain-radio.js": {
+      "name": "js/views/components/widgets/domain-radio.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/domain-radio.js",
+      "publicPath": "/static/js/views/components/widgets/domain-radio.js"
+    },
+    "js/views/components/widgets/domain-select.js": {
+      "name": "js/views/components/widgets/domain-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/domain-select.js",
+      "publicPath": "/static/js/views/components/widgets/domain-select.js"
+    },
+    "js/views/components/widgets/edtf.js": {
+      "name": "js/views/components/widgets/edtf.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/edtf.js",
+      "publicPath": "/static/js/views/components/widgets/edtf.js"
+    },
+    "js/views/components/widgets/file.js": {
+      "name": "js/views/components/widgets/file.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/file.js",
+      "publicPath": "/static/js/views/components/widgets/file.js"
+    },
+    "js/views/components/widgets/iiif.js": {
+      "name": "js/views/components/widgets/iiif.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/iiif.js",
+      "publicPath": "/static/js/views/components/widgets/iiif.js"
+    },
+    "js/views/components/widgets/map.js": {
+      "name": "js/views/components/widgets/map.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/map.js",
+      "publicPath": "/static/js/views/components/widgets/map.js"
+    },
+    "js/views/components/widgets/map/bin-feature-collection.js": {
+      "name": "js/views/components/widgets/map/bin-feature-collection.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/map/bin-feature-collection.js",
+      "publicPath": "/static/js/views/components/widgets/map/bin-feature-collection.js"
+    },
+    "js/views/components/widgets/map/map-styles.js": {
+      "name": "js/views/components/widgets/map/map-styles.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/map/map-styles.js",
+      "publicPath": "/static/js/views/components/widgets/map/map-styles.js"
+    },
+    "js/views/components/widgets/node-value-select.js": {
+      "name": "js/views/components/widgets/node-value-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/node-value-select.js",
+      "publicPath": "/static/js/views/components/widgets/node-value-select.js"
+    },
+    "js/views/components/widgets/number.js": {
+      "name": "js/views/components/widgets/number.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/number.js",
+      "publicPath": "/static/js/views/components/widgets/number.js"
+    },
+    "js/views/components/widgets/radio-boolean.js": {
+      "name": "js/views/components/widgets/radio-boolean.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/radio-boolean.js",
+      "publicPath": "/static/js/views/components/widgets/radio-boolean.js"
+    },
+    "js/views/components/widgets/resource-instance-multiselect.js": {
+      "name": "js/views/components/widgets/resource-instance-multiselect.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/resource-instance-multiselect.js",
+      "publicPath": "/static/js/views/components/widgets/resource-instance-multiselect.js"
+    },
+    "js/views/components/widgets/resource-instance-select.js": {
+      "name": "js/views/components/widgets/resource-instance-select.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/resource-instance-select.js",
+      "publicPath": "/static/js/views/components/widgets/resource-instance-select.js"
+    },
+    "js/views/components/widgets/rich-text.js": {
+      "name": "js/views/components/widgets/rich-text.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/rich-text.js",
+      "publicPath": "/static/js/views/components/widgets/rich-text.js"
+    },
+    "js/views/components/widgets/switch.js": {
+      "name": "js/views/components/widgets/switch.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/switch.js",
+      "publicPath": "/static/js/views/components/widgets/switch.js"
+    },
+    "js/views/components/widgets/text.js": {
+      "name": "js/views/components/widgets/text.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/text.js",
+      "publicPath": "/static/js/views/components/widgets/text.js"
+    },
+    "js/views/components/widgets/urldatatype.js": {
+      "name": "js/views/components/widgets/urldatatype.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/widgets/urldatatype.js",
+      "publicPath": "/static/js/views/components/widgets/urldatatype.js"
+    },
+    "js/views/components/workbench.js": {
+      "name": "js/views/components/workbench.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/workbench.js",
+      "publicPath": "/static/js/views/components/workbench.js"
+    },
+    "js/views/components/workflows/final-step.js": {
+      "name": "js/views/components/workflows/final-step.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/workflows/final-step.js",
+      "publicPath": "/static/js/views/components/workflows/final-step.js"
+    },
+    "js/views/components/workflows/new-multi-tile-step.js": {
+      "name": "js/views/components/workflows/new-multi-tile-step.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/workflows/new-multi-tile-step.js",
+      "publicPath": "/static/js/views/components/workflows/new-multi-tile-step.js"
+    },
+    "js/views/components/workflows/new-tile-step.js": {
+      "name": "js/views/components/workflows/new-tile-step.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/workflows/new-tile-step.js",
+      "publicPath": "/static/js/views/components/workflows/new-tile-step.js"
+    },
+    "js/views/components/workflows/workflow-component-abstract.js": {
+      "name": "js/views/components/workflows/workflow-component-abstract.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/components/workflows/workflow-component-abstract.js",
+      "publicPath": "/static/js/views/components/workflows/workflow-component-abstract.js"
+    },
+    "js/views/concept-search.js": {
+      "name": "js/views/concept-search.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/concept-search.js",
+      "publicPath": "/static/js/views/concept-search.js"
+    },
+    "js/views/edit-history.js": {
+      "name": "js/views/edit-history.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/edit-history.js",
+      "publicPath": "/static/js/views/edit-history.js"
+    },
+    "js/views/graph-designer-data.js": {
+      "name": "js/views/graph-designer-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph-designer-data.js",
+      "publicPath": "/static/js/views/graph-designer-data.js"
+    },
+    "js/views/graph-designer.js": {
+      "name": "js/views/graph-designer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph-designer.js",
+      "publicPath": "/static/js/views/graph-designer.js"
+    },
+    "js/views/graph-manager-data.js": {
+      "name": "js/views/graph-manager-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph-manager-data.js",
+      "publicPath": "/static/js/views/graph-manager-data.js"
+    },
+    "js/views/graph.js": {
+      "name": "js/views/graph.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph.js",
+      "publicPath": "/static/js/views/graph.js"
+    },
+    "js/views/graph/card-configuration/card-components-tree.js": {
+      "name": "js/views/graph/card-configuration/card-components-tree.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/card-configuration/card-components-tree.js",
+      "publicPath": "/static/js/views/graph/card-configuration/card-components-tree.js"
+    },
+    "js/views/graph/card-configuration/card-form-preview.js": {
+      "name": "js/views/graph/card-configuration/card-form-preview.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/card-configuration/card-form-preview.js",
+      "publicPath": "/static/js/views/graph/card-configuration/card-form-preview.js"
+    },
+    "js/views/graph/function-manager.js": {
+      "name": "js/views/graph/function-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/function-manager.js",
+      "publicPath": "/static/js/views/graph/function-manager.js"
+    },
+    "js/views/graph/function-manager/applied-function-list.js": {
+      "name": "js/views/graph/function-manager/applied-function-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/function-manager/applied-function-list.js",
+      "publicPath": "/static/js/views/graph/function-manager/applied-function-list.js"
+    },
+    "js/views/graph/function-manager/function-list.js": {
+      "name": "js/views/graph/function-manager/function-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/function-manager/function-list.js",
+      "publicPath": "/static/js/views/graph/function-manager/function-list.js"
+    },
+    "js/views/graph/graph-base-data.js": {
+      "name": "js/views/graph/graph-base-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-base-data.js",
+      "publicPath": "/static/js/views/graph/graph-base-data.js"
+    },
+    "js/views/graph/graph-designer/card-tree.js": {
+      "name": "js/views/graph/graph-designer/card-tree.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-designer/card-tree.js",
+      "publicPath": "/static/js/views/graph/graph-designer/card-tree.js"
+    },
+    "js/views/graph/graph-designer/graph-tree.js": {
+      "name": "js/views/graph/graph-designer/graph-tree.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-designer/graph-tree.js",
+      "publicPath": "/static/js/views/graph/graph-designer/graph-tree.js"
+    },
+    "js/views/graph/graph-designer/node-form.js": {
+      "name": "js/views/graph/graph-designer/node-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-designer/node-form.js",
+      "publicPath": "/static/js/views/graph/graph-designer/node-form.js"
+    },
+    "js/views/graph/graph-functions-data.js": {
+      "name": "js/views/graph/graph-functions-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-functions-data.js",
+      "publicPath": "/static/js/views/graph/graph-functions-data.js"
+    },
+    "js/views/graph/graph-manager/branch-list.js": {
+      "name": "js/views/graph/graph-manager/branch-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-manager/branch-list.js",
+      "publicPath": "/static/js/views/graph/graph-manager/branch-list.js"
+    },
+    "js/views/graph/graph-manager/graph-base.js": {
+      "name": "js/views/graph/graph-manager/graph-base.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-manager/graph-base.js",
+      "publicPath": "/static/js/views/graph/graph-manager/graph-base.js"
+    },
+    "js/views/graph/graph-page-view.js": {
+      "name": "js/views/graph/graph-page-view.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-page-view.js",
+      "publicPath": "/static/js/views/graph/graph-page-view.js"
+    },
+    "js/views/graph/graph-settings-data.js": {
+      "name": "js/views/graph/graph-settings-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-settings-data.js",
+      "publicPath": "/static/js/views/graph/graph-settings-data.js"
+    },
+    "js/views/graph/graph-settings.js": {
+      "name": "js/views/graph/graph-settings.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/graph-settings.js",
+      "publicPath": "/static/js/views/graph/graph-settings.js"
+    },
+    "js/views/graph/permission-designer.js": {
+      "name": "js/views/graph/permission-designer.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/permission-designer.js",
+      "publicPath": "/static/js/views/graph/permission-designer.js"
+    },
+    "js/views/graph/permission-manager/identity-list.js": {
+      "name": "js/views/graph/permission-manager/identity-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/permission-manager/identity-list.js",
+      "publicPath": "/static/js/views/graph/permission-manager/identity-list.js"
+    },
+    "js/views/graph/permission-manager/permission-settings-form.js": {
+      "name": "js/views/graph/permission-manager/permission-settings-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/graph/permission-manager/permission-settings-form.js",
+      "publicPath": "/static/js/views/graph/permission-manager/permission-settings-form.js"
+    },
+    "js/views/list.js": {
+      "name": "js/views/list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/list.js",
+      "publicPath": "/static/js/views/list.js"
+    },
+    "js/views/map-layer-manager-data.js": {
+      "name": "js/views/map-layer-manager-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/map-layer-manager-data.js",
+      "publicPath": "/static/js/views/map-layer-manager-data.js"
+    },
+    "js/views/map-layer-manager.js": {
+      "name": "js/views/map-layer-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/map-layer-manager.js",
+      "publicPath": "/static/js/views/map-layer-manager.js"
+    },
+    "js/views/notifications-list.js": {
+      "name": "js/views/notifications-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/notifications-list.js",
+      "publicPath": "/static/js/views/notifications-list.js"
+    },
+    "js/views/page-view.js": {
+      "name": "js/views/page-view.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/page-view.js",
+      "publicPath": "/static/js/views/page-view.js"
+    },
+    "js/views/plugin-data.js": {
+      "name": "js/views/plugin-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/plugin-data.js",
+      "publicPath": "/static/js/views/plugin-data.js"
+    },
+    "js/views/plugin.js": {
+      "name": "js/views/plugin.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/plugin.js",
+      "publicPath": "/static/js/views/plugin.js"
+    },
+    "js/views/profile-manager-data.js": {
+      "name": "js/views/profile-manager-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/profile-manager-data.js",
+      "publicPath": "/static/js/views/profile-manager-data.js"
+    },
+    "js/views/provisional-history-list.js": {
+      "name": "js/views/provisional-history-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/provisional-history-list.js",
+      "publicPath": "/static/js/views/provisional-history-list.js"
+    },
+    "js/views/rdm/concept-report.js": {
+      "name": "js/views/rdm/concept-report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/concept-report.js",
+      "publicPath": "/static/js/views/rdm/concept-report.js"
+    },
+    "js/views/rdm/concept-tree.js": {
+      "name": "js/views/rdm/concept-tree.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/concept-tree.js",
+      "publicPath": "/static/js/views/rdm/concept-tree.js"
+    },
+    "js/views/rdm/modals/add-child-form.js": {
+      "name": "js/views/rdm/modals/add-child-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/add-child-form.js",
+      "publicPath": "/static/js/views/rdm/modals/add-child-form.js"
+    },
+    "js/views/rdm/modals/add-collection-form.js": {
+      "name": "js/views/rdm/modals/add-collection-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/add-collection-form.js",
+      "publicPath": "/static/js/views/rdm/modals/add-collection-form.js"
+    },
+    "js/views/rdm/modals/add-image-form.js": {
+      "name": "js/views/rdm/modals/add-image-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/add-image-form.js",
+      "publicPath": "/static/js/views/rdm/modals/add-image-form.js"
+    },
+    "js/views/rdm/modals/add-scheme-form.js": {
+      "name": "js/views/rdm/modals/add-scheme-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/add-scheme-form.js",
+      "publicPath": "/static/js/views/rdm/modals/add-scheme-form.js"
+    },
+    "js/views/rdm/modals/delete-collection-form.js": {
+      "name": "js/views/rdm/modals/delete-collection-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/delete-collection-form.js",
+      "publicPath": "/static/js/views/rdm/modals/delete-collection-form.js"
+    },
+    "js/views/rdm/modals/delete-scheme-form.js": {
+      "name": "js/views/rdm/modals/delete-scheme-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/delete-scheme-form.js",
+      "publicPath": "/static/js/views/rdm/modals/delete-scheme-form.js"
+    },
+    "js/views/rdm/modals/export-scheme-form.js": {
+      "name": "js/views/rdm/modals/export-scheme-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/export-scheme-form.js",
+      "publicPath": "/static/js/views/rdm/modals/export-scheme-form.js"
+    },
+    "js/views/rdm/modals/import-concept-form.js": {
+      "name": "js/views/rdm/modals/import-concept-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/import-concept-form.js",
+      "publicPath": "/static/js/views/rdm/modals/import-concept-form.js"
+    },
+    "js/views/rdm/modals/import-scheme-form.js": {
+      "name": "js/views/rdm/modals/import-scheme-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/import-scheme-form.js",
+      "publicPath": "/static/js/views/rdm/modals/import-scheme-form.js"
+    },
+    "js/views/rdm/modals/manage-parent-form.js": {
+      "name": "js/views/rdm/modals/manage-parent-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/manage-parent-form.js",
+      "publicPath": "/static/js/views/rdm/modals/manage-parent-form.js"
+    },
+    "js/views/rdm/modals/related-concept-form.js": {
+      "name": "js/views/rdm/modals/related-concept-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/related-concept-form.js",
+      "publicPath": "/static/js/views/rdm/modals/related-concept-form.js"
+    },
+    "js/views/rdm/modals/related-member-form.js": {
+      "name": "js/views/rdm/modals/related-member-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/related-member-form.js",
+      "publicPath": "/static/js/views/rdm/modals/related-member-form.js"
+    },
+    "js/views/rdm/modals/value-form.js": {
+      "name": "js/views/rdm/modals/value-form.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/rdm/modals/value-form.js",
+      "publicPath": "/static/js/views/rdm/modals/value-form.js"
+    },
+    "js/views/resource.js": {
+      "name": "js/views/resource.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource.js",
+      "publicPath": "/static/js/views/resource.js"
+    },
+    "js/views/resource/edit-log.js": {
+      "name": "js/views/resource/edit-log.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/edit-log.js",
+      "publicPath": "/static/js/views/resource/edit-log.js"
+    },
+    "js/views/resource/editor.js": {
+      "name": "js/views/resource/editor.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/editor.js",
+      "publicPath": "/static/js/views/resource/editor.js"
+    },
+    "js/views/resource/permissions-manager.js": {
+      "name": "js/views/resource/permissions-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/permissions-manager.js",
+      "publicPath": "/static/js/views/resource/permissions-manager.js"
+    },
+    "js/views/resource/related-resources-manager.js": {
+      "name": "js/views/resource/related-resources-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/related-resources-manager.js",
+      "publicPath": "/static/js/views/resource/related-resources-manager.js"
+    },
+    "js/views/resource/related-resources-node-list.js": {
+      "name": "js/views/resource/related-resources-node-list.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/related-resources-node-list.js",
+      "publicPath": "/static/js/views/resource/related-resources-node-list.js"
+    },
+    "js/views/resource/report.js": {
+      "name": "js/views/resource/report.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/report.js",
+      "publicPath": "/static/js/views/resource/report.js"
+    },
+    "js/views/resource/resource-edit-history-data.js": {
+      "name": "js/views/resource/resource-edit-history-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/resource-edit-history-data.js",
+      "publicPath": "/static/js/views/resource/resource-edit-history-data.js"
+    },
+    "js/views/resource/resource-editor-data.js": {
+      "name": "js/views/resource/resource-editor-data.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/resource/resource-editor-data.js",
+      "publicPath": "/static/js/views/resource/resource-editor-data.js"
+    },
+    "js/views/search.js": {
+      "name": "js/views/search.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/search.js",
+      "publicPath": "/static/js/views/search.js"
+    },
+    "js/views/simple-search.js": {
+      "name": "js/views/simple-search.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/simple-search.js",
+      "publicPath": "/static/js/views/simple-search.js"
+    },
+    "js/views/tree-view.js": {
+      "name": "js/views/tree-view.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/tree-view.js",
+      "publicPath": "/static/js/views/tree-view.js"
+    },
+    "js/views/user-profile-manager.js": {
+      "name": "js/views/user-profile-manager.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/views/user-profile-manager.js",
+      "publicPath": "/static/js/views/user-profile-manager.js"
+    },
+    "js/widgets.js": {
+      "name": "js/widgets.js",
+      "path": "/web_root/arches_her/arches_her/media/build/js/widgets.js",
+      "publicPath": "/static/js/widgets.js"
+    }
+  },
+  "chunks": {
+    "arches": [
+      "js/arches.js"
+    ],
+    "bindings/chosen": [
+      "js/bindings/chosen.js"
+    ],
+    "bindings/ckeditor": [
+      "js/bindings/ckeditor.js"
+    ],
+    "bindings/clipboard": [
+      "js/bindings/clipboard.js"
+    ],
+    "bindings/codemirror": [
+      "js/bindings/codemirror.js"
+    ],
+    "bindings/color-picker": [
+      "js/bindings/color-picker.js"
+    ],
+    "bindings/cytoscape": [
+      "js/bindings/cytoscape.js"
+    ],
+    "bindings/datatable": [
+      "js/bindings/datatable.js"
+    ],
+    "bindings/datepicker": [
+      "js/bindings/datepicker.js"
+    ],
+    "bindings/dragDrop": [
+      "js/bindings/dragDrop.js"
+    ],
+    "bindings/dropzone": [
+      "js/bindings/dropzone.js"
+    ],
+    "bindings/fadeVisible": [
+      "js/bindings/fadeVisible.js"
+    ],
+    "bindings/formattedNumber": [
+      "js/bindings/formattedNumber.js"
+    ],
+    "bindings/gallery": [
+      "js/bindings/gallery.js"
+    ],
+    "bindings/hover": [
+      "js/bindings/hover.js"
+    ],
+    "bindings/key-events-click": [
+      "js/bindings/key-events-click.js"
+    ],
+    "bindings/leaflet": [
+      "js/bindings/leaflet.js"
+    ],
+    "bindings/let": [
+      "js/bindings/let.js"
+    ],
+    "bindings/map-controls": [
+      "js/bindings/map-controls.js"
+    ],
+    "bindings/mapbox-gl": [
+      "js/bindings/mapbox-gl.js"
+    ],
+    "bindings/moment-date": [
+      "js/bindings/moment-date.js"
+    ],
+    "bindings/nouislider": [
+      "js/bindings/nouislider.js"
+    ],
+    "bindings/related-resources-graph": [
+      "js/bindings/related-resources-graph.js"
+    ],
+    "bindings/resizable-sidepanel": [
+      "js/bindings/resizable-sidepanel.js"
+    ],
+    "bindings/scroll-to-file": [
+      "js/bindings/scroll-to-file.js"
+    ],
+    "bindings/scrollTo": [
+      "js/bindings/scrollTo.js"
+    ],
+    "bindings/select2-query": [
+      "js/bindings/select2-query.js"
+    ],
+    "bindings/slide": [
+      "js/bindings/slide.js"
+    ],
+    "bindings/smartresize": [
+      "js/bindings/smartresize.js"
+    ],
+    "bindings/sortable": [
+      "js/bindings/sortable.js"
+    ],
+    "bindings/term-search": [
+      "js/bindings/term-search.js"
+    ],
+    "bindings/time-wheel": [
+      "js/bindings/time-wheel.js"
+    ],
+    "card-components": [
+      "js/card-components.js"
+    ],
+    "datatype-config-components": [
+      "js/datatype-config-components.js"
+    ],
+    "file-renderers": [
+      "js/file-renderers.js"
+    ],
+    "function-templates": [
+      "js/function-templates.js"
+    ],
+    "geocoder-templates": [
+      "js/geocoder-templates.js"
+    ],
+    "models/abstract": [
+      "js/models/abstract.js"
+    ],
+    "models/card": [
+      "js/models/card.js"
+    ],
+    "models/card-widget": [
+      "js/models/card-widget.js"
+    ],
+    "models/concept": [
+      "js/models/concept.js"
+    ],
+    "models/concept-parents": [
+      "js/models/concept-parents.js"
+    ],
+    "models/config": [
+      "js/models/config.js"
+    ],
+    "models/function": [
+      "js/models/function.js"
+    ],
+    "models/function-x-graph": [
+      "js/models/function-x-graph.js"
+    ],
+    "models/graph": [
+      "js/models/graph.js"
+    ],
+    "models/node": [
+      "js/models/node.js"
+    ],
+    "models/report": [
+      "js/models/report.js"
+    ],
+    "models/tile": [
+      "js/models/tile.js"
+    ],
+    "models/value": [
+      "js/models/value.js"
+    ],
+    "plugins": [
+      "js/plugins.js"
+    ],
+    "rdm": [
+      "js/rdm.js"
+    ],
+    "report-templates": [
+      "js/report-templates.js"
+    ],
+    "reports/default": [
+      "js/reports/default.js"
+    ],
+    "reports/image": [
+      "js/reports/image.js"
+    ],
+    "reports/map": [
+      "js/reports/map.js"
+    ],
+    "reports/map-header": [
+      "js/reports/map-header.js"
+    ],
+    "reports/tabbed": [
+      "js/reports/tabbed.js"
+    ],
+    "resource-types": [
+      "js/resource-types.js"
+    ],
+    "search-components": [
+      "js/search-components.js"
+    ],
+    "utils": [
+      "js/utils.js"
+    ],
+    "utils/aria": [
+      "js/utils/aria.js"
+    ],
+    "utils/back-to-top": [
+      "js/utils/back-to-top.js"
+    ],
+    "utils/dispose": [
+      "js/utils/dispose.js"
+    ],
+    "utils/load-component-dependencies": [
+      "js/utils/load-component-dependencies.js"
+    ],
+    "utils/map-configurator": [
+      "js/utils/map-configurator.js"
+    ],
+    "utils/map-popup-provider": [
+      "js/utils/map-popup-provider.js"
+    ],
+    "utils/ontology": [
+      "js/utils/ontology.js"
+    ],
+    "utils/resource": [
+      "js/utils/resource.js"
+    ],
+    "utils/set-csrf-token": [
+      "js/utils/set-csrf-token.js"
+    ],
+    "view-data": [
+      "js/view-data.js"
+    ],
+    "viewmodels/alert": [
+      "js/viewmodels/alert.js"
+    ],
+    "viewmodels/alert-json": [
+      "js/viewmodels/alert-json.js"
+    ],
+    "viewmodels/base-import-view-model": [
+      "js/viewmodels/base-import-view-model.js"
+    ],
+    "viewmodels/card": [
+      "js/viewmodels/card.js"
+    ],
+    "viewmodels/card-component": [
+      "js/viewmodels/card-component.js"
+    ],
+    "viewmodels/card-constraints": [
+      "js/viewmodels/card-constraints.js"
+    ],
+    "viewmodels/card-multi-select": [
+      "js/viewmodels/card-multi-select.js"
+    ],
+    "viewmodels/concept-select": [
+      "js/viewmodels/concept-select.js"
+    ],
+    "viewmodels/concept-widget": [
+      "js/viewmodels/concept-widget.js"
+    ],
+    "viewmodels/domain-widget": [
+      "js/viewmodels/domain-widget.js"
+    ],
+    "viewmodels/excel-file-export": [
+      "js/viewmodels/excel-file-export.js"
+    ],
+    "viewmodels/excel-file-import": [
+      "js/viewmodels/excel-file-import.js"
+    ],
+    "viewmodels/file-widget": [
+      "js/viewmodels/file-widget.js"
+    ],
+    "viewmodels/function": [
+      "js/viewmodels/function.js"
+    ],
+    "viewmodels/graph-settings": [
+      "js/viewmodels/graph-settings.js"
+    ],
+    "viewmodels/map": [
+      "js/viewmodels/map.js"
+    ],
+    "viewmodels/map-controls": [
+      "js/viewmodels/map-controls.js"
+    ],
+    "viewmodels/map-editor": [
+      "js/viewmodels/map-editor.js"
+    ],
+    "viewmodels/map-filter": [
+      "js/viewmodels/map-filter.js"
+    ],
+    "viewmodels/map-report": [
+      "js/viewmodels/map-report.js"
+    ],
+    "viewmodels/node-value-select": [
+      "js/viewmodels/node-value-select.js"
+    ],
+    "viewmodels/photo-gallery": [
+      "js/viewmodels/photo-gallery.js"
+    ],
+    "viewmodels/provisional-tile": [
+      "js/viewmodels/provisional-tile.js"
+    ],
+    "viewmodels/remote-domain-widget": [
+      "js/viewmodels/remote-domain-widget.js"
+    ],
+    "viewmodels/report": [
+      "js/viewmodels/report.js"
+    ],
+    "viewmodels/resource-instance-select": [
+      "js/viewmodels/resource-instance-select.js"
+    ],
+    "viewmodels/tabbed-report": [
+      "js/viewmodels/tabbed-report.js"
+    ],
+    "viewmodels/tile": [
+      "js/viewmodels/tile.js"
+    ],
+    "viewmodels/widget": [
+      "js/viewmodels/widget.js"
+    ],
+    "viewmodels/workflow": [
+      "js/viewmodels/workflow.js"
+    ],
+    "viewmodels/workflow-step": [
+      "js/viewmodels/workflow-step.js"
+    ],
+    "viewmodels/xy-input": [
+      "js/viewmodels/xy-input.js"
+    ],
+    "views/base-manager": [
+      "js/views/base-manager.js"
+    ],
+    "views/components/cards/default": [
+      "js/views/components/cards/default.js"
+    ],
+    "views/components/cards/file-renderers/imagereader": [
+      "js/views/components/cards/file-renderers/imagereader.js"
+    ],
+    "views/components/cards/file-renderers/pdfreader": [
+      "js/views/components/cards/file-renderers/pdfreader.js"
+    ],
+    "views/components/cards/file-viewer": [
+      "js/views/components/cards/file-viewer.js"
+    ],
+    "views/components/cards/grouping": [
+      "js/views/components/cards/grouping.js"
+    ],
+    "views/components/cards/iiif-card": [
+      "js/views/components/cards/iiif-card.js"
+    ],
+    "views/components/cards/map": [
+      "js/views/components/cards/map.js"
+    ],
+    "views/components/cards/photo-gallery-card": [
+      "js/views/components/cards/photo-gallery-card.js"
+    ],
+    "views/components/cards/related-resources-map": [
+      "js/views/components/cards/related-resources-map.js"
+    ],
+    "views/components/cards/select-feature-layers": [
+      "js/views/components/cards/select-feature-layers.js"
+    ],
+    "views/components/cards/select-related-feature-layers": [
+      "js/views/components/cards/select-related-feature-layers.js"
+    ],
+    "views/components/datatypes/boolean": [
+      "js/views/components/datatypes/boolean.js"
+    ],
+    "views/components/datatypes/concept": [
+      "js/views/components/datatypes/concept.js"
+    ],
+    "views/components/datatypes/date": [
+      "js/views/components/datatypes/date.js"
+    ],
+    "views/components/datatypes/domain-value": [
+      "js/views/components/datatypes/domain-value.js"
+    ],
+    "views/components/datatypes/edtf": [
+      "js/views/components/datatypes/edtf.js"
+    ],
+    "views/components/datatypes/file-list": [
+      "js/views/components/datatypes/file-list.js"
+    ],
+    "views/components/datatypes/geojson-feature-collection": [
+      "js/views/components/datatypes/geojson-feature-collection.js"
+    ],
+    "views/components/datatypes/node-value": [
+      "js/views/components/datatypes/node-value.js"
+    ],
+    "views/components/datatypes/number": [
+      "js/views/components/datatypes/number.js"
+    ],
+    "views/components/datatypes/resource-instance": [
+      "js/views/components/datatypes/resource-instance.js"
+    ],
+    "views/components/datatypes/string": [
+      "js/views/components/datatypes/string.js"
+    ],
+    "views/components/datatypes/url": [
+      "js/views/components/datatypes/url.js"
+    ],
+    "views/components/etl_modules/base-bulk-string-editor": [
+      "js/views/components/etl_modules/base-bulk-string-editor.js"
+    ],
+    "views/components/etl_modules/branch-excel-exporter": [
+      "js/views/components/etl_modules/branch-excel-exporter.js"
+    ],
+    "views/components/etl_modules/branch-excel-importer": [
+      "js/views/components/etl_modules/branch-excel-importer.js"
+    ],
+    "views/components/etl_modules/bulk-case-editor": [
+      "js/views/components/etl_modules/bulk-case-editor.js"
+    ],
+    "views/components/etl_modules/bulk-data-deletion": [
+      "js/views/components/etl_modules/bulk-data-deletion.js"
+    ],
+    "views/components/etl_modules/bulk-replace-editor": [
+      "js/views/components/etl_modules/bulk-replace-editor.js"
+    ],
+    "views/components/etl_modules/bulk-trim-editor": [
+      "js/views/components/etl_modules/bulk-trim-editor.js"
+    ],
+    "views/components/etl_modules/import-single-csv": [
+      "js/views/components/etl_modules/import-single-csv.js"
+    ],
+    "views/components/etl_modules/tile-excel-exporter": [
+      "js/views/components/etl_modules/tile-excel-exporter.js"
+    ],
+    "views/components/etl_modules/tile-excel-importer": [
+      "js/views/components/etl_modules/tile-excel-importer.js"
+    ],
+    "views/components/functions/local-file-storage": [
+      "js/views/components/functions/local-file-storage.js"
+    ],
+    "views/components/functions/primary-descriptors": [
+      "js/views/components/functions/primary-descriptors.js"
+    ],
+    "views/components/geocoders/base-geocoder": [
+      "js/views/components/geocoders/base-geocoder.js"
+    ],
+    "views/components/geocoders/mapbox": [
+      "js/views/components/geocoders/mapbox.js"
+    ],
+    "views/components/icon-selector": [
+      "js/views/components/icon-selector.js"
+    ],
+    "views/components/iiif-annotation": [
+      "js/views/components/iiif-annotation.js"
+    ],
+    "views/components/iiif-viewer": [
+      "js/views/components/iiif-viewer.js"
+    ],
+    "views/components/language-switcher": [
+      "js/views/components/language-switcher.js"
+    ],
+    "views/components/map": [
+      "js/views/components/map.js"
+    ],
+    "views/components/nodegroup-selector": [
+      "js/views/components/nodegroup-selector.js"
+    ],
+    "views/components/notification": [
+      "js/views/components/notification.js"
+    ],
+    "views/components/plugins/etl-manager": [
+      "js/views/components/plugins/etl-manager.js"
+    ],
+    "views/components/plugins/manifest-manager": [
+      "js/views/components/plugins/manifest-manager.js"
+    ],
+    "views/components/plugins/map": [
+      "js/views/components/plugins/map.js"
+    ],
+    "views/components/related-instance-creator": [
+      "js/views/components/related-instance-creator.js"
+    ],
+    "views/components/related-resources-graph": [
+      "js/views/components/related-resources-graph.js"
+    ],
+    "views/components/resource-report-abstract": [
+      "js/views/components/resource-report-abstract.js"
+    ],
+    "views/components/search/advanced-search": [
+      "js/views/components/search/advanced-search.js"
+    ],
+    "views/components/search/base-filter": [
+      "js/views/components/search/base-filter.js"
+    ],
+    "views/components/search/map-filter": [
+      "js/views/components/search/map-filter.js"
+    ],
+    "views/components/search/paging-filter": [
+      "js/views/components/search/paging-filter.js"
+    ],
+    "views/components/search/provisional-filter": [
+      "js/views/components/search/provisional-filter.js"
+    ],
+    "views/components/search/related-resources-filter": [
+      "js/views/components/search/related-resources-filter.js"
+    ],
+    "views/components/search/resource-type-filter": [
+      "js/views/components/search/resource-type-filter.js"
+    ],
+    "views/components/search/saved-searches": [
+      "js/views/components/search/saved-searches.js"
+    ],
+    "views/components/search/search-export": [
+      "js/views/components/search/search-export.js"
+    ],
+    "views/components/search/search-result-details": [
+      "js/views/components/search/search-result-details.js"
+    ],
+    "views/components/search/search-results": [
+      "js/views/components/search/search-results.js"
+    ],
+    "views/components/search/sort-results": [
+      "js/views/components/search/sort-results.js"
+    ],
+    "views/components/search/term-filter": [
+      "js/views/components/search/term-filter.js"
+    ],
+    "views/components/search/time-filter": [
+      "js/views/components/search/time-filter.js"
+    ],
+    "views/components/simple-switch": [
+      "js/views/components/simple-switch.js"
+    ],
+    "views/components/widgets/concept-checkbox": [
+      "js/views/components/widgets/concept-checkbox.js"
+    ],
+    "views/components/widgets/concept-multiselect": [
+      "js/views/components/widgets/concept-multiselect.js"
+    ],
+    "views/components/widgets/concept-radio": [
+      "js/views/components/widgets/concept-radio.js"
+    ],
+    "views/components/widgets/concept-select": [
+      "js/views/components/widgets/concept-select.js"
+    ],
+    "views/components/widgets/datepicker": [
+      "js/views/components/widgets/datepicker.js"
+    ],
+    "views/components/widgets/domain-checkbox": [
+      "js/views/components/widgets/domain-checkbox.js"
+    ],
+    "views/components/widgets/domain-multiselect": [
+      "js/views/components/widgets/domain-multiselect.js"
+    ],
+    "views/components/widgets/domain-radio": [
+      "js/views/components/widgets/domain-radio.js"
+    ],
+    "views/components/widgets/domain-select": [
+      "js/views/components/widgets/domain-select.js"
+    ],
+    "views/components/widgets/edtf": [
+      "js/views/components/widgets/edtf.js"
+    ],
+    "views/components/widgets/file": [
+      "js/views/components/widgets/file.js"
+    ],
+    "views/components/widgets/iiif": [
+      "js/views/components/widgets/iiif.js"
+    ],
+    "views/components/widgets/map": [
+      "js/views/components/widgets/map.js"
+    ],
+    "views/components/widgets/map/bin-feature-collection": [
+      "js/views/components/widgets/map/bin-feature-collection.js"
+    ],
+    "views/components/widgets/map/map-styles": [
+      "js/views/components/widgets/map/map-styles.js"
+    ],
+    "views/components/widgets/node-value-select": [
+      "js/views/components/widgets/node-value-select.js"
+    ],
+    "views/components/widgets/number": [
+      "js/views/components/widgets/number.js"
+    ],
+    "views/components/widgets/radio-boolean": [
+      "js/views/components/widgets/radio-boolean.js"
+    ],
+    "views/components/widgets/resource-instance-multiselect": [
+      "js/views/components/widgets/resource-instance-multiselect.js"
+    ],
+    "views/components/widgets/resource-instance-select": [
+      "js/views/components/widgets/resource-instance-select.js"
+    ],
+    "views/components/widgets/rich-text": [
+      "js/views/components/widgets/rich-text.js"
+    ],
+    "views/components/widgets/switch": [
+      "js/views/components/widgets/switch.js"
+    ],
+    "views/components/widgets/text": [
+      "js/views/components/widgets/text.js"
+    ],
+    "views/components/widgets/urldatatype": [
+      "js/views/components/widgets/urldatatype.js"
+    ],
+    "views/components/workbench": [
+      "js/views/components/workbench.js"
+    ],
+    "views/components/workflows/final-step": [
+      "js/views/components/workflows/final-step.js"
+    ],
+    "views/components/workflows/new-multi-tile-step": [
+      "js/views/components/workflows/new-multi-tile-step.js"
+    ],
+    "views/components/workflows/new-tile-step": [
+      "js/views/components/workflows/new-tile-step.js"
+    ],
+    "views/components/workflows/workflow-component-abstract": [
+      "js/views/components/workflows/workflow-component-abstract.js"
+    ],
+    "views/concept-search": [
+      "js/views/concept-search.js"
+    ],
+    "views/edit-history": [
+      "js/views/edit-history.js"
+    ],
+    "views/graph": [
+      "js/views/graph.js"
+    ],
+    "views/graph-designer": [
+      "js/views/graph-designer.js"
+    ],
+    "views/graph-designer-data": [
+      "js/views/graph-designer-data.js"
+    ],
+    "views/graph-manager-data": [
+      "js/views/graph-manager-data.js"
+    ],
+    "views/graph/card-configuration/card-components-tree": [
+      "js/views/graph/card-configuration/card-components-tree.js"
+    ],
+    "views/graph/card-configuration/card-form-preview": [
+      "js/views/graph/card-configuration/card-form-preview.js"
+    ],
+    "views/graph/function-manager": [
+      "js/views/graph/function-manager.js"
+    ],
+    "views/graph/function-manager/applied-function-list": [
+      "js/views/graph/function-manager/applied-function-list.js"
+    ],
+    "views/graph/function-manager/function-list": [
+      "js/views/graph/function-manager/function-list.js"
+    ],
+    "views/graph/graph-base-data": [
+      "js/views/graph/graph-base-data.js"
+    ],
+    "views/graph/graph-designer/card-tree": [
+      "js/views/graph/graph-designer/card-tree.js"
+    ],
+    "views/graph/graph-designer/graph-tree": [
+      "js/views/graph/graph-designer/graph-tree.js"
+    ],
+    "views/graph/graph-designer/node-form": [
+      "js/views/graph/graph-designer/node-form.js"
+    ],
+    "views/graph/graph-functions-data": [
+      "js/views/graph/graph-functions-data.js"
+    ],
+    "views/graph/graph-manager/branch-list": [
+      "js/views/graph/graph-manager/branch-list.js"
+    ],
+    "views/graph/graph-manager/graph-base": [
+      "js/views/graph/graph-manager/graph-base.js"
+    ],
+    "views/graph/graph-page-view": [
+      "js/views/graph/graph-page-view.js"
+    ],
+    "views/graph/graph-settings": [
+      "js/views/graph/graph-settings.js"
+    ],
+    "views/graph/graph-settings-data": [
+      "js/views/graph/graph-settings-data.js"
+    ],
+    "views/graph/permission-designer": [
+      "js/views/graph/permission-designer.js"
+    ],
+    "views/graph/permission-manager/identity-list": [
+      "js/views/graph/permission-manager/identity-list.js"
+    ],
+    "views/graph/permission-manager/permission-settings-form": [
+      "js/views/graph/permission-manager/permission-settings-form.js"
+    ],
+    "views/list": [
+      "js/views/list.js"
+    ],
+    "views/map-layer-manager": [
+      "js/views/map-layer-manager.js"
+    ],
+    "views/map-layer-manager-data": [
+      "js/views/map-layer-manager-data.js"
+    ],
+    "views/notifications-list": [
+      "js/views/notifications-list.js"
+    ],
+    "views/page-view": [
+      "js/views/page-view.js"
+    ],
+    "views/plugin": [
+      "js/views/plugin.js"
+    ],
+    "views/plugin-data": [
+      "js/views/plugin-data.js"
+    ],
+    "views/profile-manager-data": [
+      "js/views/profile-manager-data.js"
+    ],
+    "views/provisional-history-list": [
+      "js/views/provisional-history-list.js"
+    ],
+    "views/rdm/concept-report": [
+      "js/views/rdm/concept-report.js"
+    ],
+    "views/rdm/concept-tree": [
+      "js/views/rdm/concept-tree.js"
+    ],
+    "views/rdm/modals/add-child-form": [
+      "js/views/rdm/modals/add-child-form.js"
+    ],
+    "views/rdm/modals/add-collection-form": [
+      "js/views/rdm/modals/add-collection-form.js"
+    ],
+    "views/rdm/modals/add-image-form": [
+      "js/views/rdm/modals/add-image-form.js"
+    ],
+    "views/rdm/modals/add-scheme-form": [
+      "js/views/rdm/modals/add-scheme-form.js"
+    ],
+    "views/rdm/modals/delete-collection-form": [
+      "js/views/rdm/modals/delete-collection-form.js"
+    ],
+    "views/rdm/modals/delete-scheme-form": [
+      "js/views/rdm/modals/delete-scheme-form.js"
+    ],
+    "views/rdm/modals/export-scheme-form": [
+      "js/views/rdm/modals/export-scheme-form.js"
+    ],
+    "views/rdm/modals/import-concept-form": [
+      "js/views/rdm/modals/import-concept-form.js"
+    ],
+    "views/rdm/modals/import-scheme-form": [
+      "js/views/rdm/modals/import-scheme-form.js"
+    ],
+    "views/rdm/modals/manage-parent-form": [
+      "js/views/rdm/modals/manage-parent-form.js"
+    ],
+    "views/rdm/modals/related-concept-form": [
+      "js/views/rdm/modals/related-concept-form.js"
+    ],
+    "views/rdm/modals/related-member-form": [
+      "js/views/rdm/modals/related-member-form.js"
+    ],
+    "views/rdm/modals/value-form": [
+      "js/views/rdm/modals/value-form.js"
+    ],
+    "views/resource": [
+      "js/views/resource.js"
+    ],
+    "views/resource/edit-log": [
+      "js/views/resource/edit-log.js"
+    ],
+    "views/resource/editor": [
+      "js/views/resource/editor.js"
+    ],
+    "views/resource/permissions-manager": [
+      "js/views/resource/permissions-manager.js"
+    ],
+    "views/resource/related-resources-manager": [
+      "js/views/resource/related-resources-manager.js"
+    ],
+    "views/resource/related-resources-node-list": [
+      "js/views/resource/related-resources-node-list.js"
+    ],
+    "views/resource/report": [
+      "js/views/resource/report.js"
+    ],
+    "views/resource/resource-edit-history-data": [
+      "js/views/resource/resource-edit-history-data.js"
+    ],
+    "views/resource/resource-editor-data": [
+      "js/views/resource/resource-editor-data.js"
+    ],
+    "views/search": [
+      "js/views/search.js"
+    ],
+    "views/simple-search": [
+      "js/views/simple-search.js"
+    ],
+    "views/tree-view": [
+      "js/views/tree-view.js"
+    ],
+    "views/user-profile-manager": [
+      "js/views/user-profile-manager.js"
+    ],
+    "widgets": [
+      "js/widgets.js"
+    ]
+  },
+  "publicPath": "/static/"
+}

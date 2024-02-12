@@ -1,0 +1,139 @@
+{
+    "graph": [
+        {
+            "author": "GCI ", 
+            "cards": [
+                {
+                    "active": true, 
+                    "cardid": "fb06d30d-a088-11e6-84a5-026d961c88e6", 
+                    "description": "This is intended as a sub-branch to Resource Creation Event within the Information Resource Resource Model.  Stores the date when an update to the information resource occurred.", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "helpenabled": false, 
+                    "helptext": null, 
+                    "helptitle": null, 
+                    "instructions": "Select the date the information resource was updated. ", 
+                    "name": "Resource Update Event", 
+                    "nodegroup_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "sortorder": null, 
+                    "visible": true
+                }
+            ], 
+            "cards_x_nodes_x_widgets": [
+                {
+                    "card_id": "fb06d30d-a088-11e6-84a5-026d961c88e6", 
+                    "config": "{\"maxDate\":false,\"viewMode\":\"days\",\"dateFormat\":\"YYYY-MM-DD\",\"placeholder\":\"Enter date\",\"minDate\":false,\"label\":\"Date of Update\"}", 
+                    "id": "bbc91a84-b8f4-11e6-84a5-026d961c88e6", 
+                    "label": "Date of Update", 
+                    "node_id": "eb6f9c19-a08a-11e6-84a5-026d961c88e6", 
+                    "sortorder": 0, 
+                    "widget_id": "10000000-0000-0000-0000-000000000004"
+                }
+            ], 
+            "deploymentdate": null, 
+            "deploymentfile": null, 
+            "description": "This is intended as a sub-branch to Resource Creation Event within the Information Resource Resource Model.  Stores the date when an update to the information resource occurred.", 
+            "edges": [
+                {
+                    "description": null, 
+                    "domainnode_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "edgeid": "5b40b818-a08a-11e6-84a5-026d961c88e6", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "name": null, 
+                    "ontologyproperty": "http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span", 
+                    "rangenode_id": "5b40b817-a08a-11e6-84a5-026d961c88e6"
+                }, 
+                {
+                    "description": null, 
+                    "domainnode_id": "5b40b817-a08a-11e6-84a5-026d961c88e6", 
+                    "edgeid": "eb6f9c1a-a08a-11e6-84a5-026d961c88e6", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "name": null, 
+                    "ontologyproperty": "http://www.cidoc-crm.org/cidoc-crm/P78_is_identified_by", 
+                    "rangenode_id": "eb6f9c19-a08a-11e6-84a5-026d961c88e6"
+                }
+            ], 
+            "forms": [], 
+            "forms_x_cards": [], 
+            "functions": [], 
+            "graphid": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+            "iconclass": "", 
+            "isresource": false, 
+            "mapfeaturecolor": "#FF0000", 
+            "maplinewidth": 1, 
+            "mappointsize": 3, 
+            "name": "Resource Update Event", 
+            "nodegroups": [
+                {
+                    "cardinality": "n", 
+                    "legacygroupid": null, 
+                    "nodegroupid": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "parentnodegroup_id": null
+                }
+            ], 
+            "nodes": [
+                {
+                    "config": null, 
+                    "datatype": "semantic", 
+                    "description": "Represents a single node in a graph", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "is_collector": false, 
+                    "istopnode": false, 
+                    "name": "Update Timespan", 
+                    "nodegroup_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "nodeid": "5b40b817-a08a-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span", 
+                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span"
+                }, 
+                {
+                    "config": null, 
+                    "datatype": "semantic", 
+                    "description": "", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "is_collector": true, 
+                    "istopnode": true, 
+                    "name": "Resource Update Event", 
+                    "nodegroup_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "nodeid": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E11_Modification", 
+                    "parentproperty": ""
+                }, 
+                {
+                    "config": null, 
+                    "datatype": "date", 
+                    "description": "Represents a single node in a graph", 
+                    "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                    "is_collector": false, 
+                    "istopnode": false, 
+                    "name": "Date of Update", 
+                    "nodegroup_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                    "nodeid": "eb6f9c19-a08a-11e6-84a5-026d961c88e6", 
+                    "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E50_Date", 
+                    "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P78_is_identified_by"
+                }
+            ], 
+            "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd", 
+            "reports": [], 
+            "root": {
+                "config": null, 
+                "datatype": "semantic", 
+                "description": "", 
+                "graph_id": "fb06d30b-a088-11e6-84a5-026d961c88e6", 
+                "is_collector": true, 
+                "istopnode": true, 
+                "name": "Resource Update Event", 
+                "nodegroup_id": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                "nodeid": "fb06d30a-a088-11e6-84a5-026d961c88e6", 
+                "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E11_Modification", 
+                "parentproperty": ""
+            }, 
+            "subtitle": "Stores the date when an update to the information resource occurred", 
+            "version": ""
+        }
+    ], 
+    "metadata": {
+        "db": "PostgreSQL 9.6.0 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 5.3.1-14ubuntu2) 5.3.1 20160413, 64-bit", 
+        "git hash": "ff93bd9 2017-01-24 10:17:51 -0800", 
+        "os": "Linux", 
+        "os version": "4.4.0-45-generic"
+    }
+}
