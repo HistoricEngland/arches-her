@@ -2,6 +2,7 @@ from arches.app.datatypes.base import BaseDataType
 from arches.app.models.models import Widget
 from arches.app.models.system_settings import settings
 from arches.app.search.elasticsearch_dsl_builder import Match, Exists
+from arches.app.search.search_term import SearchTerm
 import logging
 
 bngpoint = Widget.objects.get(name="bngpoint")
@@ -113,7 +114,7 @@ class BNGCentreDataType(BaseDataType):
         document["strings"].append({"string": nodevalue, "nodegroup_id": tile.nodegroup_id})
 
     def get_search_terms(self, nodevalue, nodeid=None):
-        return [nodevalue]
+        return [SearchTerm(value=nodevalue)]
 
     def append_search_filters(self, value, node, query, request):
         self.logger = logging.getLogger(__name__)
