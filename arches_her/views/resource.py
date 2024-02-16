@@ -17,7 +17,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from django.http import HttpResponseNotFound
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import View
 from arches.app.models.resource import Resource
 from arches.app.utils.response import JSONResponse
