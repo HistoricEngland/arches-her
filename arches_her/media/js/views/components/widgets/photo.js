@@ -5,7 +5,7 @@ define([
     'dropzone',
     'uuid',
     'viewmodels/file-widget',
-    'widget-templates/photo',
+    'templates/views/components/widgets/photo.htm',
     'bindings/gallery',
     'bindings/dropzone'
 ], function($, ko, _, Dropzone, uuid, FileWidgetViewModel, thisTemplate) {

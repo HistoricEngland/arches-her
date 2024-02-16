@@ -1,7 +1,7 @@
 define([
     'knockout',
     'viewmodels/tabbed-report',
-    'report-templates/tabbed',
+    'templates/views/report-templates/tabbed.htm',
     'reports/map-header',
     'reports/consultations-status',
     'reports/consultations-site-visit-empty',
