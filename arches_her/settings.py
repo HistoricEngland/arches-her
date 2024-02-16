@@ -17,6 +17,7 @@ except ImportError:
     pass
 
 APP_NAME = 'arches_her'
+APP_PATHNAME = "arches-her"
 APP_VERSION = semantic_version.Version(major=0, minor=0, patch=0)
 APP_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 MIN_ARCHES_VERSION = arches.__version__
@@ -164,6 +165,9 @@ TEMPLATES = build_templates_config(
     debug=DEBUG,
     app_root=APP_ROOT,
     arches_applications=ARCHES_APPLICATIONS,
+)
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "arches_her.utils.context_processors.project_settings"
 )
 
 ALLOWED_HOSTS = []
