@@ -9,7 +9,7 @@ arches_her/settings_local.py
 .DS_Store
 arches_her/tileserver/cache
 *.djcache
-arches_her/node_modules
+arches_her/media/node_modules
 .vscode/
 Procfile
 .atom-build.yml
