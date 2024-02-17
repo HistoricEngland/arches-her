@@ -19,31 +19,25 @@ function (ko, koMapping, ListView, FunctionViewModel, chosen, thisTemplate) {
             // Subscription.
             // Single node subscription. (They may want point/line/polygon in which case we'll need two more.)
             this.geojson_input_node.subscribe(function(ng){
-                _.each(self.nodesGeoJSON(),function(node){
-                    if (node.datatype !== "semantic"){
-                        
-                        if (ng === node.nodeid){
+                self.nodesGeoJSON().filter(node => node.datatype !== "semantic")
+                    .map(node => {
+                        if (ng === node.nodeid) {
                             self.triggering_nodegroups.push(node.nodegroup_id);
                             params.config.geojson_input_nodegroup = node.nodegroup_id;
-                            console.log("geojson_input_nodegroup",self.geojson_input_nodegroup);
+                            console.log("geojson_input_nodegroup", self.geojson_input_nodegroup);
                         }
-                        
-                    }
-                })
+                    });
             });
 
             this.bng_output_node.subscribe(function(o_n){
                 console.log('BNG node id:', o_n);
-                _.each(self.nodesBNG(),function(node){
-                    if (node.datatype !== "semantic"){
-                        
-                        if (o_n === node.nodeid){
+                self.nodesBNG().filter(node => node.datatype !== "semantic")
+                    .map(node => {
+                        if (o_n === node.nodeid) {
                             params.config.bng_output_nodegroup = node.nodegroup_id;
-                            console.log("bng_output_nodegroup",self.bng_output_nodegroup);
+                            console.log("bng_output_nodegroup", self.bng_output_nodegroup);
                         }
-                    }
-                    
-                })
+                    });
                 
                 
             })

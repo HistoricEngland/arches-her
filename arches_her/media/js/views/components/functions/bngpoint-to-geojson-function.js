@@ -16,37 +16,28 @@ function (ko, koMapping, ListView, FunctionViewModel, chosen, thisTemplate) {
             this.geojson_node = params.config.geojson_node;
             this.triggering_nodegroups = params.config.triggering_nodegroups;
             this.bng_node.subscribe(function(ng){
-                _.each(self.nodesBNG(),function(node){
-                    if (node.datatype !== "semantic"){
-                        
-                        if (ng === node.nodeid){
+                self.nodesBNG().filter(node => node.datatype !== "semantic")
+                    .map(node => {
+                        if (ng === node.nodeid) {
                             self.triggering_nodegroups.push(node.nodegroup_id);
                             params.config.bng_nodegroup = node.nodegroup_id;
-                            console.log("bng_nodegroup",self.bng_nodegroup);
+                            console.log("bng_nodegroup", self.bng_nodegroup);
                         }
-                        
-                    }
-                })
+                    });
             });
 
             this.geojson_node.subscribe(function(o_n){
                 console.log('GeoJSON node id:', o_n);
-                _.each(self.nodesGeoJSON(),function(node){
-                    if (node.datatype !== "semantic"){
-                        
-                        if (o_n === node.nodeid){
+                self.nodesGeoJSON().filter(node => node.datatype !== "semantic")
+                    .map(node => {
+                        if (o_n === node.nodeid) {
                             params.config.geojson_nodegroup = node.nodegroup_id;
-                            console.log("geojson_nodegroup",self.geojson_nodegroup);
+                            console.log("geojson_nodegroup", self.geojson_nodegroup);
                         }
-                    }
-                    
-                })
+                    });
                 
                 
               })
-
-
-
 
             this.graph.nodes.forEach(function(node){
                 if (node.datatype != 'semantic'){
