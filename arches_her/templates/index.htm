@@ -48,10 +48,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin">
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
-        <link rel="stylesheet" type="text/css" href="{% webpack_static 'plugins/slick/slick.min.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% webpack_static 'plugins/slick/accessible-slick-theme.min.css' %}">
         <link rel="stylesheet" type="text/css" href="{% webpack_static 'css/index.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% webpack_static 'css/index-slider.css' %}">
+        {% compress css %}
+            <link rel="stylesheet" type="text/x-scss" href="{% webpack_static 'css/project.scss' %}" media="all">
+        {% endcompress %}
         {% if app_settings.ACCESSIBILITY_MODE %}
             {% compress css %}
                 <link rel="stylesheet" type="text/x-scss" href="{% webpack_static 'css/accessibility.scss' %}" media="screen">
@@ -60,365 +60,270 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     {% endblock css%}
 </head>
 
-<body>
+<body class="landing-page">
     <script src="{% webpack_static 'node_modules/requirejs/require.js' %}"></script>
     {% include 'javascript.htm' %}
 
     <!--=== Header ===-->
     <header>
-        <div class="v5-splash-navbar navbar">
-            <div class="container-fluid">
+        <nav class="navbar">
+            <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false" aria-controls="myNavbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <div class="relative nav-brand-container">
-                        <div class="navbar-brand-v5-icon-container">
-                            <img class="navbar-brand-v5-icon" src="{% webpack_static 'img/landing/Arches_logo_white.png' %}" alt="Arches Logo">
-                        </div>
-                        <div class="application-name">
-                            <h1>{% blocktrans %}Arches | {{version}}{% endblocktrans %}</h1>
-                        </div>
-                    </div>
+                    <a href="/" class="navbar-brand header-bar__logo-link" aria-label="Link to homepage">
+                        <img class="header-bar__logo-image" src="{% webpack_static 'img/HE_Logo_RGB.svg' %}" alt="Historic England logo">
+                    </a>
                 </div>
-
-                <nav id="myNavbar" class="navbar-collapse collapse" aria-label="{% trans 'Arches Application Navigation' %}">
+                <div id="navbar" class="navbar-collapse collapse no-transition">
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#info-block-1">{% trans "Arches Features" %}</a>
+                        <li class="active">
+                            <a href="/">Home</a>
                         </li>
+                        {% for p in plugins %}
                         <li>
-                            <a href="{% url 'search_home' %}">{% trans "Search Arches" %}</a>
+                            <a href="{% url p.slug %}">{{ p.name }}</a>
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <a href="{% url 'search_home' %}">{% trans "Find" %}</a>
                         </li>
                         {% if user|can_create_resource_instance and user.username != 'anonymous' %}
-                            <li>
-                                <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
-                            </li>
+                        <li>
+                            <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
+                        </li>
                         {% endif %}
-                        {% if user.username == 'anonymous' %}
-                            <li>
-                                <a class="application-login" id="auth-link" href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans "Sign in" %}</a>
-                            </li>
-                        {% else %}
-                            <li>
-                                <a class="auth-welcome" href="{% url 'user_profile_manager' %}" aria-label="{% trans 'Visit user profile' %}">
-                                    {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
-                                </a>
-                            </li>
-                            <li>
-                                <a class="application-login" href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans 'Log off' %}</a>
-                            </li>
-                        {% endif %}
-                        {% if show_language_swtich %}
-                            <li>
-                                {% get_current_language as LANGUAGE_CODE %}
-                                <div class="lang-switch" style="max-width: none;" data-bind='component: {
-                                    name: "views/components/language-switcher",
-                                    params: {
-                                        current_language: "{{LANGUAGE_CODE}}"
-                                    }
-                                }'></div>
-                            </li>
-                        {% endif %}
+                        <li>
+                            {% if user.username == 'anonymous' %}
+                            <a class="btn btn-primary btn-lg hidden-xs" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
+                            <a class="mobile-menu-sign-in visible-xs-*" id="auth-link"
+                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
+                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user hidden-xs">{% trans "Sign in" %}</a>
+                            {% else %}
+                            <a class="auth-welcome" href="{% url 'user_profile_manager' %}">
+                                {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
+                            {% endif %}
+                        </li>
                     </ul>
-                </nav>
+                </div>
             </div>
-        </div>
+        </nav>
     </header>
     <!--=== End Header ===-->
 
     <main>
-        <article>
-            <!-- Intro Section -->
-            <section id="info-block-0" class="app-info-block intro-section relative">
-                <!-- Vertical Nav -->
-                <nav id="cd-vertical-nav" class="vertical-nav-container" aria-label="{% trans 'Page Navigation' %}">
-                    <ul class="vertical-nav-list">
-                        <li class="active">
-                            <a class="vertical-nav-list-link" href="#info-block-0" data-number="1" aria-label="{% trans 'Go to the top of the page' %}"
-                                data-bind="click: function() { document.querySelector('#info-block-0').focus; }"
-                            >
-                                <span class="vertical-nav-list-ref">{% trans "Home" %}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="vertical-nav-list-link" href="#info-block-1" data-number="2" aria-label="{% trans 'Go to the fast section' %}">
-                                <span class="vertical-nav-list-ref">{% trans "Fast" %}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="vertical-nav-list-link" href="#info-block-2" data-number="3" aria-label="{% trans 'Go to the workflows section' %}">
-                                <span class="vertical-nav-list-ref">{% trans "Workflows" %}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="vertical-nav-list-link" href="#info-block-3" data-number="4" aria-label="{% trans 'Go to the search tools section' %}">
-                                <span class="vertical-nav-list-ref">{% trans "Search Tools" %}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Slider - Start -->
-                <div class="home-slider">
-                    <div class="slide-img-container">
-                        <img src="{% webpack_static 'img/landing/landing-primary.jpg' %}" alt="" aria-describedby="slide1-attribution">
-                        <div class="slide-caption">
-                            <h2>{% blocktrans %}Arches {{version}}{% endblocktrans %}</h2>
-                            <p>{% trans "A web and mobile platform for" %}</p>
-                            <p>{% trans "managing your most important resource information" %}</p>
+        <div class="container">
+            <div class="row featurette1">
+                <div class="featurette1-left-container">
+                    <h1>Greater London Historic Environment Record<br/>
+                        (GLHER)</h1>
+                    <p class="lead">The online heritage information and management system for London.</p>
+                </div>
+                <div class="featurette1-right-container pull-right">
+                    <img src="{% static 'img/landing/featurette1.png' %}" alt="Photo of the London landscape" class="img-rounded img-responsive">
+                </div>
+            </div>
+            <div class="row featurette2">
+                <h2>On this page</h2>
+                <ol>
+                    <li><a href="#bm-about">About</a></li>
+                    <li><a href="#bm-how-to-use">How to use</a></li>
+                    <li><a href="#bm-volunteering">Volunteering with GLHER</a></li>
+                    <li><a href="#bm-themes">Heritage Themes</a></li>
+                </ol>
+            </div>
+            <div class="row featurette3">
+                <h2 id="bm-about">About</h2>
+                <p class="subtitle">What is the Greater London Historic Environment Record (GLHER)?</p>
+                <p>The GLHER is a comprehensive and dynamic resource for the historic environment of the
+                    Capital city. From the earliest human occupation to the present day, GLHER data promotes
+                    better understanding of London's rich heritage, and supports development and regeneration
+                    through the work of the Greater London Archaeological Advisory Service (GLAAS).</p>
+                <p>The online GLHER is constantly updated by the HER Team and volunteers. It is suitable
+                    for general and basic research, and will be of interest to local residents, community
+                    groups, and visitors to London.</p>
+                <p>Those interested in more complex research, or for commercial purposes (chargeable
+                    HER searches such as development, planning, or land management enquires) may use it
+                    for preliminary assessment, but should request a full search through our online
+                    booking system as additional data is provided, or available, by the HER as part of
+                    <a href="https://www.smartsurvey.co.uk/s/GLHER-search-request/" target="_blank">these searches</a>.</p>
+                <p>For further information and advice on commercial HER searches, and the GLHER in
+                    general, please <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/#Charges" target="_blank">read
+                    the GLHER Access and Charging Policy here</a>, or contact the HER team directly for advice.</p>
+                <div class="row featurette3-row">
+                    <div class="thumbnail featurette-image-block featurette3-first-block">
+                        <img src="{% static 'img/landing/about-left.png' %}" alt="Photo of a London bridge over the river Thames">
+                        <div class="caption">
+                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/#Section1Text" target="_blank">Find out more about the role of the Greater London Historic Environment Record</a>
                         </div>
-                        <div id="slide1-attribution" class="slide-img-attribution">{% trans "Image courtesy of Luis Alfonso Orellana" %}</div>
                     </div>
-                    <div class="slide-img-container">
-                        <img src="{% webpack_static 'img/landing/bhutan_tigersnest_lr.jpg' %}" alt="" aria-describedby="slide2-attribution">
-                        <div class="slide-caption">
-                            <h2>{% blocktrans %}Arches {{version}}{% endblocktrans %}</h2>
-                            <p>{% trans "A web and mobile platform for" %}</p>
-                            <p>{% trans "managing your most important resource information" %}</p>
+                    <div class="thumbnail featurette-image-block featurette3-second-block">
+                        <img src="{% static 'img/landing/about-right.png' %}" alt="Photo of the London skyline">
+                        <div class="caption">
+                            <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/" target="_blank">To find out more about the work of the Greater London Archaeology Advisory Service</a>
                         </div>
-                        <div id="slide2-attribution" class="slide-img-attribution">{% trans "Taktsang Palphug Monastery (also known as Paro Takstang or Tiger's Nest Monastery), Bhutan" %}</div>
-                    </div>
-                    <div class="slide-img-container">
-                        <img src="{% webpack_static 'img/landing/potala_palace.jpg' %}" alt="" aria-describedby="slide3-attribution">
-                        <div class="slide-caption">
-                            <h2>{% blocktrans %}Arches {{version}}{% endblocktrans %}</h2>
-                            <p>{% trans "A web and mobile platform for" %}</p>
-                            <p>{% trans "managing your most important resource information" %}</p>
-                        </div>
-                        <div id="slide3-attribution" class="slide-img-attribution">{% trans "Potala Palace in Lhasa, Tibet" %}</div>
                     </div>
                 </div>
-                <!-- Slider - End -->
-
-                <!-- Down button -->
-                <a href="#info-block-1" class="down-button" aria-label="{% trans 'Go to content' %}"><i class="fa fa-angle-down down-button-icon"></i></a>
-
-            </section>
-            <!-- End Intro Section -->
-
-            <!-- Info Block 1 -->
-            <section id="info-block-1" class="app-info-block relative">
+            </div>
+            <div class="row featurette4">
+                <h2 id="bm-how-to-use">How to use the GLHER online</h2>
+                <div class="row featurette4-row">
+                    <video controls poster="{% static 'img/landing/video-placeholder.png' %}">
+                        <source src="{% static 'img/landing/london.mp4' %}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <p>A detailed guide for general users is available to download here: <a href="https://rise.articulate.com/share/1ynrLdvjIPVLpvbfJCBxIKUB_bOa1OJX#/lessons/9aLiKLu2ll6bMaf1PSiYglzWMxVehmXk" target="_blank">GLHER User Guide</a>.</p>
+            </div>
+            <div class="row featurette5">
+                <h2 id="bm-volunteering">Volunteering with GLHER</h2>
+                <p>We have opportunities for enthusiastic volunteers, of all ages and backgrounds, to enhance the Greater London
+                    Historic Environment Record, and help protect and promote London's rich and diverse heritage.</p>
+                <p>Whether this is for work experience, starting out on a career in the cultural heritage sector, or just for fun,
+                    we can provide full training and support.</p>
+                <p>Past and current volunteer projects include:</p>
+                <ul>
+                    <li>London's historic parks and gardens</li>
+                    <li>First World War auxiliary hospitals, and</li>
+                    <li>Thames foreshore sites and finds</li>
+                </ul>
+                <p>Other projects are in development, and we are also interested to hear suggestions for future projects.</p>
+                <p>For more information please contact the HER Team.</p>
+            </div>
+            <div class="row featurette6">
+                <h2 id="bm-themes">Heritage Themes</h2>
+                <p>Find out more about London's heritage.</p>
+                <div class="row featurette6-row">
+                    <div class="thumbnail featurette-image-block">
+                        <img src="{% static 'img/landing/statue.png' %}" alt="Photo of Roman London">
+                        <div class="caption">
+                            <a href="https://glher.historicengland.org.uk/search?paging-filter=4&format=tilecsv&reportlink=false&precision=6&total=874&tiles=true&term-filter=%5B%7B%22context%22%3A%22f917eb4a-4c25-402e-a28c-4df30569c666%22%2C%22context_label%22%3A%22London%20Borough%22%2C%22id%22%3A100%2C%22text%22%3A%22Southwark%22%2C%22type%22%3A%22concept%22%2C%22value%22%3A%22ac8a2420-5eef-4a5d-9eb1-48278fbd3fb1%22%2C%22inverted%22%3Afalse%7D%5D&advanced-search=%5B%7B%22op%22%3A%22and%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%5B%2217a25c50-799d-4ea7-bd0f-0994e30c1f63%22%5D%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%7D%5D" target="_blank">Roman London</a>
+                        </div>
+                    </div>
+                    <div class="thumbnail featurette-image-block featurette6-mid-block">
+                        <img src="{% static 'img/landing/bowie.png' %}" alt="Photo of Musical London">
+                        <div class="caption">
+                            <a href="https://keystone.historicengland.org.uk/search?paging-filter=1&format=tilecsv&reportlink=false&precision=6&total=202852&tiles=true&advanced-search=%5B%7B%22op%22%3A%22and%22%2C%22676d47ff-9c1c-11ea-b07f-f875a44e0e11%22%3A%7B%22op%22%3A%22!%22%2C%22val%22%3A%22British%20Library%20Centre%20for%20Conservation%20(21st%20Century%20Library%20and%20Office)%22%7D%2C%22676d47fc-9c1c-11ea-b5b0-f875a44e0e11%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22676d47fd-9c1c-11ea-9d73-f875a44e0e11%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%7D%2C%7B%22op%22%3A%22and%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22bbea3dcf-04c8-4478-b6c4-97a552ffe250%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%22b2133e67-efdc-11eb-b3ea-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6b-efdc-11eb-aa04-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22bbea3dcf-04c8-4478-b6c4-97a552ffe250%22%7D%2C%22b2133e6c-efdc-11eb-8c3c-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6d-efdc-11eb-b877-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6f-efdc-11eb-a120-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%22b2133e71-efdc-11eb-a6f7-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e72-efdc-11eb-a68d-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e75-efdc-11eb-af28-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%2277e8f28a-efdc-11eb-9600-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28d-efdc-11eb-afe4-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f28e-efdc-11eb-b9f5-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e8f291-efdc-11eb-9441-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f292-efdc-11eb-acfd-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f293-efdc-11eb-ac31-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f294-efdc-11eb-a9a2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f295-efdc-11eb-a593-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%2277e8f298-efdc-11eb-9465-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29b-efdc-11eb-b248-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29c-efdc-11eb-a0ba-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29d-efdc-11eb-b890-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e8f29f-efdc-11eb-a58e-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%2277e9065e-efdc-11eb-baa2-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%2277e90834-efdc-11eb-b2b9-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22f70d0eab-b50d-486b-b02e-109c1d79fd08%22%7D%7D%2C%7B%22op%22%3A%22or%22%2C%22b2133e67-efdc-11eb-b3ea-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6b-efdc-11eb-aa04-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22f70d0eab-b50d-486b-b02e-109c1d79fd08%22%7D%2C%22b2133e6c-efdc-11eb-8c3c-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6d-efdc-11eb-b877-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e6f-efdc-11eb-a120-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%2C%22b2133e71-efdc-11eb-a6f7-a87eeabdefba%22%3A%7B%22op%22%3A%22~%22%2C%22val%22%3A%22%22%7D%2C%22b2133e72-efdc-11eb-a68d-a87eeabdefba%22%3A%7B%22op%22%3A%22%22%2C%22val%22%3A%22%22%7D%2C%22b2133e75-efdc-11eb-af28-a87eeabdefba%22%3A%7B%22op%22%3A%22overlaps%22%2C%22val%22%3A%22%22%7D%7D%5D" target="_blank">Musical London</a>
+                        </div>
+                    </div>
+                    <div class="thumbnail featurette-image-block">
+                        <img src="{% static 'img/landing/project.png' %}" alt="Image to be confirmed">
+                        <div class="caption">
+                            <a href="#">HE or Local Authority/community project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row featurette7">
+                <h2>Contact Us</h2>
+                <div class="jumbotron">
+                    <h3>The Greater London Historic Environment Record</h3>
+                    <div class="row website-details">
+                        <div class="col-xs-12">
+                            <div class="contact-icon hidden-xs">
+                                <img src="{% static 'img/landing/contact-website.svg' %}" width="25" height="25" alt="Website icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Website</strong><br/>
+                                    <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">Website The Greater London Historic Environment Record</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row address-phone">
+                        <div class="col-sm-6">
+                            <div class="contact-icon hidden-xs">
+                                <img src="{% static 'img/landing/contact-address.svg' %}" width="25" height="25" alt="Address icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Address</strong><br>
+                                    Historic England 4th Floor<br>
+                                    Cannon Bridge House<br>
+                                    25 Dowgate Hill<br>
+                                    London<br>
+                                    EC4R 2YA</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="contact-icon hidden-xs">
+                                <img src="{% static 'img/landing/contact-phone.svg' %}" width="25" height="25" alt="Phone icon">
+                            </div>
+                            <div class="contact-details">
+                                <p><strong>Phone number</strong><br>
+                                    0207 973 3731<br>
+                                    0207 973 3214<br>
+                                    0207 973 3691</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p><a class="btn btn-primary btn-lg" href="#" role="button">View on map</a></p>
+                </div>
                 <div>
-
-                    <!-- Heading Info -->
-                    <div class="sub-section">
-                        <div class="col-lg-7">
-                            <div class="app-info-block-intro text-center">
-                                <h2 class="app-info-block-header">{% trans "Fast" %}</h2>
-                                <h3 class="app-info-block-title">{% trans "Deploy Applications Rapidly" %}</h3>
-                                <p class="app-info-block-text">
-                                    {% trans "Design custom information management applications in hours.  Build your databases with Arches Designer, then configure your interface all without having to write any code." %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="splash-img">
-                        <img src="{% webpack_static 'img/landing/imac_designer.png' %}"  alt="Arches Designer">
-                    </div>
-
-                    <!-- Sub-section -->
-                    <div class="row app-info-sub-block">
-
-                        <!-- Arches Data Type Block -->
-                        <div class="col-lg-6">
-                            <div class="sub-block-container">
-                                <h3 class="app-info-block-title">{% trans "Interface Manager" %}</h3>
-                                <p class="sub-block-description">
-                                    {% trans "Arches automatically creates data entry forms based on your data models.  Use Arches' Card Manager to configure the look and feel of your data entry UI." %}
-                                </p>
-                                <img class="sub-block-image" src="{% webpack_static 'img/landing/card_manager.png' %}" alt="Card Manager">
-                            </div>
-                        </div>
-
-                        <!-- Arches Data Type Block -->
-                        <div class="col-lg-6">
-                            <div class="sub-block-container">
-                                <h3 class="app-info-block-title">{% trans "Data Security" %}</h3>
-                                <p class="sub-block-description">
-                                    {% trans "Use Arches' Permissions Manager to set up data access rules for all your user groups and individual accounts.  You can define read/write/delete and no-access permissions." %}
-                                </p>
-                                <img class="sub-block-image" src="{% webpack_static 'img/landing/permissions_manager.png' %}" alt="Permissions Manager">
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- End Sub-section -->
-
+                    <p>All photographs used on this page are &copy; Historic England Archive</p>
                 </div>
-            </section>
-            <!-- End Info Block 1 -->
-
-            <!-- Info Block 2 -->
-            <section id="info-block-2" class="app-info-block relative">
-                <div>
-
-                    <!-- Heading Info -->
-                    <div class="sub-section">
-                        <div class="col-lg-7">
-                            <div class="app-info-block-intro text-center">
-                                <h2 class="app-info-block-header">{% trans "Workflows" %}</h2>
-                                <h3 class="app-info-block-title">{% trans "Orchestrate your data entry" %}</h3>
-                                <p class="app-info-block-text">
-                                    {% trans "Design step-wise data management interfaces that simplify complex editing tasks.  Ensure that everyone enters data completely and consistently" %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="splash-img">
-                        <img class="sub-block-image" src="{% webpack_static 'img/landing/consultation_workflow.jpg' %}" alt="Arches Workflows">
-                    </div>
-
-                </div>
-            </section>
-            <!-- End Info Block 2 -->
-
-            <!-- Info Block 3 -->
-            <section id="info-block-3" class="app-info-block relative">
-                <div>
-
-                    <!-- Heading Info -->
-                    <div class="sub-section">
-                        <div class="col-lg-7">
-                            <div class="app-info-block-intro text-center">
-                                <h2 class="app-info-block-header">{% trans "Arches Search Tools" %}</h2>
-                                <h3 class="app-info-block-title">{% trans "Find what you're looking for" %}</h3>
-                                <p class="app-info-block-text">
-                                    {% trans "Arches comes with powerful built-in search tools.  Quickly filter large databases with term, geospatial, and time-based search components" %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="splash-img">
-                        <img class="sub-block-image" src="{% webpack_static 'img/landing/arches_search.png' %}" alt="Arches Search">
-                    </div>
-
-                    <!-- Sub-section -->
-                    <div class="wide-box">
-                        <div class="box-highlight">
-                            <h3 class="app-info-block-header">{% trans "Search Options" %}</h3>
-                            <p>
-                                {% trans "Arches gives you many ways to find precisely the information you need, even if your Arches application contains 10's of millions of records.  In addition to term, thesaurus, geospatial, and temporal filters, Arches provides you with advanced filtering options that support boolean logic, inverses, and many other filtering options." %}
-                            </p>
-                            <br>
-                            <p>
-                                {% trans "Arches' search capabilities also provide for sophisticated data visualizations, including interactive displays of the connections between your data objects using a Force Directed Graph." %}
-                            </p>
-                            <br>
-                            <p>
-                                {% trans "If you're a software developer, you can build on Arches modular search services and create your own filters, reports, and visualizations to best show off your particular dataset." %}
-                            </p>
-
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-            <!-- End Info Block 3 -->
-        </article>
+            </div>
+        </div>
     </main>
-
-
 
     <!-- Footer -->
     <footer>
-
-        <!-- footer content container -->
-        <div class="row footer-links">
-
-            <!-- branding column -->
-            <div class="col-lg-4">
-                <h2 class="app-footer-heading">{% trans "Sample Institution Name" %}</h2>
-
-                <div class="organization-address">
-                  {% trans "Sample Address" %}<br>
-                  {% trans "Getty Conservation Institute" %}<br>
-                  {% trans "1200 Getty Center Drive" %}<br>
-                  {% trans "Los Angeles, CA  90049" %}<br>
-                </div>
-            </div>
-
-            <!-- Info Column -->
-            <div class="col-lg-8">
-                <h2 class="app-footer-heading">{% trans "Guides and Documentation" %}</h2>
-
-                <!-- Links -->
-                <div class="splash-links">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <ul class="splash-link-container">
-                                <li>
-                                    <a class="splash-link-address" href="http://https://www.archesproject.org/what-is-arches/" target="_blank">{% trans "What is Arches" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/implementation-considerations/" target="_blank">{% trans "Implementation Considerations" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/development/" target="_blank">{% trans "Information For Developers" %}</a>
-                                </li>
-
-
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <ul class="splash-link-container">
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/faq/" target="_blank">{% trans "FAQ" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/standards/" target="_blank">{% trans "Standards and Interoperability" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://arches.readthedocs.io/en/stable/requirements-and-dependencies/" target="_blank">{% trans "Installation Guide" %}</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <ul class="splash-link-container">
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/project-background/" target="_blank">{% trans "Arches Project Background" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/videos/" target="_blank">{% trans "Arches Webinars/Presentations" %}</a>
-                                </li>
-                                <li>
-                                    <a class="splash-link-address" href="https://www.archesproject.org/resource-models/" target="_blank">{% trans "Resource Models" %}</a>
-                                </li>
-                            </ul>
-                        </div>
-
+        <div class="footer-top">
+            <div class="container">
+                <div class="row footer-top-first-row">
+                    <div class="col-sm-4">
+                        <a href="#">
+                            <img class="footer-he-logo" src="{% static 'img/landing/footer-he-logo-white.svg' %}" alt="Historic England logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-5">
+                        <a href="#">
+                            <img class="footer-getty-logo" src="{% static 'img/landing/footer-getty-logo-white.png' %}" alt="The Getty logo">
+                        </a>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="#">
+                            <img class="footer-arches-logo" src="{% static 'img/landing/footer-arches-logo-white.png' %}" alt="Arches Project logo">
+                        </a>
                     </div>
                 </div>
-
-            </div>
-        </div>
-
-        <!-- Copyright Panel -->
-        <div class="row copyright-container">
-            <!-- Arches link -->
-            <div class="app-footer-links">
-                <div class="col-sm-8">
-                    <a class="link-spacing" href="#">{% trans "Terms & Conditions" %}</a>
-                    <a class="link-spacing" href="#">{% trans "Privacy Policy" %}</a>
-                </div>
-                <div class="col-sm-4">
-                    <a class="app-footer-arches-link" href="http://www.archesproject.org" target="_blank">{% trans "Powered by Arches" %}</a>
+                <div class="row">
+                    <div class="col-xs-8 col-sm-9 glher-text-container">
+                        <p class="glaas-title">Greater London Archaeology Advisory Service<br/>
+                            (GLAAS)</p>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 footer-top-contact-details">
+                        <p><strong>Contact Us</strong></p>
+                        <p>For enquiry, please contact<br/>
+                            <a href="mailto:Glaas@historicEngland.org.uk">Glaas@historicEngland.org.uk</a></p>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- End Copyright Container -->
 
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="footer-container">
+                    <div class="col-xs-12 col-sm-8 footer-links">
+                        <a href="https://historicengland.org.uk/access/glher-accessibility-statement/" target="_blank">Accessibility</a>
+                        <a href="#" onclick="CookieControl.open();">Manage Cookies</a>
+                        <a href="https://historicengland.org.uk/terms/privacy/" target="_blank">Privacy Policy</a>
+                        <a href="https://historicengland.org.uk/terms/greater-london-historic-environment-record-online-terms-of-use-for-general-users/" target="_blank">Terms &amp; Conditions</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 footer-copyright">
+                        <p class="copyright">&copy; Historic England <script type="text/javascript">document.write(new Date().getFullYear());</script></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
     <!-- End Footer -->
 
@@ -436,10 +341,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             'knockout': "{% webpack_static 'node_modules/knockout/build/output/knockout-latest' %}",
             'bootstrap': "{% webpack_static 'node_modules/bootstrap/dist/js/bootstrap.min' %}",
             'one-app': "{% webpack_static 'plugins/one.app' %}",
-            'themepunch-tools': "{% webpack_static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.tools.min' %}",
-            'themepunch-revolution': "{% webpack_static 'plugins/revolution-slider/rs-plugin/js/jquery.themepunch.revolution' %}",
-            'revolution-slider': "{% webpack_static 'plugins/revolution-slider' %}",
-            'slick': "{% webpack_static 'plugins/slick/slick.min' %}",
         },
         shim: {
             'jquery': {
@@ -453,18 +354,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             },
             'one-app': {
                 deps: ['jquery'],
-            },
-            'themepunch-tools': {
-                deps: ['jquery'],
-            },
-            'themepunch-revolution': {
-                deps: ['jquery'],
-            },
-            'revolution-slider': {
-                deps: ['jquery'],
-            },
-            'slick': {
-                deps: ['jquery'],
             }
         }
     });
@@ -474,10 +363,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
             'knockout',
             'bootstrap',
             'one-app',
-            'themepunch-tools',
-            'themepunch-revolution',
-            'revolution-slider',
-            'slick',
             'bindings/chosen',
             'bindings/key-events-click',
             'views/components/language-switcher'
@@ -518,16 +403,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                         600
                     );
                 }
-
-                //slider
-                $('.home-slider').slick({
-                    arrowsPlacement: 'split',
-                    dots: true,
-                    autoplay: true,
-                    autoplaySpeed: 6000,
-                    prevArrow:`<button type='button' class='slick-prev pull-left' aria-label="{% trans 'Go to previous slide' %}"><i class='fa fa-chevron-left' aria-hidden='true'></i></button>`,
-                    nextArrow:`<button type='button' class='slick-next pull-right' aria-label="{% trans 'Go to next slide' %}"><i class='fa fa-chevron-right' aria-hidden='true'></i></button>`
-                });
 
                 var ViewModel = function () {
                      // place observables here
