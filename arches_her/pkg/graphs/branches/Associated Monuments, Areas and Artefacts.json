@@ -17,14 +17,24 @@
                         }
                     ],
                     "cssclass": null,
-                    "description": "",
+                    "description": {
+                        "en": ""
+                    },
                     "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
                     "helpenabled": false,
-                    "helptext": null,
-                    "helptitle": null,
-                    "instructions": null,
+                    "helptext": {
+                        "en": null
+                    },
+                    "helptitle": {
+                        "en": null
+                    },
+                    "instructions": {
+                        "en": null
+                    },
                     "is_editable": true,
-                    "name": "Associated Monuments, Areas and Artefacts",
+                    "name": {
+                        "en": "Associated Monuments, Areas and Artefacts"
+                    },
                     "nodegroup_id": "9f36616e-04c6-11eb-9650-f875a44e0e11",
                     "sortorder": 14,
                     "visible": true
@@ -35,11 +45,18 @@
                     "card_id": "9f374ba7-04c6-11eb-a85f-f875a44e0e11",
                     "config": {
                         "defaultResourceInstance": [],
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Monument, Area or Artefact",
-                        "placeholder": ""
+                        "placeholder": {
+                            "en": ""
+                        }
                     },
                     "id": "9f374bab-04c6-11eb-8016-f875a44e0e11",
-                    "label": "Monument, Area or Artefact",
+                    "label": {
+                        "en": "Monument, Area or Artefact"
+                    },
                     "node_id": "9f374baa-04c6-11eb-b040-f875a44e0e11",
                     "sortorder": 0,
                     "visible": true,
@@ -49,12 +66,19 @@
                     "card_id": "9f374ba7-04c6-11eb-a85f-f875a44e0e11",
                     "config": {
                         "defaultValue": "",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Association Type",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "9f374bac-04c6-11eb-9cbb-f875a44e0e11",
-                    "label": "Association Type",
+                    "label": {
+                        "en": "Association Type"
+                    },
                     "node_id": "9f374ba8-04c6-11eb-b801-f875a44e0e11",
                     "sortorder": 1,
                     "visible": true,
@@ -64,12 +88,19 @@
                     "card_id": "9f374ba7-04c6-11eb-a85f-f875a44e0e11",
                     "config": {
                         "defaultValue": "d3b75e3a-638e-490e-8d1b-bbb5c504ce94",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Association Metatype",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "9f374bad-04c6-11eb-8aad-f875a44e0e11",
-                    "label": "Association Metatype",
+                    "label": {
+                        "en": "Association Metatype"
+                    },
                     "node_id": "9f374ba9-04c6-11eb-a6ca-f875a44e0e11",
                     "sortorder": 2,
                     "visible": false,
@@ -115,7 +146,9 @@
             },
             "deploymentdate": null,
             "deploymentfile": null,
-            "description": "",
+            "description": {
+                "en": ""
+            },
             "edges": [
                 {
                     "description": null,
@@ -149,10 +182,11 @@
             "graphid": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
             "iconclass": "fa fa-bank",
             "is_editable": true,
-            "isactive": true,
             "isresource": false,
             "jsonldcontext": null,
-            "name": "Associated Monuments, Areas and Artefacts",
+            "name": {
+                "en": "Associated Monuments, Areas and Artefacts"
+            },
             "nodegroups": [
                 {
                     "cardinality": "1",
@@ -170,6 +204,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": true,
                     "isrequired": false,
                     "issearchable": true,
@@ -179,7 +214,8 @@
                     "nodeid": "9f36616e-04c6-11eb-9650-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
                     "parentproperty": "",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "association_type",
@@ -191,6 +227,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -200,7 +237,8 @@
                     "nodeid": "9f374ba8-04c6-11eb-b801-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "association_metatype",
@@ -212,6 +250,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -221,7 +260,8 @@
                     "nodeid": "9f374ba9-04c6-11eb-a6ca-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "monument_area_or_artefact",
@@ -229,17 +269,20 @@
                         "graphs": [
                             {
                                 "graphid": "343cc20c-2c5a-11e8-90fa-0242ac120005",
-                                "name": "Artefact"
+                                "name": "Artefact",
+                                "useOntologyRelationship": true
                             },
                             {
                                 "graphid": "076f9381-7b00-11e9-8d6b-80000b44d1d9",
-                                "name": "Monument"
+                                "name": "Monument",
+                                "useOntologyRelationship": true
                             },
                             {
                                 "graphid": "979aaf0b-7042-11ea-9674-287fcf6a5e72",
                                 "inverseOntologyProperty": "http://www.cidoc-crm.org/cidoc-crm/P53i_is_former_or_current_location_of",
                                 "name": "Area",
-                                "ontologyProperty": "http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location"
+                                "ontologyProperty": "http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location",
+                                "useOntologyRelationship": true
                             }
                         ],
                         "searchDsl": "",
@@ -250,6 +293,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -259,10 +303,12 @@
                     "nodeid": "9f374baa-04c6-11eb-b040-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P140_assigned_attribute_to",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 }
             ],
             "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd",
+            "publication": null,
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
             "root": {
@@ -273,6 +319,7 @@
                 "exportable": false,
                 "fieldname": null,
                 "graph_id": "9f363a6e-04c6-11eb-8274-f875a44e0e11",
+                "hascustomalias": false,
                 "is_collector": true,
                 "isrequired": false,
                 "issearchable": true,
@@ -281,10 +328,13 @@
                 "nodegroup_id": "9f36616e-04c6-11eb-9650-f875a44e0e11",
                 "nodeid": "9f36616e-04c6-11eb-9650-f875a44e0e11",
                 "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E13_Attribute_Assignment",
-                "sortorder": 0
+                "sortorder": 0,
+                "sourcebranchpublication_id": null
             },
             "slug": null,
-            "subtitle": "",
+            "subtitle": {
+                "en": ""
+            },
             "template_id": "50000000-0000-0000-0000-000000000002",
             "version": ""
         }

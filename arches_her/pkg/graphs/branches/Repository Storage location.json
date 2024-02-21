@@ -10,14 +10,24 @@
                     "config": null,
                     "constraints": [],
                     "cssclass": null,
-                    "description": "",
+                    "description": {
+                        "en": ""
+                    },
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
                     "helpenabled": false,
-                    "helptext": null,
-                    "helptitle": null,
-                    "instructions": "Details the current location and keeper of the resource.",
+                    "helptext": {
+                        "en": null
+                    },
+                    "helptitle": {
+                        "en": null
+                    },
+                    "instructions": {
+                        "en": "Details the current location and keeper of the resource."
+                    },
                     "is_editable": true,
-                    "name": "Repository Storage Location",
+                    "name": {
+                        "en": "Repository Storage Location"
+                    },
                     "nodegroup_id": "e1853942-afcf-11ea-bbc9-f875a44e0e11",
                     "sortorder": null,
                     "visible": true
@@ -28,11 +38,18 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultResourceInstance": [],
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Repository owner",
-                        "placeholder": "Select the Organization or Person that is the current keeper of the resource."
+                        "placeholder": {
+                            "en": "Select the Organization or Person that is the current keeper of the resource."
+                        }
                     },
                     "id": "e1853952-afcf-11ea-86e3-f875a44e0e11",
-                    "label": "Repository owner",
+                    "label": {
+                        "en": "Repository owner"
+                    },
                     "node_id": "e1853950-afcf-11ea-b014-f875a44e0e11",
                     "sortorder": 0,
                     "visible": true,
@@ -41,15 +58,27 @@
                 {
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
-                        "defaultValue": null,
+                        "defaultValue": {
+                            "en": {
+                                "direction": "ltr",
+                                "value": null
+                            }
+                        },
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Area Name",
                         "maxLength": null,
-                        "placeholder": "Where known, enter the name of the storage area within the building, eg. Box 4, Shelf 3, Room 27",
+                        "placeholder": {
+                            "en": "Where known, enter the name of the storage area within the building, eg. Box 4, Shelf 3, Room 27"
+                        },
                         "uneditable": false,
                         "width": "100%"
                     },
                     "id": "e1853953-afcf-11ea-80e3-f875a44e0e11",
-                    "label": "Storage Area Name",
+                    "label": {
+                        "en": "Storage Area Name"
+                    },
                     "node_id": "e1853948-afcf-11ea-8e0c-f875a44e0e11",
                     "sortorder": 8,
                     "visible": true,
@@ -59,12 +88,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "c2051d53-40e7-4a2d-a4b4-02a31da37fd1",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Currency",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e1853954-afcf-11ea-ad3f-f875a44e0e11",
-                    "label": "Storage Building Name Currency",
+                    "label": {
+                        "en": "Storage Building Name Currency"
+                    },
                     "node_id": "e1853947-afcf-11ea-9b18-f875a44e0e11",
                     "sortorder": 2,
                     "visible": false,
@@ -74,12 +110,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "4e4e344a-8861-423b-8656-8c58749aaca6",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Type",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e1853955-afcf-11ea-b303-f875a44e0e11",
-                    "label": "Storage Building Name Type",
+                    "label": {
+                        "en": "Storage Building Name Type"
+                    },
                     "node_id": "e1853949-afcf-11ea-92c5-f875a44e0e11",
                     "sortorder": 3,
                     "visible": false,
@@ -89,12 +132,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "a0e096e2-f5ae-4579-950d-3040714713b4",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Metatype",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e1853956-afcf-11ea-8b9e-f875a44e0e11",
-                    "label": "Storage Building Name Metatype",
+                    "label": {
+                        "en": "Storage Building Name Metatype"
+                    },
                     "node_id": "e185394b-afcf-11ea-9155-f875a44e0e11",
                     "sortorder": 4,
                     "visible": false,
@@ -104,12 +154,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "04a4c4d5-5a5e-4018-93aa-65abaa53fb53",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Use Metatype",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e1853957-afcf-11ea-8a8c-f875a44e0e11",
-                    "label": "Storage Building Name Use Metatype",
+                    "label": {
+                        "en": "Storage Building Name Use Metatype"
+                    },
                     "node_id": "e185394c-afcf-11ea-b0f4-f875a44e0e11",
                     "sortorder": 6,
                     "visible": false,
@@ -119,12 +176,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "5a88136a-bf3a-4b48-a830-a7f42000dd24",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Currency Metatype",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e1853958-afcf-11ea-b13b-f875a44e0e11",
-                    "label": "Storage Building Name Currency Metatype",
+                    "label": {
+                        "en": "Storage Building Name Currency Metatype"
+                    },
                     "node_id": "e185394d-afcf-11ea-ab1f-f875a44e0e11",
                     "sortorder": 7,
                     "visible": false,
@@ -133,15 +197,27 @@
                 {
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
-                        "defaultValue": null,
+                        "defaultValue": {
+                            "en": {
+                                "direction": "ltr",
+                                "value": null
+                            }
+                        },
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name",
                         "maxLength": null,
-                        "placeholder": "Where known, enter the name of the building in which the resource is stored. This may differ from the name of the organization or repository that owns the object.",
+                        "placeholder": {
+                            "en": "Where known, enter the name of the building in which the resource is stored. This may differ from the name of the organization or repository that owns the object."
+                        },
                         "uneditable": false,
                         "width": "100%"
                     },
                     "id": "e1853959-afcf-11ea-aa4c-f875a44e0e11",
-                    "label": "Storage Building Name",
+                    "label": {
+                        "en": "Storage Building Name"
+                    },
                     "node_id": "e1853951-afcf-11ea-91c2-f875a44e0e11",
                     "sortorder": 1,
                     "visible": true,
@@ -151,12 +227,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "2df285fa-9cf2-45e7-bc05-a67b7d7ddc2f",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Building Name Use Type",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e185395a-afcf-11ea-8e3f-f875a44e0e11",
-                    "label": "Storage Building Name Use Type",
+                    "label": {
+                        "en": "Storage Building Name Use Type"
+                    },
                     "node_id": "e185394f-afcf-11ea-b93e-f875a44e0e11",
                     "sortorder": 5,
                     "visible": false,
@@ -166,12 +249,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "c513dfd9-a447-48e0-ae58-8723804aec07",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Area Name Type",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e185395b-afcf-11ea-9394-f875a44e0e11",
-                    "label": "Storage Area Name Type",
+                    "label": {
+                        "en": "Storage Area Name Type"
+                    },
                     "node_id": "e1853945-afcf-11ea-afe1-f875a44e0e11",
                     "sortorder": 9,
                     "visible": false,
@@ -181,12 +271,19 @@
                     "card_id": "e1853944-afcf-11ea-b77e-f875a44e0e11",
                     "config": {
                         "defaultValue": "a0e096e2-f5ae-4579-950d-3040714713b4",
+                        "i18n_properties": [
+                            "placeholder"
+                        ],
                         "label": "Storage Area Name Metatype",
                         "options": [],
-                        "placeholder": "Select an option"
+                        "placeholder": {
+                            "en": "Select an option"
+                        }
                     },
                     "id": "e185395c-afcf-11ea-8ffc-f875a44e0e11",
-                    "label": "Storage Area Name Metatype",
+                    "label": {
+                        "en": "Storage Area Name Metatype"
+                    },
                     "node_id": "e1853946-afcf-11ea-bbf6-f875a44e0e11",
                     "sortorder": 10,
                     "visible": false,
@@ -232,7 +329,9 @@
             },
             "deploymentdate": null,
             "deploymentfile": null,
-            "description": "",
+            "description": {
+                "en": ""
+            },
             "edges": [
                 {
                     "description": null,
@@ -356,10 +455,11 @@
             "graphid": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
             "iconclass": "fa fa-bank",
             "is_editable": true,
-            "isactive": true,
             "isresource": false,
             "jsonldcontext": null,
-            "name": "Repository Storage Location",
+            "name": {
+                "en": "Repository Storage Location"
+            },
             "nodegroups": [
                 {
                     "cardinality": "1",
@@ -371,12 +471,13 @@
             "nodes": [
                 {
                     "alias": "repository_storage_location",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": "Represents a single node in a graph",
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": true,
                     "isrequired": false,
                     "issearchable": true,
@@ -386,7 +487,8 @@
                     "nodeid": "e1853942-afcf-11ea-bbc9-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E53_Place",
                     "parentproperty": "",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_area_name_type",
@@ -398,6 +500,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -407,7 +510,8 @@
                     "nodeid": "e1853945-afcf-11ea-afe1-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_area_name_metatype",
@@ -419,6 +523,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -428,7 +533,8 @@
                     "nodeid": "e1853946-afcf-11ea-bbf6-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_currency",
@@ -440,6 +546,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -449,16 +556,18 @@
                     "nodeid": "e1853947-afcf-11ea-9b18-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_area_name",
-                    "config": null,
+                    "config": {},
                     "datatype": "string",
                     "description": null,
                     "exportable": true,
                     "fieldname": "Store_Area",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -468,7 +577,8 @@
                     "nodeid": "e1853948-afcf-11ea-8e0c-f875a44e0e11",
                     "ontologyclass": "http://www.w3.org/2000/01/rdf-schema#Literal",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P3_has_note",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_type",
@@ -480,6 +590,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -489,16 +600,18 @@
                     "nodeid": "e1853949-afcf-11ea-92c5-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_area_names",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": "Represents a single node in a graph",
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -508,7 +621,8 @@
                     "nodeid": "e185394a-afcf-11ea-b708-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E41_Appellation",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_metatype",
@@ -520,6 +634,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -529,7 +644,8 @@
                     "nodeid": "e185394b-afcf-11ea-9155-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_use_metatype",
@@ -541,6 +657,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -550,7 +667,8 @@
                     "nodeid": "e185394c-afcf-11ea-b0f4-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_currency_metatype",
@@ -562,6 +680,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -571,16 +690,18 @@
                     "nodeid": "e185394d-afcf-11ea-ab1f-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": "",
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -590,7 +711,8 @@
                     "nodeid": "e185394e-afcf-11ea-8640-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E41_Appellation",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name_use_type",
@@ -602,6 +724,7 @@
                     "exportable": false,
                     "fieldname": null,
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": false,
@@ -611,7 +734,8 @@
                     "nodeid": "e185394f-afcf-11ea-b93e-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "repository_owner",
@@ -629,6 +753,7 @@
                     "exportable": true,
                     "fieldname": "Owner",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -638,16 +763,18 @@
                     "nodeid": "e1853950-afcf-11ea-b014-f875a44e0e11",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E39_Actor",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P74i_is_current_or_former_residence_of",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "storage_building_name",
-                    "config": null,
+                    "config": {},
                     "datatype": "string",
                     "description": null,
                     "exportable": true,
                     "fieldname": "Build_name",
                     "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -657,20 +784,23 @@
                     "nodeid": "e1853951-afcf-11ea-91c2-f875a44e0e11",
                     "ontologyclass": "http://www.w3.org/2000/01/rdf-schema#Literal",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P3_has_note",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 }
             ],
             "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd",
+            "publication": null,
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
             "root": {
                 "alias": "repository_storage_location",
-                "config": null,
+                "config": {},
                 "datatype": "semantic",
                 "description": "Represents a single node in a graph",
                 "exportable": false,
                 "fieldname": "",
                 "graph_id": "e1851264-afcf-11ea-b2e2-f875a44e0e11",
+                "hascustomalias": false,
                 "is_collector": true,
                 "isrequired": false,
                 "issearchable": true,
@@ -679,10 +809,13 @@
                 "nodegroup_id": "e1853942-afcf-11ea-bbc9-f875a44e0e11",
                 "nodeid": "e1853942-afcf-11ea-bbc9-f875a44e0e11",
                 "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E53_Place",
-                "sortorder": 0
+                "sortorder": 0,
+                "sourcebranchpublication_id": null
             },
             "slug": null,
-            "subtitle": "",
+            "subtitle": {
+                "en": ""
+            },
             "template_id": "50000000-0000-0000-0000-000000000002",
             "version": ""
         }

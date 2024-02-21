@@ -10,14 +10,24 @@
                     "config": null,
                     "constraints": [],
                     "cssclass": null,
-                    "description": "",
+                    "description": {
+                        "en": ""
+                    },
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
                     "helpenabled": false,
-                    "helptext": null,
-                    "helptitle": null,
-                    "instructions": null,
+                    "helptext": {
+                        "en": null
+                    },
+                    "helptitle": {
+                        "en": null
+                    },
+                    "instructions": {
+                        "en": null
+                    },
                     "is_editable": true,
-                    "name": "Radiocarbon Calendar Age Assignment",
+                    "name": {
+                        "en": "Radiocarbon Calendar Age Assignment"
+                    },
                     "nodegroup_id": "ab8074ba-1838-11ea-91f3-c4d9877d154e",
                     "sortorder": null,
                     "visible": true
@@ -28,7 +38,9 @@
             "config": {},
             "deploymentdate": null,
             "deploymentfile": null,
-            "description": "",
+            "description": {
+                "en": ""
+            },
             "edges": [
                 {
                     "description": null,
@@ -98,10 +110,11 @@
             "graphid": "ab806134-1838-11ea-95a5-c4d9877d154e",
             "iconclass": "fa fa-delicious",
             "is_editable": true,
-            "isactive": true,
             "isresource": false,
             "jsonldcontext": null,
-            "name": "Radiocarbon Calendar Age Assignment",
+            "name": {
+                "en": "Radiocarbon Calendar Age Assignment"
+            },
             "nodegroups": [
                 {
                     "cardinality": "1",
@@ -113,12 +126,13 @@
             "nodes": [
                 {
                     "alias": "radiocarbon_calendar_age_assignment",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": "",
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": true,
                     "isrequired": false,
                     "issearchable": true,
@@ -128,16 +142,18 @@
                     "nodeid": "ab8074ba-1838-11ea-91f3-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E17_Type_Assignment",
                     "parentproperty": "",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "delta_r",
-                    "config": null,
+                    "config": {},
                     "datatype": "number",
                     "description": null,
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -147,16 +163,18 @@
                     "nodeid": "ab8074bd-1838-11ea-a31c-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E60_Number",
                     "parentproperty": "http://www.ics.forth.gr/isl/CRMdig/L55_has_inventory_no",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "probability_type",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": null,
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -166,7 +184,8 @@
                     "nodeid": "ab8074be-1838-11ea-be39-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "to_date",
@@ -178,6 +197,7 @@
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -187,7 +207,8 @@
                     "nodeid": "ab8074bf-1838-11ea-8853-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E41_Appellation",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "chronological_unit",
@@ -199,6 +220,7 @@
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -208,7 +230,8 @@
                     "nodeid": "ab8074c0-1838-11ea-ba47-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "from_date",
@@ -220,6 +243,7 @@
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -229,16 +253,18 @@
                     "nodeid": "ab8074c1-1838-11ea-9b34-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E41_Appellation",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "time_span_phase",
-                    "config": null,
+                    "config": {},
                     "datatype": "semantic",
                     "description": null,
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -248,7 +274,8 @@
                     "nodeid": "ab8074c2-1838-11ea-9a67-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 },
                 {
                     "alias": "calibration_curve_type",
@@ -260,6 +287,7 @@
                     "exportable": false,
                     "fieldname": "",
                     "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                    "hascustomalias": false,
                     "is_collector": false,
                     "isrequired": false,
                     "issearchable": true,
@@ -269,20 +297,23 @@
                     "nodeid": "ab8074c3-1838-11ea-920a-c4d9877d154e",
                     "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
                     "parentproperty": "http://www.cidoc-crm.org/cidoc-crm/P2_has_type",
-                    "sortorder": 0
+                    "sortorder": 0,
+                    "sourcebranchpublication_id": null
                 }
             ],
             "ontology_id": "e6e8db47-2ccf-11e6-927e-b8f6b115d7dd",
+            "publication": null,
             "relatable_resource_model_ids": [],
             "resource_2_resource_constraints": [],
             "root": {
                 "alias": "radiocarbon_calendar_age_assignment",
-                "config": null,
+                "config": {},
                 "datatype": "semantic",
                 "description": "",
                 "exportable": false,
                 "fieldname": "",
                 "graph_id": "ab806134-1838-11ea-95a5-c4d9877d154e",
+                "hascustomalias": false,
                 "is_collector": true,
                 "isrequired": false,
                 "issearchable": true,
@@ -291,10 +322,13 @@
                 "nodegroup_id": "ab8074ba-1838-11ea-91f3-c4d9877d154e",
                 "nodeid": "ab8074ba-1838-11ea-91f3-c4d9877d154e",
                 "ontologyclass": "http://www.cidoc-crm.org/cidoc-crm/E17_Type_Assignment",
-                "sortorder": 0
+                "sortorder": 0,
+                "sourcebranchpublication_id": null
             },
             "slug": null,
-            "subtitle": "",
+            "subtitle": {
+                "en": ""
+            },
             "template_id": "50000000-0000-0000-0000-000000000001",
             "version": ""
         }
