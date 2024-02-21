@@ -59,8 +59,10 @@ define([
             self.resourcesDataConfig = {
                 assets: 'related monuments and areas',
                 files: 'file(s)',
-                relatedApplicationArea: 'consultation area',
+                relatedApplicationArea: undefined,
+                consultation: 'associated consultations',
                 actors: undefined,
+                archive: undefined,
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 

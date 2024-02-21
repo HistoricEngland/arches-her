@@ -48,7 +48,9 @@ define([
                 consultations: undefined,
                 assets: undefined,
                 period: 'periods',
-                actors: undefined
+                actors: undefined,
+                archive: undefined,
+                resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 
             self.visible = {
