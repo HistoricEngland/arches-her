@@ -17,6 +17,7 @@ except ImportError:
     pass
 
 APP_NAME = 'arches_her'
+APP_PATHNAME = "arches-her"
 APP_VERSION = semantic_version.Version(major=0, minor=0, patch=0)
 APP_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 MIN_ARCHES_VERSION = arches.__version__
@@ -151,7 +152,7 @@ MIDDLEWARE = [
     "oauth2_provider.middleware.OAuth2TokenMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #"django.middleware.clickjacking.XFrameOptionsMiddleware",
     "arches.app.utils.middleware.SetAnonymousUser",
     # "silk.middleware.SilkyMiddleware",
 ]
@@ -238,13 +239,30 @@ RATE_LIMIT = "5/m"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 15728640
 
 # Unique session cookie ensures that logins are treated separately for each app
-SESSION_COOKIE_NAME = _("{}_{}").format(APP_NAME, APP_VERSION)
+SESSION_COOKIE_NAME = _("{}_{}".format(APP_NAME, APP_VERSION))
 
 # For more info on configuring your cache: https://docs.djangoproject.com/en/2.2/topics/cache/
+
+# Default cache settings
+#
+# CACHES = {
+#   'default': {
+#        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+#        "LOCATION": "127.0.0.1:11211",
+#    },
+#    'user_permission': {
+#        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#        'LOCATION': 'user_permission_cache',
+#    },
+#}   
+    
 CACHES = {
     'default': {
-        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
-        "LOCATION": "127.0.0.1:11211",
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(APP_ROOT, 'tmp', 'djangocache'),
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
     },
     'user_permission': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
