@@ -30,10 +30,7 @@ WEBPACK_LOADER = {
     },
 }
 
-DATATYPE_LOCATIONS = [
-    "arches_her.datatypes",
-    "arches.app.datatypes",
-]
+DATATYPE_LOCATIONS.append('arches_her.datatypes')
 FUNCTION_LOCATIONS.append('arches_her.functions')
 ETL_MODULE_LOCATIONS.append('arches_her.etl_modules')
 SEARCH_COMPONENT_LOCATIONS.append('arches_her.search_components')
@@ -296,16 +293,6 @@ CACHE_BY_USER = {
     "anonymous": 3600 * 24 #24hrs
     }
 
-TILE_CACHE_CONFIG = {
-    "name": "Disk",
-    "path": os.path.join(APP_ROOT, "tileserver", "cache")
-    # to reconfigure to use S3 (recommended for production), use the following
-    # template:
-    # "name": "S3",
-    # "bucket": "<bucket name>",
-    # "access": "<access key>",
-    # "secret": "<secret key>"
-}
 
 TILE_CACHE_TIMEOUT = 600 #seconds
 CLUSTER_DISTANCE_MAX = 5000 #meters
@@ -342,7 +329,7 @@ CELERY_RESULT_BACKEND = 'django-db' # Use 'django-cache' if you want to use your
 CELERY_TASK_SERIALIZER = 'json'
 
 
-CELERY_SEARCH_EXPORT_EXPIRES = 60 * 3  # seconds
+CELERY_SEARCH_EXPORT_EXPIRES = 24 * 3600  # 1 day
 CELERY_SEARCH_EXPORT_CHECK = 15  # seconds
 
 CELERY_BEAT_SCHEDULE = {
