@@ -1,5 +1,5 @@
 define(['knockout',
-    'templates/views/components/datatypes/bngcentrepoint'
+    'templates/views/components/datatypes/bngcentrepoint.htm'
 ], function(ko, BNGCentrepointTemplate) {
     var name = 'bngcentrepoint-datatype-config';
     ko.components.register(name, {
