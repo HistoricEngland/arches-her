@@ -1,10 +1,9 @@
-define(['jQuery',
-    'knockout', 
+define(['knockout',
     'proj4', 
     'underscore', 
     'viewmodels/widget',
     'templates/views/components/widgets/bngpoint.htm'
-], function($,ko, proj4, _, WidgetViewModel, bngPointTemplate) {
+], function(ko, proj4, _, WidgetViewModel, bngPointTemplate) {
     /**
     * registers a text-widget component for use in forms
     * @function external:"ko.components".text-widget
@@ -17,12 +16,12 @@ define(['jQuery',
     return ko.components.register('bngpoint', {
         viewModel: function(params) {
 
-            // CS - The following instantiate the variables and do not execute again after loading
+            // CS - The following instantiate the variables and do not execute again after loading 
             params.configKeys = ['placeholder'];
             WidgetViewModel.apply(this, [params]);
             var self = this;
 
-            this.coordOptions = ['Alphanumeric BNG', 'Absolute BNG', 'Long/Lat'];
+            this.coordOptions = ['Alphanumeric BNG', 'Absolute BNG', 'Long/Lat']
             this.coordFormat = ko.observable('Alphanumeric BNG');
             this.isSelected = ko.observable(false);
             this.errorMessage = ko.observable();
@@ -74,13 +73,10 @@ define(['jQuery',
                 }
 
                 catch (err) {
-                    console.log(err + '\nCould not return a correct Alphanumeric grid reference.  Please check your input absolute grid reference and try again.');
+                    console.log(err + '\nCould not return a correct Alphanumeric grid reference.  Please check your input absolute grid reference and try again.')
                     return "";
 
                 }
-
-
-
 
             };
 
@@ -137,9 +133,9 @@ define(['jQuery',
             };
 
             this.longLatTransform = function(latLong, gridSquareList) {
-                // CS - uses the Proj4JS module to reproject long/lat values to an absolute BNG value and then calls upon the
+                // CS - uses the Proj4JS module to reproject long/lat values to an absolute BNG value and then calls upon the 
                 // absoluteBNGTransform function to create an Alphanumeric Grid Reference.
-                var OSGB36Proj4 = "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs";
+                var OSGB36Proj4 = "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs"
                 var WGS1984Proj4 = "+proj=longlat +datum=WGS84 +no_defs";
 
                 var latLongSplit = latLong.split(",");
@@ -149,15 +145,15 @@ define(['jQuery',
 
                 try {
                     var reprojectOSGBCoords = proj4(WGS1984Proj4, OSGB36Proj4, longLatCoord);
+                    var reprojectOSGB_X = Math.round(reprojectOSGBCoords[0]);
+                    var reprojectOSGB_Y = Math.round(reprojectOSGBCoords[1]);
 
-                    var reprojectOSGB_X = this.lat_long_six_figs(reprojectOSGBCoords[0]);
-
-                    var reprojectOSGB_Y = this.lat_long_six_figs(reprojectOSGBCoords[1]);
-
-                    var reprojectOSGB = reprojectOSGB_X + "," + reprojectOSGB_Y;
+                    var reprojectOSGB = reprojectOSGB_X.toString() + "," + reprojectOSGB_Y.toString()
 
                     try {
                         var reprojectAlphaOSGB = this.absoluteBNGTransform(reprojectOSGB, gridSquareList);
+
+
                         return reprojectAlphaOSGB;
                     }
                     catch (err) {
@@ -172,14 +168,6 @@ define(['jQuery',
                 }
 
 
-            };
-
-            this.lat_long_six_figs = function(lat_long_coord) {
-                var lat_long_coord_string = Math.round(lat_long_coord).toString();
-                if (lat_long_coord_string.length < 6) {
-                    lat_long_coord_string = 0 + lat_long_coord_string;
-                }
-                return lat_long_coord_string;
             };
 
             this.validateInput = function(finalBNG, gridSquareValues) {
@@ -209,7 +197,7 @@ define(['jQuery',
                 }
 
 
-            };
+            }
 
 
 
@@ -308,11 +296,11 @@ define(['jQuery',
                             var firstTwoInValue = pre.substring(0, 2);
                             if (gridLettersValueArray.includes(firstTwoInValue)) {
                                 if (pre.length === 12) {
-                                    pre = pre
+                                    pre = pre;
 
                                 }
                                 else {
-                                    pre = this.alphanumericTransform(pre, gridLettersValueArray)
+                                    pre = this.alphanumericTransform(pre, gridLettersValueArray);
                                 }
 
                             }
