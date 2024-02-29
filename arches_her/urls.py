@@ -10,6 +10,8 @@ from arches_her.views.active_consultations import ActiveConsultationsView
 from arches.app.views import main
 from arches.app.views.user import UserManagerView
 
+uuid_regex = settings.UUID_REGEX
+
 
 urlpatterns = [
         re_path(r'^$', IndexView.as_view(), name='root'),
