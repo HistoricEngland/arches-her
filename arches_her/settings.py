@@ -236,7 +236,8 @@ RATE_LIMIT = "5/m"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 15728640
 
 # Unique session cookie ensures that logins are treated separately for each app
-SESSION_COOKIE_NAME = _("{}_{}".format(APP_NAME, APP_VERSION))
+SESSION_COOKIE_NAME = "{}_{}".format(APP_NAME, str(APP_VERSION))
+
 
 # For more info on configuring your cache: https://docs.djangoproject.com/en/2.2/topics/cache/
 
