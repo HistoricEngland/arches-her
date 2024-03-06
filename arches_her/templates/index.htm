@@ -66,58 +66,67 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     <!--=== Header ===-->
     <header>
-        <nav class="navbar">
-            <div class="container">
+        <div class="navbar">
+            <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false" aria-controls="myNavbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="/" class="navbar-brand header-bar__logo-link" aria-label="Link to homepage">
-                        <img class="header-bar__logo-image" src="{% webpack_static 'img/HE_Logo_RGB.svg' %}" alt="Historic England logo">
-                    </a>
+                    <div class="nav-brand-container">
+                        <a href="/" class="navbar-brand" aria-label="Link to homepage">
+                            <img class="navbar-brand-image" src="{% webpack_static 'img/HE_Logo_RGB.svg' %}" alt="Historic England logo">
+                        </a>
+                    </div>
                 </div>
-                <div id="navbar" class="navbar-collapse collapse no-transition">
+
+                <nav id="myNavbar" class="navbar-collapse collapse" aria-label="{% trans 'Arches Application Navigation' %}">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active">
                             <a href="/">Home</a>
                         </li>
-                        {% for p in plugins %}
                         <li>
-                            <a href="{% url p.slug %}">{{ p.name }}</a>
+                            <a href="#info-block-1">{% trans "Arches Features" %}</a>
                         </li>
-                        {% endfor %}
                         <li>
-                            <a href="{% url 'search_home' %}">{% trans "Find" %}</a>
+                            <a href="{% url 'search_home' %}">{% trans "Search Arches" %}</a>
                         </li>
                         {% if user|can_create_resource_instance and user.username != 'anonymous' %}
-                        <li>
-                            <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
-                        </li>
+                            <li>
+                                <a href="{% url 'resource' %}" target="_blank">{% trans "Manage" %}</a>
+                            </li>
                         {% endif %}
-                        <li>
-                            {% if user.username == 'anonymous' %}
-                            <a class="btn btn-primary btn-lg hidden-xs" id="auth-link"
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
-                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user">{% trans "Sign in" %}</a>
-                            <a class="mobile-menu-sign-in visible-xs-*" id="auth-link"
-                                href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">
-                                <img src="{% static 'img/landing/icon-user.svg' %}" alt="Login icon" class="icon-user hidden-xs">{% trans "Sign in" %}</a>
-                            {% else %}
-                            <a class="auth-welcome" href="{% url 'user_profile_manager' %}">
-                                {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">({% trans 'logoff' %})</a>
-                            {% endif %}
-                        </li>
+                        {% if user.username == 'anonymous' %}
+                            <li>
+                                <a class="application-login" id="auth-link" href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans "Sign in" %}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="auth-welcome" href="{% url 'user_profile_manager' %}" aria-label="{% trans 'Visit user profile' %}">
+                                    {% trans "Welcome, " %} {{ user.first_name|default:user.username }}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="application-login" href="{% url 'auth' %}?next={% url 'home' %}{% if user.username != 'anonymous' %}&logout=true{% endif %}">{% trans 'Log off' %}</a>
+                            </li>
+                        {% endif %}
+                        {% if show_language_swtich %}
+                            <li>
+                                {% get_current_language as LANGUAGE_CODE %}
+                                <div class="lang-switch" style="max-width: none;" data-bind='component: {
+                                    name: "views/components/language-switcher",
+                                    params: {
+                                        current_language: "{{LANGUAGE_CODE}}"
+                                    }
+                                }'></div>
+                            </li>
+                        {% endif %}
                     </ul>
-                </div>
+                </nav>
             </div>
-        </nav>
+        </div>
     </header>
     <!--=== End Header ===-->
 
