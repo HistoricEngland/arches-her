@@ -156,7 +156,7 @@ html, body {
         @include break-at(mobile-lg-max) {
             height: 60px;
         }
-        box-shadow: 0px 3px 6px #00000029;
+        box-shadow: 0px 3px 6px $box-shadow;
         @include break-at(mobile-lg-max) {
             box-shadow: none;
         }
@@ -166,10 +166,10 @@ html, body {
         }
         top: 0px;
         z-index: 500;
-        background-color: #FFFFFF;
+        background-color: $backgrounds;
         border: none;
         @include break-at(mobile-lg-max) {
-            border-bottom: 1px solid #d4d4d4;
+            border-bottom: 1px solid $header-border-mobile;
         }
         border-radius: 0px;
         .navbar {
@@ -246,7 +246,7 @@ html, body {
                             @include break-at(mobile-xsmall-max) {
                                 width: 60vw;
                             }
-                            background: #fff;
+                            background: $backgrounds;
                             overflow-x: hidden;
                             padding: 20px!important;
                             li {
@@ -270,7 +270,7 @@ html, body {
     /* Main - Start*/
     main {
         .featurette-image-block {
-            box-shadow: 0px 3px 6px #00000029;
+            box-shadow: 0px 3px 6px $box-shadow;
             max-width: 424px;
             @include break-at(wide-max) {
                 max-width: 440px;
@@ -321,7 +321,7 @@ html, body {
                 @include break-at(mobile-lg-max) {
                     border-radius: 0;
                 }
-                background-color: #fff;
+                background-color: $backgrounds;
                 padding: 0 20px 0 0;
                 @include break-at(wide-max) {
                     padding: 0px 102px;
@@ -382,8 +382,8 @@ html, body {
             @include break-at(mobile-xsmall-max) {
                 margin: 230px 15px 0 15px;
             }
-            border-top: 1px solid #707070;
-            border-bottom: 1px solid #707070;
+            border-top: 1px solid $page-content-seperators;
+            border-bottom: 1px solid $page-content-seperators;
             max-width: 646px;
             @include break-at(wide-max) {
                 max-width: 500px;
@@ -565,7 +565,7 @@ html, body {
             }
             .jumbotron {
                 padding: 20px;
-                background: #F9F7F6;
+                background: $jumbotron-bg;
                 @include break-at(mobile-lg-max) {
                     border-radius: 0;
                 }
@@ -618,17 +618,17 @@ html, body {
             margin-top: 40px;
         }
         p {
-            color: #fff;
+            color: $footer-text;
             font-size: 1.8rem;
         }
         a {
-            color: #fff;
+            color: $footer-text;
             font-size: 1.8rem;
             margin-right: 25px;
         }
         .footer-top {
             min-height: 266px;
-            background: #404040;
+            background: $footer-top-bg;
             padding-top: 46px;
             .container {
                 .footer-top-first-row {
@@ -715,7 +715,7 @@ html, body {
         }
         .footer-bottom {
             min-height: 60px;
-            background: #2A2A2A;
+            background: $footer-bottom-bg;
             .footer-container {
                 min-height: 60px;
                 padding-top: 15px;
