@@ -1,0 +1,9 @@
+<svg id="Group_297" data-name="Group 297" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
+  <path id="location" d="M10.313,0A4.062,4.062,0,0,0,6.25,4.063C6.25,8.125,10.313,13,10.313,13s4.062-4.875,4.062-8.937A4.063,4.063,0,0,0,10.313,0Zm0,6.5A2.437,2.437,0,1,1,12.75,4.063,2.438,2.438,0,0,1,10.313,6.5Z" transform="translate(1.75 6)" fill="#2579a4"/>
+  <g id="Group_206" data-name="Group 206">
+    <g id="Ellipse_11" data-name="Ellipse 11" fill="none" stroke="#2579a4" stroke-width="1">
+      <circle cx="12.5" cy="12.5" r="12.5" stroke="none"/>
+      <circle cx="12.5" cy="12.5" r="12" fill="none"/>
+    </g>
+  </g>
+</svg>
