@@ -17,6 +17,7 @@ except ImportError:
     pass
 
 APP_NAME = 'arches_her'
+APP_PATHNAME = "arches-her"
 APP_VERSION = semantic_version.Version(major=0, minor=0, patch=0)
 APP_ROOT = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 MIN_ARCHES_VERSION = arches.__version__
@@ -148,7 +149,7 @@ MIDDLEWARE = [
     "oauth2_provider.middleware.OAuth2TokenMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    # "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #"django.middleware.clickjacking.XFrameOptionsMiddleware",
     "arches.app.utils.middleware.SetAnonymousUser",
     # "silk.middleware.SilkyMiddleware",
 ]
@@ -165,6 +166,8 @@ TEMPLATES = build_templates_config(
     app_root=APP_ROOT,
     arches_applications=ARCHES_APPLICATIONS,
 )
+
+TEMPLATES[0]["OPTIONS"]["context_processors"].append("arches_her.utils.context_processors.project_settings")
 
 ALLOWED_HOSTS = []
 
@@ -233,12 +236,31 @@ RATE_LIMIT = "5/m"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 15728640
 
 # Unique session cookie ensures that logins are treated separately for each app
-SESSION_COOKIE_NAME = 'arches_her'
+SESSION_COOKIE_NAME = "{}_{}".format(APP_NAME, str(APP_VERSION))
+
 
 # For more info on configuring your cache: https://docs.djangoproject.com/en/2.2/topics/cache/
+
+# Default cache settings
+#
+# CACHES = {
+#   'default': {
+#        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+#        "LOCATION": "127.0.0.1:11211",
+#    },
+#    'user_permission': {
+#        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#        'LOCATION': 'user_permission_cache',
+#    },
+#}   
+    
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(APP_ROOT, 'tmp', 'djangocache'),
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
     },
     'user_permission': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
@@ -251,6 +273,7 @@ HIDE_EMPTY_NODES_IN_REPORT = False
 
 BYPASS_UNIQUE_CONSTRAINT_TILE_VALIDATION = False
 BYPASS_REQUIRED_VALUE_TILE_VALIDATION = False
+BYPASS_CARDINALITY_TILE_VALIDATION = False
 
 DATE_IMPORT_EXPORT_FORMAT = "%Y-%m-%d" # Custom date format for dates imported from and exported to csv
 
@@ -258,11 +281,19 @@ DATE_IMPORT_EXPORT_FORMAT = "%Y-%m-%d" # Custom date format for dates imported f
 # ordered as seen in the resource cards or not.
 EXPORT_DATA_FIELDS_IN_CARD_ORDER = False
 
+
+SEARCH_EXPORT_LIMIT = 15000
+SEARCH_EXPORT_IMMEDIATE_DOWNLOAD_THRESHOLD = 2000  # The maximum number of instances a user can download from search export without celery
+
+# The maximum number of instances a user can download using HTML format from search export without celery
+SEARCH_EXPORT_IMMEDIATE_DOWNLOAD_THRESHOLD_HTML_FORMAT = 10
+
 #Identify the usernames and duration (seconds) for which you want to cache the time wheel
 CACHE_BY_USER = {
     "default": 3600 * 24, #24hrs
     "anonymous": 3600 * 24 #24hrs
     }
+
 
 TILE_CACHE_TIMEOUT = 600 #seconds
 CLUSTER_DISTANCE_MAX = 5000 #meters
@@ -293,14 +324,14 @@ EMAIL_HOST_USER = "xxxx@xxx.com"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-CELERY_BROKER_URL = "" # RabbitMQ --> "amqp://guest:guest@localhost",  Redis --> "redis://localhost:6379/0"
+CELERY_BROKER_URL = "amqp://guest:guest@localhost" # RabbitMQ --> "amqp://guest:guest@localhost",  Redis --> "redis://localhost:6379/0"
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_BACKEND = 'django-db' # Use 'django-cache' if you want to use your cache as your backend
 CELERY_TASK_SERIALIZER = 'json'
 
 
-CELERY_SEARCH_EXPORT_EXPIRES = 24 * 3600  # seconds
-CELERY_SEARCH_EXPORT_CHECK = 3600  # seconds
+CELERY_SEARCH_EXPORT_EXPIRES = 24 * 3600  # 1 day
+CELERY_SEARCH_EXPORT_CHECK = 15  # seconds
 
 CELERY_BEAT_SCHEDULE = {
     "delete-expired-search-export": {"task": "arches.app.tasks.delete_file", "schedule": CELERY_SEARCH_EXPORT_CHECK,},
