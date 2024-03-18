@@ -24,6 +24,7 @@ import uuid
 from datetime import datetime
 import docx
 import textwrap
+from html import unescape
 from docx import Document
 from docx.text.paragraph import Paragraph
 from docx.oxml.xmlchemy import OxmlElement
@@ -41,7 +42,7 @@ from arches.app.models.system_settings import settings
 from arches.app.models.tile import Tile
 from arches.app.utils.response import JSONResponse
 from arches.app.views.tile import TileData
-
+import re
 
 class FileTemplateView(View):
     def __init__(self):
@@ -390,12 +391,24 @@ class FileTemplateView(View):
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
         for key in mapping_dict:
-            html = False
-            if htmlTags.search(mapping_dict[key] if mapping_dict[key] is not None else ""):
-                html = True
-            self.replace_string(self.doc, key, mapping_dict[key], html)
+            is_html = False
+            # Where HTML||PLAIN is used in the template, we need to convert the HTML to plain text
+            searchKey = f"<{key}||HTML||PLAIN>"
+            found = False
+            for paragraph in self.doc.paragraphs:
+                if searchKey in paragraph.text:
+                    found = True
+                    mapping_dict[key] = unescape(
+                        re.sub(htmlTags, "", mapping_dict[key])
+                    ).rstrip("\n")
+                    break
+            if not found and htmlTags.search(
+                mapping_dict[key] if mapping_dict[key] is not None else ""
+            ):
+                is_html = True
+            self.replace_string(self.doc, key, mapping_dict[key], is_html)
 
-    def replace_string(self, document, key, v, html=False):
+    def replace_string(self, document, key, v, is_html=False):
         # Note that the intent here is to preserve how things are styled in the docx
         # easiest way is to iterate through p.runs, not as fast as iterating through parent.paragraphs
         # advantage of the former is that replacing run.text preserves styling, replacing p.text does not
@@ -408,17 +421,40 @@ class FileTemplateView(View):
                 document_html_parser.insert_into_paragraph_and_feed(v)
 
         def replace_in_runs(p_list, k, v):
+            pattern = "(?:\|\|([^<>]+)\|\|([^<>]+))?"
             for paragraph in p_list:
-                if html is True:
+                if is_html:
                     parse_html_to_docx(paragraph, k, v)
                 for i, run in enumerate(paragraph.runs):
-                    if k in run.text:  # now check if html
-                        run_style = run.style
-                        run.text = run.text.replace(k, v)
-                    elif (
-                        i == (len(paragraph.runs) - 1) and k in paragraph.text
-                    ):  # backstop case: rogue text outside of run obj - must fix template
-                        paragraph.text = paragraph.text.replace(k, v)
+                    if all(char not in run.text for char in "<>"):
+                        continue
+                    reg_ex = "(" + k[:-1] + pattern + k[-1] + ")"
+                    matches = re.findall(reg_ex, run.text)
+                    new_value = None
+                    if matches:
+                        new_key = matches[0][0]
+                        first_param = matches[0][1]
+                        second_param = matches[0][2]
+                        if first_param != "" and second_param != "":
+                            if first_param == "HTML" and second_param == "PLAIN":
+                                # No need to do anything here, we've already parsed the HTML and converted it to plain text
+                                pass
+                            else:
+                                # Assume first_param is a date format and second_param is the desired format
+                                try:
+                                    parsed_date = datetime.strptime(v, first_param)
+                                    new_value = parsed_date.strftime(second_param)
+                                except ValueError:
+                                    pass
+                        if matches:
+                            run_style = run.style
+                            run.text = run.text.replace(
+                                new_key, new_value if new_value is not None else v
+                            )
+                        elif (
+                            i == (len(paragraph.runs) - 1) and k in paragraph.text
+                        ):  # backstop case: rogue text outside of run obj - must fix template
+                            paragraph.text = paragraph.text.replace(k, v)
 
         def iterate_tables(t_list, k, v):
             for table in t_list:
