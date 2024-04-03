@@ -25,27 +25,47 @@ class BNGPointToGeoJSON(BaseFunction):
     def get(self):
         raise NotImplementedError
 
+
     def save_geojson(self, tile, request, is_function_save_method=True):
-        """Finds the equivalen GeoJSON for a BNG Alphanumeric value and saves that value to the
+        """Finds the equivalent GeoJSON for a BNG Alphanumeric value and saves that value to the
         geojson nodegroup of the tile.
-
-        Args:
-            self : BNGPointToGeoJSON object.
-
-            tile : Tile to attach / amend geojson_nodegroup of.
-
-            request : WSGI Request used to varify call is result of user action. N.B. Function Returns if empty.
-
-            is_function_save_method : a bool stating whether the function calling it is the save function.
         """
-
-        # First let's check if this call is as a result of an inbound request (user action) or
-        # as a result of the complementary GeoJSONToBNGPoint function saving a new BngPoint.
-        if request is None and is_function_save_method == True:
+        if self._is_function_call(request, is_function_save_method):
             return
 
-        bngValueReturned = ""
-        gridSquare = {
+        bngValueReturned = self._get_bng_value(tile)
+        if bngValueReturned is not None:
+            self._process_bng_value(bngValueReturned, tile)
+
+
+    def _is_function_call(self, request, is_function_save_method):
+        """Check if the function call is a result of user action or another function."""
+        return request is None and is_function_save_method == True
+
+    def _get_bng_value(self, tile):
+        """Retrieve the BNG value from the tile."""
+        bngnode = self.config["bng_node"]
+        return tile.data[bngnode]
+
+    def _process_bng_value(self, bngValueReturned, tile):
+        """Process the BNG value and update the tile."""
+        pointGeoJSON = self._transform_bng_to_geojson(bngValueReturned)
+
+        # Create a geojson object required in the format required by Arches
+        geometryValueJson = self._create_geojson_object(bngValueReturned, pointGeoJSON)
+
+        # Save or update the tile with the new GeoJSON object
+        self._save_or_update_tile(tile, geometryValueJson)
+
+        # Refresh the GeoJSON geometries
+        self._refresh_geojson_geometries()
+
+    def _transform_bng_to_geojson(self, bngValueReturned):
+            """
+            The following section turns the alphanumberic BNG value in the tile into a point geometry object and then transforms that object
+            into WGS 1984 long/lat projection system.
+            """
+            gridSquare = {
             "NA": [0, 9],
             "NB": [1, 9],
             "NC": [2, 9],
@@ -116,19 +136,7 @@ class BNGPointToGeoJSON(BaseFunction):
             "SZ": [4, 0],
             "TV": [5, 0],
             "TW": [6, 0],
-        }
-
-        bngnode = self.config["bng_node"]
-        geojsonNode = self.config["geojson_node"]
-        bngValueReturned = tile.data[bngnode]
-
-        if bngValueReturned != None:
-            """
-            The following section turns the alphanumberic BNG value in the tile into a point geometry object and then transforms that object
-            into WGS 1984 long/lat projection system.
-            """
-
-            dt = datetime.now()
+            }
             gridSquareLetters = bngValueReturned[0:2]
             bngValueNumbers = bngValueReturned[2:]
             splitSection = int(len(bngValueNumbers) / 2)
@@ -138,25 +146,24 @@ class BNGPointToGeoJSON(BaseFunction):
             osgb36PointString = "POINT (" + eastingValue + " " + northingValue + ")"
             osgb36Point = GEOSGeometry(osgb36PointString, srid=27700)
             osgb36Point.transform(4326, False)
-            pointGeoJSON = json.loads(osgb36Point.geojson)
+            return json.loads(osgb36Point.geojson)
 
-            """
-                This section creates a geojson object required in the format required by Arches.  The date and time the object was
-                created has also been added in the feature's properties.
-            """
 
-            uuidForRecord = uuid.uuid4().hex
-            bngFeature = {
-                "geometry": pointGeoJSON,
-                "type": "Feature",
-                "id": str(uuidForRecord),
-                "properties": {"datetime": dt.strftime("%d/%m/%Y %H:%M:%S"), "bngref": str(bngValueReturned)},
-            }
+    def _create_geojson_object(self, bngValueReturned, pointGeoJSON):
+        """Create a geojson object required in the format required by Arches."""
+        dt = datetime.now()
+        uuidForRecord = uuid.uuid4().hex
+        bngFeature = {
+            "geometry": pointGeoJSON,
+            "type": "Feature",
+            "id": str(uuidForRecord),
+            "properties": {"datetime": dt.strftime("%d/%m/%Y %H:%M:%S"), "bngref": str(bngValueReturned)},
+        }
 
-            geometryValue = {"type": "FeatureCollection", "features": [bngFeature]}
+        geometryValue = {"type": "FeatureCollection", "features": [bngFeature]}
+        return geometryValue
 
-            geometryValueJson = geometryValue
-
+    def _save_or_update_tile(self, tile, geometryValueJson):
             """
             The Tile.objects.filter function from tiles.py is called to return any tiles with the geojson_nodegroup value
             as the nodegroup_id and the current tile's resource instance ID as its resourceinstance_id value; any tiles returned
@@ -172,6 +179,7 @@ class BNGPointToGeoJSON(BaseFunction):
             The new tile is saved and then the mv_geojson_geoms materialised view is refreshed so the point geometry will be displayed
             on the Search map.
             """
+            geojsonNode = self.config["geojson_node"]
             if self.config["geojson_nodegroup"] == str(tile.nodegroup_id):
                 tile.data[geojsonNode] = geometryValueJson
             else:
@@ -200,16 +208,14 @@ class BNGPointToGeoJSON(BaseFunction):
 
                     new_geojson_tile.save()
 
-            cursor = connection.cursor()
-            sql = """
-                    SELECT * FROM refresh_geojson_geometries();
-                """
-            cursor.execute(sql)  #
+    def _refresh_geojson_geometries(self):
+        """Refresh the GeoJSON geometries."""
+        cursor = connection.cursor()
+        sql = """
+                SELECT * FROM refresh_geojson_geometries();
+            """
+        cursor.execute(sql)
 
-        else:
-            pass
-
-        return
 
     def save(self, tile, request, context=None):
 
