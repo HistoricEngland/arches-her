@@ -9,6 +9,10 @@ html, body {
     font-size: 0.6rem;
 }
 
+body {
+    background-color: $backgrounds;
+}
+
 .landing-page {
 	/* General - Start*/
     font-family: $font-family-main;
@@ -51,6 +55,7 @@ html, body {
     }
     .btn-primary {
         height: 51px;
+        padding: 12px 16px;
         font-weight: 300;
         line-height: 1.5;
     }
@@ -101,12 +106,12 @@ html, body {
 		}
 	}
     h1 {
-        font-size: 4.8rem;
+        font-size: 4.7rem;
         @include break-at(tablet-max) {
             font-size: 3.4rem;
         }
         @include break-at(mobile-xsmall-max) {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
         }
         color: $headings;
     }
@@ -123,7 +128,7 @@ html, body {
     }
     
     h3 {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
         margin-bottom: 20px;
         color: $headings;
     }
@@ -132,7 +137,7 @@ html, body {
     }
     .caption {
         padding: 20px 17px 20px 20px;
-        font-size: 2.1rem;
+        font-size: 1.8rem;
         @include break-at(tablet-max) {
             font-size: 1.8rem;
         }
@@ -167,7 +172,7 @@ html, body {
         }
         top: 0px;
         z-index: 500;
-        background-color: $backgrounds;
+        background-color: $background-header;
         border: none;
         @include break-at(mobile-lg-max) {
             border-bottom: 1px solid $header-border-mobile;
@@ -207,6 +212,9 @@ html, body {
                         @include break-at(mobile-lg-max) {
                             right: 30px;
                         }
+                        .icon-bar {
+                            background: #FFF;
+                        }
                     }
                     .icon-bar {
                         background: $standard-links;
@@ -230,6 +238,21 @@ html, body {
                     padding: 0;
                     &.collapsing {
                         display: none;
+                    }
+                    a {
+                        color: #FFF;
+                        &:hover {
+                            background: #000;
+                            color: #13ce67;
+                        }
+                        &:active {
+                            background: #000;
+                            color: #13ce67;
+                        }
+                        &:focus {
+                            background: #000;
+                            color: #13ce67;
+                        }
                     }
                     &.collapse {
                         .container {
@@ -260,7 +283,7 @@ html, body {
                             @include break-at(mobile-xsmall-max) {
                                 width: 60vw;
                             }
-                            background: $backgrounds;
+                            background: $background-header;
                             overflow-x: hidden;
                             padding: 20px!important;
                             li {
@@ -285,12 +308,16 @@ html, body {
     main {
         .featurette-image-block {
             box-shadow: 0px 3px 6px $box-shadow;
-            max-width: 424px;
+            max-width: 423px;
+            margin: 10px;
             @include break-at(wide-max) {
                 max-width: 440px;
             }
             @include break-at(tablet-max) {
                 max-width: 337px;
+            }
+            @include break-at(mobile-lg-max) {
+                max-width: 440px;
             }
             padding: 0;
             display: inline-block;
@@ -321,15 +348,19 @@ html, body {
                 @include break-at(mobile-xsmall-max) {
                     left: 15px;
                 }
-                top: 132px;
+                top: 50%;
+                transform: translateY(-50%);
                 @include break-at(wide-max) {
-                    top: 436px;
+                    top: 570px;
                 }
                 @include break-at(tablet-max) {
-                    top: 330px;
+                    top: 425px;
                 }
                 @include break-at(mobile-lg-max) {
-                    top: 59vw;
+                    top: 76vw;
+                }
+                @include break-at(mobile-mid-max) {
+                    top: 88vw;
                 }
                 border-radius: 10px;
                 @include break-at(mobile-lg-max) {
@@ -391,7 +422,7 @@ html, body {
                 margin-top: 179px;
             }
             @include break-at(mobile-lg-max) {
-                margin: 253px 30px 0 15px;
+                margin: 253px 15px 0 30px;
             }
             @include break-at(mobile-xsmall-max) {
                 margin: 230px 15px 0 15px;
@@ -405,6 +436,9 @@ html, body {
             @include break-at(tablet-max) {
                 max-width: 580px;
             }
+            @include break-at(mobile-lg-max) {
+                max-width: 100%;
+            }
             ol {
                 -moz-column-count: 2;
                 -moz-column-gap: 20px;
@@ -413,7 +447,7 @@ html, body {
                 column-count: 2;
                 @include break-at(mobile-lg-max) {
                     column-count: 1;
-                    padding-left: 15px;
+                    padding-left: 30px;
                 }
                 column-gap: 20px;
                 li {
@@ -429,11 +463,11 @@ html, body {
                 max-width: 500px;
             }
             @include break-at(tablet-max) {
-                max-width: 580px;
+                max-width: 100%;
             }
             margin: 50px auto 0 auto;
             @include break-at(mobile-lg-max) {
-                margin: 40px 30px 0 15px;
+                margin: 40px 15px 0 30px;
             }
             @include break-at(mobile-xsmall-max) {
                 margin: 40px 15px 0 15px;
@@ -442,19 +476,19 @@ html, body {
                 font-size: 2.2rem;
             }
             .featurette3-row{
-                margin-left: -113px;
+                margin-left: -128px;
                 @include break-at(wide-max) {
-                    margin-left: -202px;
+                    margin-left: -217px;
                 }
                 @include break-at(tablet-max) {
-                    margin-left: -60px;
+                    margin-left: -40px;
                 }
                 @include break-at(mobile-lg-max) {
                     margin-left: 0;
                 }
-                margin-right: -113px;
+                margin-right: -128px;
                 @include break-at(wide-max) {
-                    margin-right: -202px;
+                    margin-right: -217px;
                 }
                 @include break-at(tablet-max) {
                     margin-right: -60px;
@@ -466,7 +500,7 @@ html, body {
                 .featurette3-first-block {
                     margin-right: 20px;
                     @include break-at(mobile-lg-max) {
-                        margin-right: 0;
+                        margin-right: 10px;
                     }
                 }
                 img {
@@ -482,11 +516,11 @@ html, body {
                 max-width: 500px;
             }
             @include break-at(tablet-max) {
-                max-width: 580px;
+                max-width: 100%;
             }
             margin: 50px auto 0 auto;
             @include break-at(mobile-lg-max) {
-                margin: 40px 30px 0 15px;
+                margin: 40px 15px 0 30px;
             }
             @include break-at(mobile-xsmall-max) {
                 margin: 40px 15px 0 15px;
@@ -494,7 +528,7 @@ html, body {
             .featurette4-row {
                 margin: 30px -113px 20px -113px;
                 @include break-at(tablet-max) {
-                    margin: 30px -60px 20px -60px;
+                    margin: 30px -23px 20px -30px;
                 }
                 @include break-at(mobile-lg-max) {
                     margin: 30px 0 20px 0;
@@ -507,11 +541,11 @@ html, body {
                 max-width: 500px;
             }
             @include break-at(tablet-max) {
-                max-width: 580px;
+                max-width: 100%;
             }
             margin: 50px auto 0 auto;
             @include break-at(mobile-lg-max) {
-                margin: 40px 30px 0 15px;
+                margin: 40px 15px 0 30px;
             }
         }
         .featurette6 {
@@ -520,45 +554,45 @@ html, body {
                 max-width: 500px;
             }
             @include break-at(tablet-max) {
-                max-width: 580px;
+                max-width: 100%;
             }
             margin: 50px auto 0 auto;
             @include break-at(mobile-lg-max) {
-                margin: 40px 30px 0 15px;
+                margin: 40px 15px 0 30px;
             }
             @include break-at(mobile-xsmall-max) {
                 margin: 40px 15px 0 15px;
             }
             .featurette6-row {
-                margin-left: -336px;
+                margin-left: -346px;
                 @include break-at(wide-max) {
                     margin-left: -203px;
                 }
                 @include break-at(tablet-max) {
-                    margin-left: -60px;
+                    margin-left: -24px;
                 }
                 @include break-at(mobile-lg-max) {
                     margin-left: 0;
                 }
-                margin-right: -336px;
+                margin-right: -346px;
                 @include break-at(wide-max) {
                     margin-right: -203px;
                 }
                 @include break-at(tablet-max) {
-                    margin-right: -60px;
+                    margin-right: -50px;
                 }
                 @include break-at(mobile-lg-max) {
                     margin-right: 0;
                 }
                 margin-top: 30px;
                 .featurette6-mid-block {
-                    margin: 0 20px;
+                    /*margin: 0 10px;
                     @include break-at(tablet-max) {
                         margin: 0 0 0 22px;
                     }
                     @include break-at(mobile-lg-max) {
                         margin: 0 0 20px;
-                    }
+                    }*/
                 }
             }
         }
@@ -568,11 +602,11 @@ html, body {
                 max-width: 580px;
             }
             @include break-at(tablet-max) {
-                max-width: 580px;
+                max-width: 100%;
             }
             margin: 50px auto 0 auto;
             @include break-at(mobile-lg-max) {
-                margin: 40px 30px 0 15px;
+                margin: 40px 15px 0 30px;
             }
             @include break-at(mobile-xsmall-max) {
                 margin: 40px 15px 0 15px;
