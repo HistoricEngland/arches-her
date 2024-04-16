@@ -39,10 +39,11 @@ class BNGPointToGeoJSON(BaseFunction):
 
 
     def _is_function_call(self, request, is_function_save_method):
-        """Check if the function call is a result of user action or another function."""
+        """Check if the function call is a result of user action or the complementary GeoJSONToBNGPoint
+          function saving a new BngPoint."""
         return request is None and is_function_save_method == True
 
-    def _get_bng_value(self, tile):
+    def _get_bng_value_from_tile(self, tile):
         """Retrieve the BNG value from the tile."""
         bngnode = self.config["bng_node"]
         return tile.data[bngnode]
@@ -137,16 +138,19 @@ class BNGPointToGeoJSON(BaseFunction):
             "TV": [5, 0],
             "TW": [6, 0],
             }
-            gridSquareLetters = bngValueReturned[0:2]
-            bngValueNumbers = bngValueReturned[2:]
-            splitSection = int(len(bngValueNumbers) / 2)
-            gridSquareNumbers = gridSquare[gridSquareLetters]
-            eastingValue = str(gridSquareNumbers[0]) + str(bngValueNumbers[:splitSection])
-            northingValue = str(gridSquareNumbers[1]) + str(bngValueNumbers[splitSection:])
-            osgb36PointString = "POINT (" + eastingValue + " " + northingValue + ")"
-            osgb36Point = GEOSGeometry(osgb36PointString, srid=27700)
-            osgb36Point.transform(4326, False)
-            return json.loads(osgb36Point.geojson)
+            try:
+                gridSquareLetters = bngValueReturned[0:2]
+                bngValueNumbers = bngValueReturned[2:]
+                splitSection = int(len(bngValueNumbers) / 2)
+                gridSquareNumbers = gridSquare[gridSquareLetters]
+                eastingValue = str(gridSquareNumbers[0]) + str(bngValueNumbers[:splitSection])
+                northingValue = str(gridSquareNumbers[1]) + str(bngValueNumbers[splitSection:])
+                osgb36PointString = "POINT (" + eastingValue + " " + northingValue + ")"
+                osgb36Point = GEOSGeometry(osgb36PointString, srid=27700)
+                osgb36Point.transform(4326, False)
+                return json.loads(osgb36Point.geojson)
+            except:
+                raise ValueError("Unable to Transform BNG value. Please check the value is correct.")
 
 
     def _create_geojson_object(self, bngValueReturned, pointGeoJSON):

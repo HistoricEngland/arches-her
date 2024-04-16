@@ -31,11 +31,19 @@ class TestBNGPointToGeoJSON(unittest.TestCase):
         mock_tile.assert_called_once()
 
     @patch('arches_her.arches_her.functions.bngpoint_to_geojson_function.Tile')
-    def test__transform_bng_to_geojson(self, mock_tile):
+    def test__transform_bng_to_geojson_validBNG(self, mock_tile):
         bngValueReturned = 'NA123456'  
         expectedResult = {'type': 'Point', 'coordinates': [49.85153643668203, -7.565187626387456]}
         transformationResult = self.bng_to_geojson._transform_bng_to_geojson(bngValueReturned)
-        self.assertEqual(expectedResult, transformationResult)
+        self.assertEqual(expectedResult, transformationResult)    
+
+    @patch('arches_her.arches_her.functions.bngpoint_to_geojson_function.Tile')
+    def test__transform_bng_to_geojson_non_validBNG(self, mock_tile):
+        bngValueReturned = 'empty-headed animal-food-trough wiper'
+        with self.assertRaises(ValueError) as context:
+            self.bng_to_geojson._transform_bng_to_geojson(bngValueReturned)
+            
+        self.assertTrue("Unable to Transform BNG value. Please check the value is correct." in str(context.exception))
         
     @patch('arches_her.arches_her.functions.bngpoint_to_geojson_function.Tile')
     def test_is_function_call(self, mock_tile):
