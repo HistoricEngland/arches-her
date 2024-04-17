@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import Mock, patch
 from arches_her.arches_her.functions.bngpoint_to_geojson_function import BNGPointToGeoJSON
 
+# root@b380c6f689a5:/web_root/arches#  python manage.py test ../arches_her/arches_her/tests/bngpoint_to_geojson_function_tests.py  --pattern="*.py" --settings="tests.test_settings"
 class TestBNGPointToGeoJSON(unittest.TestCase):
     def setUp(self):
         self.bng_to_geojson = BNGPointToGeoJSON()

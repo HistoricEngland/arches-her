@@ -33,7 +33,7 @@ class BNGPointToGeoJSON(BaseFunction):
         if self._is_function_call(request, is_function_save_method):
             return
 
-        bngValueReturned = self._get_bng_value(tile)
+        bngValueReturned = self._get_bng_value_from_tile(tile)
         if bngValueReturned is not None:
             self._process_bng_value(bngValueReturned, tile)
 
