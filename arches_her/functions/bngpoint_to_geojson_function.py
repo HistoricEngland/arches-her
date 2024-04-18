@@ -25,8 +25,15 @@ class BNGPointToGeoJSON(BaseFunction):
     def get(self):
         raise NotImplementedError
 
+    def on_import(self, tile):
+        self._save_geojson(tile=tile, request=None, is_function_save_method=False)
+        return
+    
+    def save(self, tile, request, context=None):
+        self._save_geojson(tile=tile, request=request, is_function_save_method=True)
+        return
 
-    def save_geojson(self, tile, request, is_function_save_method=True):
+    def _save_geojson(self, tile, request, is_function_save_method=True):
         """Finds the equivalent GeoJSON for a BNG Alphanumeric value and saves that value to the
         geojson nodegroup of the tile.
         """
@@ -36,7 +43,6 @@ class BNGPointToGeoJSON(BaseFunction):
         bngValueReturned = self._get_bng_value_from_tile(tile)
         if bngValueReturned is not None:
             self._process_bng_value(bngValueReturned, tile)
-
 
     def _is_function_call(self, request, is_function_save_method):
         """Check if the function call is a result of user action or the complementary GeoJSONToBNGPoint
@@ -67,76 +73,20 @@ class BNGPointToGeoJSON(BaseFunction):
             into WGS 1984 long/lat projection system.
             """
             gridSquare = {
-            "NA": [0, 9],
-            "NB": [1, 9],
-            "NC": [2, 9],
-            "ND": [3, 9],
-            "NE": [4, 9],
-            "OA": [5, 9],
-            "OB": [6, 9],
-            "NF": [0, 8],
-            "NG": [1, 8],
-            "NH": [2, 8],
-            "NJ": [3, 8],
-            "NK": [4, 8],
-            "OF": [5, 8],
-            "OG": [6, 8],
-            "NL": [0, 7],
-            "NM": [1, 7],
-            "NN": [2, 7],
-            "NO": [3, 7],
-            "NP": [4, 7],
-            "OL": [5, 7],
-            "OM": [6, 7],
-            "NQ": [0, 6],
-            "NR": [1, 6],
-            "NS": [2, 6],
-            "NT": [3, 6],
-            "NU": [4, 6],
-            "OQ": [5, 6],
-            "OR": [6, 6],
-            "NV": [0, 5],
-            "NW": [1, 5],
-            "NX": [2, 5],
-            "NY": [3, 5],
-            "NZ": [4, 5],
-            "OV": [5, 5],
-            "OW": [6, 5],
-            "SA": [0, 4],
-            "SB": [1, 4],
-            "SC": [2, 4],
-            "SD": [3, 4],
-            "SE": [4, 4],
-            "TA": [5, 4],
-            "TB": [6, 4],
-            "SF": [0, 3],
-            "SG": [1, 3],
-            "SH": [2, 3],
-            "SJ": [3, 3],
-            "SK": [4, 3],
-            "TF": [5, 3],
-            "TG": [6, 3],
-            "SL": [0, 2],
-            "SM": [1, 2],
-            "SN": [2, 2],
-            "SO": [3, 2],
-            "SP": [4, 2],
-            "TL": [5, 2],
-            "TM": [6, 2],
-            "SQ": [0, 1],
-            "SR": [1, 1],
-            "SS": [2, 1],
-            "ST": [3, 1],
-            "SU": [4, 1],
-            "TQ": [5, 1],
-            "TR": [6, 1],
-            "SV": [0, 0],
-            "SW": [1, 0],
-            "SX": [2, 0],
-            "SY": [3, 0],
-            "SZ": [4, 0],
-            "TV": [5, 0],
-            "TW": [6, 0],
+            "NA": [0, 9], "NB": [1, 9], "NC": [2, 9], "ND": [3, 9], "NE": [4, 9],
+            "OA": [5, 9], "OB": [6, 9], "NF": [0, 8], "NG": [1, 8], "NH": [2, 8],
+            "NJ": [3, 8], "NK": [4, 8], "OF": [5, 8], "OG": [6, 8], "NL": [0, 7],
+            "NM": [1, 7], "NN": [2, 7], "NO": [3, 7], "NP": [4, 7], "OL": [5, 7],
+            "OM": [6, 7], "NQ": [0, 6], "NR": [1, 6], "NS": [2, 6], "NT": [3, 6],
+            "NU": [4, 6], "OQ": [5, 6], "OR": [6, 6], "NV": [0, 5], "NW": [1, 5],
+            "NX": [2, 5], "NY": [3, 5], "NZ": [4, 5], "OV": [5, 5], "OW": [6, 5],
+            "SA": [0, 4], "SB": [1, 4], "SC": [2, 4], "SD": [3, 4], "SE": [4, 4],
+            "TA": [5, 4], "TB": [6, 4], "SF": [0, 3], "SG": [1, 3], "SH": [2, 3],
+            "SJ": [3, 3], "SK": [4, 3], "TF": [5, 3], "TG": [6, 3], "SL": [0, 2],
+            "SM": [1, 2], "SN": [2, 2], "SO": [3, 2], "SP": [4, 2], "TL": [5, 2],
+            "TM": [6, 2], "SQ": [0, 1], "SR": [1, 1], "SS": [2, 1], "ST": [3, 1],
+            "SU": [4, 1], "TQ": [5, 1], "TR": [6, 1], "SV": [0, 0], "SW": [1, 0],
+            "SX": [2, 0], "SY": [3, 0], "SZ": [4, 0], "TV": [5, 0], "TW": [6, 0],
             }
             try:
                 gridSquareLetters = bngValueReturned[0:2]
@@ -151,7 +101,6 @@ class BNGPointToGeoJSON(BaseFunction):
                 return json.loads(osgb36Point.geojson)
             except:
                 raise ValueError("Unable to Transform BNG value. Please check the value is correct.")
-
 
     def _create_geojson_object(self, bngValueReturned, pointGeoJSON):
         """Create a geojson object required in the format required by Arches."""
@@ -220,21 +169,11 @@ class BNGPointToGeoJSON(BaseFunction):
             """
         cursor.execute(sql)
 
-
-    def save(self, tile, request, context=None):
-
-        self.save_geojson(tile=tile, request=request, is_function_save_method=True)
-        return
-
     def post_save(self, *args, **kwargs):
         raise NotImplementedError
 
     def delete(self, tile, request):
         raise NotImplementedError
-
-    def on_import(self, tile):
-        self.save_geojson(tile=tile, request=None, is_function_save_method=False)
-        return
 
     def after_function_save(self, tile, request):
         raise NotImplementedError

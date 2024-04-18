@@ -39,11 +39,14 @@ class TestBNGPointToGeoJSON(unittest.TestCase):
         self.bng_to_geojson.save_geojson(mock_tile, mock_request)
 
         # Assert that the methods were called with the correct arguments
-        mock_tile.objects.filter.assert_called_once_with(nodegroup_id=self.bng_to_geojson.config["geojson_nodegroup"], resourceinstance_id=mock_tile.resourceinstance_id)
+        mock_tile.objects.filter.assert_called_once_with(nodegroup_id=self.bng_to_geojson.config["geojson_nodegroup"],
+                                                         resourceinstance_id=mock_tile.resourceinstance_id)
         
         # N.b get_blank_tile_from_nodegroup_id is not a direct method of mock_tile. Instead, it's a method of the object returned by mock_tile(),
         # therefore get_blank_tile_from_nodegroup_id method is called on the result of mock_tile(), not directly on mock_tile.
-        mock_tile().get_blank_tile_from_nodegroup_id.assert_called_once_with(self.bng_to_geojson.config["geojson_nodegroup"], resourceid=mock_tile.resourceinstance_id, parenttile=mock_tile.parenttile)
+        mock_tile().get_blank_tile_from_nodegroup_id.assert_called_once_with(self.bng_to_geojson.config["geojson_nodegroup"],
+                                                                             resourceid=mock_tile.resourceinstance_id,
+                                                                             parenttile=mock_tile.parenttile)
 
 if __name__ == '__main__':
     unittest.main()
