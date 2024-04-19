@@ -118,19 +118,7 @@ class BNGPointToGeoJSON(BaseFunction):
 
     def _save_or_update_tile(self, tile, geometryValueJson):
             """
-            The Tile.objects.filter function from tiles.py is called to return any tiles with the geojson_nodegroup value
-            as the nodegroup_id and the current tile's resource instance ID as its resourceinstance_id value; any tiles returned
-            are added to the previously_saved_tiles variable.
-
-            If there are tiles returned then the new geojson object overwrites the current value.
-
-            If there are no tiles returned, a new tile is created for the geojson nodegroup using tile.py's get_blank_tile
-            function.  If there is a key within the data object in the new node with the same id as the geojson_nodegroup value
-            then that key/value pair are deleted.  The geojson object is set at the value to the key which has the value of the geojson_node
-            value.
-
-            The new tile is saved and then the mv_geojson_geoms materialised view is refreshed so the point geometry will be displayed
-            on the Search map.
+            Used to either save a new tile or update an existing one with a given geometry value.
             """
             geojsonNode = self.config["geojson_node"]
             if self.config["geojson_nodegroup"] == str(tile.nodegroup_id):
@@ -139,7 +127,9 @@ class BNGPointToGeoJSON(BaseFunction):
                 previously_saved_tiles = Tile.objects.filter(
                     nodegroup_id=self.config["geojson_nodegroup"], resourceinstance_id=tile.resourceinstance_id
                 )
-
+                """
+                If the tile already has a GeoJSON object then the new GeoJSON object is appended to the existing object.
+                """
                 if len(previously_saved_tiles) > 0:
                     for p in previously_saved_tiles:
                         old_geojson = p.data[geojsonNode]
@@ -151,6 +141,9 @@ class BNGPointToGeoJSON(BaseFunction):
 
                         p.save()
                 else:
+                    """
+                    If the tile does not have a GeoJSON object then a new tile is created and the new GeoJSON object is saved to that tile.
+                    """
                     new_geojson_tile = Tile().get_blank_tile_from_nodegroup_id(
                         self.config["geojson_nodegroup"], resourceid=tile.resourceinstance_id, parenttile=tile.parenttile
                     )
@@ -162,7 +155,7 @@ class BNGPointToGeoJSON(BaseFunction):
                     new_geojson_tile.save()
 
     def _refresh_geojson_geometries(self):
-        """Refresh the GeoJSON geometries."""
+        """Refresh the GeoJSON geometries so the point geometry will be displayed on the Search map."""
         cursor = connection.cursor()
         sql = """
                 SELECT * FROM refresh_geojson_geometries();
