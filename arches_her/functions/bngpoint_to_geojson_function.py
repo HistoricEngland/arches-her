@@ -23,13 +23,16 @@ details = {
 
 class BNGPointToGeoJSON(BaseFunction):
     def get(self):
+        """Not yet implemented."""
         raise NotImplementedError
 
     def on_import(self, tile):
+        """Non-function save of geojson without request."""        
         self._save_geojson(tile=tile, request=None, is_function_save_method=False)
         return
     
     def save(self, tile, request, context=None):
+        """Saves the GeoJSON object to the geojson nodegroup of the tile."""
         self._save_geojson(tile=tile, request=request, is_function_save_method=True)
         return
 
@@ -163,10 +166,13 @@ class BNGPointToGeoJSON(BaseFunction):
         cursor.execute(sql)
 
     def post_save(self, *args, **kwargs):
+        """Not yet implemented."""
         raise NotImplementedError
 
     def delete(self, tile, request):
+        """Not yet implemented."""
         raise NotImplementedError
 
     def after_function_save(self, tile, request):
+        """Not yet implemented."""
         raise NotImplementedError
