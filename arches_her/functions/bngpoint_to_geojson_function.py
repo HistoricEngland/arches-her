@@ -28,15 +28,15 @@ class BNGPointToGeoJSON(BaseFunction):
 
     def on_import(self, tile):
         """Non-function save of geojson without request."""        
-        self._save_geojson(tile=tile, request=None, is_function_save_method=False)
+        self.save_geojson(tile=tile, request=None, is_function_save_method=False)
         return
     
     def save(self, tile, request, context=None):
         """Saves the GeoJSON object to the geojson nodegroup of the tile."""
-        self._save_geojson(tile=tile, request=request, is_function_save_method=True)
+        self.save_geojson(tile=tile, request=request, is_function_save_method=True)
         return
 
-    def _save_geojson(self, tile, request, is_function_save_method=True):
+    def save_geojson(self, tile, request, is_function_save_method=True):
         """Finds the equivalent GeoJSON for a BNG Alphanumeric value and saves that value to the
         geojson nodegroup of the tile.
         """

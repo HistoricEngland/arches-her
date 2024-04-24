@@ -16,7 +16,7 @@ class TestBNGPointToGeoJSON(unittest.TestCase):
         mock_request = Mock()
         mock_tile.data = {'bng_node': 'NA123456', 'geojson_node': None}
         mock_tile.nodegroup_id = 'geojson_nodegroup'
-        self.bng_to_geojson._save_geojson(mock_tile, mock_request, True)
+        self.bng_to_geojson.save_geojson(mock_tile, mock_request, True)
         self.assertIsNotNone(mock_tile.data['geojson_node'])
 
     @patch('arches_her.arches_her.functions.bngpoint_to_geojson_function.Tile')
