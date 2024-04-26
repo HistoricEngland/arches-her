@@ -929,6 +929,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,table.dataTable.dtr
 }
 
 .resource-report-abstract-container {
-    height: calc(100vh - 50px);
+    height: 100%;
+    min-height: calc(100vh - 50px);
     width: calc(100vw - 50px);
 }
