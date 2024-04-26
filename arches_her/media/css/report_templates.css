@@ -11,19 +11,14 @@
     padding-left: 1px;
 }
 
-.aher-table-control div
-{
+.aher-table-control div {
     display: inline;
 }
 
-.aher-table table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before {
-    top: 7px;
-}
-
-.aher-part-expanded
-{
+.aher-part-expanded {
     display: inline;
 }
+
 .resource-report {
     display: table;
     height: 100%;
@@ -56,10 +51,8 @@
 
 .aher-report-toolbar {
     width: 100%;
-    height: 50px;
     background: #f5f5f5;
     border-bottom: 1px solid #ddd;
-    position: fixed;
     z-index: 10;
 }
 .aher-report-subsection-two-column {
@@ -98,11 +91,7 @@
 }
 
 .aher-report-anchor-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    position: fixed;
     width: 100%;
-    margin-top: 50px;
     z-index: 10;
 }
 
@@ -156,16 +145,19 @@ li, .aher-report-a.active:hover {
 
 .aher-report-a.active {
     color: #25476a !important;
+    text-decoration: underline;
 }
 
-.aher-tabbed-report{
+.aher-report-a:hover {
+    text-decoration: underline;
+}
+
+.aher-tabbed-report {
     width: calc(100% - 1px);
     overflow: auto;
     display: flex;
-    flex-direction: column;
-    margin-top: 95px;
     flex: 1;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .aher-tab-container {
@@ -618,11 +610,10 @@ h3.shim:hover {
 }
 
 .firstchild-container .aher-table table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
-    top: 7px;
     line-height: 14px;
 }
 
-.breadcrumb>li+li:before{
+.breadcrumb>li+li:before {
     content: "|"
 }
 
@@ -906,4 +897,38 @@ a.aher-block-value-url {
 
 .graph-designer .aher-tabbed-report {
     margin-top: auto;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+    top: inherit!important;
+    left: inherit;
+    height: inherit;
+    width: inherit;
+    display: inline-block;
+    position: relative;
+    color: #4682b4;
+    border: none;
+    border-radius: 0;
+    box-shadow: inherit;
+    box-sizing: inherit;
+    text-align: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    content: '\25BC  Show details';
+    background-color: inherit;
+    padding-right: 10px;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child:before,table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child:before {
+    content: '\25B2  Hide details';
+    background-color: inherit;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
+    padding-left: 0;
+}
+
+.resource-report-abstract-container {
+    height: calc(100vh - 50px);
+    width: calc(100vw - 50px);
 }
