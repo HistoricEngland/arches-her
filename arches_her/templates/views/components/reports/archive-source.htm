@@ -20,7 +20,7 @@
     <div class="aher-report-anchor-container">
         <ol class="aher-report-anchors breadcrumb">
             <!-- ko foreach: {data: sections, as: 'section'} -->
-            <li tabindex="0" data-bind="click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></li>
+            <li tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a"></li>
             <!-- /ko -->
         </ol>
     </div>
@@ -62,7 +62,7 @@
             <!-- Archive Tab -->
             <div class="aher-report-page" data-bind="if: activeSection() === 'archive'">
                 <div>
-                    <h2 class="aher-report-section-subtitle" style="display: block; margin-bottom: 5px;"><i data-bind="click: function() {toggleVisibility(visible.archiveHolding)}, css: {'fa-angle-double-right': visible.archiveHolding(), 'fa-angle-double-up': !visible.archiveHolding()}" class="fa toggle"></i> <span>{% trans "Archive Holding" %}</span></h2>
+                    <h2 class="aher-report-section-subtitle" style="display: block; margin-bottom: 5px;"><i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.archiveHolding)}, css: {'fa-angle-double-right': visible.archiveHolding(), 'fa-angle-double-up': !visible.archiveHolding()}" class="fa toggle"></i> <span>{% trans "Archive Holding" %}</span></h2>
                     <div data-bind="visible: visible.archiveHolding">
                     <!-- ko ifnot: archiveHolding().length -->
                     <div class="aher-nodata-note">No archive holdings</div>
@@ -74,7 +74,7 @@
                         <div data-bind="visible: archive.visible">
                             <!-- ko foreach: { data: archive.data.section, as: "section", noChildContext: true} -->
                             <div class="aher-report-subsection">
-                                <h2 class="aher-report-section-subtitle" style="margin-bottom: 5px"><i data-bind="click: function() {toggleVisibility(section.visible)}, css: {'fa-angle-double-right': section.visible(), 'fa-angle-double-up': !section.visible()}" class="fa toggle"></i> <span data-bind="text: section.title"></span></h2>
+                                <h2 class="aher-report-section-subtitle" style="margin-bottom: 5px"><i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(section.visible)}, css: {'fa-angle-double-right': section.visible(), 'fa-angle-double-up': !section.visible()}" class="fa toggle"></i> <span data-bind="text: section.title"></span></h2>
                                 <a data-bind="{if: section.card, click: function(){addNewTile(section.card)}}" class="aher-report-a"><i class="fa fa-mail-reply"></i> {% trans "Edit" %} <span data-bind="text:section.title"></span></a>
 
                                 <div data-bind="visible: section.visible" class="aher-report-collapsible-container">

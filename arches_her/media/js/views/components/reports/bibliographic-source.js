@@ -63,7 +63,6 @@ define([
                 assets: undefined,
                 period: undefined,
                 actors: undefined,
-                archive: undefined,
                 resourceinstanceid: ko.unwrap(self.reportMetadata)?.resourceinstanceid
             };
 

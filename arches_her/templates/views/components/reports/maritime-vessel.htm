@@ -20,7 +20,7 @@
     <div class="aher-report-anchor-container">
         <ol class="aher-report-anchors breadcrumb">
             <!-- ko foreach: {data: sections, as: 'section'} -->
-            <li tabindex="0" data-bind="click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></li>
+            <li tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a"></li>
             <!-- /ko -->
         </ol>
     </div>
@@ -77,7 +77,7 @@
                     }
                 }"></div>
                 <div class="aher-report-section">
-                    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.nationalities)}, css: {'fa-angle-double-right': visible.nationalities(), 'fa-angle-double-up': !visible.nationalities()}" class="fa toggle"></i> {% trans "Nationalities" %}</h2>
+                    <h2 class="aher-report-section-title"><i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.nationalities)}, css: {'fa-angle-double-right': visible.nationalities(), 'fa-angle-double-up': !visible.nationalities()}" class="fa toggle"></i> {% trans "Nationalities" %}</h2>
                     <a class="aher-report-a" data-bind="{if: cards.nationalities, event:{ mousedown:function(d, e){addNewTile(cards.nationalities, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: nationalities().length">{% trans "Edit Nationality" %}</span><span data-bind="ifnot: nationalities().length">{% trans "Add Nationality" %}</span></a>
 
                     <!-- Collapsible content -->
@@ -107,10 +107,10 @@
                                                 <td data-bind="text: placeOfRegistration"></td>
                                                 <td class="aher-table-control">
                                                     <div data-bind="if: $parent.cards.nationalities">
-                                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.nationalities)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.nationalities)}">
                                                             <i class="fa fa-mail-reply"></i>
                                                         </a>
-                                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.nationalities)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.nationalities)">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </div>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="aher-report-section">
-                    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.owners)}, css: {'fa-angle-double-right': visible.owners(), 'fa-angle-double-up': !visible.owners()}" class="fa toggle"></i> {% trans "Owners" %}</h2>
+                    <h2 class="aher-report-section-title"><i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.owners)}, css: {'fa-angle-double-right': visible.owners(), 'fa-angle-double-up': !visible.owners()}" class="fa toggle"></i> {% trans "Owners" %}</h2>
                     <a class="aher-report-a" data-bind="{if: cards.owners, event:{ mousedown:function(d, e){addNewTile(cards.owners, e)}}}"><i class="fa fa-mail-reply"></i> <span data-bind="if: owners().length">{% trans "Edit Owner" %}</span><span data-bind="ifnot: owners().length">{% trans "Add Owner" %}</span></a>
 
                     <!-- Collapsible content -->
@@ -163,10 +163,10 @@
                                                 <td data-bind="text: dateQualifier"></td>
                                                 <td class="aher-table-control">
                                                     <div data-bind="if: $parent.cards.owners">
-                                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.owners)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.owners)}">
                                                             <i class="fa fa-mail-reply"></i>
                                                         </a>
-                                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.owners)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.owners)">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </div>
@@ -185,7 +185,7 @@
             <!-- Journeys -->
             <div class="aher-report-page" data-bind="if: activeSection() === 'journey'">
                 <div class="aher-report-section">
-                    <h2 class="aher-report-section-title"><i data-bind="click: function() {toggleVisibility(visible.voyages)}, css: {'fa-angle-double-right': visible.voyages(), 'fa-angle-double-up': !visible.voyages()}" class="fa toggle"></i> {% trans "Voyages" %}</h2>
+                    <h2 class="aher-report-section-title"><i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.voyages)}, css: {'fa-angle-double-right': visible.voyages(), 'fa-angle-double-up': !visible.voyages()}" class="fa toggle"></i> {% trans "Voyages" %}</h2>
                     <a class="aher-report-a" data-bind="{if: cards.voyages, event:{ mousedown:function(d, e){addNewTile(cards.voyages, e)}}}"><i class="fa fa-mail-reply"></i> <span>{% trans "Add Voyage" %}</span></a>
 
                     <!-- Collapsible content -->
@@ -247,10 +247,10 @@
                                                 </td>
                                                 <td class="aher-table-control">
                                                     <div data-bind="if: $parent.cards.voyages">
-                                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.voyages)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.voyages)}">
                                                             <i class="fa fa-mail-reply"></i>
                                                         </a>
-                                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.voyages)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.voyages)">
                                                             <i class="fa fa-trash"></i>
                                                         </a>
                                                     </div>

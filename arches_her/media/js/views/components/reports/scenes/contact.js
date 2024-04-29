@@ -5,7 +5,7 @@ define([
     'utils/report',
     'templates/views/components/reports/scenes/contact.htm',
     'bindings/datatable'],
-function(_, ko, arches, reportUtil, ContactTemplate) {
+function(_, ko, arches, reportUtils, ContactTemplate) {
     return ko.components.register('views/components/reports/scenes/contact', {
         viewModel: function(params) {
             const self = this;

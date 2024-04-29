@@ -7,10 +7,12 @@ define([
     'knockout-mapping',
     'views/components/workflows/select-resource-step',
     'viewmodels/alert',
+    'utils/workflows',
     'templates/views/components/workflows/correspondence-select-resource.htm'
-], function(_, $, uuid, arches, ko, koMapping, SelectResourceStep, AlertViewModel, CorrespondenceSelectResourceTemplate) {
+], function(_, $, uuid, arches, ko, koMapping, SelectResourceStep, AlertViewModel, workflowUtils, CorrespondenceSelectResourceTemplate) {
     function viewModel(params) {
         var self = this;
+        Object.assign(self, workflowUtils);
         SelectResourceStep.apply(this, [params]);
 
         this.letterTypeNodeId = "8d41e4df-a250-11e9-af01-00224800b26d";
@@ -37,7 +39,7 @@ define([
             "sortorder": 0
         };
 
-        this.saveValues = function(){ //save the savedData and finalize the step
+        this.saveValues = function() { //save the savedData and finalize the step
             params.form.savedData({
                 tileData: koMapping.toJSON(self.tile().data),
                 resourceInstanceId: self.tile().resourceinstance_id,
@@ -61,74 +63,75 @@ define([
                     "transaction_id": self.workflowId,
                 }
             })
-            .done(function(data){ //getting digital object resource
-                self.fileTileData(data.tile.data[self.digitalObjectFileNodeId][0]);
-                self.digitalObjectResourceId(data.tile.resourceinstance_id);
+                .done(function(data) { //getting digital object resource
+                    self.fileTileData(data.tile.data[self.digitalObjectFileNodeId][0]);
+                    self.digitalObjectResourceId(data.tile.resourceinstance_id);
 
-                var relateDocuNodeTemplate = [{
-                    'resourceId': data.tile.resourceinstance_id,
-                    'ontologyProperty': '',
-                    'inverseOntologyProperty':'',
-                    'resourceXresourceId':''
-                }];
+                    var relateDocuNodeTemplate = [{
+                        'resourceId': data.tile.resourceinstance_id,
+                        'ontologyProperty': '',
+                        'inverseOntologyProperty': '',
+                        'resourceXresourceId': ''
+                    }];
 
-                $.ajax({ //saving the realted resource (digital object) to the Letter node (consultation)
-                    url: arches.urls.api_node_value,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        'resourceinstanceid': ko.unwrap(self.tile().resourceinstance_id),
-                        'nodeid': '87e0b839-9391-11ea-8a85-f875a44e0e11', // Correspondence Related Node
-                        'data': JSON.stringify(relateDocuNodeTemplate),
-                        'tileid': ko.unwrap(self.tile().tileid),
-                        'transaction_id': self.workflowId,
-                    },
-                }).done(function(response) {
-                    console.log("Digital related resource updated")
-                })
-                .fail(function(response) {
-                    console.log("Updating digital related resource failed: \n", response)
-                });
-
-                nameTemplate["resourceinstance_id"] = data.tile.resourceinstance_id;
-                nameTemplate["nodegroup_id"] = 'c61ab163-9513-11ea-9bb6-f875a44e0e11';
-                $.ajax({ //get consultation name
-                    url: arches.urls.api_resources(ko.unwrap(self.tile().resourceinstance_id)),
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {
-                        'format': 'json'
-                    }
-                }).done(function(data) {
-                    let today = new Date().toLocaleDateString()
-                    nameTemplate.data["c61ab16c-9513-11ea-89a4-f875a44e0e11"] = today + " Letter for " + data.displayname;
-
-                    $.ajax({ //saving the digital resource name
-                        url: arches.urls.api_tiles(uuid.generate()),
+                    $.ajax({ //saving the realted resource (digital object) to the Letter node (consultation)
+                        url: arches.urls.api_node_value,
                         type: 'POST',
                         dataType: 'json',
                         data: {
-                            "data": JSON.stringify(nameTemplate),
-                            'transaction_id': self.workflowId
+                            'resourceinstanceid': ko.unwrap(self.tile().resourceinstance_id),
+                            'nodeid': '87e0b839-9391-11ea-8a85-f875a44e0e11', // Correspondence Related Node
+                            'data': JSON.stringify(relateDocuNodeTemplate),
+                            'tileid': ko.unwrap(self.tile().tileid),
+                            'transaction_id': self.workflowId,
                         },
                     }).done(function(response) {
-                        self.saveValues();
-                        if (self.completeOnSave === true) { self.complete(true); }    
+                        console.log("Digital related resource updated");
                     })
-                    .fail(function(response){
-                        console.log("Adding the digital object name failed: \n", response);
-                    });
+                        .fail(function(response) {
+                            console.log("Updating digital related resource failed: \n", response);
+                        });
+
+                    nameTemplate["resourceinstance_id"] = data.tile.resourceinstance_id;
+                    nameTemplate["nodegroup_id"] = 'c61ab163-9513-11ea-9bb6-f875a44e0e11';
+                    $.ajax({ //get consultation name
+                        url: arches.urls.api_resources(ko.unwrap(self.tile().resourceinstance_id)),
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            'format': 'json'
+                        }
+                    }).done(function(data) {
+                        let today = new Date().toLocaleDateString();
+                        today = today.replaceAll("/", "_");
+                        nameTemplate.data["c61ab16c-9513-11ea-89a4-f875a44e0e11"] = self.createI18nString(today + " Letter for " + data.displayname);
+
+                        $.ajax({ //saving the digital resource name
+                            url: arches.urls.api_tiles(uuid.generate()),
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                "data": JSON.stringify(nameTemplate),
+                                'transaction_id': self.workflowId
+                            },
+                        }).done(function(response) {
+                            self.saveValues();
+                            if (self.completeOnSave === true) { self.complete(true); }
+                        })
+                            .fail(function(response) {
+                                console.log("Adding the digital object name failed: \n", response);
+                            });
+                    })
+                        .fail(function(response) {
+                            console.log("Getting consultation name failed: \n", response);
+                        });
                 })
                 .fail(function(response) {
-                    console.log("Getting consultation name failed: \n", response);
+                    if (response.statusText !== 'abort') {
+                        params.form.error(new Error(response.responseText));
+                        params.pageVm.alert(new AlertViewModel('ep-alert-red', arches.requestFailed.title, response.responseText));
+                    }
                 });
-            })
-            .fail(function(response) {
-                if(response.statusText !== 'abort'){
-                    params.form.error(new Error(response.responseText));
-                    params.pageVm.alert(new AlertViewModel('ep-alert-red', arches.requestFailed.title, response.responseText));
-                }
-            });
         };
 
         params.form.save = function() {
@@ -136,7 +139,7 @@ define([
                 self.retrieveFile(tile);
             });
         };
-    };
+    }
 
     ko.components.register('correspondence-select-resource', {
         viewModel: viewModel,

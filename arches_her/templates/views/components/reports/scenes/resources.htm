@@ -6,7 +6,7 @@
 <!-- Associated Activities section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.activities">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.activities)}, css: {'fa-angle-double-right': visible.activities(), 'fa-angle-double-up': !visible.activities()}, attr: {'aria-expanded': visible.activities() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Activities section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.activities)}, css: {'fa-angle-double-right': visible.activities(), 'fa-angle-double-up': !visible.activities()}, attr: {'aria-expanded': visible.activities() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated Activities section"></i>
         {% trans "Associated Activities" %}
     </h2>
     <!-- ko if: cards.activities -->
@@ -45,10 +45,10 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.activities">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.activities)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.activities)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.activities)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.activities)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -66,7 +66,7 @@
 <!-- Associated Archive section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.archive">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.archive)}, css: {'fa-angle-double-right': visible.archive(), 'fa-angle-double-up': !visible.archive()}, attr: {'aria-expanded': visible.archive() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Archive Objects section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.archive)}, css: {'fa-angle-double-right': visible.archive(), 'fa-angle-double-up': !visible.archive()}, attr: {'aria-expanded': visible.archive() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated Archive Objects section"></i>
         {% trans "Associated Archive Objects" %}
     </h2>
     <!-- ko if: cards.archive -->
@@ -109,10 +109,10 @@
                                 <td data-bind="text:reference"></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.archive">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.archive)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.archive)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.archive)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.archive)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -130,7 +130,7 @@
 <!-- Associated Consultations section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.consultations">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.consultations)}, css: {'fa-angle-double-right': visible.consultations(), 'fa-angle-double-up': !visible.consultations()}, attr: {'aria-expanded': visible.consultations() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Consultations section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.consultations)}, css: {'fa-angle-double-right': visible.consultations(), 'fa-angle-double-up': !visible.consultations()}, attr: {'aria-expanded': visible.consultations() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated Consultations section"></i>
         {% trans "Associated Consultations" %}
     </h2>
     <!-- ko if: cards.consultations -->
@@ -170,10 +170,10 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.consultations">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.consultations)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.consultations)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.consultations)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.consultations)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -191,7 +191,7 @@
 <!-- Associated Digital Files section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.files">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.files)}, css: {'fa-angle-double-right': visible.files(), 'fa-angle-double-up': !visible.files()}, attr: {'aria-expanded': visible.files() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Files section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.files)}, css: {'fa-angle-double-right': visible.files(), 'fa-angle-double-up': !visible.files()}, attr: {'aria-expanded': visible.files() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated Files section"></i>
         {% trans "Associated Files" %}
     </h2>
     <!-- ko if: cards.files -->
@@ -229,10 +229,10 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.files">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.files)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.files)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.files)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.files)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -250,7 +250,7 @@
 <!-- Associated Monuments section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.assets">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.assets)}, css: {'fa-angle-double-right': visible.assets(), 'fa-angle-double-up': !visible.assets()}, attr: {'aria-expanded': visible.assets() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Monuments/Areas/Artefacts section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.assets)}, css: {'fa-angle-double-right': visible.assets(), 'fa-angle-double-up': !visible.assets()}, attr: {'aria-expanded': visible.assets() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated Monuments/Areas/Artefacts section"></i>
         {% trans "Associated Monuments/Areas/Artefacts" %}
     </h2>
     <!-- ko if: cards.assets -->
@@ -291,10 +291,10 @@
                                 <td data-bind="text: association"></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.assets">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.assets)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.assets)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.assets)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.assets)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -313,7 +313,7 @@
 <!-- Associated People and Organisations section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.actors">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.actors)}, css: {'fa-angle-double-right': visible.actors(), 'fa-angle-double-up': !visible.actors()}, attr: {'aria-expanded': visible.actors() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated People and Organisations section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.actors)}, css: {'fa-angle-double-right': visible.actors(), 'fa-angle-double-up': !visible.actors()}, attr: {'aria-expanded': visible.actors() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Associated People and Organisations section"></i>
         {% trans "Associated People and Organisations" %}
     </h2>
     <!-- ko if: cards.actors -->
@@ -352,10 +352,10 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.actors">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.actors)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.actors)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.actors)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.actors)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -373,7 +373,7 @@
 <!-- Related Application Area section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.relatedApplicationArea">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.applicationArea)}, css: {'fa-angle-double-right': visible.applicationArea(), 'fa-angle-double-up': !visible.applicationArea()}, attr: {'aria-expanded': visible.applicationArea() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Related Application Areas section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.applicationArea)}, css: {'fa-angle-double-right': visible.applicationArea(), 'fa-angle-double-up': !visible.applicationArea()}, attr: {'aria-expanded': visible.applicationArea() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Related Application Areas section"></i>
         {% trans "Related Application Areas" %}
     </h2>
     <!-- Collapsible content -->
@@ -405,7 +405,7 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.relatedApplicationArea">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.relatedApplicationArea)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.relatedApplicationArea)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
                                     </div>
@@ -424,7 +424,7 @@
 <!-- Translation section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.translation">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.translation)}, css: {'fa-angle-double-right': visible.translation(), 'fa-angle-double-up': !visible.translation()}, attr: {'aria-expanded': visible.translation() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Translations section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.translation)}, css: {'fa-angle-double-right': visible.translation(), 'fa-angle-double-up': !visible.translation()}, attr: {'aria-expanded': visible.translation() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Translations section"></i>
         {% trans "Translations" %}
     </h2>
     <!-- ko if: cards.translation -->
@@ -455,10 +455,10 @@
                                 <td><a class="aher-table-link" data-bind="text: resource, attr: {href: resourceLink}"></a></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.translation">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.translation)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.translation)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.translation)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.translation)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -476,7 +476,7 @@
 <!-- Period section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.period">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.period)}, css: {'fa-angle-double-right': visible.period(), 'fa-angle-double-up': !visible.period()}, attr: {'aria-expanded': visible.period() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Periods section"></i>
+        <i tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.period)}, css: {'fa-angle-double-right': visible.period(), 'fa-angle-double-up': !visible.period()}, attr: {'aria-expanded': visible.period() ? 'false' : 'true' }" class="fa toggle" aria-label="Expand/collapse Periods section"></i>
         {% trans "Periods" %}
     </h2>
     <!-- ko if: cards.period -->
@@ -515,10 +515,10 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.period">
-                                        <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.period)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: function() {$parent.editTile(tileid, $parent.cards.period)}">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.period)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#" data-bind="onEnterkeyClick, onSpaceClick, click: $parent.deleteTile.bind($data, tileid, $parent.cards.period)">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>

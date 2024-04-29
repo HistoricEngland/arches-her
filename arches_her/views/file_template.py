@@ -357,7 +357,7 @@ class FileTemplateView(View):
                                 mapping_dict["Name of person consulting"] = "{0} {1}".format(nameTitle, fullName) if nameTitle else fullName
                         elif contactTile.nodegroup.nodegroupid == uuid.UUID(contactDetailsNodegroupId):
                             if contactTile.data[contactPointTypeNodeId] == contactPointTypeMailValueId:
-                                mapping_dict["Contact Name"] = contactTile.data[contactNameForCorrespondenceNodeId]
+                                mapping_dict["Contact Name"] = get_value_from_tile(contactTile, contactNameForCorrespondenceNodeId)
                                 addressConsult = (
                                     get_value_from_tile(contactTile, contactPointNodeId).replace(", ", "<br>").replace(",", "<br>")
                                 )
