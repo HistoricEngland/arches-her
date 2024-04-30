@@ -4176,14 +4176,6 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-datatables.net-bs@1.12.1, datatables.net-bs@~1.12.1:
-  version "1.12.1"
-  resolved "https://registry.yarnpkg.com/datatables.net-bs/-/datatables.net-bs-1.12.1.tgz#8165516519aade3d49a0b562c617bcce794a00b9"
-  integrity sha512-oaX1mNhjnASo33mwv6QzgGxD3pAz69qAL+8YlCro3e7oMvszE6wJyprEt80vl8E/TiMp/UUvsaqsup1JZFfMBQ==
-  dependencies:
-    datatables.net ">=1.11.3"
-    jquery ">=1.7"
-
 datatables.net-bs@>=1.11.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/datatables.net-bs/-/datatables.net-bs-2.0.3.tgz#b67d813527d27dc945333b3feccc42077956a783"
@@ -4199,6 +4191,14 @@ datatables.net-bs@^1.13.0:
   dependencies:
     datatables.net "1.13.11"
     jquery "1.8 - 4"
+
+datatables.net-bs@~1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-bs/-/datatables.net-bs-1.12.1.tgz#8165516519aade3d49a0b562c617bcce794a00b9"
+  integrity sha512-oaX1mNhjnASo33mwv6QzgGxD3pAz69qAL+8YlCro3e7oMvszE6wJyprEt80vl8E/TiMp/UUvsaqsup1JZFfMBQ==
+  dependencies:
+    datatables.net ">=1.11.3"
+    jquery ">=1.7"
 
 datatables.net-buttons-bs@^2.2.3:
   version "2.4.3"

@@ -929,7 +929,13 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,table.dataTable.dtr
 }
 
 .resource-report-abstract-container {
-    height: 100%;
+    height: 100vh;
     min-height: calc(100vh - 50px);
     width: calc(100vw - 50px);
+}
+
+@media screen and (max-width: 1024px){
+    .resource-report-abstract-container {
+        height: auto;
+    }
 }

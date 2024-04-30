@@ -10,7 +10,8 @@
         "arches-dev-dependencies": "archesproject/arches-dev-dependencies#dev/7.5.x"
     },
     "dependencies": {
-        "arches": "archesproject/arches#dev/7.5.x"
+        "arches": "archesproject/arches#dev/7.5.x",
+        "datatables.net": "1.12.1"
     },
     "nodeModulesPaths": {
     }
