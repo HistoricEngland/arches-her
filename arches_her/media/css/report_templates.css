@@ -934,6 +934,10 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,table.dataTable.dtr
     width: calc(100vw - 50px);
 }
 
+.debug-notice {
+    display: none;
+}
+
 @media screen and (max-width: 1024px){
     .resource-report-abstract-container {
         height: auto;
