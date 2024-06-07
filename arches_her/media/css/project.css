@@ -1034,3 +1034,24 @@ span.rp-tile-title {
 .ep-notifs-panel{
     height: 100%;
 }
+
+/* Make search panels have one vertical scrollbar if needed */
+
+.main-search-container .search-map-container .tab-content.search-popup-panel {
+    overflow-y: auto;
+}
+
+#search-export-popup-tabpanel.active div div.relative,
+.saved-search-container:not(.search-type-btn-popup),
+.saved-search-container .saved-search-grid,
+.time-search-container {
+    overflow-y: hidden !important;
+}
+
+.main-search-container .saved-search-container .saved-search-grid {
+    height: auto;
+}
+
+.main-search-container .saved-search-container .saved-search-grid .ss-grid-item {
+    max-width: 100%;
+}
