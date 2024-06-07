@@ -2,6 +2,20 @@
 @import url(./bng-filter.css);
 @import url(./accessibility-plugin.css);
 
+/* Core styling overwrite for hotfixes */
+
+.card-form-preview-container {
+    -ms-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    background: #ebeef0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+    }
+
+/* End core styling overwrite for hotfixes*/
+
 header {
     max-width: calc(100vw - 50px);
 }
@@ -1007,6 +1021,18 @@ span.rp-tile-title {
     padding: 0px;
 }
 
+/* Ensures search tags gracefully display any text overflowing */
+
+.term-search-filter .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    max-width: 96%;
+    text-overflow: ellipsis;
+}
+
+.term-search-filter .select2-container--default .select2-selection--multiple .select2-selection__choice button.search-tag {
+    max-width: 98%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
 /* STOPS top level side panels being obscured by search filter popups in search*/
 
@@ -1023,6 +1049,7 @@ span.rp-tile-title {
 }
 
 /* Makes side panels cover the whole height of the page when the UI stacks in mobile mode */
+
 .ep-help-panel{
     height: 100%;
 }

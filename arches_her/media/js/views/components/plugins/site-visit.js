@@ -148,7 +148,7 @@ define([
                     name: 'site-visit-complete',
                     informationboxdata: {
                         heading: 'Workflow Complete: Review your work',
-                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Quit Workflow" to discard your changes and start over',
+                        text: 'Please review the summary information. You can go back to a previous step to make changes or "Delete" to discard your changes and start over',
                     },
                     layoutSections: [
                         {
