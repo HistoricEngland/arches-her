@@ -69,6 +69,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 <body id="body" class="landing-page">
 
+    <div id="skip-link-holder"><a id="skip-link" href="#skiptocontent">{% trans "Skip to Content" %}</a></div>
+    
     <header>
         <nav class="navbar">
             <div class="container">
@@ -125,6 +127,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     </header>
 
     <main>
+        <p id="skip-target-holder">
+            <a id="skiptocontent" name="skiptocontent" class="skip" tabindex="-1" aria-label="{% trans "Skip to Content" %}">
+                {% trans "Skip to Content" %}
+            </a>
+        </p>
         <div class="container">
             <div class="row featurette1">
                 <div class="featurette1-left-container">
