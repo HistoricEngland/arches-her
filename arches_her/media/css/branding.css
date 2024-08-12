@@ -324,6 +324,43 @@
     font-weight: 300;
     overflow-x: hidden;
     min-width: 100vw;
+
+    a {
+		&:focus {
+			outline: 2px solid #EC6625 !important;
+		}
+	}
+
+    #skip-link-holder {
+        a, a:link, a:visited {
+            color: #000;
+            background-color: #fae619;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px;
+            text-align: center;
+            outline: none !important;
+            max-height: 38px;
+            display: block;
+            width: 100%;
+            position: fixed;
+            top: -38px;
+            left: 0;
+            z-index: 10001;
+        }
+        a:focus, a:active {
+            text-decoration: underline !important;
+            left: 0;
+            top: 0;
+            z-index: 10000000;
+        }
+    }
+    #skip-target-holder {
+        position: absolute;
+        top: -38px;
+        left: 0;
+    }
+
 }
 
 .landing-page a:focus,
