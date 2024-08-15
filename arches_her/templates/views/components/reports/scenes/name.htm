@@ -6,11 +6,16 @@
 <!-- ko ifnot: hideNames() -->
 <div data-bind="visible: !!dataConfig.name" class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.names)}, css: {'fa-angle-double-right': visible.names(), 'fa-angle-double-up': !visible.names()}, attr: {'aria-expanded': visible.names() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.names)}, onReportSectionToggleAria: visible.names, sectionName: '{% trans "Names" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Names" %}
     </h2>
     <span data-bind="if: cards.name && (!names().length || cards.name.cardinality == 'n')">
-        <a href="#" class="aher-report-a" data-bind="click: function(){add(cards.name)}"><i class="fa fa-mail-reply"></i> {% trans "Add Name" %}</a>
+        <a href="#" class="aher-report-a" data-bind="click: function(){add(cards.name)}"><i
+                class="fa fa-mail-reply"></i> {% trans "Add Name" %}</a>
     </span>
 
     <!-- Collapsible content -->
@@ -22,7 +27,7 @@
 
         <!-- ko if: names().length -->
         <!-- ko if: showCurrency() -->
-        <div class="aher-report-subsection" >
+        <div class="aher-report-subsection">
             <div>
                 <div class="aher-table pad-btm">
                     <p class="aher-table-aria-describedby" id="names-table_info">Name table.</p>
@@ -42,10 +47,14 @@
                                 <td data-bind="text: currency"></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards && $parent.cards.name">
-                                        <a href="#" data-bind="click: function() {$parent.edit(tileid, $parent.cards.name)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: function() {$parent.edit(tileid, $parent.cards.name)}"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.name)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.name)"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -58,7 +67,7 @@
         </div>
         <!-- /ko -->
         <!-- ko ifnot: showCurrency() -->
-        <div class="aher-report-subsection" >
+        <div class="aher-report-subsection">
             <div>
                 <div class="aher-table pad-btm">
                     <p class="aher-table-aria-describedby" id="name-use-type-table_info">Name use type table.</p>
@@ -76,10 +85,14 @@
                                 <td data-bind="text: nameUseType"></td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards && $parent.cards.name">
-                                        <a href="#" data-bind="click: function() {$parent.edit(tileid, $parent.cards.name)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: function() {$parent.edit(tileid, $parent.cards.name)}"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.name)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.name)"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -100,11 +113,16 @@
 <!-- ko ifnot: hideCrossReferences() -->
 <div data-bind="visible: !!dataConfig.xref" class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.crossReferences)}, css: {'fa-angle-double-right': visible.crossReferences(), 'fa-angle-double-up': !visible.crossReferences()}, attr: {'aria-expanded': visible.crossReferences() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse External Cross References section"></i>
+        <i
+            tabindex="0"
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.crossReferences)}, onReportSectionToggleAria: visible.crossReferences, sectionName: '{% trans "External Cross References" %}'"
+            class="fa toggle">
+        </i> 
         {% trans "External Cross References" %}
     </h2>
     <!-- ko if: cards.externalCrossReferences -->
-    <a href="#" data-bind="click: function(){addNewTile(cards.externalCrossReferences)}" class="aher-report-a"><i class="fa fa-mail-reply"></i> {% trans "Add Reference" %}</a>
+    <a href="#" data-bind="click: function(){addNewTile(cards.externalCrossReferences)}" class="aher-report-a"><i
+            class="fa fa-mail-reply"></i> {% trans "Add Reference" %}</a>
     <!-- /ko -->
 
     <!-- Collapsible content -->
@@ -117,8 +135,10 @@
         <div class="aher-report-subsection">
             <div class="firstchild-container">
                 <div class="aher-table">
-                    <p class="aher-table-aria-describedby" id="external-cross-references-table_info">External cross reference table.</p>
-                    <table id="external-cross-references-table" class="table table-striped" cellspacing="0" width="100%">
+                    <p class="aher-table-aria-describedby" id="external-cross-references-table_info">External cross
+                        reference table.</p>
+                    <table id="external-cross-references-table" class="table table-striped" cellspacing="0"
+                        width="100%">
                         <thead>
                             <tr class="aher-table-header">
                                 <th>{% trans "Name" %}</th>
@@ -128,7 +148,8 @@
                                 <th class="aher-table-control all">{% trans "Actions" %}</th>
                             </tr>
                         </thead>
-                        <tbody data-bind="dataTablesForEach: {data: crossReferences, dataTableOptions: crossReferenceTableConfig}">
+                        <tbody
+                            data-bind="dataTablesForEach: {data: crossReferences, dataTableOptions: crossReferenceTableConfig}">
                             <tr>
                                 <td data-bind="text: name"></td>
                                 <td data-bind="text: source"></td>
@@ -142,10 +163,14 @@
                                 </td>
                                 <td class="aher-table-control">
                                     <div data-bind="if: $parent.cards.externalCrossReferences">
-                                        <a href="#" data-bind="click: function(){$parent.editTile(tileid, $parent.cards.externalCrossReferences)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: function(){$parent.editTile(tileid, $parent.cards.externalCrossReferences)}"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-mail-reply"></i>
                                         </a>
-                                        <a href="#" data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.externalCrossReferences)" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
+                                        <a href="#"
+                                            data-bind="click: $parent.deleteTile.bind($data, tileid, $parent.cards.externalCrossReferences)"
+                                            onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -164,7 +189,11 @@
 <!-- System Reference Numbers section -->
 <div class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.systemReferenceNumbers)}, css: {'fa-angle-double-right': visible.systemReferenceNumbers(), 'fa-angle-double-up': !visible.systemReferenceNumbers()}, attr: {'aria-expanded': visible.systemReferenceNumbers() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse System Reference Numbers section"></i>
+        <i 
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.systemReferenceNumbers)}, onReportSectionToggleAria: visible.systemReferenceNumbers, sectionName: '{% trans "System Reference Numbers" %}'" 
+            class="fa toggle">
+        </i> 
         {% trans "System Reference Numbers" %}
     </h2>
     <!-- ko if: cards.systemReferenceNumbers -->
@@ -225,7 +254,7 @@
 {% block summary %}
 
 <div class="model-summary-report">
-Do not use - yet.
+    Do not use - yet.
 </div>
 
 {% endblock summary %}
