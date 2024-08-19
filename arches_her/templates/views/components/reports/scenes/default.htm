@@ -10,7 +10,7 @@
             data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(section.title)}, onReportSectionToggleAria: section.title, sectionName: '{% trans section.title() %}'"
             class="fa toggle">
         </i>
-        <span data-bind="text: section.title"></span>
+        {% trans section.title() %}
     </h2>
     <span data-bind="if: section.card && section.card.cardinality == '1'">
         <a href="#" class="aher-report-a" data-bind="click: function(){add(section.card)}"><i class="fa fa-mail-reply"></i> {% trans "Edit" %} <span style="text-transform: capitalize;" data-bind="text:section.title"></span></a>
