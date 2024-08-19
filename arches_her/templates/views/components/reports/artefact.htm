@@ -84,7 +84,11 @@
             <div class="aher-report-page" data-bind="if: activeSection() === 'discovery'">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.discovery)}, css: {'fa-angle-double-right': visible.discovery(), 'fa-angle-double-up': !visible.discovery()}, attr: {'aria-expanded': visible.discovery() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Discovery section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.discovery)}, onReportSectionToggleAria: visible.discovery, sectionName: '{% trans "Discovery" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Discovery" %}
                     </h2>
                     <!-- ko if: cards.discovery -->
@@ -140,7 +144,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.finders)}, css: {'fa-angle-double-right': visible.finders(), 'fa-angle-double-up': !visible.finders()}, attr: {'aria-expanded': visible.finders() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Finders section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.finders)}, onReportSectionToggleAria: visible.finders, sectionName: '{% trans "Finders" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Finders" %}
                     </h2>
                     <span data-bind="if: cards.finders && (!finders().length || cards.finders.cardinality == 'n')">

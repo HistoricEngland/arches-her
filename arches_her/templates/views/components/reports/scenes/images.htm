@@ -6,7 +6,11 @@
 <!-- Copyright section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.copyright">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.copyright)}, css: {'fa-angle-double-right': visible.copyright(), 'fa-angle-double-up': !visible.copyright()}, attr: {'aria-expanded': visible.copyright() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Copyrights section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.copyright)}, onReportSectionToggleAria: visible.copyright, sectionName: '{% trans "Copyrights" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Copyrights" %}
     </h2>
     <!-- ko if: cards.copyright -->
@@ -59,7 +63,11 @@
 
 <div class="aher-report-section">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.images)}, css: {'fa-angle-double-right': visible.images(), 'fa-angle-double-up': !visible.images()}, attr: {'aria-expanded': visible.images() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Images section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.images)}, onReportSectionToggleAria: visible.images, sectionName: '{% trans "Images" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Images" %}
     </h2>
     <!-- ko if: cards.images -->

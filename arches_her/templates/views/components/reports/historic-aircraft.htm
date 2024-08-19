@@ -91,7 +91,11 @@
             <div class="aher-report-page" data-bind="if: activeSection() === 'journey'">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.flights)}, css: {'fa-angle-double-right': visible.flights(), 'fa-angle-double-up': !visible.flights()}, attr: {'aria-expanded': visible.flights() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Flights section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.flights)}, onReportSectionToggleAria: visible.flights, sectionName: '{% trans "Flights" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Flights" %}
                     </h2>
                     <!-- ko if: cards.flights -->
@@ -166,7 +170,11 @@
 
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.lastFlight)}, css: {'fa-angle-double-right': visible.lastFlight(), 'fa-angle-double-up': !visible.lastFlight()}, attr: {'aria-expanded': visible.lastFlight() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Last Flight section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.lastFlight)}, onReportSectionToggleAria: visible.lastFlight, sectionName: '{% trans "Last Flight" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Last Flight" %}
                     </h2>
                     <!-- ko if: cards.lastFlight -->

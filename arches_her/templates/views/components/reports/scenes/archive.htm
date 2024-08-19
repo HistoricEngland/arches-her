@@ -7,7 +7,11 @@
 <!-- Bibliographic Source Creation section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.sourceCreation">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.sourceCreation)}, css: {'fa-angle-double-right': visible.sourceCreation(), 'fa-angle-double-up': !visible.sourceCreation()}, attr: {'aria-expanded': visible.sourceCreation() ? 'false' : 'true' }"" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Source Creation section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.sourceCreation)}, onReportSectionToggleAria: visible.sourceCreation, sectionName: '{% trans "Source Creation" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Source Creation" %}
     </h2>
     <!-- ko if: cards.sourceCreation -->
@@ -65,7 +69,11 @@
 <!-- Repository Storage section -->
 <div class="aher-report-section" data-bind="visible: !!dataConfig.repositoryStorage">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.repositoryStorage)}, css: {'fa-angle-double-right': visible.repositoryStorage(), 'fa-angle-double-up': !visible.repositoryStorage()}, attr: {'aria-expanded': visible.repositoryStorage() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Repository Storage Location section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.repositoryStorage)}, onReportSectionToggleAria: visible.repositoryStorage, sectionName: '{% trans "Repository Storage Location" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Repository Storage Location" %}
     </h2>
     <!-- ko if: cards.repositoryStorage -->
