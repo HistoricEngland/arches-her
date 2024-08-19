@@ -23,14 +23,14 @@
             <li tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function(){$parent.activeSection(section.id)},
                 css: {active: $parent.activeSection() === section.id},
                 text: section.title, attr: {'aria-controls': 'tabcontent_' + section.id, 'aria-expanded': $parent.activeSection() === section.id ? 'true' : 'false'}"
-                class="aher-report-a" aria-expanded="false"></li>
+                class="aher-report-a" aria-expanded="false" role="tab"></li>
             <!-- /ko -->
         </ol>
     </div>
     <div class="aher-tabbed-report">
         <div class="aher-tabbed-report-content">
             <!-- Names Tab -->
-            <div id="tabcontent_name" class="aher-report-page" data-bind="if: activeSection() === 'name'" aria-live="polite">
+            <div id="tabcontent_name" class="aher-report-page" data-bind="if: activeSection() === 'name'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/name',
                     params: {
@@ -41,7 +41,7 @@
                 }"></div>
             </div>
             <!-- Description Tab -->
-            <div id="tabcontent_description" class="aher-report-page" data-bind="if: activeSection() === 'description'" aria-live="polite">
+            <div id="tabcontent_description" class="aher-report-page" data-bind="if: activeSection() === 'description'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/description',
                     params: {
@@ -52,7 +52,7 @@
                 }"></div>
             </div>
             <!-- Classification Tab -->
-            <div id="tabcontent_classifications" class="aher-report-page" data-bind="if: activeSection() === 'classifications'" aria-live="polite">
+            <div id="tabcontent_classifications" class="aher-report-page" data-bind="if: activeSection() === 'classifications'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/classifications',
                     params: {
@@ -63,7 +63,7 @@
                 }"></div>
             </div>
             <!-- Location Tab -->
-            <div id="tabcontent_location" class="aher-report-page" data-bind="if: activeSection() === 'location'" aria-live="polite">
+            <div id="tabcontent_location" class="aher-report-page" data-bind="if: activeSection() === 'location'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/location',
                     params: {
@@ -74,7 +74,7 @@
                 }"></div>
             </div>
             <!-- Publication Details Tab -->
-            <div id="tabcontent_publication" class="aher-report-page" data-bind="if: activeSection() === 'publication'" aria-live="polite">
+            <div id="tabcontent_publication" class="aher-report-page" data-bind="if: activeSection() === 'publication'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/copyright',
                     params: {
@@ -84,7 +84,7 @@
                 }"></div>
             </div>
             <!-- Discovery Tab -->
-            <div id="tabcontent_discovery" class="aher-report-page" data-bind="if: activeSection() === 'discovery'" aria-live="polite">
+            <div id="tabcontent_discovery" class="aher-report-page" data-bind="if: activeSection() === 'discovery'" aria-live="polite" role="tabpanel">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
                         <i
@@ -205,7 +205,7 @@
                 </div>
             </div>
             <!-- Designation/Protection Tab -->
-            <div id="tabcontent_protection" class="aher-report-page" data-bind="if: activeSection() === 'protection'" aria-live="polite">
+            <div id="tabcontent_protection" class="aher-report-page" data-bind="if: activeSection() === 'protection'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/protection',
                     params: {
@@ -216,7 +216,7 @@
                 }"></div>
             </div>
             <!-- Assessments Tab -->
-            <div id="tabcontent_assessments" class="aher-report-page" data-bind="if: activeSection() === 'assessments'" aria-live="polite">
+            <div id="tabcontent_assessments" class="aher-report-page" data-bind="if: activeSection() === 'assessments'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/assessments',
                     params: {
@@ -227,7 +227,7 @@
                 }"></div>
             </div>
             <!-- Archive Tab -->
-            <div id="tabcontent_archive" class="aher-report-page" data-bind="if: activeSection() === 'archive'" aria-live="polite">
+            <div id="tabcontent_archive" class="aher-report-page" data-bind="if: activeSection() === 'archive'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/archive',
                     params: {
@@ -238,7 +238,7 @@
                 }"></div>
             </div>
             <!-- Resources Tab -->
-            <div id="tabcontent_resources" class="aher-report-page" data-bind="if: activeSection() === 'resources'" aria-live="polite">
+            <div id="tabcontent_resources" class="aher-report-page" data-bind="if: activeSection() === 'resources'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/resources',
                     params: {
@@ -249,7 +249,7 @@
                 }"></div>
             </div>
              <!-- JSON Tab -->
-            <div id="tabcontent_json" class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'" aria-live="polite">
+            <div id="tabcontent_json" class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'" aria-live="polite" role="tabpanel">
                 <div class="aher-flex-col" data-bind="component: {
                     name: 'views/components/reports/scenes/json',
                     params: {
