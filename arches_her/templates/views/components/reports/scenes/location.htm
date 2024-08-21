@@ -24,7 +24,17 @@
 
         <div class="aher-report-subsection">
             <div class="aher-report-subsection-container no-flex map-container">
-                <h3><i data-bind="css: {'fa-angle-double-right': visible.geometry(), 'fa-angle-double-up': !visible.geometry()}" class="fa toggle"></i> {% trans "Geometry " %}  <span data-bind="visible: observableValueSet([geometryShape])">(Shape type: <span data-bind="text: geometryShape"></span>)</span></h3>
+                <h3>
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.geometry)}, onReportSectionToggleAria: visible.geometry, sectionName: '{% trans "Geometry" %}'"
+                        class="fa toggle">
+                    </i>
+                    {% trans "Geometry" %}  
+                    <span data-bind="visible: observableValueSet([geometryShape])">
+                        (Shape type: <span data-bind="text: geometryShape"></span>)
+                    </span>
+                </h3>
                 <!-- ko if: cards.locationGeometry -->
                 <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.locationGeometry)}"><i class="fa fa-mail-reply"></i> {% trans "Edit location" %}</a>
                 <!-- /ko -->
@@ -36,7 +46,14 @@
                         }}">
                     </div>
                 </div>
-                <h3 class=""><i tabindex="0" data-bind="click: function() {toggleVisibility(visible.geometryMetadata)}, css: {'fa-angle-double-right': visible.geometryMetadata(), 'fa-angle-double-up': !visible.geometryMetadata()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></i> {% trans "Geometry Metadata" %}</h3>
+                <h3 class="">
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.geometryMetadata)}, onReportSectionToggleAria: visible.geometryMetadata, sectionName: '{% trans "Geometry Metadata" %}'"
+                        class="fa toggle">
+                    </i>
+                    {% trans "Geometry Metadata" %}
+                </h3>
                 <div class="" data-bind="if: visible.geometryMetadata">
                     <!-- Record Authorization/Compilation/Update -->
                     <div class="aher-report-subsection-firstchild no-top-pad">

@@ -112,7 +112,7 @@
 <!-- External Reference -->
 <!-- ko ifnot: hideCrossReferences() -->
 <div data-bind="visible: !!dataConfig.xref" class="aher-report-section">
-    <h2 class="aher-report-section-title">
+    <h2 class="aher-report-section-title" data-rob="name.htm">
         <i
             tabindex="0"
             data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.crossReferences)}, onReportSectionToggleAria: visible.crossReferences, sectionName: '{% trans "External Cross References" %}'"
@@ -188,7 +188,7 @@
 
 <!-- System Reference Numbers section -->
 <div class="aher-report-section">
-    <h2 class="aher-report-section-title">
+    <h2 class="aher-report-section-title" data-rob="name.htm">
         <i 
             tabindex="0" 
             data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.systemReferenceNumbers)}, onReportSectionToggleAria: visible.systemReferenceNumbers, sectionName: '{% trans "System Reference Numbers" %}'" 
