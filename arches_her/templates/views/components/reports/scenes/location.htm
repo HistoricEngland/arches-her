@@ -6,7 +6,11 @@
 <!-- Geometry/Map -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.geometry">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.coordinates)}, css: {'fa-angle-double-right': visible.coordinates(), 'fa-angle-double-up': !visible.coordinates()}, attr: {'aria-expanded': visible.coordinates() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Geospatial Coordinates section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.coordinates)}, onReportSectionToggleAria: visible.coordinates, sectionName: '{% trans "Geospatial Coordinates" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Geospatial Coordinates" %}
     </h2>
     <!-- ko if: cards.locationGeometry && !coordinateData || locationRoot -->
@@ -20,7 +24,17 @@
 
         <div class="aher-report-subsection">
             <div class="aher-report-subsection-container no-flex map-container">
-                <h3><i data-bind="css: {'fa-angle-double-right': visible.geometry(), 'fa-angle-double-up': !visible.geometry()}" class="fa toggle"></i> {% trans "Geometry " %}  <span data-bind="visible: observableValueSet([geometryShape])">(Shape type: <span data-bind="text: geometryShape"></span>)</span></h3>
+                <h3>
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.geometry)}, onReportSectionToggleAria: visible.geometry, sectionName: '{% trans "Geometry" %}'"
+                        class="fa toggle">
+                    </i>
+                    {% trans "Geometry" %}  
+                    <span data-bind="visible: observableValueSet([geometryShape])">
+                        (Shape type: <span data-bind="text: geometryShape"></span>)
+                    </span>
+                </h3>
                 <!-- ko if: cards.locationGeometry -->
                 <a href="#" class="aher-report-a" data-bind="click: function(){addNewTile(cards.locationGeometry)}"><i class="fa fa-mail-reply"></i> {% trans "Edit location" %}</a>
                 <!-- /ko -->
@@ -32,7 +46,14 @@
                         }}">
                     </div>
                 </div>
-                <h3 class=""><i tabindex="0" data-bind="click: function() {toggleVisibility(visible.geometryMetadata)}, css: {'fa-angle-double-right': visible.geometryMetadata(), 'fa-angle-double-up': !visible.geometryMetadata()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></i> {% trans "Geometry Metadata" %}</h3>
+                <h3 class="">
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.geometryMetadata)}, onReportSectionToggleAria: visible.geometryMetadata, sectionName: '{% trans "Geometry Metadata" %}'"
+                        class="fa toggle">
+                    </i>
+                    {% trans "Geometry Metadata" %}
+                </h3>
                 <div class="" data-bind="if: visible.geometryMetadata">
                     <!-- Record Authorization/Compilation/Update -->
                     <div class="aher-report-subsection-firstchild no-top-pad">
@@ -142,7 +163,11 @@
 <!-- Addresses -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.addresses">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.addresses)}, css: {'fa-angle-double-right': visible.addresses(), 'fa-angle-double-up': !visible.addresses()}, attr: {'aria-expanded': visible.addresses() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Addresses section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.addresses)}, onReportSectionToggleAria: visible.addresses, sectionName: '{% trans "Addresses" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Addresses" %}
     </h2>
     <!-- ko if: cards.addresses || locationRoot -->
@@ -220,7 +245,11 @@
 <!-- Location Description -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.locationDescription">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.descriptions)}, css: {'fa-angle-double-right': visible.descriptions(), 'fa-angle-double-up': !visible.descriptions()}, attr: {'aria-expanded': visible.descriptions() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Location Descriptions section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.descriptions)}, onReportSectionToggleAria: visible.descriptions, sectionName: '{% trans "Location Descriptions" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Location Descriptions" %}
     </h2>
     <!-- ko if: cards.locationDescriptions || locationRoot -->
@@ -276,7 +305,11 @@
 <!-- Admin Areas -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.administrativeAreas">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.administrativeAreas)}, css: {'fa-angle-double-right': visible.administrativeAreas(), 'fa-angle-double-up': !visible.administrativeAreas()}, attr: {'aria-expanded': visible.administrativeAreas() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Administrative Areas section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.administrativeAreas)}, onReportSectionToggleAria: visible.administrativeAreas, sectionName: '{% trans "Administrative Areas" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Administrative Areas" %}
     </h2>
     <!-- ko if: cards.administrativeAreas || locationRoot -->
@@ -334,7 +367,11 @@
 <!-- National Grid References -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.nationalGrid">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.nationalGrid)}, css: {'fa-angle-double-right': visible.nationalGrid(), 'fa-angle-double-up': !visible.nationalGrid()}, attr: {'aria-expanded': visible.nationalGrid() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse National Grid References section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.nationalGrid)}, onReportSectionToggleAria: visible.nationalGrid, sectionName: '{% trans "National Grid References" %}'"
+            class="fa toggle">
+        </i>
         {% trans "National Grid References" %}
     </h2>
     <!-- ko if: cards.nationalGridReferences || locationRoot -->
@@ -388,7 +425,11 @@
 <!-- Named Locations -->
 <div class="aher-report-section" data-bind="if: !!dataConfig.namedLocations">
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.namedLocations)}, css: {'fa-angle-double-right': visible.namedLocations(), 'fa-angle-double-up': !visible.namedLocations()}, attr: {'aria-expanded': visible.namedLocations() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Named Locations section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.namedLocations)}, onReportSectionToggleAria: visible.namedLocations, sectionName: '{% trans "Named Locations" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Named Locations" %}
     </h2>
     <!-- ko if: cards.namedLocations || locationRoot -->

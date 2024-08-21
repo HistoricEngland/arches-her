@@ -5,9 +5,12 @@
 {% block body %}
 <!-- Associated Actors -->
 <div class="aher-report-section">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.people)}, css: {'fa-angle-double-right': visible.people(), 'fa-angle-double-up': !visible.people()}" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated People and Organizations section"></i>
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.people)}, css: {'fa-angle-double-right': visible.people(), 'fa-angle-double-up': !visible.people()}, attr: {'aria-expanded': visible.people() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated People and Organizations section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.people)}, onReportSectionToggleAria: visible.people, sectionName: '{% trans "Associated People and Organizations" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Associated People and Organizations" %}
     </h2>
     <!-- ko if: cards.people -->
