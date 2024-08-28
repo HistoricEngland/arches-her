@@ -1,6 +1,6 @@
-define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable'], function(_, ko, arches, reportUtils) {
+define(['underscore', 'knockout', 'arches', 'utils/report', 'bindings/datatable', 'bindings/reports'], function (_, ko, arches, reportUtils) {
     return ko.components.register('views/components/reports/scenes/name', {
-        viewModel: function(params) {
+        viewModel: function (params) {
             var self = this;
             Object.assign(self, reportUtils);
 
@@ -10,7 +10,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                     { "width": "50%" },
                     { "width": "20%" },
                     { "width": "20%" },
-                   null,
+                    null,
                 ]
             };
 
@@ -21,7 +21,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                     { "width": "20%" },
                     { "width": "50%" },
                     { "width": "10%" },
-                   null,
+                    null,
                 ]
             };
 
@@ -54,7 +54,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
             Object.assign(self.dataConfig, params.dataConfig || {});
 
             // if params.compiled is set and true, the user has compiled their own data.  Use as is.
-            if(params?.compiled){
+            if (params?.compiled) {
                 self.names(params.data.names);
                 self.crossReferences(params.data.crossReferences);
                 self.systemReferenceNumbers(params.data.referenceNumbers);
@@ -62,7 +62,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 const rawNameData = self.getRawNodeValue(params.data(), {
                     testPaths: [
                         ["names"],
-                        [self.dataConfig.name], 
+                        [self.dataConfig.name],
                         [`${self.dataConfig.name} names`]
                     ]
                 });
@@ -76,21 +76,24 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                                 [`${self.dataConfig.name} name use type`],
                                 [`${self.dataConfig.nameChildren} name use type`],
                                 [`${self.dataConfig.nameChildren} use type`]
-                            ]});
+                            ]
+                        });
                         const name = self.getNodeValue(x, {
                             testPaths: [
                                 ['name'],
                                 [`${self.dataConfig.name} name`],
                                 [`${self.dataConfig.nameChildren} name`],
                                 [`${self.dataConfig.nameChildren}`]
-                            ]});
+                            ]
+                        });
                         const currency = self.getNodeValue(x, {
                             testPaths: [
                                 ['name currency'],
                                 [`${self.dataConfig.name} name currency`],
                                 [`${self.dataConfig.nameChildren} name currency`],
                                 [`${self.dataConfig.nameChildren} currency`]
-                            ]});
+                            ]
+                        });
 
                         const tileid = self.getTileId(x);
                         return { name, nameUseType, currency, tileid }
@@ -104,7 +107,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                             "columns": [
                                 { "width": "70%" },
                                 { "width": "20%" },
-                            null,
+                                null,
                             ]
                         };
                     }
@@ -117,19 +120,21 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 });
                 const xrefData = rawXrefData ? Array.isArray(rawXrefData) ? rawXrefData : [rawXrefData] : undefined;
 
-                if(xrefData) {
+                if (xrefData) {
                     self.crossReferences(xrefData.map(x => {
-                        const name = self.getNodeValue(x,{
+                        const name = self.getNodeValue(x, {
                             testPaths: [
                                 ['external cross reference', '@display_value'],
                                 ['external cross reference']
-                            ]});
+                            ]
+                        });
                         const description = self.getNodeValue(x, {
                             testPaths: [
                                 ['external cross reference notes', 'external cross reference description', '@display_value'],
                                 ['external cross reference notes', 'external cross reference description']
-                            ]});
-                        
+                            ]
+                        });
+
                         const source = self.getNodeValue(x, {
                             testPaths: [
                                 ['external cross reference source', '@display_value'],
@@ -147,7 +152,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                         return { name, description, source, url, tileid }
                     }));
                 }
-            } 
+            }
 
             const systemRefData = self.getRawNodeValue(params.data(), {
                 testPaths: [
@@ -155,7 +160,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 ]
             });
 
-            if(systemRefData) {
+            if (systemRefData) {
                 const systemRef = {};
                 systemRef.resourceId = self.getNodeValue(systemRefData, 'uuid', 'resourceid');
                 systemRef.legacyId = self.getNodeValue(systemRefData, 'legacyid', 'legacy id');
@@ -164,7 +169,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 self.systemReferenceNumbers(systemRef);
             }
 
-            if(self.dataConfig.parent){
+            if (self.dataConfig.parent) {
                 self.parentData = ko.observable({
                     sections:
                         [
@@ -182,7 +187,7 @@ define(['underscore', 'knockout', 'arches', 'utils/report','bindings/datatable']
                 });
             }
 
-            if(self.dataConfig.recordStatus){
+            if (self.dataConfig.recordStatus) {
                 self.recordStatusData = ko.observable({
                     sections:
                         [

@@ -96,7 +96,11 @@
                 <!-- Application Area section -->
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.applicationAreas)}, css: {'fa-angle-double-right': visible.applicationAreas(), 'fa-angle-double-up': !visible.applicationAreas()}, attr: {'aria-expanded': visible.applicationAreas() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Associated Application Areas section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.applicationAreas)}, onReportSectionToggleAria: visible.applicationAreas, sectionName: '{% trans "Associated Application Areas" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Associated Application Areas" %}
                     </h2>
                     <!-- ko if: cards.applicationAreas -->

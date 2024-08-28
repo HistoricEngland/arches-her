@@ -42,7 +42,11 @@
 
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.sourceNames)}, css: {'fa-angle-double-right': visible.sourceNames(), 'fa-angle-double-up': !visible.sourceNames()}, attr: {'aria-expanded': visible.sourceNames() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Names section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.sourceNames)}, onReportSectionToggleAria: visible.sourceNames, sectionName: '{% trans "Names" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Names" %}
                     </h2>
                     <span data-bind="if: cards.sourceNames && (!sourceNames().length || cards.sourceNames.cardinality == 'n')">
@@ -129,7 +133,11 @@
             <div class="aher-report-page" data-bind="if: activeSection() === 'publication'">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.publication)}, css: {'fa-angle-double-right': visible.publication(), 'fa-angle-double-up': !visible.publication()}, attr: {'aria-expanded': visible.publication() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Publication section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.publication)}, onReportSectionToggleAria: visible.publication, sectionName: '{% trans "Publication" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Publication" %}
                     </h2>
                     <span data-bind="if: cards.publication && (!publication().length || cards.publication.cardinality == 'n')">
@@ -185,7 +193,11 @@
                 <!-- Bibliographic Source Creation section -->
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.sourceCreation)}, css: {'fa-angle-double-right': visible.sourceCreation(), 'fa-angle-double-up': !visible.sourceCreation()}, attr: {'aria-expanded': visible.sourceCreation() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Source Creation section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.sourceCreation)}, onReportSectionToggleAria: visible.sourceCreation, sectionName: '{% trans "Source Creation" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Source Creation" %}
                     </h2>
                     <!-- ko if: cards.sourceCreation -->
