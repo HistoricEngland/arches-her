@@ -42,11 +42,11 @@
         <div class="bng-search-input-container">
             <div class="bng-search-input">
                 <label for="buffer-value">Buffer radius in metres: </label>
-                <input type="number" tabindex=0 id="buffer-value" data-bind="value: buffer">
+                <input type="number" tabindex=0 id="buffer-value" data-bind="value: buffer" aria-describedby="bng-buffer-info">
                 <div data-bind="visible: bufferHasError" class="bng-search-error">
                     <span aria-live="polite" data-bind="text: bufferMessageError"> </span>
                 </div>
-                <p id="bng-xy-ref-info" class="bng-search-info">
+                <p id="bng-buffer-info" class="bng-search-info">
                     <i class="fa fa-info" aria-hidden="true"></i><span class="bng-search-info-text">Set a buffer distance in meters to extend the search area.</span>
                 </p>
             </div> 
