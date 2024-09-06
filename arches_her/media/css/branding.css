@@ -656,6 +656,10 @@
     margin-top: 30px;
 }
 
+.featurette6-row .featurette-image-block {
+    max-width: 423px;
+}
+
 .featurette7 .jumbotron {
     padding: 22px 20px 0px 20px;
     background: #F9F7F6;
