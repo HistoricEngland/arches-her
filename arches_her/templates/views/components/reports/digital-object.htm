@@ -20,14 +20,17 @@
     <div class="aher-report-anchor-container">
         <ol class="aher-report-anchors breadcrumb">
             <!-- ko foreach: {data: sections, as: 'section'} -->
-            <li tabindex="0" data-bind="click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></li>
+            <li tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function(){$parent.activeSection(section.id)},
+                css: {active: $parent.activeSection() === section.id},
+                text: section.title, attr: {'aria-controls': 'tabcontent_' + section.id, 'aria-expanded': $parent.activeSection() === section.id ? 'true' : 'false'}"
+                class="aher-report-a" aria-expanded="false" role="tab"></li>
             <!-- /ko -->
         </ol>
     </div>
     <div class="aher-tabbed-report">
         <div class="aher-tabbed-report-content">
             <!-- Names Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'name'">
+            <div id="tabcontent_name" class="aher-report-page" data-bind="if: activeSection() === 'name'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/name',
                     params: {
@@ -38,7 +41,7 @@
                 }"></div>
             </div>
             <!-- Description Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'description'">
+            <div id="tabcontent_description" class="aher-report-page" data-bind="if: activeSection() === 'description'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/description',
                     params: {
@@ -48,7 +51,7 @@
                 }"></div>
             </div>
             <!-- Publication Details Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'publication'">
+            <div id="tabcontent_publication" class="aher-report-page" data-bind="if: activeSection() === 'publication'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/copyright',
                     params: {
@@ -58,10 +61,14 @@
                 }"></div>
             </div>
             <!-- File Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'file'">
+            <div id="tabcontent_file" class="aher-report-page" data-bind="if: activeSection() === 'file'" aria-live="polite" role="tabpanel">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.files)}, css: {'fa-angle-double-right': visible.files(), 'fa-angle-double-up': !visible.files()}, attr: {'aria-expanded': visible.files() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Files section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.files)}, onReportSectionToggleAria: visible.files, sectionName: '{% trans "Files" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Files" %}
                     </h2>
                     <!-- ko if: cards['file'] -->
@@ -109,7 +116,7 @@
                 }"></div>
             </div>
              <!-- JSON Tab -->
-            <div class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'">
+            <div id="tabcontent_json" class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'" aria-live="polite" role="tabpanel">
                 <div class="aher-flex-col" data-bind="component: {
                     name: 'views/components/reports/scenes/json',
                     params: {

@@ -28,8 +28,8 @@
 					{% trans "Sign In" %}
 				</legend>
 				<p>
-					This system is undergoing beta testing with access by invitation only. More Information on the GLHER is
-					available on <a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">
+					Login access to this site is by invitation only. More information on the GLHER is available on 
+					<a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">
 					our website</a>.
 				</p>
 				{% csrf_token %}
@@ -49,7 +49,7 @@
 					{% endif %}
 					<button id ="sign-in-button" class="btn btn-primary btn-lg" type="submit">{% trans "Sign in" %}</button>
 				</div>
-				<div style="{% if not auth_failed %}display:none;{% endif %}" id="login-failed-alert" class="alert alert-danger fade in" role="alert" aria-live="Assertive">
+				<div style="display:none;" id="login-failed-alert" class="alert alert-danger fade in" role="alert" aria-live="assertive">
 					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
 					<p class="alert-title">{% trans "Login failed" %}</p>
 					<span>{% trans "Invalid username and/or password." %}</span>
@@ -62,5 +62,14 @@
 	</main>
 
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+		var authFailed = {{ auth_failed|yesno:"true,false" }};
+		if (authFailed) {
+			document.getElementById("login-failed-alert").style.display = "block";
+		}
+	});
+</script>
 
 {% endblock body %}

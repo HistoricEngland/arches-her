@@ -324,6 +324,43 @@
     font-weight: 300;
     overflow-x: hidden;
     min-width: 100vw;
+
+    a {
+		&:focus {
+			outline: 2px solid #EC6625 !important;
+		}
+	}
+
+    #skip-link-holder {
+        a, a:link, a:visited {
+            color: #000;
+            background-color: #fae619;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px;
+            text-align: center;
+            outline: none !important;
+            max-height: 38px;
+            display: block;
+            width: 100%;
+            position: fixed;
+            top: -38px;
+            left: 0;
+            z-index: 10001;
+        }
+        a:focus, a:active {
+            text-decoration: underline !important;
+            left: 0;
+            top: 0;
+            z-index: 10000000;
+        }
+    }
+    #skip-target-holder {
+        position: absolute;
+        top: -38px;
+        left: 0;
+    }
+
 }
 
 .landing-page a:focus,
@@ -507,11 +544,26 @@
 
 /* Featuretttes - Start*/
 
+.row.featurette6-row .caption {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.row.featurette6-row .caption p {
+    font-size: 0.6em;
+}
+
 .featurette-image-block {
     box-shadow: 0px 3px 6px #00000029;
     max-width: 424px;
     padding: 0;
     display: inline-block;
+}
+
+.featurette6-mid-block {
+    margin: 0 20px;
 }
 
 .featurette1-left-container,
@@ -604,12 +656,12 @@
     margin-top: 30px;
 }
 
-.featurette6-row .featurette6-mid-block {
-    margin: 0 20px;
+.featurette6-row .featurette-image-block {
+    max-width: 423px;
 }
 
 .featurette7 .jumbotron {
-    padding: 20px;
+    padding: 22px 20px 0px 20px;
     background: #F9F7F6;
 }
 
@@ -630,15 +682,6 @@
 .featurette7 .contact-details {
     margin-bottom: 20px;
     padding-left: 5px;
-}
-
-.featurette7 .website-details {
-    margin-bottom: 20px;
-    margin-left: -15px!important;
-}
-
-.featurette7 .address-phone {
-    margin-left: -15px!important;
 }
 
 .featurette7 .jumbotron p {
@@ -846,6 +889,12 @@
     .footer-links,
     .footer-copyright {
         padding: 0;
+    }
+}
+
+@media screen and (max-width: 1439px) {
+    .featurette6-caption-spacer {
+        display: none;
     }
 }
 
@@ -1131,7 +1180,7 @@
         margin: 235px auto 0 auto;
     }
 
-    .featurette3-row, .featurette4-row {
+    .featurette3-row, .featurette4-row, .featurette6-row {
         margin-left: 0;
         margin-right: 0;
         margin-top: 30px;
@@ -1149,6 +1198,10 @@
     .row.featurette6,
     .row.featurette7 {
         max-width: 100vw;
+    }
+
+    .featurette6-mid-block {
+        margin: 0 0 20px;
     }
 }
 

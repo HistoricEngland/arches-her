@@ -20,14 +20,17 @@
     <div class="aher-report-anchor-container">
         <ol class="aher-report-anchors breadcrumb">
             <!-- ko foreach: {data: sections, as: 'section'} -->
-            <li tabindex="0" data-bind="click: function(){$parent.activeSection(section.id)}, css: {active: $parent.activeSection() === section.id}, text: section.title" class="aher-report-a" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></li>
+            <li tabindex="0" data-bind="onEnterkeyClick, onSpaceClick, click: function(){$parent.activeSection(section.id)},
+                css: {active: $parent.activeSection() === section.id},
+                text: section.title, attr: {'aria-controls': 'tabcontent_' + section.id, 'aria-expanded': $parent.activeSection() === section.id ? 'true' : 'false'}"
+                class="aher-report-a" aria-expanded="false" role="tab"></li>
             <!-- /ko -->
         </ol>
     </div>
     <div class="aher-tabbed-report">
         <div class="aher-tabbed-report-content">
             <!-- Consultation Details Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'details'">
+            <div id="tabcontent_details" class="aher-report-page" data-bind="if: activeSection() === 'details'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/name',
                     params: {
@@ -59,7 +62,10 @@
                 }"></div>
             </div>
             <!-- Location Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'location'">
+            <div id="tabcontent_location" class="aher-report-page" data-bind="if: activeSection() === 'location'" aria-live="polite" role="tabpanel">
+                <p class="sr-only" data-bind="let: {tabTitleText: document.querySelector('.aher-report-anchors li.active').innerText + ' tab now displayed'}">
+                    <span data-bind="text: {% trans "tabTitleText" %}"></span>
+                </p>
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/default',
                     params: {
@@ -76,10 +82,17 @@
                 }"></div>
             </div>
             <!-- Planning Reference Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'references'">
+            <div id="tabcontent_references" class="aher-report-page" data-bind="if: activeSection() === 'references'" aria-live="polite" role="tabpanel">
+                <p class="sr-only" data-bind="let: {tabTitleText: document.querySelector('.aher-report-anchors li.active').innerText + ' tab now displayed'}">
+                    <span data-bind="text: {% trans "tabTitleText" %}"></span>
+                </p>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.references)}, css: {'fa-angle-double-right': visible.references(), 'fa-angle-double-up': !visible.references()}, attr: {'aria-expanded': visible.references() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse External Cross References section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.references)}, onReportSectionToggleAria: visible.references, sectionName: '{% trans "External Cross References" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "External Cross References" %}
                     </h2>
                     <!-- ko if: cards['external cross references'] -->
@@ -135,7 +148,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.systemReferences)}, css: {'fa-angle-double-right': visible.systemReferences(), 'fa-angle-double-up': !visible.systemReferences()}, attr: {'aria-expanded': visible.systemReferences() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse External System References section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.systemReferences)}, onReportSectionToggleAria: visible.systemReferences, sectionName: '{% trans "External System References" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "External System References" %}
                     </h2>
                     <!-- ko if: cards['external system references'] -->
@@ -189,9 +206,13 @@
                 </div>
             </div>
             <!-- Contacts Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'contacts'">
+            <div id="tabcontent_contacts" class="aher-report-page" data-bind="if: activeSection() === 'contacts'" aria-live="polite" role="tabpanel">
                 <h2 class="aher-report-section-title">
-                    <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.contacts)}, css: {'fa-angle-double-right': visible.contacts(), 'fa-angle-double-up': !visible.contacts()}, attr: {'aria-expanded': visible.contacts() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Contacts section"></i>
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.contacts)}, onReportSectionToggleAria: visible.contacts, sectionName: '{% trans "Contacts" %}'"
+                        class="fa toggle">
+                    </i>
                     {% trans "Contacts" %}
                 </h2>
                 <!-- ko if: cards.contacts -->
@@ -275,10 +296,14 @@
             </div>
 
             <!-- Consultation Progression Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'progression'">
+            <div id="tabcontent_progression" class="aher-report-page" data-bind="if: activeSection() === 'progression'" aria-live="polite" role="tabpanel">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.proposal)}, css: {'fa-angle-double-right': visible.proposal(), 'fa-angle-double-up': !visible.proposal()}, attr: {'aria-expanded': visible.proposal() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Proposal section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.proposal)}, onReportSectionToggleAria: visible.proposal, sectionName: '{% trans "Proposal" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Proposal" %}
                     </h2>
                     <!-- ko if: cards.proposal -->
@@ -330,7 +355,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.advice)}, css: {'fa-angle-double-right': visible.advice(), 'fa-angle-double-up': !visible.advice()}, attr: {'aria-expanded': visible.advice() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Advice section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.advice)}, onReportSectionToggleAria: visible.advice, sectionName: '{% trans "Advice" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Advice" %}
                     </h2>
                     <!-- ko if: cards.advice -->
@@ -383,7 +412,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.action)}, css: {'fa-angle-double-right': visible.action(), 'fa-angle-double-up': !visible.action()}, attr: {'aria-expanded': visible.action() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Action section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.action)}, onReportSectionToggleAria: visible.action, sectionName: '{% trans "Action" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Action" %}
                     </h2>
                     <!-- ko if: cards.actions -->
@@ -437,7 +470,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.outcomes)}, css: {'fa-angle-double-right': visible.outcomes(), 'fa-angle-double-up': !visible.outcomes()}, attr: {'aria-expanded': visible.outcomes() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Outcomes section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.outcomes)}, onReportSectionToggleAria: visible.outcomes, sectionName: '{% trans "Outcomes" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Outcomes" %}
                     </h2>
                     <!-- ko if: cards.outcomes -->
@@ -474,7 +511,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.assessmentOfSignificance)}, css: {'fa-angle-double-right': visible.assessmentOfSignificance(), 'fa-angle-double-up': !visible.assessmentOfSignificance()}, attr: {'aria-expanded': visible.assessmentOfSignificance() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Assessment of Significance section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.assessmentOfSignificance)}, onReportSectionToggleAria: visible.assessmentOfSignificance, sectionName: '{% trans "Assessment of Significance" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Assessment of Significance" %}
                     </h2>
                     <!-- ko if: cards['assessment of significance'] -->
@@ -524,10 +565,14 @@
                 </div>
             </div>
             <!-- Correspondence Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'correspondence'">
+            <div id="tabcontent_correspondence" class="aher-report-page" data-bind="if: activeSection() === 'correspondence'" aria-live="polite" role="tabpanel">
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.correspondence)}, css: {'fa-angle-double-right': visible.correspondence(), 'fa-angle-double-up': !visible.correspondence()}, attr: {'aria-expanded': visible.correspondence() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Correspondence section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.correspondence)}, onReportSectionToggleAria: visible.correspondence, sectionName: '{% trans "Correspondence" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Correspondence" %}
                     </h2>
                     <!-- ko if: cards.correspondence -->
@@ -579,7 +624,11 @@
                 </div>
                 <div class="aher-report-section">
                     <h2 class="aher-report-section-title">
-                        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.communications)}, css: {'fa-angle-double-right': visible.communications(), 'fa-angle-double-up': !visible.communications()}, attr: {'aria-expanded': visible.communications() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Communications section"></i>
+                        <i
+                            tabindex="0" 
+                            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.communications)}, onReportSectionToggleAria: visible.communications, sectionName: '{% trans "Communications" %}'"
+                            class="fa toggle">
+                        </i>
                         {% trans "Communications" %}
                     </h2>
                     <!-- ko if: cards.communications -->
@@ -645,7 +694,11 @@
             <!-- Site Visit Tab -->
             <div class="aher-report-page" data-bind="if: activeSection() === 'sitevisits'">
                 <h2 class="aher-report-section-title">
-                    <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.siteVisits)}, css: {'fa-angle-double-right': visible.siteVisits(), 'fa-angle-double-up': !visible.siteVisits()}, attr: {'aria-expanded': visible.siteVisits() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Site Visits section"></i>
+                    <i
+                        tabindex="0" 
+                        data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.siteVisits)}, onReportSectionToggleAria: visible.siteVisits, sectionName: '{% trans "Site Visits" %}'"
+                        class="fa toggle">
+                    </i>
                     {% trans "Site Visits" %}
                 </h2>
                 <!-- ko if: cards['site visits'] -->
@@ -842,7 +895,7 @@
                 </div>
             </div>
             <!-- Resources Tab -->
-            <div class="aher-report-page" data-bind="if: activeSection() === 'resources'">
+            <div id="tabcontent_resources" class="aher-report-page" data-bind="if: activeSection() === 'resources'" aria-live="polite" role="tabpanel">
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/resources',
                     params: {
@@ -853,7 +906,7 @@
                 }"></div>
             </div>
              <!-- JSON Tab -->
-            <div class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'">
+            <div id="tabcontent_json" class="aher-report-page aher-flex-col" data-bind="if: activeSection() === 'json'" aria-live="polite" role="tabpanel">
                 <div class="aher-flex-col" data-bind="component: {
                     name: 'views/components/reports/scenes/json',
                     params: {
@@ -887,7 +940,14 @@
     </div>
 
     <div class="aher-report-section">
-        <h2 class="aher-report-section-title"><i tabindex="0" data-bind="click: function() {toggleVisibility(visible.advice)}, css: {'fa-angle-double-right': visible.advice(), 'fa-angle-double-up': !visible.advice()}"  class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }"></i> {% trans "Advice" %}</h2>
+        <h2 class="aher-report-section-title">
+            <i
+                tabindex="0" 
+                data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.advice)}, onReportSectionToggleAria: visible.advice, sectionName: '{% trans "Advice" %}'"
+                class="fa toggle">
+            </i>
+            {% trans "Advice" %}
+        </h2>
         <a data-bind="{if: cards.advice, click: function(){addNewTile(cards.advice)}}" class="aher-report-a" href="#"><i class="fa fa-mail-reply"></i> {% trans "Add advice" %}</a>
 
         <!-- Collapsible content -->
@@ -935,7 +995,11 @@
     </div>
 
     <h2 class="aher-report-section-title">
-        <i tabindex="0" data-bind="click: function() {toggleVisibility(visible.contacts)}, css: {'fa-angle-double-right': visible.contacts(), 'fa-angle-double-up': !visible.contacts()}, attr: {'aria-expanded': visible.contacts() ? 'false' : 'true' }" class="fa toggle" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }" aria-label="Expand/collapse Contacts section"></i>
+        <i
+            tabindex="0" 
+            data-bind="onEnterkeyClick, onSpaceClick, click: function() {toggleVisibility(visible.contacts)}, onReportSectionToggleAria: visible.contacts, sectionName: '{% trans "Contacts" %}'"
+            class="fa toggle">
+        </i>
         {% trans "Contacts" %}
     </h2>
         <!-- ko if: cards.contacts -->

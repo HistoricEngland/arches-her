@@ -135,6 +135,26 @@ MIDDLEWARE = [
     "arches.app.utils.middleware.SetAnonymousUser",
 ]
 
+INSTALLED_APPS = (
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.gis",
+    "arches",
+    "arches.app.models",
+    "arches.management",
+    "guardian",
+    "captcha",
+    "revproxy",
+    "corsheaders",
+    "oauth2_provider",
+    "django_celery_results",
+    "compressor",
+    "arches_her",
+)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 
