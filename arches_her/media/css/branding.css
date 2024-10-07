@@ -360,6 +360,11 @@
         top: -38px;
         left: 0;
     }
+    .searchbtn-container {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 15px;
+    }
 
 }
 
@@ -381,9 +386,9 @@
 }
 
 .landing-page .btn-primary {
-    height: 51px;
     font-weight: 300;
     line-height: 1.5;
+    white-space: normal;
 }
 
 .landing-page .navbar-nav>li>a {
@@ -600,7 +605,10 @@
 }
 
 .row.featurette2 {
-    margin: 50px auto 0 auto;
+    margin: 20px auto 0 auto;
+}
+
+.row.featurette2 .featurette2-sub-container {
     border-top: 1px solid #707070;
     border-bottom: 1px solid #707070;
 }
@@ -848,7 +856,7 @@
     }
 
     .row.featurette2 {
-        margin-top: 243px;
+        margin-top: 253px;
     }
 
     .featurette3-row {
@@ -1177,7 +1185,7 @@
     }
 
     .row.featurette2 {
-        margin: 235px auto 0 auto;
+        margin: 260px auto 0 auto;
     }
 
     .featurette3-row, .featurette4-row, .featurette6-row {
