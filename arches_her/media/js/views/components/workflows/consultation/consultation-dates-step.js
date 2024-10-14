@@ -77,16 +77,16 @@ define([
         };
 
         self.tile().data[self.logDateNodeId].subscribe(function(val) {
-            var logDateVal;
-            var targetDateVal;
-            var DefaultTargetDateLeadTime = 21;
             if(val) {
+                let logDateVal;
+                let targetDateVal;
+                const DefaultTargetDateLeadTime = 21;
                 logDateVal = new Date(`${val} 00:00`);
                 if (logDateVal != 'Invalid Date') {
                     self.concatName(`Consultation for ${self.displayName()} on ${self.formatDate(logDateVal)}`);
-                    treatLogDateAsFirstDay = true;
-                    DefaultTargetDateLeadTime = treatLogDateAsFirstDay ? DefaultTargetDateLeadTime-- : DefaultTargetDateLeadTime;
-                    targetDateVal = self.addDays(logDateVal, DefaultTargetDateLeadTime);
+                    let treatLogDateAsFirstDay = true;
+                    let defaultTargetDateLeadTime = treatLogDateAsFirstDay ? DefaultTargetDateLeadTime-- : DefaultTargetDateLeadTime;
+                    targetDateVal = self.addDays(logDateVal, defaultTargetDateLeadTime);
                     self.tile().data[self.targetDateNodeId](targetDateVal);
                 }
             }
