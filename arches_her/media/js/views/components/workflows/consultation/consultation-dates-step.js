@@ -55,9 +55,9 @@ define([
             return formatted;
         };
 
-        this.addDays = function(date, days, offset) {
+        this.addDays = function(date, days) {
             var copy = new Date(Number(date));
-            copy.setDate(date.getDate() + (offset ? days - 1 : days));
+            copy.setDate(date.getDate() + days);
             return self.formatDate(copy);
         };
 
@@ -85,7 +85,8 @@ define([
                 if (logDateVal != 'Invalid Date') {
                     self.concatName(`Consultation for ${self.displayName()} on ${self.formatDate(logDateVal)}`);
                     treatLogDateAsFirstDay = true;
-                    targetDateVal = self.addDays(logDateVal, DefaultTargetDateLeadTime, treatLogDateAsFirstDay);
+                    DefaultTargetDateLeadTime = treatLogDateAsFirstDay ? DefaultTargetDateLeadTime-- : DefaultTargetDateLeadTime;
+                    targetDateVal = self.addDays(logDateVal, DefaultTargetDateLeadTime);
                     self.tile().data[self.targetDateNodeId](targetDateVal);
                 }
             }
