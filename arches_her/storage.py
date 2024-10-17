@@ -8,7 +8,8 @@ logger = logging.getLogger(__name__)
 class NonStrictManifestStaticFilesStorage(ManifestStaticFilesStorage):
     manifest_strict = False
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.class_name = self.__class__.__name__
 
     def hashed_name(self, name, content=None, filename=None):
