@@ -1,0 +1,54 @@
+'''
+ARCHES - a program developed to inventory and manage immovable cultural heritage.
+Copyright (C) 2013 J. Paul Getty Trust and World Monuments Fund
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
+'''
+
+import uuid
+from django.contrib.gis.db import models
+from django.contrib.postgres.fields import JSONField
+import datetime
+
+
+class HeritageApiLog(models.Model):
+    search_fields = ["batch_id", "id"]
+    AUTOMATIC = "automatic"
+    MANUAL = "manual"
+    RUN_TYPE_CHOICES = [
+        (AUTOMATIC, "Automatic"),
+        (MANUAL, "Manual"),
+    ]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1)
+    batch_id = models.PositiveIntegerField(unique=True, blank=True, null=True)
+    start = models.DateTimeField(default=datetime.datetime.now)
+    finish = models.DateTimeField(blank=True, null=True)
+    run_type = models.CharField(
+        max_length=10, choices=RUN_TYPE_CHOICES, default=MANUAL)
+    totals = JSONField(blank=True, null=True)
+    resources = JSONField(blank=True, null=True)
+    messages = JSONField(blank=True, null=True)
+    exceptions = JSONField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Batch: {self.batch_id} | Start: {self.start.strftime('%Y-%m-%d %H:%M:%S')} | Id: {self.id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Heritage API Log"
+        verbose_name_plural = "Heritage API Logs"
+        db_table = "hapi_log"
+        indexes = [
+            models.Index(fields=["batch_id"]),
+        ]
