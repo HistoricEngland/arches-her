@@ -52,3 +52,22 @@ class HeritageApiLog(models.Model):
         indexes = [
             models.Index(fields=["batch_id"]),
         ]
+
+
+class HeritageApiExclusion(models.Model):
+    search_fields = ["resource_id"]
+    id = models.AutoField(primary_key=True)
+    resource_id = models.UUIDField(unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Resource ID: {self.resource_id} | Id: {self.id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Heritage API Exclusion"
+        verbose_name_plural = "Heritage API Exclusions"
+        db_table = "hapi_exclusion"
+        indexes = [
+            models.Index(fields=["resource_id"]),
+        ]

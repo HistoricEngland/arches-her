@@ -21,8 +21,44 @@ from arches.app.models.system_settings import settings
 from pathlib import Path
 import logging
 import uuid
+import os
+import json
 
 logger = logging.getLogger(__name__)
+
+# Utility Functions
+
+
+def is_valid_uuid(uuid_to_test, version=4):
+    """Check if the provided UUID is valid."""
+    try:
+        uuid_obj = uuid.UUID(uuid_to_test, version=version)
+    except ValueError:
+        return False
+    return str(uuid_obj) == uuid_to_test
+
+
+def validate_uuids(uuid_list_str):
+    """Validate a comma-separated list of UUIDs."""
+    uuid_list = [uuid.strip() for uuid in uuid_list_str.split(',')]
+    for u in uuid_list:
+        if not is_valid_uuid(u):
+            raise ValueError(f"Invalid UUID: {u}")
+    return uuid_list
+
+
+def validate_filename(filename):
+    """Validate if the provided filename or path is valid."""
+    if not os.path.isfile(filename) and not os.path.isdir(os.path.dirname(filename)):
+        raise ValueError(f"Invalid filename or path: {filename}")
+
+
+def generate_data():
+    """Generate sample data."""
+    data = {"record": "sample h.api data"}
+    return json.dumps(data)
+
+# Command Class
 
 
 class Command(BaseCommand):
@@ -30,30 +66,71 @@ class Command(BaseCommand):
         parser.add_argument(
             "operation",
             nargs="?",
-            choices=[
-                "upload",
-                "validate",
-            ],
+            choices=["upload", "validate", "generate"],
         )
-
         parser.add_argument(
-            "-u",
-            "--uuid",
+            "-u", "--uuid",
             action="store",
             dest="resource_uuid",
             default="",
-            help="UUID of resource to validate.",
+            help="UUID of resource to process. If providing multiple UUIDs, separate them with a comma.",
+        )
+        parser.add_argument(
+            "-i", "--input",
+            action="store",
+            dest="input",
+            default="",
+            help="Name of the file to use to generate the resource JSON response.",
+        )
+        parser.add_argument(
+            "-o", "--output",
+            action="store",
+            dest="output",
+            default="",
+            help="Output filename for the generated JSON response. If not provided, the output will be printed to the console.",
         )
 
     def handle(self, *args, **options):
-        if options["operation"] == "validate":
-            self.validate(
+        operation = options["operation"]
+        if operation == "validate":
+            self.validate(resource_uuid=options["resource_uuid"])
+        elif operation == "upload":
+            self.upload()
+        elif operation == "generate":
+            self.generate(
                 resource_uuid=options["resource_uuid"],
+                input=options["input"],
+                output=options["output"]
             )
 
     def validate(self, resource_uuid):
+        """Validate the provided UUID."""
         try:
             if uuid.UUID(resource_uuid):
                 print(f"Validating resource {resource_uuid}")
         except ValueError:
             print("Invalid UUID")
+
+    def upload(self):
+        """Stub for upload operation."""
+        pass
+
+    def generate(self, resource_uuid=None, input=None, output=None):
+        """Generate data based on the provided UUID or input file."""
+        if (resource_uuid and input) or (not resource_uuid and not input):
+            raise ValueError(
+                "Specify either resource_uuid or filename, but not both.")
+
+        if resource_uuid:
+            uuid_list = validate_uuids(resource_uuid)
+        else:
+            validate_filename(input)
+
+        data = generate_data()
+
+        if output:
+            validate_filename(output)
+            with open(output, 'w') as file:
+                file.write(data)
+        else:
+            print(data)

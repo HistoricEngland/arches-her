@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from .models.models import HeritageApiLog
+from .models.models import HeritageApiLog, HeritageApiExclusion
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 import json
@@ -49,8 +49,7 @@ class ReadOnlyAdminMixin:
         return False
 
 
-# class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
-class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+class HeritageApiLogAdmin(admin.ModelAdmin, ReadOnlyAdminMixin):
     readonly_fields = (
         "pretty_totals",
         "pretty_messages",
@@ -76,4 +75,23 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     pretty_totals.short_description = "Totals"
 
 
+class HeritageApiExclusionAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        "id",
+        "created",
+    )
+    search_fields = ["resource_id"]
+    list_display = (
+        "resource_id",
+        "created",
+        "id",
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:  # Editing an existing object
+            return self.readonly_fields + ("resource_id",)
+        return self.readonly_fields
+
+
 admin.site.register(HeritageApiLog, HeritageApiLogAdmin)
+admin.site.register(HeritageApiExclusion, HeritageApiExclusionAdmin)
