@@ -19,10 +19,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from django.core.management.base import BaseCommand
 from arches.app.models.system_settings import settings
 from pathlib import Path
+from arches_her.data_access.common import call_hapi_get_resources
+from typing import List
 import logging
 import uuid
 import os
 import json
+import decimal
+import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -38,9 +42,13 @@ def is_valid_uuid(uuid_to_test, version=4):
     return str(uuid_obj) == uuid_to_test
 
 
-def validate_uuids(uuid_list_str):
-    """Validate a comma-separated list of UUIDs."""
-    uuid_list = [uuid.strip() for uuid in uuid_list_str.split(',')]
+def validate_uuids(uuid_input):
+    if os.path.isfile(uuid_input):
+        with open(uuid_input, 'r') as file:
+            uuid_list = [line.strip() for line in file.readlines()]
+    else:
+        uuid_list = [uuid.strip() for uuid in uuid_input.split(',')]
+
     for u in uuid_list:
         if not is_valid_uuid(u):
             raise ValueError(f"Invalid UUID: {u}")
@@ -53,9 +61,17 @@ def validate_filename(filename):
         raise ValueError(f"Invalid filename or path: {filename}")
 
 
-def generate_data():
-    """Generate sample data."""
-    data = {"record": "sample h.api data"}
+def generate_data(uuid_list: List[uuid.UUID]) -> str:
+    results = call_hapi_get_resources(resource_instance_ids=uuid_list)
+    for result in results:
+        for key, value in result.items():
+            if isinstance(value, uuid.UUID):
+                result[key] = str(value)
+            elif isinstance(value, decimal.Decimal):
+                result[key] = int(value)
+            elif isinstance(value, datetime.datetime):
+                result[key] = value.isoformat()
+    data = {"record": results}
     return json.dumps(data)
 
 # Command Class
@@ -125,8 +141,9 @@ class Command(BaseCommand):
             uuid_list = validate_uuids(resource_uuid)
         else:
             validate_filename(input)
+            uuid_list = validate_uuids(input)
 
-        data = generate_data()
+        data = generate_data(uuid_list)
 
         if output:
             validate_filename(output)
