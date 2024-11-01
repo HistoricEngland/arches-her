@@ -19,7 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 from django.core.management.base import BaseCommand
 from arches.app.models.system_settings import settings
 from pathlib import Path
-from arches_her.data_access.common import call_hapi_get_resources
+from arches_her.data_access.common import call_hapi_get_resources, generate_json
+from arches_her.models.factory import create_resource
 from typing import List
 import logging
 import uuid
@@ -63,16 +64,20 @@ def validate_filename(filename):
 
 def generate_data(uuid_list: List[uuid.UUID]) -> str:
     results = call_hapi_get_resources(resource_instance_ids=uuid_list)
+    records = []
     for result in results:
-        for key, value in result.items():
-            if isinstance(value, uuid.UUID):
-                result[key] = str(value)
-            elif isinstance(value, decimal.Decimal):
-                result[key] = int(value)
-            elif isinstance(value, datetime.datetime):
-                result[key] = value.isoformat()
-    data = {"record": results}
-    return json.dumps(data)
+        resource = create_resource(
+            resource_type=result["resource_type"],
+            resource_instance_id=result["resource_instance_id"],
+            primary_reference_number=result["primary_reference_number"],
+            heritage_asset_name=result["resource_name"],
+            descriptions=None,
+            last_updated=result["most_recent_timestamp"]
+        )
+        records.append(resource.__dict__)
+    data = {"batch_id": "BATCH_ID", "records": records}
+    json = generate_json(data)
+    return json
 
 # Command Class
 
