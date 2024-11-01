@@ -53,8 +53,10 @@ class HeritageApiLogAdmin(admin.ModelAdmin, ReadOnlyAdminMixin):
     readonly_fields = (
         "pretty_totals",
         "pretty_messages",
+        "pretty_resources",
+        "pretty_exceptions",
     )
-    exclude = ("messages", "totals")
+    exclude = ("messages", "totals", "resources", "exceptions")
     list_display = (
         "batch_id",
         "start",
@@ -73,6 +75,16 @@ class HeritageApiLogAdmin(admin.ModelAdmin, ReadOnlyAdminMixin):
         return format_json_field(instance.totals)
 
     pretty_totals.short_description = "Totals"
+
+    def pretty_resources(self, instance):
+        return format_json_field(instance.resources)
+
+    pretty_resources.short_description = "Resources"
+
+    def pretty_exceptions(self, instance):
+        return format_json_field(instance.exceptions)
+
+    pretty_exceptions.short_description = "Exceptions"
 
 
 class HeritageApiExclusionAdmin(admin.ModelAdmin):
