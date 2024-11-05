@@ -5,6 +5,8 @@ import uuid
 import json
 import decimal
 import datetime
+from arches_her.models.point_geometry import PointGeometry
+from arches_her.models.complex_geometry import ComplexGeometry
 
 
 def call_hapi_get_resources(
@@ -43,17 +45,20 @@ def call_hapi_get_resources(
 
 def serialize(obj):
     if isinstance(obj, dict):
-        # Recursively call serialize on each item in the dictionary, excluding keys that start with "_"
+        # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
         return OrderedDict(
-            (k, serialize(v)) for k, v in obj.items() if not k.startswith("_")
+            (k, serialize(v)) for k, v in obj.items() if not k.startswith("_") and v is not None
         )
     elif isinstance(obj, list):
-        # Recursively call serialize on each item in the list
-        return [serialize(item) for item in obj]
+        # Recursively call serialize on each item in the list, excluding None values
+        return [serialize(item) for item in obj if item is not None]
+    elif isinstance(obj, tuple):
+        # Handle tuples, excluding (None,)
+        return tuple(serialize(item) for item in obj if item is not None)
     elif hasattr(obj, "__dict__"):
         # Handle custom objects by converting them to dictionaries
         return OrderedDict(
-            (k, serialize(v)) for k, v in obj.__dict__.items() if not k.startswith("_")
+            (k, serialize(v)) for k, v in obj.__dict__.items() if not k.startswith("_") and v is not None
         )
     elif isinstance(obj, (uuid.UUID, decimal.Decimal, datetime.datetime)):
         # Convert specific types to string
@@ -62,6 +67,64 @@ def serialize(obj):
     return obj
 
 
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        return serialize(obj)
+
+
 def generate_json(data):
     processed_data = serialize(data)
-    return json.dumps(processed_data, default=serialize, indent=4)
+    return json.dumps(processed_data, cls=CustomJSONEncoder, indent=4)
+
+
+def call_hapi_get_descriptions(resource_instance_id: uuid.UUID):
+    descriptions = []
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_descriptions(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+
+        for row in rows:
+            description = {
+                "description": row[0],
+                "description_type": row[1]
+            }
+            descriptions.append(description)
+
+    return descriptions if descriptions else None
+
+
+def call_hapi_get_point_geometry(resource_instance_id: uuid.UUID):
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_point_geometry(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        row = cursor.fetchone()
+        if row:
+            x_coordinate, y_coordinate = row
+            return PointGeometry(x_coordinate=float(x_coordinate), y_coordinate=float(y_coordinate))
+        else:
+            return None
+
+
+def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID):
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_complex_geometry(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        row = cursor.fetchone()
+        if row:
+            spatial_feature_type, spatial_feature_geometry = row
+            return ComplexGeometry(spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry)
+        else:
+            return None

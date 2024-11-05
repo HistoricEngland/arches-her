@@ -17,9 +17,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from django.core.management.base import BaseCommand
+from django.db import connection
 from arches.app.models.system_settings import settings
 from pathlib import Path
-from arches_her.data_access.common import call_hapi_get_resources, generate_json
+from arches_her.data_access.common import (
+    call_hapi_get_resources,
+    call_hapi_get_descriptions,
+    call_hapi_get_point_geometry,
+    call_hapi_get_complex_geometry,
+    generate_json
+)
 from arches_her.models.factory import create_resource
 from typing import List
 import logging
@@ -71,7 +78,12 @@ def generate_data(uuid_list: List[uuid.UUID]) -> str:
             resource_instance_id=result["resource_instance_id"],
             primary_reference_number=result["primary_reference_number"],
             heritage_asset_name=result["resource_name"],
-            descriptions=None,
+            descriptions=call_hapi_get_descriptions(
+                result["resource_instance_id"]),
+            point_geometry=call_hapi_get_point_geometry(
+                result["resource_instance_id"]),
+            complex_geometry=call_hapi_get_complex_geometry(
+                result["resource_instance_id"]),
             last_updated=result["most_recent_timestamp"]
         )
         records.append(resource.__dict__)
