@@ -20,14 +20,15 @@ from django.core.management.base import BaseCommand
 from django.db import connection
 from arches.app.models.system_settings import settings
 from pathlib import Path
-from arches_her.data_access.common import (
+from ...data_access.common import (
     call_hapi_get_resources,
     call_hapi_get_descriptions,
     call_hapi_get_point_geometry,
     call_hapi_get_complex_geometry,
     generate_json
 )
-from arches_her.models.factory import create_resource
+from ...data_access.monument import call_get_monument_dated_types, call_hapi_get_monument_sources
+from ...models.factory import create_resource
 from typing import List
 import logging
 import uuid
@@ -53,7 +54,8 @@ def is_valid_uuid(uuid_to_test, version=4):
 def validate_uuids(uuid_input):
     if os.path.isfile(uuid_input):
         with open(uuid_input, 'r') as file:
-            uuid_list = [line.strip() for line in file.readlines()]
+            uuid_list = [line.strip() for line in file.readlines()
+                         if not line.strip().startswith(('#', '--'))]
     else:
         uuid_list = [uuid.strip() for uuid in uuid_input.split(',')]
 
@@ -80,9 +82,13 @@ def generate_data(uuid_list: List[uuid.UUID]) -> str:
             heritage_asset_name=result["resource_name"],
             descriptions=call_hapi_get_descriptions(
                 result["resource_instance_id"]),
+            monument_dated_types=call_get_monument_dated_types(
+                result["resource_instance_id"]),
             point_geometry=call_hapi_get_point_geometry(
                 result["resource_instance_id"]),
             complex_geometry=call_hapi_get_complex_geometry(
+                result["resource_instance_id"]),
+            monument_sources=call_hapi_get_monument_sources(
                 result["resource_instance_id"]),
             last_updated=result["most_recent_timestamp"]
         )

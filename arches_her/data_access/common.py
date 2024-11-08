@@ -5,8 +5,9 @@ import uuid
 import json
 import decimal
 import datetime
-from arches_her.models.point_geometry import PointGeometry
-from arches_her.models.complex_geometry import ComplexGeometry
+from ..models.point_geometry import PointGeometry
+from ..models.complex_geometry import ComplexGeometry
+from ..models.descriptions import Description
 
 
 def call_hapi_get_resources(
@@ -77,7 +78,7 @@ def generate_json(data):
     return json.dumps(processed_data, cls=CustomJSONEncoder, indent=4)
 
 
-def call_hapi_get_descriptions(resource_instance_id: uuid.UUID):
+def call_hapi_get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Description]]:
     descriptions = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
@@ -89,16 +90,14 @@ def call_hapi_get_descriptions(resource_instance_id: uuid.UUID):
         rows = cursor.fetchall()
 
         for row in rows:
-            description = {
-                "description": row[0],
-                "description_type": row[1]
-            }
-            descriptions.append(description)
+            type, description = row
+            descriptions.append(Description(
+                description=description, type=type))
 
     return descriptions if descriptions else None
 
 
-def call_hapi_get_point_geometry(resource_instance_id: uuid.UUID):
+def call_hapi_get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometry]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
         query = "SELECT * FROM hapi_get_point_geometry(%s);"
@@ -114,8 +113,9 @@ def call_hapi_get_point_geometry(resource_instance_id: uuid.UUID):
             return None
 
 
-def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID):
+def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[ComplexGeometry]]:
     with connection.cursor() as cursor:
+        complex_geometry = []
         # Construct the SQL query based on the provided parameters
         query = "SELECT * FROM hapi_get_complex_geometry(%s);"
         params = [str(resource_instance_id)]
@@ -125,6 +125,20 @@ def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID):
         row = cursor.fetchone()
         if row:
             spatial_feature_type, spatial_feature_geometry = row
-            return ComplexGeometry(spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry)
-        else:
-            return None
+            complex_geometry.append(ComplexGeometry(
+                spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry))
+        return complex_geometry if complex_geometry else None
+
+
+def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID):
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_monument_dated_types(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        columns = [col[0] for col in cursor.description]
+        results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    return results
