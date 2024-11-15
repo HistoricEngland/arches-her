@@ -10,4 +10,4 @@ class RelatedEvent:
         self.url = url
 
     def __str__(self):
-        return f"{self.primaryReferenceNumber} {self.name} ({self.types})"
+        return f"RelatedEvent(primaryReferenceNumber={self.primaryReferenceNumber}, types={self.types}, name={self.name}, description={self.description}, url={self.url})"

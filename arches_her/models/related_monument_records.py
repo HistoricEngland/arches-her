@@ -4,4 +4,4 @@ class RelatedMonumentRecord:
         self.relationship = relationship
 
     def __str__(self):
-        return f"{self.primaryReferenceNumber} ({self.relationship})"
+        return f"RelatedMonumentRecord(primaryReferenceNumber={self.primaryReferenceNumber}, relationship={self.relationship})"
