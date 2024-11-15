@@ -20,6 +20,11 @@ import uuid
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 import datetime
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
+from arches.app.models.models import EditLog, ResourceInstance
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 class HeritageApiLog(models.Model):
@@ -71,3 +76,27 @@ class HeritageApiExclusion(models.Model):
         indexes = [
             models.Index(fields=["resource_id"]),
         ]
+
+    def clean(self):
+        if not ResourceInstance.objects.filter(resourceinstanceid=self.resource_id).exists():
+            raise ValidationError(
+                f"Resource ID {self.resource_id} does not exist in ResourceInstance table.")
+
+    def save(self, *args, **kwargs):
+        try:
+            self.full_clean()
+            super().save(*args, **kwargs)
+        except ValidationError as e:
+            self._validation_error = e
+            raise
+
+
+@receiver(post_delete, sender=HeritageApiExclusion)
+def log_heritage_api_exclusion_deletion(sender, instance, **kwargs):
+    if ResourceInstance.objects.filter(resourceinstanceid=instance.resource_id).exists():
+        EditLog.objects.create(
+            resourceinstanceid=instance.resource_id,
+            edittype="tile edit",
+            timestamp=timezone.now(),
+            note="Resource was removed from Heritage API exclusion list."
+        )

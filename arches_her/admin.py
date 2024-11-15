@@ -24,6 +24,8 @@ from django.utils.safestring import mark_safe
 from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import HtmlFormatter
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 
 
 def format_json_field(data, style="colorful"):
@@ -49,7 +51,12 @@ class ReadOnlyAdminMixin:
         return False
 
 
-class HeritageApiLogAdmin(admin.ModelAdmin, ReadOnlyAdminMixin):
+class NoEditAdminMixin:
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = (
         "pretty_totals",
         "pretty_messages",
@@ -87,7 +94,7 @@ class HeritageApiLogAdmin(admin.ModelAdmin, ReadOnlyAdminMixin):
     pretty_exceptions.short_description = "Exceptions"
 
 
-class HeritageApiExclusionAdmin(admin.ModelAdmin):
+class HeritageApiExclusionAdmin(NoEditAdminMixin, admin.ModelAdmin):
     readonly_fields = (
         "id",
         "created",
@@ -99,10 +106,12 @@ class HeritageApiExclusionAdmin(admin.ModelAdmin):
         "id",
     )
 
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # Editing an existing object
-            return self.readonly_fields + ("resource_id",)
-        return self.readonly_fields
+    def save_model(self, request, obj, form, change):
+        try:
+            super().save_model(request, obj, form, change)
+        except ValidationError:
+            if hasattr(obj, '_validation_error'):
+                messages.error(request, obj._validation_error.message)
 
 
 admin.site.register(HeritageApiLog, HeritageApiLogAdmin)
