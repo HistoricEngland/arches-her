@@ -5,6 +5,7 @@ Django settings for arches_her project.
 import os
 from arches import __version__
 import inspect
+from celery.schedules import crontab
 
 try:
     from arches.settings import *
@@ -65,6 +66,26 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": CELERY_SEARCH_EXPORT_CHECK,
         "args": ("Celery Beat is Running",),
     },
+    # Every minute between 9am and 4:59pm, Monday to Friday
+    'add-every-one-minute': {
+        'task': '.tasks.add',
+        'schedule': crontab(
+            minute='*/1',
+            hour='9-16',
+            day_of_week='1-5',
+        ),
+        'args': (16, 16),
+    },
+    # Every weekday day at 9pm
+    # 'add-once-at-21-00-weekdays': {
+    #     'task': 'arches.app.tasks.add',
+    #     'schedule': crontab(
+    #         minute=0,
+    #         hour=21,
+    #         day_of_week='1-5',
+    #     ),
+    #     'args': (16, 16),
+    # },
 }
 
 DATABASES = {
