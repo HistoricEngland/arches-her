@@ -2,13 +2,12 @@ from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
 import logging
 import inspect
 
-logger = logging.getLogger(__name__)
-
 
 class NonStrictManifestStaticFilesStorage(ManifestStaticFilesStorage):
     manifest_strict = False
 
     def __init__(self, *args, **kwargs):
+        self.logger = logging.getLogger(__name__)
         super().__init__(*args, **kwargs)
         self.class_name = self.__class__.__name__
 
@@ -24,10 +23,10 @@ class NonStrictManifestStaticFilesStorage(ManifestStaticFilesStorage):
 
         except ValueError as e:
             # Log a warning for the missing file and return the original name (no hashing)
-            logger.warning(f"{self.class_name}.{method_name} - File not found, skipping hash for {name}: {e}")
+            self.logger.warning(f"{self.class_name}.{method_name} - File not found, skipping hash for {name}: {e}")
             return name  # Return the un-hashed name
         except Exception as e:
-            logger.error(f"{self.class_name}.{method_name} - Unexpected error hashing {name}: {e}", exc_info=True)
+            self.logger.error(f"{self.class_name}.{method_name} - Unexpected error hashing {name}: {e}", exc_info=True)
             return name  # Return the un-hashed name to avoid disruption
 
     def post_process(self, paths, dry_run=False, **options):
@@ -41,7 +40,7 @@ class NonStrictManifestStaticFilesStorage(ManifestStaticFilesStorage):
             for result in results:
                 yield result
         except ValueError as e:
-            logger.warning(f"{self.class_name}.{method_name} - Skipping missing file during post-processing: {e}")
+            self.logger.warning(f"{self.class_name}.{method_name} - Skipping missing file during post-processing: {e}")
             # Continue processing despite missing files
         except Exception as e:
-            logger.error(f"{self.class_name}.{method_name} - Unexpected error during post-processing: {e}", exc_info=True)
+            self.logger.error(f"{self.class_name}.{method_name} - Unexpected error during post-processing: {e}", exc_info=True)
