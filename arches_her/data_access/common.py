@@ -73,7 +73,7 @@ class CustomJSONEncoder(json.JSONEncoder):
         return serialize(obj)
 
 
-def generate_json(data):
+def generate_json(data: str) -> str:
     processed_data = serialize(data)
     return json.dumps(processed_data, cls=CustomJSONEncoder, indent=4)
 

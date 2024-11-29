@@ -22,7 +22,6 @@ def call_hapi_get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[
         rows = cursor.fetchall()
 
         for row in rows:
-            # information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, bibliography_footnote_reference, source_url = row
             information_source_title, source_no, bibliography_footnote_reference, source_url = row
             sources.append(MonumentSource(
                 information_source_title=information_source_title,

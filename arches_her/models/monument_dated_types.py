@@ -2,7 +2,16 @@ from typing import List
 
 
 class MonumentDatedTypes(object):
-    def __init__(self, type: List[str], start_date: str, end_date: str, display_date: str, periods: List[str], materials: List[str], evidences: List[str]):
+    def __init__(
+        self, 
+        type: List[str], 
+        start_date: str, 
+        end_date: str, 
+        display_date: str, 
+        periods: List[str], 
+        materials: List[str], 
+        evidences: List[str]
+    ):
         self.type = type
         self.startDate = start_date
         self.endDate = end_date

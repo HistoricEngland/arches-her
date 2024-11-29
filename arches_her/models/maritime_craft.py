@@ -3,7 +3,15 @@ import datetime
 
 
 class MaritimeCraft(object):
-    def __init__(self, type: str, start_date: datetime.date, end_date: datetime.date, display_date: str, periods: List[str], materials: List[str]):
+    def __init__(
+        self, 
+        type: str, 
+        start_date: datetime.date, 
+        end_date: datetime.date, 
+        display_date: str, 
+        periods: List[str], 
+        materials: List[str]
+    ):
         self.type = type
         self.start_date = start_date
         self.end_date = end_date

@@ -27,31 +27,106 @@ from ...data_access.common import (
     call_hapi_get_complex_geometry,
     generate_json
 )
-from ...data_access.monument import call_get_monument_dated_types, call_hapi_get_monument_sources
+from ...data_access.monument import (
+    call_get_monument_dated_types,
+    call_hapi_get_monument_sources
+)
 from ...models.factory import create_resource
-from typing import List
+from typing import List, Optional
 import logging
 import uuid
 import os
 import json
 import decimal
-import datetime
+from datetime import datetime
+from django.utils import timezone
+from dateutil.relativedelta import relativedelta
+import re
+from colorama import Fore, init
+from ...services import validate as validate_service
 
 logger = logging.getLogger(__name__)
+init(autoreset=True)
 
 # Utility Functions
 
 
-def is_valid_uuid(uuid_to_test, version=4):
+def parse_postgresql_interval(interval: str) -> relativedelta:
+    """
+    Parses a PostgreSQL interval string and converts it to a relativedelta object.
+
+    Args:
+        interval (str): The interval string in PostgreSQL format (e.g., "1 year 3 hours 20 minutes").
+
+    Returns:
+        relativedelta: A relativedelta object representing the parsed interval.
+
+    Raises:
+        ValueError: If the interval format is invalid or contains unsupported units.
+
+    Example:
+        >>> interval = "1 year 3 hours 20 minutes"
+        >>> delta = parse_postgresql_interval(interval)
+        >>> print(delta)
+        relativedelta(years=+1, hours=+3, minutes=+20)
+    """
+    pattern = r"(\d+)\s*(day|days|week|weeks|month|months|year|years|hour|hours|minute|minutes|second|seconds)"
+    matches = re.findall(pattern, interval)
+    if not matches:
+        raise ValueError(f"Invalid interval format: {interval}")
+
+    delta = relativedelta()
+    unit_mapping = {
+        'day': 'days', 'days': 'days',
+        'week': 'weeks', 'weeks': 'weeks',
+        'month': 'months', 'months': 'months',
+        'year': 'years', 'years': 'years',
+        'hour': 'hours', 'hours': 'hours',
+        'minute': 'minutes', 'minutes': 'minutes',
+        'second': 'seconds', 'seconds': 'seconds'
+    }
+
+    for value, unit in matches:
+        value = int(value)
+        if unit in unit_mapping:
+            kwargs = {unit_mapping[unit]: value}
+            delta += relativedelta(**kwargs)
+        else:
+            raise ValueError(f"Unsupported interval unit: {unit}")
+
+    return delta
+
+
+def parse_date(date_str: str) -> datetime:
+    """
+    Parses a date string and converts it to a datetime object.
+
+    Args:
+        date_str (str): The date string to parse.
+
+    Returns:
+        datetime: The corresponding datetime object.
+    """
+    if not date_str:
+        return None
+    if date_str.count(":") == 2:
+        return datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    elif date_str.count(":") == 1:
+        return datetime.strptime(date_str, "%Y-%m-%d %H:%M")
+    else:
+        return datetime.strptime(date_str, "%Y-%m-%d")
+
+
+def is_valid_uuid(uuid_to_test: str) -> bool:
     """Check if the provided UUID is valid."""
     try:
-        uuid_obj = uuid.UUID(uuid_to_test, version=version)
-    except ValueError:
+        uuid_obj = uuid.UUID(uuid_to_test)
+    except ValueError as e:
         return False
     return str(uuid_obj) == uuid_to_test
 
 
-def validate_uuids(uuid_input):
+def validate_uuids(uuid_input: str) -> List[str]:
     if os.path.isfile(uuid_input):
         with open(uuid_input, 'r') as file:
             uuid_list = [line.strip() for line in file.readlines()
@@ -65,13 +140,13 @@ def validate_uuids(uuid_input):
     return uuid_list
 
 
-def validate_filename(filename):
+def validate_filename(filename: str):
     """Validate if the provided filename or path is valid."""
     if not os.path.isfile(filename) and not os.path.isdir(os.path.dirname(filename)):
         raise ValueError(f"Invalid filename or path: {filename}")
 
 
-def generate_data(uuid_list: List[uuid.UUID]) -> str:
+def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
     results = call_hapi_get_resources(resource_instance_ids=uuid_list)
     records = []
     for result in results:
@@ -92,8 +167,12 @@ def generate_data(uuid_list: List[uuid.UUID]) -> str:
                 result["resource_instance_id"]),
             last_updated=result["most_recent_timestamp"]
         )
-        records.append(resource.__dict__)
-    data = {"batch_id": "BATCH_ID", "records": records}
+        records.append({"record": resource.__dict__})
+
+    data = {"records": records}
+    if batch_id:
+        data = {"batch_id": batch_id, **data}
+
     json = generate_json(data)
     return json
 
@@ -128,37 +207,78 @@ class Command(BaseCommand):
             default="",
             help="Output filename for the generated JSON response. If not provided, the output will be printed to the console.",
         )
+        parser.add_argument(
+            "-int", "--interval",
+            action="store",
+            dest="interval",
+            default=None,
+            help="Interval for the H.API upload operation, e.g., '1 year 3 hours 20 minutes'.",
+        )
+        parser.add_argument(
+            "-sd", "--start_date",
+            action="store",
+            dest="start_date",
+            default="",
+            help="Start date for the H.API upload operation.",
+        )
+        parser.add_argument(
+            "-ed", "--end_date",
+            action="store",
+            dest="end_date",
+            default=timezone.now().strftime("%Y-%m-%d %H:%M:%S"),
+            help="End date for the H.API upload operation.",
+        )
+        parser.add_argument(
+            "-ic", "--internal_call",
+            action="store",
+            dest="internal_call",
+            type=str,
+            help="Internal call (True/False).",
+        )
+        parser.add_argument(
+            "-b", "--batch_id",
+            action="store",
+            dest="batch_id",
+            default=None,
+            help="Batch ID",
+        )
 
     def handle(self, *args, **options):
         operation = options["operation"]
+        internal_call = options["internal_call"]
+        internal_call = (internal_call.lower() == "true") if internal_call else False
         if operation == "validate":
-            self.validate(resource_uuid=options["resource_uuid"])
+            self.validate(
+                resource_uuid=options["resource_uuid"],
+                input=options["input"],
+                output=options["output"],
+                internal_call=internal_call
+            )
         elif operation == "upload":
-            self.upload()
+            self.upload(
+                interval=options["interval"],
+                start_date=options["start_date"],
+                end_date=options["end_date"],
+                internal_call=internal_call
+            )
         elif operation == "generate":
             self.generate(
                 resource_uuid=options["resource_uuid"],
                 input=options["input"],
-                output=options["output"]
+                output=options["output"],
+                internal_call=internal_call,
+                batch_id=options["batch_id"]
             )
 
-    def validate(self, resource_uuid):
-        """Validate the provided UUID."""
-        try:
-            if uuid.UUID(resource_uuid):
-                print(f"Validating resource {resource_uuid}")
-        except ValueError:
-            print("Invalid UUID")
-
-    def upload(self):
-        """Stub for upload operation."""
-        pass
-
-    def generate(self, resource_uuid=None, input=None, output=None):
-        """Generate data based on the provided UUID or input file."""
+    def validate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None) -> str:
         if (resource_uuid and input) or (not resource_uuid and not input):
-            raise ValueError(
-                "Specify either resource_uuid or filename, but not both.")
+            # fmt: off
+            print(
+                f"{Fore.RED}Specify either resource_uuid {Fore.GREEN}-u {Fore.CYAN}--uuid{Fore.RED} "
+                f"or filename {Fore.GREEN}-i {Fore.CYAN}--input{Fore.RED}, but not both.{Fore.RESET}"
+            )
+            # fmt: on
+            return
 
         if resource_uuid:
             uuid_list = validate_uuids(resource_uuid)
@@ -166,9 +286,77 @@ class Command(BaseCommand):
             validate_filename(input)
             uuid_list = validate_uuids(input)
 
-        data = generate_data(uuid_list)
+        data = validate_service(self, uuid_list)
 
-        if output:
+        if internal_call:
+            self.stdout.write(data)
+        elif output:
+            validate_filename(output)
+            with open(output, 'w') as file:
+                file.write(data)
+        else:
+            print(data)
+
+
+    def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool =False) -> None:
+        start_date = parse_date(start_date)
+        end_date = parse_date(end_date)
+
+        if interval and end_date:
+            parsed_interval = parse_postgresql_interval(interval)
+            start_date = end_date - parsed_interval
+            # fmt: off
+            message = (
+                f"Uploading data for the last {interval} ({parsed_interval}) "
+                f"using a start date of {start_date} and end date of {end_date}"
+            )
+            # fmt: on
+            if internal_call:
+                self.stdout.write(message)
+            else:
+                print(message)
+        elif start_date and end_date:
+            message = (f"Uploading data from {start_date} to {end_date}")
+            if internal_call:
+                self.stdout.write(message)
+            else:
+                print(message)
+        else:
+            # fmt: off
+            message = (
+                f"{Fore.RED}Specify either interval {Fore.GREEN}-int {Fore.CYAN}--interval{Fore.RED} "
+                f"or start_date {Fore.GREEN}-sd {Fore.CYAN}--start_date{Fore.RED} and end_date "
+                f"{Fore.GREEN}-ed {Fore.CYAN}--end_date{Fore.RED}. If end_date is not provided, "
+                f"the current date and time will be used.{Fore.RESET}"
+            )
+            # fmt: on
+            if internal_call:
+                self.stdout.write(message)
+            else:
+                print(message)
+
+    def generate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None) -> Optional[str]:
+        """Generate data based on the provided UUID or input file."""
+        if (resource_uuid and input) or (not resource_uuid and not input):
+            # fmt: off
+            print(
+                f"{Fore.RED}Specify either resource_uuid {Fore.GREEN}-u {Fore.CYAN}--uuid{Fore.RED} "
+                f"or filename {Fore.GREEN}-i {Fore.CYAN}--input{Fore.RED}, but not both.{Fore.RESET}"
+            )
+            # fmt: on
+            return
+
+        if resource_uuid:
+            uuid_list = validate_uuids(resource_uuid)
+        else:
+            validate_filename(input)
+            uuid_list = validate_uuids(input)
+
+        data = generate_data(uuid_list, batch_id=batch_id)
+
+        if internal_call:
+            self.stdout.write(data)
+        elif output:
             validate_filename(output)
             with open(output, 'w') as file:
                 file.write(data)

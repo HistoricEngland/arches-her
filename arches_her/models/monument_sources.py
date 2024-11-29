@@ -1,5 +1,15 @@
 class MonumentSource(object):
-    def __init__(self, information_source_title: str = None, statement_of_authority: str = None, source_no: str = None, source_reference: str = None, date_of_origination: str = None, source_digital_object_identifier: str = None, bibliography_footnote_reference: str = None, source_url: str = None):
+    def __init__(
+        self, 
+        information_source_title: str = None, 
+        statement_of_authority: str = None, 
+        source_no: str = None, 
+        source_reference: str = None, 
+        date_of_origination: str = None, 
+        source_digital_object_identifier: str = None, 
+        bibliography_footnote_reference: str = None, 
+        source_url: str = None
+    ):
         self.informationSourceTitle = information_source_title
         self.statementOfAuthority = statement_of_authority
         self.sourceNo = source_no

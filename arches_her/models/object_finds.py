@@ -3,7 +3,15 @@ from typing import List
 
 
 class ObjectFinds(object):
-    def __init__(self, type: str, start_date: datetime.datetime, end_date: datetime.datetime, display_date: str, periods: List[str], materials: List[str]):
+    def __init__(
+        self, 
+        type: str, 
+        start_date: datetime.datetime, 
+        end_date: datetime.datetime, 
+        display_date: str, 
+        periods: List[str], 
+        materials: List[str]
+    ):
         self.type = type
         self.startDate = start_date
         self.endDate = end_date
