@@ -4,7 +4,7 @@ from typing import List
 class MonumentDatedTypes(object):
     def __init__(
         self, 
-        type: List[str], 
+        type: str, 
         start_date: str, 
         end_date: str, 
         display_date: str, 

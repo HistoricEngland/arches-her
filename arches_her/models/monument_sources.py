@@ -7,7 +7,6 @@ class MonumentSource(object):
         source_reference: str = None, 
         date_of_origination: str = None, 
         source_digital_object_identifier: str = None, 
-        bibliography_footnote_reference: str = None, 
         source_url: str = None
     ):
         self.informationSourceTitle = information_source_title
@@ -16,8 +15,7 @@ class MonumentSource(object):
         self.sourceReference = source_reference
         self.dateOfOrigination = date_of_origination
         self.sourceDigitalObjectIdentifier = source_digital_object_identifier
-        self.bibliographyFootnoteReference = bibliography_footnote_reference
         self.sourceUrl = source_url
 
     def __str__(self):
-        return f"MonumentSource(informationSourceTitle={self.informationSourceTitle}, statementOfAuthority={self.statementOfAuthority}, sourceNo={self.sourceNo}, sourceReference={self.sourceReference}, dateOfOrigination={self.dateOfOrigination}, sourceDigitalObjectIdentifier={self.sourceDigitalObjectIdentifier}, bibliographyFootnoteReference={self.bibliographyFootnoteReference}, sourceUrl={self.sourceUrl})"
+        return f"MonumentSource(informationSourceTitle={self.informationSourceTitle}, statementOfAuthority={self.statementOfAuthority}, sourceNo={self.sourceNo}, sourceReference={self.sourceReference}, dateOfOrigination={self.dateOfOrigination}, sourceDigitalObjectIdentifier={self.sourceDigitalObjectIdentifier}, sourceUrl={self.sourceUrl})"

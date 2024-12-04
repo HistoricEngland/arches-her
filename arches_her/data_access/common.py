@@ -5,6 +5,8 @@ import uuid
 import json
 import decimal
 import datetime
+
+from ..models.object_finds import ObjectFinds
 from ..models.point_geometry import PointGeometry
 from ..models.complex_geometry import ComplexGeometry
 from ..models.descriptions import Description
@@ -142,3 +144,26 @@ def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID):
         results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     return results
+
+def call_hapi_get_object_finds(resource_instance_id: uuid.UUID):
+    object_finds = []
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_object_finds(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            artefact_types, from_date, end_date, cultural_periods, materials = row
+            for _type in artefact_types:
+                object_finds.append(ObjectFinds(
+                    type=_type,
+                    start_date=from_date,
+                    end_date=end_date,
+                    periods=cultural_periods,
+                    materials=materials
+                ))
+
+    return object_finds if object_finds else None

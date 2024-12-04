@@ -25,6 +25,7 @@ from ...data_access.common import (
     call_hapi_get_descriptions,
     call_hapi_get_point_geometry,
     call_hapi_get_complex_geometry,
+    call_hapi_get_object_finds,
     generate_json
 )
 from ...data_access.monument import (
@@ -164,6 +165,8 @@ def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
             complex_geometry=call_hapi_get_complex_geometry(
                 result["resource_instance_id"]),
             monument_sources=call_hapi_get_monument_sources(
+                result["resource_instance_id"]),
+            object_finds=call_hapi_get_object_finds(
                 result["resource_instance_id"]),
             last_updated=result["most_recent_timestamp"]
         )

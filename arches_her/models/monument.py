@@ -8,6 +8,7 @@ from .point_geometry import PointGeometry
 from .descriptions import Description
 from .monument_dated_types import MonumentDatedTypes
 from .monument_sources import MonumentSource
+from .object_finds import ObjectFinds
 
 
 class Monument(Base):
@@ -20,7 +21,8 @@ class Monument(Base):
         monument_dated_types: List[MonumentDatedTypes], 
         point_geometry: PointGeometry, 
         complex_geometry: ComplexGeometry, 
-        monument_sources: List[MonumentSource], 
+        monument_sources: List[MonumentSource],
+        object_finds: List[ObjectFinds], 
         last_updated: datetime.datetime
     ):
         super().__init__(
@@ -29,7 +31,8 @@ class Monument(Base):
             heritage_asset_name=heritage_asset_name, 
             descriptions=descriptions, 
             point_geometry=point_geometry, 
-            complex_geometry=complex_geometry, 
+            complex_geometry=complex_geometry,
+            object_finds=object_finds, 
             last_updated=last_updated
         )
         self.monumentSources = monument_sources

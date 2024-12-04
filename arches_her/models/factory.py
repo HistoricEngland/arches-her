@@ -11,6 +11,7 @@ from .monument import Monument
 from .historic_aircraft_model import HistoricAircraftModel
 from .maritime_vessel import MaritimeVessel
 from .monument_sources import MonumentSource
+from .object_finds import ObjectFinds
 
 
 def create_resource(
@@ -22,7 +23,8 @@ def create_resource(
     point_geometry: PointGeometry, 
     complex_geometry: ComplexGeometry, 
     last_updated: datetime.datetime, 
-    monument_sources: MonumentSource = None, 
+    monument_sources: List[MonumentSource] = None,
+    object_finds: List[ObjectFinds] = None,
     monument_dated_types: List[MonumentDatedTypes] = None
 ):
     if resource_type == "Monument":
@@ -35,6 +37,7 @@ def create_resource(
             point_geometry=point_geometry,
             complex_geometry=complex_geometry,
             monument_sources=monument_sources,
+            object_finds=object_finds,
             last_updated=last_updated)
     elif resource_type == "Historic Aircraft":
         return HistoricAircraftModel(

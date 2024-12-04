@@ -2,6 +2,7 @@ from typing import List, Tuple
 import datetime
 import uuid
 
+from .object_finds import ObjectFinds
 from .descriptions import Description
 from .complex_geometry import ComplexGeometry
 from .point_geometry import PointGeometry
@@ -16,6 +17,7 @@ class Base(object):
         descriptions: List[Description],
         point_geometry: PointGeometry,
         complex_geometry: List[ComplexGeometry],
+        object_finds: List[ObjectFinds],
         last_updated: datetime.datetime
     ):
         self._resource_instance_id = resource_instance_id
@@ -24,4 +26,5 @@ class Base(object):
         self.descriptions = descriptions
         self.pointGeometry = point_geometry
         self.complexGeometry = complex_geometry
+        self.objectFinds = object_finds
         self.lastUpdated = last_updated.strftime("%Y-%m-%dT%H:%M:%S")

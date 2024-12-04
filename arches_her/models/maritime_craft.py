@@ -5,7 +5,7 @@ import datetime
 class MaritimeCraft(object):
     def __init__(
         self, 
-        type: str, 
+        type: List[str], 
         start_date: datetime.date, 
         end_date: datetime.date, 
         display_date: str, 
