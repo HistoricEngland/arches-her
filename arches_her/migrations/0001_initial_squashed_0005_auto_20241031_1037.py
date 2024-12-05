@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             name='HeritageApiExclusion',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('resource_id', models.CharField(max_length=255, unique=True)),
+                ('resource_id', models.UUIDField(unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
             ],
             options={
@@ -58,16 +58,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddIndex(
             model_name='heritageapiexclusion',
-            index=models.Index(fields=['resource_id'], name='hapi_exclus_resourc_fc126a_idx'),
-        ),
-        migrations.AlterField(
-            model_name='heritageapiexclusion',
-            name='resource_id',
-            field=models.UUIDField(default=uuid.uuid4, unique=True),
-        ),
-        migrations.AlterField(
-            model_name='heritageapiexclusion',
-            name='resource_id',
-            field=models.UUIDField(unique=True),
+            index=models.Index(fields=['resource_id'], name='hapi_exclus_resourc_fc126a_idx', opclasses=['uuid_ops']),
         ),
     ]
