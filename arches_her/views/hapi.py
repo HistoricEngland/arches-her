@@ -14,10 +14,6 @@ def superuser_required(view_func):
 @method_decorator(superuser_required, name='dispatch')
 class ValidateResourceView(View):
     def get(self, request, resource_uuid):
-        # return JsonResponse({"user": self.user}, status=405)
-        if not hasattr(request, "user") or not request.user.is_authenticated or not request.user.is_superuser:
-            return HttpResponse(status=401)
-        
         result, response = validate(resource_uuid)
         if result is True:
             return JsonResponse({"status": "success", "message": "Validation passed"}, status=response)
