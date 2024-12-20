@@ -52,6 +52,7 @@ from dateutil.relativedelta import relativedelta
 import re
 from colorama import Fore, init
 from ...services import validate as validate_service
+from ...services import authenticate as authenticate_service
 
 logger = logging.getLogger(__name__)
 init(autoreset=True)
@@ -207,7 +208,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "operation",
             nargs="?",
-            choices=["upload", "validate", "generate"],
+            choices=["upload", "validate", "generate", "authenticate"],
         )
         parser.add_argument(
             "-u", "--uuid",
@@ -265,6 +266,20 @@ class Command(BaseCommand):
             default=None,
             help="Batch ID",
         )
+        parser.add_argument(
+            "-user", "--username",
+            action="store",
+            dest="username",
+            default=None,
+            help="Username for HAPI authentication",
+        )
+        parser.add_argument(
+            "-pass", "--password",
+            action="store",
+            dest="password",
+            default=None,
+            help="Password for HAPI authentication",
+        )
 
     def handle(self, *args, **options):
         operation = options["operation"]
@@ -292,6 +307,11 @@ class Command(BaseCommand):
                 internal_call=internal_call,
                 batch_id=options["batch_id"]
             )
+        elif operation == "authenticate":
+            self.authenticate(
+                username=options["username"],
+                password=options["password"]
+            )
 
     def validate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None) -> str:
         if (resource_uuid and input) or (not resource_uuid and not input):
@@ -309,7 +329,7 @@ class Command(BaseCommand):
             validate_filename(input)
             uuid_list = validate_uuids(input)
 
-        data = validate_service(self, uuid_list)
+        data = validate_service(uuid_list)
 
         if internal_call:
             self.stdout.write(data)
@@ -385,3 +405,7 @@ class Command(BaseCommand):
                 file.write(data)
         else:
             print(data)
+
+    def authenticate(self, username: str, password: str) -> Optional[str]:
+        bearer = authenticate_service(username, password)
+        print(bearer) if bearer else None
