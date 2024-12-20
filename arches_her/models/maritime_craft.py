@@ -6,8 +6,8 @@ class MaritimeCraft(object):
     def __init__(
         self, 
         type: List[str], 
-        start_date: datetime.date, 
-        end_date: datetime.date, 
+        start_date: str, 
+        end_date: str, 
         display_date: str, 
         periods: List[str], 
         materials: List[str]

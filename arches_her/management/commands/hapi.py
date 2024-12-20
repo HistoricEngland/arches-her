@@ -26,11 +26,18 @@ from ...data_access.common import (
     call_hapi_get_point_geometry,
     call_hapi_get_complex_geometry,
     call_hapi_get_object_finds,
-    generate_json
+    call_hapi_get_maritime_craft,
+    call_hapi_get_historic_aircraft,
+    call_hapi_get_related_monument_records,
+    call_hapi_get_related_events,
+    get_images,
+    get_other_statuses,
+    generate_json,
+    get_protected_statuses
 )
 from ...data_access.monument import (
     call_get_monument_dated_types,
-    call_hapi_get_monument_sources
+    get_monument_sources
 )
 from ...models.factory import create_resource
 from typing import List, Optional
@@ -164,9 +171,22 @@ def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
                 result["resource_instance_id"]),
             complex_geometry=call_hapi_get_complex_geometry(
                 result["resource_instance_id"]),
-            monument_sources=call_hapi_get_monument_sources(
+            monument_sources=get_monument_sources(
                 result["resource_instance_id"]),
             object_finds=call_hapi_get_object_finds(
+                result["resource_instance_id"]),
+            maritime_craft=call_hapi_get_maritime_craft(
+                result["resource_instance_id"]),
+            historic_aircraft=call_hapi_get_historic_aircraft(
+                result["resource_instance_id"]),
+            related_monument_records=call_hapi_get_related_monument_records(
+                result["resource_instance_id"]),
+            related_events=call_hapi_get_related_events(
+                result["resource_instance_id"]),
+            images=get_images(result["resource_instance_id"]),
+            other_statuses=get_other_statuses(
+                result["resource_instance_id"]),
+            protected_statuses=get_protected_statuses(
                 result["resource_instance_id"]),
             last_updated=result["most_recent_timestamp"]
         )

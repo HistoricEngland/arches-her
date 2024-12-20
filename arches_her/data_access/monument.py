@@ -12,11 +12,11 @@ from django.utils.html import strip_tags
 import html
 
 
-def call_hapi_get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
+def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
     sources = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_monument_sources(%s);"
+        query = "SELECT * FROM public.hapi_monument_sources_mv WHERE resourceinstanceid = (%s);"
         params = [str(resource_instance_id)]
 
         # Execute the query
@@ -24,7 +24,7 @@ def call_hapi_get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[
         rows = cursor.fetchall()
 
         for row in rows:
-            information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
+            _, information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
             if isinstance(statement_of_authority, list):
                 statement_of_authority = ', '.join(html.unescape(strip_tags(item)).replace("\n", "") for item in statement_of_authority)
 

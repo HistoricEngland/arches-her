@@ -10,6 +10,7 @@ from arches_her.views.active_consultations import ActiveConsultationsView
 from arches.app.views import main
 from arches.app.views.user import UserManagerView
 from arches.app.views.auth import PasswordResetView
+from .views.hapi import ValidateResourceView, GenerateResourceView
 
 uuid_regex = settings.UUID_REGEX
 
@@ -37,5 +38,7 @@ urlpatterns = [
     url(r'^'+settings.APP_PATHNAME+'/plugins/site-visit', PluginView.as_view(), name='site-visit'),
     url(r'^'+settings.APP_PATHNAME+'/plugins/correspondence-workflow', PluginView.as_view(), name='correspondence-workflow'),
     url(r'^'+settings.APP_PATHNAME+'/plugins/communication-workflow', PluginView.as_view(), name='communication-workflow'),
-    url(r'^'+settings.APP_PATHNAME+'/plugins/init-workflow', PluginView.as_view(), name='init-workflow')
+    url(r'^'+settings.APP_PATHNAME+'/plugins/init-workflow', PluginView.as_view(), name='init-workflow'),
+    url(r'^hapi/validate/(?P<resource_uuid>%s)$' % uuid_regex, ValidateResourceView.as_view(), name="validate_resource"),
+    url(r'^hapi/generate/(?P<resource_uuid>%s)$' % uuid_regex, GenerateResourceView.as_view(), name="generate_resource"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

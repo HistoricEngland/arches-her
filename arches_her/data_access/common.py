@@ -4,12 +4,20 @@ from collections import OrderedDict
 import uuid
 import json
 import decimal
-import datetime
+from datetime import datetime
+from django.utils.html import strip_tags
+import html
 
+
+from ..models.historic_aircraft_data import HistoricAircraftData
+from ..models.maritime_craft import MaritimeCraft
 from ..models.object_finds import ObjectFinds
 from ..models.point_geometry import PointGeometry
 from ..models.complex_geometry import ComplexGeometry
 from ..models.descriptions import Description
+from ..models.related_monument_records import RelatedMonumentRecord
+from ..models.images import Image
+from ..models.related_events import RelatedEvent
 
 
 def call_hapi_get_resources(
@@ -63,7 +71,7 @@ def serialize(obj):
         return OrderedDict(
             (k, serialize(v)) for k, v in obj.__dict__.items() if not k.startswith("_") and v is not None
         )
-    elif isinstance(obj, (uuid.UUID, decimal.Decimal, datetime.datetime)):
+    elif isinstance(obj, (uuid.UUID, decimal.Decimal, datetime)):
         # Convert specific types to string
         return str(obj)
     # Return other primitive types (e.g., int, str) as-is
@@ -132,7 +140,7 @@ def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[
         return complex_geometry if complex_geometry else None
 
 
-def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID):
+def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[dict]]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
         query = "SELECT * FROM hapi_get_monument_dated_types(%s);"
@@ -145,7 +153,7 @@ def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID):
 
     return results
 
-def call_hapi_get_object_finds(resource_instance_id: uuid.UUID):
+def call_hapi_get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFinds]]:
     object_finds = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
@@ -167,3 +175,154 @@ def call_hapi_get_object_finds(resource_instance_id: uuid.UUID):
                 ))
 
     return object_finds if object_finds else None
+
+def call_hapi_get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[MaritimeCraft]]:
+    with connection.cursor() as cursor:
+        maritime_craft = []
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_maritime_craft(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            types, start_date, end_date, display_date, periods, materials = row
+            for _type in types:
+                maritime_craft.append(MaritimeCraft(
+                    type=_type,
+                    start_date=start_date,
+                    end_date=end_date,
+                    display_date=display_date,
+                    periods=periods,
+                    materials=materials
+                ))
+
+    return maritime_craft if maritime_craft else None
+
+def call_hapi_get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[HistoricAircraftData]]:
+    with connection.cursor() as cursor:
+        historic_aircraft = []
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_historic_aircraft(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            types, start_date, end_date, display_date, periods, materials = row
+            for _type in types:
+                if isinstance(start_date, str) and start_date:
+                    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+                if isinstance(end_date, str) and end_date:
+                    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+                historic_aircraft.append(HistoricAircraftData(
+                    type=_type,
+                    start_date=start_date.strftime("%Y-%m-%d") if start_date else None,
+                    end_date=end_date.strftime("%Y-%m-%d") if end_date else None,
+                    display_date=display_date,
+                    periods=periods,
+                    materials=materials
+                ))
+
+    return historic_aircraft if historic_aircraft else None
+
+def call_hapi_get_related_monument_records(resource_instance_id: uuid.UUID) -> Optional[List[RelatedMonumentRecord]]:
+    with connection.cursor() as cursor:
+        related_monument_records = []
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_related_monument_records(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            primary_reference_number, relationship = row
+            related_monument_records.append(RelatedMonumentRecord(
+                primary_reference_number=primary_reference_number, 
+                relationship=relationship
+            ))
+
+    return related_monument_records if related_monument_records else None
+
+def get_images(resource_instance_id: uuid.UUID) -> Optional[List[Image]]:
+    images = []
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_images_mv WHERE resourceinstanceid = %s;"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            _, caption, copyright, url = row
+            images.append(Image(
+                url=url,
+                caption=caption,
+                copyright=copyright
+            ))
+
+    return images if images else None
+
+def get_other_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_other_statuses_mv WHERE resourceinstanceid = %s;"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        other_statuses = []
+        for row in rows:
+            _, source, reference, description, url = row
+            row_elements = []
+            if source and reference:
+                row_elements.append(f"{source}: {reference}")
+            if description:
+                row_elements.append(html.unescape(strip_tags(description)).replace("\n", ""))
+            if url:
+                row_elements.append(f"URL: {url}")
+            if row_elements:
+                other_statuses.append('; '.join(row_elements))
+    
+    return other_statuses if other_statuses else None
+
+def call_hapi_get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[RelatedEvent]]:
+    with connection.cursor() as cursor:
+        related_events = []
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi_get_related_events(%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            primary_reference_number, types, name, description = row
+            related_events.append(RelatedEvent(
+                primary_reference_number=primary_reference_number, 
+                types=types,
+                name=name,
+                description=description
+            ))
+
+    return related_events if related_events else None
+
+def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT protectedstatuses FROM hapi_protected_statuses_mv WHERE resourceinstanceid = %s;"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        row = cursor.fetchone()
+
+    if row:
+        protected_statuses = row[0]
+        return protected_statuses if protected_statuses else None
+    return None

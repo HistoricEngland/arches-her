@@ -8,7 +8,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def validate(self, resource_uuid) -> Union[dict, bool]:
+def validate(resource_uuid) -> Union[dict, bool]:
     output = StringIO()
     call_command("hapi", "generate", resource_uuid=resource_uuid, internal_call="True", stdout=output)
     resource_data = output.getvalue()
@@ -22,15 +22,22 @@ def validate(self, resource_uuid) -> Union[dict, bool]:
         if response.status_code not in [200, 422]:
             response.raise_for_status()
     except requests.RequestException as e:
-        print(f"HTTP request failed: {e}")
-        return None
-
+        logger.error(f"HTTP request failed: {e}")    
+    
     if response.status_code == 200: # No errors
-        return True
+        return True, response.status_code
     elif response.status_code == 422: # Validation errors present
-        return response.json()
+        return {"response": response.json(), "data": resource_data}, response.status_code
     else:
-        return None
+        return {"reason": response.reason}, response.status_code
+
+def generate(resource_uuid) -> dict:
+    output = StringIO()
+    call_command("hapi", "generate", resource_uuid=resource_uuid, internal_call="True", stdout=output)
+    resource_data = output.getvalue()
+    resource_data = resource_data.replace('\n', '').replace('\r', '').strip()
+    resource_data = json.loads(resource_data)
+    return {"data": resource_data}
 
 def authenticate(self, username: str, password: str) -> Optional[str]:
     url = settings.HAPI_AUTHENTICATE_URL
