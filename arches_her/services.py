@@ -1,5 +1,5 @@
 from arches.app.models.system_settings import settings
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 import requests
 from django.core.management import call_command
 import json
@@ -53,15 +53,20 @@ def authenticate(username: str, password: str) -> Optional[str]:
         token = response.json()["token"]
     return token
 
-def batch_create(self, resources: list) -> Optional[str]:
+def batch_create(counts: Dict, bearer_token: str = None, username: str = None, password: str = None) -> Optional[int]:
     url = settings.HAPI_BATCH_CREATE_URL
+    if not bearer_token:
+        bearer_token = authenticate(username, password)
+    if not bearer_token:
+        return None
     try:
-        # TODO Need to send the authentication token in the Authorization
-        response = requests.post(url, json={"resources": resources})
+        # TODO Need to send the bearer token in the Authorization
+        headers = {"Authorization": f"Bearer {bearer_token}"}
+        response = requests.post(url, json=counts, headers=headers)
         response.raise_for_status()
         return response.json()["batch_id"]
     except requests.RequestException as e:
-        print(f"H.API batch creation failed: {e}")
+        logger.error(f"H.API batch creation failed: {e}")
         return None
 
 def batch_submit(self, batch_id: str) -> bool:
