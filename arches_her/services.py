@@ -39,13 +39,15 @@ def generate(resource_uuid) -> dict:
     resource_data = json.loads(resource_data)
     return {"data": resource_data}
 
-def authenticate(self, username: str, password: str) -> Optional[str]:
+def authenticate(username: str, password: str) -> Optional[str]:
     url = settings.HAPI_AUTHENTICATE_URL
     try:
         response = requests.post(url, json={"username": username, "password": password})
+        if response.status_code != 200:
+            response.raise_for_status()
     except requests.RequestException as e:
-        print(f"HTTP request failed: {e}")
-        return None
+        logger.error(f"HTTP request failed: {e}")
+    
     token = None
     if response.status_code == 200:
         token = response.json()["token"]
