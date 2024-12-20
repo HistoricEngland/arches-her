@@ -6,3 +6,4 @@ opencensus-ext-httplib==0.7.3
 opencensus-ext-logging==0.1.0
 opencensus-ext-postgresql==0.1.2
 wfastcgi==3.0.0
+colorama==0.4.6

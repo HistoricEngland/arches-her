@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from .models.models import HeritageApiLog
+from .models.models import HeritageApiLog, HeritageApiExclusion
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 import json
@@ -24,6 +24,8 @@ from django.utils.safestring import mark_safe
 from pygments import highlight
 from pygments.lexers import JsonLexer
 from pygments.formatters import HtmlFormatter
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 
 
 def format_json_field(data, style="colorful"):
@@ -49,13 +51,19 @@ class ReadOnlyAdminMixin:
         return False
 
 
-# class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+class NoEditAdminMixin:
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
 class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     readonly_fields = (
         "pretty_totals",
         "pretty_messages",
+        "pretty_resources",
+        "pretty_exceptions",
     )
-    exclude = ("messages", "totals")
+    exclude = ("messages", "totals", "resources", "exceptions")
     list_display = (
         "batch_id",
         "start",
@@ -75,5 +83,36 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
 
     pretty_totals.short_description = "Totals"
 
+    def pretty_resources(self, instance):
+        return format_json_field(instance.resources)
+
+    pretty_resources.short_description = "Resources"
+
+    def pretty_exceptions(self, instance):
+        return format_json_field(instance.exceptions)
+
+    pretty_exceptions.short_description = "Exceptions"
+
+
+class HeritageApiExclusionAdmin(NoEditAdminMixin, admin.ModelAdmin):
+    readonly_fields = (
+        "id",
+        "created",
+    )
+    search_fields = ["resource_id"]
+    list_display = (
+        "resource_id",
+        "created",
+        "id",
+    )
+
+    def save_model(self, request, obj, form, change):
+        try:
+            super().save_model(request, obj, form, change)
+        except ValidationError:
+            if hasattr(obj, '_validation_error'):
+                messages.error(request, obj._validation_error.message)
+
 
 admin.site.register(HeritageApiLog, HeritageApiLogAdmin)
+admin.site.register(HeritageApiExclusion, HeritageApiExclusionAdmin)

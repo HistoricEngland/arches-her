@@ -44,7 +44,7 @@ define([
                     description: 'Consultation Dates',
                     informationboxdata: {
                         heading: 'Consultation Dates',
-                        text: 'The target date is automatically set 21 days from log date',
+                        text: 'The target date is automatically set 21 days from log date (taking the log date as the first day)',
                     },
                     layoutSections: [
                         {
