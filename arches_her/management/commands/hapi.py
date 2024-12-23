@@ -301,11 +301,13 @@ class Command(BaseCommand):
         internal_call = options["internal_call"]
         internal_call = (internal_call.lower() == "true") if internal_call else False
         counts_str = options["counts"]
-        try:
-            counts = json.loads(counts_str)
-        except Exception as e:
-            print(f"Error parsing counts: {e}")
-            return
+        counts = {}
+        if counts_str:
+            try:
+                counts = json.loads(counts_str)
+            except Exception as e:
+                print(f"Error parsing counts: {e}")
+                return
 
         if operation == "validate":
             self.validate(
