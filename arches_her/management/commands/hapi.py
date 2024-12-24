@@ -40,7 +40,7 @@ from ...data_access.monument import (
     get_monument_sources
 )
 from ...models.factory import create_resource
-from typing import List, Optional
+from typing import Dict, List, Optional
 import logging
 import uuid
 import os
@@ -53,6 +53,7 @@ import re
 from colorama import Fore, init
 from ...services import validate as validate_service
 from ...services import authenticate as authenticate_service
+from ...services import batch_create as batch_create_service
 
 logger = logging.getLogger(__name__)
 init(autoreset=True)
@@ -208,7 +209,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "operation",
             nargs="?",
-            choices=["upload", "validate", "generate", "authenticate"],
+            choices=["upload", "validate", "generate", "authenticate", "batch_create"],
         )
         parser.add_argument(
             "-u", "--uuid",
@@ -280,11 +281,34 @@ class Command(BaseCommand):
             default=None,
             help="Password for HAPI authentication",
         )
+        parser.add_argument(
+            "-bt", "--bearer_token",
+            action="store",
+            dest="bearer_token",
+            default=None,
+            help="Bearer token for HAPI batch creation",
+        )
+        parser.add_argument(
+            "-c", "--count",
+            action="store",
+            dest="counts",
+            default=None,
+            help='JSON object for counts e.g. {"total_count": 20, "published_count": 18, "submitted_count": 2}',
+        )
 
     def handle(self, *args, **options):
         operation = options["operation"]
         internal_call = options["internal_call"]
         internal_call = (internal_call.lower() == "true") if internal_call else False
+        counts_str = options["counts"]
+        counts = {}
+        if counts_str:
+            try:
+                counts = json.loads(counts_str)
+            except Exception as e:
+                print(f"Error parsing counts: {e}")
+                return
+
         if operation == "validate":
             self.validate(
                 resource_uuid=options["resource_uuid"],
@@ -309,6 +333,13 @@ class Command(BaseCommand):
             )
         elif operation == "authenticate":
             self.authenticate(
+                username=options["username"],
+                password=options["password"]
+            )
+        elif operation == "batch_create":
+            self.batch_create(
+                counts = counts,
+                bearer_token=options["bearer_token"],
                 username=options["username"],
                 password=options["password"]
             )
@@ -409,3 +440,14 @@ class Command(BaseCommand):
     def authenticate(self, username: str, password: str) -> Optional[str]:
         bearer = authenticate_service(username, password)
         print(bearer) if bearer else None
+
+    def batch_create(self, counts: Dict, bearer_token: str = None, username: str = None, password: str = None) -> Optional[int]:
+        required_count_keys = {"total_count", "published_count", "submitted_count"}
+        if not required_count_keys.issubset(counts.keys()):
+            # fmt: off
+            print(
+                f"{Fore.RED}Counts must contain the following keys: {Fore.GREEN}{', '.join(required_count_keys)}{Fore.RESET}"
+            )
+            return
+        batch_number = batch_create_service(counts, bearer_token, username, password)
+        print(batch_number) if batch_number else None
