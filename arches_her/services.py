@@ -8,17 +8,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def validate(resource_uuid) -> Union[dict, bool]:
-    output = StringIO()
-    call_command("hapi", "generate", resource_uuid=resource_uuid, internal_call="True", stdout=output)
-    resource_data = output.getvalue()
+def validate(data: str) -> Union[dict, bool]:
 
     url = settings.HAPI_VALIDATE_URL
-    resource_data = resource_data.replace('\n', '').replace('\r', '').strip()
-    resource_data = json.loads(resource_data)
-    
+
     try:
-        response = requests.post(url, json=resource_data)
+        response = requests.post(url, json=data)
         if response.status_code not in [200, 422]:
             response.raise_for_status()
     except requests.RequestException as e:
@@ -27,7 +22,7 @@ def validate(resource_uuid) -> Union[dict, bool]:
     if response.status_code == 200: # No errors
         return True, response.status_code
     elif response.status_code == 422: # Validation errors present
-        return {"response": response.json(), "data": resource_data}, response.status_code
+        return {"response": response.json(), "data": data}, response.status_code
     else:
         return {"reason": response.reason}, response.status_code
 
@@ -35,7 +30,6 @@ def generate(resource_uuid) -> dict:
     output = StringIO()
     call_command("hapi", "generate", resource_uuid=resource_uuid, internal_call="True", stdout=output)
     resource_data = output.getvalue()
-    resource_data = resource_data.replace('\n', '').replace('\r', '').strip()
     resource_data = json.loads(resource_data)
     return {"data": resource_data}
 
@@ -60,7 +54,6 @@ def batch_create(counts: Dict, bearer_token: str = None, username: str = None, p
     if not bearer_token:
         return None
     try:
-        # TODO Need to send the bearer token in the Authorization
         headers = {"Authorization": f"Bearer {bearer_token}"}
         response = requests.post(url, json=counts, headers=headers)
         response.raise_for_status()

@@ -354,22 +354,19 @@ class Command(BaseCommand):
             # fmt: on
             return
 
-        if resource_uuid:
-            uuid_list = validate_uuids(resource_uuid)
-        else:
-            validate_filename(input)
-            uuid_list = validate_uuids(input)
-
-        data = validate_service(uuid_list)
+        data = self.generate(resource_uuid=resource_uuid, input=input, output=output, internal_call=True, batch_id=batch_id, returnData=True)
+        result, _ = validate_service(json.loads(data))
 
         if internal_call:
-            self.stdout.write(data)
+            self.stdout.write(result)
         elif output:
+            print(f"Writing validation results to {output}")
             validate_filename(output)
+            result = json.dumps(result, indent=4)
             with open(output, 'w') as file:
-                file.write(data)
+                file.write(result)
         else:
-            print(data)
+            print(result)
 
 
     def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool =False) -> None:
@@ -409,7 +406,7 @@ class Command(BaseCommand):
             else:
                 print(message)
 
-    def generate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None) -> Optional[str]:
+    def generate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None, returnData: bool = False) -> Optional[str]:
         """Generate data based on the provided UUID or input file."""
         if (resource_uuid and input) or (not resource_uuid and not input):
             # fmt: off
@@ -428,8 +425,10 @@ class Command(BaseCommand):
 
         data = generate_data(uuid_list, batch_id=batch_id)
 
-        if internal_call:
+        if internal_call and not returnData:
             self.stdout.write(data)
+        elif internal_call and returnData:
+            return data
         elif output:
             validate_filename(output)
             with open(output, 'w') as file:
