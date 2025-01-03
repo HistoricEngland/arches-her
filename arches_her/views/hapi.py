@@ -17,10 +17,9 @@ def superuser_required(view_func):
 @method_decorator(superuser_required, name='dispatch')
 class ValidateResourceView(View):
     def get(self, request, resource_uuid):
-        data = generate_service(resource_uuid)
-        result, response = validate_service(data["data"])
+        result, status_code = validate_service(resource_uuid=resource_uuid)
         if result is True:
-            return JsonResponse({"status": "success", "message": "Validation passed"}, status=response)
+            return JsonResponse({"status": "success", "message": "Validation passed"}, status=status_code)
         
         error_response = {"status": "failure", "message": "Validation failed"}
         if isinstance(result, dict):
@@ -28,7 +27,7 @@ class ValidateResourceView(View):
         else:
             error_response["reason"] = result
 
-        return JsonResponse(error_response, status=response)
+        return JsonResponse(error_response, status=status_code)
     
 @method_decorator(superuser_required, name='dispatch')
 class GenerateResourceView(View):

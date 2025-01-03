@@ -16,41 +16,18 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from django.core.management.base import BaseCommand
-from django.db import connection
-from arches.app.models.system_settings import settings
-from pathlib import Path
-from ...data_access.common import (
-    call_hapi_get_resources,
-    call_hapi_get_descriptions,
-    call_hapi_get_point_geometry,
-    call_hapi_get_complex_geometry,
-    call_hapi_get_object_finds,
-    call_hapi_get_maritime_craft,
-    call_hapi_get_historic_aircraft,
-    call_hapi_get_related_monument_records,
-    call_hapi_get_related_events,
-    get_images,
-    get_other_statuses,
-    generate_json,
-    get_protected_statuses
-)
-from ...data_access.monument import (
-    call_get_monument_dated_types,
-    get_monument_sources
-)
-from ...models.factory import create_resource
-from typing import Dict, List, Optional
 import logging
 import uuid
 import os
 import json
-import decimal
+import re
+from django.core.management.base import BaseCommand
+from typing import Dict, List, Optional
 from datetime import datetime
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
-import re
 from colorama import Fore, init
+from ...services import generate as generate_service
 from ...services import validate as validate_service
 from ...services import authenticate as authenticate_service
 from ...services import batch_create as batch_create_service
@@ -155,51 +132,6 @@ def validate_filename(filename: str):
     if not os.path.isfile(filename) and not os.path.isdir(os.path.dirname(filename)):
         raise ValueError(f"Invalid filename or path: {filename}")
 
-
-def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
-    results = call_hapi_get_resources(resource_instance_ids=uuid_list)
-    records = []
-    for result in results:
-        resource = create_resource(
-            resource_type=result["resource_type"],
-            resource_instance_id=result["resource_instance_id"],
-            primary_reference_number=result["primary_reference_number"],
-            heritage_asset_name=result["resource_name"],
-            descriptions=call_hapi_get_descriptions(
-                result["resource_instance_id"]),
-            monument_dated_types=call_get_monument_dated_types(
-                result["resource_instance_id"]),
-            point_geometry=call_hapi_get_point_geometry(
-                result["resource_instance_id"]),
-            complex_geometry=call_hapi_get_complex_geometry(
-                result["resource_instance_id"]),
-            monument_sources=get_monument_sources(
-                result["resource_instance_id"]),
-            object_finds=call_hapi_get_object_finds(
-                result["resource_instance_id"]),
-            maritime_craft=call_hapi_get_maritime_craft(
-                result["resource_instance_id"]),
-            historic_aircraft=call_hapi_get_historic_aircraft(
-                result["resource_instance_id"]),
-            related_monument_records=call_hapi_get_related_monument_records(
-                result["resource_instance_id"]),
-            related_events=call_hapi_get_related_events(
-                result["resource_instance_id"]),
-            images=get_images(result["resource_instance_id"]),
-            other_statuses=get_other_statuses(
-                result["resource_instance_id"]),
-            protected_statuses=get_protected_statuses(
-                result["resource_instance_id"]),
-            last_updated=result["most_recent_timestamp"]
-        )
-        records.append({"record": resource.__dict__})
-
-    data = {"records": records}
-    if batch_id:
-        data = {"batch_id": batch_id, **data}
-
-    json = generate_json(data)
-    return json
 
 # Command Class
 
@@ -313,8 +245,7 @@ class Command(BaseCommand):
             self.validate(
                 resource_uuid=options["resource_uuid"],
                 input=options["input"],
-                output=options["output"],
-                internal_call=internal_call
+                output=options["output"]
             )
         elif operation == "upload":
             self.upload(
@@ -327,9 +258,7 @@ class Command(BaseCommand):
             self.generate(
                 resource_uuid=options["resource_uuid"],
                 input=options["input"],
-                output=options["output"],
-                internal_call=internal_call,
-                batch_id=options["batch_id"]
+                output=options["output"]
             )
         elif operation == "authenticate":
             self.authenticate(
@@ -344,7 +273,7 @@ class Command(BaseCommand):
                 password=options["password"]
             )
 
-    def validate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None) -> str:
+    def validate(self, resource_uuid=None, input: str = None, output: str = None) -> str:
         if (resource_uuid and input) or (not resource_uuid and not input):
             # fmt: off
             print(
@@ -354,19 +283,16 @@ class Command(BaseCommand):
             # fmt: on
             return
 
-        data = self.generate(resource_uuid=resource_uuid, input=input, output=output, internal_call=True, batch_id=batch_id, returnData=True)
-        result, _ = validate_service(json.loads(data))
-
-        if internal_call:
-            self.stdout.write(result)
-        elif output:
-            print(f"Writing validation results to {output}")
-            validate_filename(output)
-            result = json.dumps(result, indent=4)
-            with open(output, 'w') as file:
-                file.write(result)
-        else:
-            print(result)
+        result = validate_service(resource_uuid=resource_uuid, input=input, output=output)
+        if result is not None:
+            response, status_code = result
+            response = json.dumps(response, indent=4)
+            if status_code == 200:
+                print(f"{Fore.GREEN}{response}{Fore.RESET}")
+            elif status_code == 422:
+                print(f"{Fore.YELLOW}{response}{Fore.RESET}")
+            else:
+                print(f"{Fore.RED}{response}{Fore.RESET}")
 
 
     def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool =False) -> None:
@@ -405,8 +331,9 @@ class Command(BaseCommand):
                 self.stdout.write(message)
             else:
                 print(message)
-
-    def generate(self, resource_uuid=None, input: str = None, output: str = None, internal_call: bool = False, batch_id: str = None, returnData: bool = False) -> Optional[str]:
+ 
+    
+    def generate(self, resource_uuid=None, input: str = None, output: str = None) -> Optional[str]:
         """Generate data based on the provided UUID or input file."""
         if (resource_uuid and input) or (not resource_uuid and not input):
             # fmt: off
@@ -417,24 +344,9 @@ class Command(BaseCommand):
             # fmt: on
             return
 
-        if resource_uuid:
-            uuid_list = validate_uuids(resource_uuid)
-        else:
-            validate_filename(input)
-            uuid_list = validate_uuids(input)
-
-        data = generate_data(uuid_list, batch_id=batch_id)
-
-        if internal_call and not returnData:
-            self.stdout.write(data)
-        elif internal_call and returnData:
-            return data
-        elif output:
-            validate_filename(output)
-            with open(output, 'w') as file:
-                file.write(data)
-        else:
-            print(data)
+        data = generate_service(resource_uuid=resource_uuid, input=input, output=output)
+        if data:
+            print(f"{Fore.GREEN}{json.dumps(data, indent=4)}{Fore.RESET}")
 
     def authenticate(self, username: str, password: str) -> Optional[str]:
         bearer = authenticate_service(username, password)
