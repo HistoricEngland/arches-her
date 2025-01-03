@@ -1,7 +1,10 @@
 from django.http import JsonResponse, HttpResponse
 from django.views import View
-from ..services import validate, generate
 from django.utils.decorators import method_decorator
+from ..services import (
+    validate as validate_service, 
+    generate as generate_service
+)
 
 
 def superuser_required(view_func):
@@ -14,9 +17,9 @@ def superuser_required(view_func):
 @method_decorator(superuser_required, name='dispatch')
 class ValidateResourceView(View):
     def get(self, request, resource_uuid):
-        result, response = validate(resource_uuid)
+        result, status_code = validate_service(resource_uuid=resource_uuid)
         if result is True:
-            return JsonResponse({"status": "success", "message": "Validation passed"}, status=response)
+            return JsonResponse({"status": "success", "message": "Validation passed"}, status=status_code)
         
         error_response = {"status": "failure", "message": "Validation failed"}
         if isinstance(result, dict):
@@ -24,10 +27,10 @@ class ValidateResourceView(View):
         else:
             error_response["reason"] = result
 
-        return JsonResponse(error_response, status=response)
+        return JsonResponse(error_response, status=status_code)
     
 @method_decorator(superuser_required, name='dispatch')
 class GenerateResourceView(View):
     def get(self, request, resource_uuid):
-        result = generate(resource_uuid)
+        result = generate_service(resource_uuid)
         return JsonResponse(result)
