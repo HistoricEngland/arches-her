@@ -16,7 +16,7 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
     sources = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM public.hapi_monument_sources_mv WHERE resourceinstanceid = (%s);"
+        query = "SELECT * FROM hapi.monument_sources_mv WHERE resourceinstanceid = (%s);"
         params = [str(resource_instance_id)]
 
         # Execute the query
@@ -49,18 +49,18 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
     return sources if sources else None
 
 
-def call_get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[MonumentDatedTypes]]:
+def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[MonumentDatedTypes]]:
     monument_dated_types = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_monument_dated_types(%s);"
+        query = "SELECT * FROM hapi.monument_dated_types WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            types, start_date, end_date, display_date, periods, materials, evidences = row
+            _, types, start_date, end_date, display_date, periods, materials, evidences = row
             for _type in types:
                 monument_dated_types.append(MonumentDatedTypes(
                     type=_type,

@@ -6,22 +6,22 @@ import logging
 from arches.app.models.system_settings import settings
 from typing import Dict, List, Optional, Union
 from .data_access.common import (
-    call_hapi_get_resources,
-    call_hapi_get_descriptions,
-    call_hapi_get_point_geometry,
-    call_hapi_get_complex_geometry,
-    call_hapi_get_object_finds,
-    call_hapi_get_maritime_craft,
-    call_hapi_get_historic_aircraft,
-    call_hapi_get_related_monument_records,
-    call_hapi_get_related_events,
+    get_resources,
+    get_descriptions,
+    get_point_geometry,
+    get_complex_geometry,
+    get_object_finds,
+    get_maritime_craft,
+    get_historic_aircraft,
+    get_related_monument_records,
+    get_related_events,
     get_images,
     get_other_statuses,
     generate_json,
     get_protected_statuses
 )
 from .data_access.monument import (
-    call_get_monument_dated_types,
+    get_monument_dated_types,
     get_monument_sources
 )
 from .models.factory import create_resource
@@ -103,7 +103,7 @@ def generate(resource_uuid=None, input: str = None, output: str = None, batch_id
         return data
 
 def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
-    results = call_hapi_get_resources(resource_instance_ids=uuid_list)
+    results = get_resources(resource_instance_ids=uuid_list)
     records = []
     for result in results:
         resource = create_resource(
@@ -111,25 +111,25 @@ def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
             resource_instance_id=result["resource_instance_id"],
             primary_reference_number=result["primary_reference_number"],
             heritage_asset_name=result["resource_name"],
-            descriptions=call_hapi_get_descriptions(
+            descriptions=get_descriptions(
                 result["resource_instance_id"]),
-            monument_dated_types=call_get_monument_dated_types(
+            monument_dated_types=get_monument_dated_types(
                 result["resource_instance_id"]),
-            point_geometry=call_hapi_get_point_geometry(
+            point_geometry=get_point_geometry(
                 result["resource_instance_id"]),
-            complex_geometry=call_hapi_get_complex_geometry(
+            complex_geometry=get_complex_geometry(
                 result["resource_instance_id"]),
             monument_sources=get_monument_sources(
                 result["resource_instance_id"]),
-            object_finds=call_hapi_get_object_finds(
+            object_finds=get_object_finds(
                 result["resource_instance_id"]),
-            maritime_craft=call_hapi_get_maritime_craft(
+            maritime_craft=get_maritime_craft(
                 result["resource_instance_id"]),
-            historic_aircraft=call_hapi_get_historic_aircraft(
+            historic_aircraft=get_historic_aircraft(
                 result["resource_instance_id"]),
-            related_monument_records=call_hapi_get_related_monument_records(
+            related_monument_records=get_related_monument_records(
                 result["resource_instance_id"]),
-            related_events=call_hapi_get_related_events(
+            related_events=get_related_events(
                 result["resource_instance_id"]),
             images=get_images(result["resource_instance_id"]),
             other_statuses=get_other_statuses(

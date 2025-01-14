@@ -1,5 +1,5 @@
 from django.db import connection
-from typing import List, Optional
+from typing import Any, List, Optional, Tuple, Union
 from collections import OrderedDict
 import uuid
 import json
@@ -7,6 +7,8 @@ import decimal
 from datetime import datetime
 from django.utils.html import strip_tags
 import html
+
+from arches_her.models.monument_dated_types import MonumentDatedTypes
 
 
 from ..models.historic_aircraft_data import HistoricAircraftData
@@ -20,7 +22,7 @@ from ..models.images import Image
 from ..models.related_events import RelatedEvent
 
 
-def call_hapi_get_resources(
+def get_resources(
     interval_param: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
@@ -28,7 +30,7 @@ def call_hapi_get_resources(
 ):
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_resources("
+        query = "SELECT * FROM hapi.get_resources("
         params = []
         if interval_param:
             query += "interval_param := %s, "
@@ -53,8 +55,7 @@ def call_hapi_get_resources(
 
     return results
 
-
-def serialize(obj):
+def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     if isinstance(obj, dict):
         # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
         return OrderedDict(
@@ -77,17 +78,15 @@ def serialize(obj):
     # Return other primitive types (e.g., int, str) as-is
     return obj
 
-
-def generate_json(data: str) -> str:
+def generate_json(data: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     processed_data = serialize(data)
     return processed_data
 
-
-def call_hapi_get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Description]]:
+def get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Description]]:
     descriptions = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_descriptions(%s);"
+        query = "SELECT * FROM hapi.descriptions WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
@@ -95,71 +94,79 @@ def call_hapi_get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List
         rows = cursor.fetchall()
 
         for row in rows:
-            type, description = row
+            _, type, description = row
             descriptions.append(Description(
                 description=description, type=type))
 
     return descriptions if descriptions else None
 
-
-def call_hapi_get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometry]:
+def get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometry]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_point_geometry(%s);"
+        query = "SELECT * FROM hapi.point_geometry WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         row = cursor.fetchone()
         if row:
-            x_coordinate, y_coordinate = row
+            _, x_coordinate, y_coordinate = row
             return PointGeometry(x_coordinate=float(x_coordinate), y_coordinate=float(y_coordinate))
         else:
             return None
 
-
-def call_hapi_get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[ComplexGeometry]]:
+def get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[ComplexGeometry]]:
     with connection.cursor() as cursor:
         complex_geometry = []
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_complex_geometry(%s);"
+        query = 'SELECT * FROM hapi.complex_geometry WHERE resourceinstanceid = %s;'
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         row = cursor.fetchone()
         if row:
-            spatial_feature_type, spatial_feature_geometry = row
+            _, spatial_feature_type, spatial_feature_geometry = row
             complex_geometry.append(ComplexGeometry(
                 spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry))
         return complex_geometry if complex_geometry else None
 
-
-def call_hapi_get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[dict]]:
+def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[MonumentDatedTypes]]:
+    monument_dated_types = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_monument_dated_types(%s);"
-        params = [str(resource_instance_id)]
-
-        # Execute the query
-        cursor.execute(query, params)
-        columns = [col[0] for col in cursor.description]
-        results = [dict(zip(columns, row)) for row in cursor.fetchall()]
-
-    return results
-
-def call_hapi_get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFinds]]:
-    object_finds = []
-    with connection.cursor() as cursor:
-        # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_object_finds(%s);"
+        query = "SELECT * FROM hapi.monument_dated_types WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            artefact_types, from_date, end_date, cultural_periods, materials = row
+            _, types, start_date, end_date, display_date, periods, materials, evidences = row
+            monument_dated_types = MonumentDatedTypes(
+                type=types,
+                start_date=start_date,
+                end_date=end_date,
+                display_date=display_date,
+                periods=periods,
+                materials=materials,
+                evidences=evidences
+            )
+
+    return monument_dated_types if monument_dated_types else None
+
+def get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFinds]]:
+    object_finds = []
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi.object_finds WHERE resourceinstanceid = %s;"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+        for row in rows:
+            _, _, artefact_types, from_date, end_date, cultural_periods, materials = row
             for _type in artefact_types:
                 object_finds.append(ObjectFinds(
                     type=_type,
@@ -171,18 +178,19 @@ def call_hapi_get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List
 
     return object_finds if object_finds else None
 
-def call_hapi_get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[MaritimeCraft]]:
+def get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[MaritimeCraft]]:
     with connection.cursor() as cursor:
         maritime_craft = []
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_maritime_craft(%s);"
+        query = "SELECT * FROM hapi.maritime_craft WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            types, start_date, end_date, display_date, periods, materials = row
+            _, types, start_date, end_date, display_date, periods, main_materials, covering_materials = row
+            materials = main_materials + covering_materials
             for _type in types:
                 maritime_craft.append(MaritimeCraft(
                     type=_type,
@@ -195,18 +203,18 @@ def call_hapi_get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[Li
 
     return maritime_craft if maritime_craft else None
 
-def call_hapi_get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[HistoricAircraftData]]:
+def get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[HistoricAircraftData]]:
     with connection.cursor() as cursor:
         historic_aircraft = []
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_historic_aircraft(%s);"
+        query = "SELECT * FROM hapi.historic_aircraft_mv WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            types, start_date, end_date, display_date, periods, materials = row
+            _, _, types, start_date, end_date, display_date, periods, materials = row
             for _type in types:
                 if isinstance(start_date, str) and start_date:
                     start_date = datetime.strptime(start_date, "%Y-%m-%d")
@@ -223,18 +231,18 @@ def call_hapi_get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional
 
     return historic_aircraft if historic_aircraft else None
 
-def call_hapi_get_related_monument_records(resource_instance_id: uuid.UUID) -> Optional[List[RelatedMonumentRecord]]:
+def get_related_monument_records(resource_instance_id: uuid.UUID) -> Optional[List[RelatedMonumentRecord]]:
     with connection.cursor() as cursor:
         related_monument_records = []
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_related_monument_records(%s);"
+        query = "SELECT * FROM hapi.related_monument_records WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            primary_reference_number, relationship = row
+            _, primary_reference_number, relationship = row
             related_monument_records.append(RelatedMonumentRecord(
                 primary_reference_number=primary_reference_number, 
                 relationship=relationship
@@ -246,7 +254,7 @@ def get_images(resource_instance_id: uuid.UUID) -> Optional[List[Image]]:
     images = []
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_images_mv WHERE resourceinstanceid = %s;"
+        query = "SELECT * FROM hapi.images_mv WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
@@ -265,7 +273,7 @@ def get_images(resource_instance_id: uuid.UUID) -> Optional[List[Image]]:
 def get_other_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_other_statuses_mv WHERE resourceinstanceid = %s;"
+        query = "SELECT * FROM hapi.other_statuses_mv WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
@@ -286,18 +294,18 @@ def get_other_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
     
     return other_statuses if other_statuses else None
 
-def call_hapi_get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[RelatedEvent]]:
+def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[RelatedEvent]]:
     with connection.cursor() as cursor:
         related_events = []
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi_get_related_events(%s);"
+        query = "SELECT * FROM hapi.related_events WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
         for row in rows:
-            primary_reference_number, types, name, description = row
+            _, primary_reference_number, types, name, description = row
             related_events.append(RelatedEvent(
                 primary_reference_number=primary_reference_number, 
                 types=types,
@@ -310,7 +318,7 @@ def call_hapi_get_related_events(resource_instance_id: uuid.UUID) -> Optional[Li
 def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT protectedstatuses FROM hapi_protected_statuses_mv WHERE resourceinstanceid = %s;"
+        query = "SELECT protectedstatuses FROM hapi.protected_statuses_mv WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
