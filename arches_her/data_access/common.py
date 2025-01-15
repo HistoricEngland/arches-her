@@ -55,6 +55,7 @@ def get_resources(
 
     return results
 
+
 def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     if isinstance(obj, dict):
         # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
@@ -78,9 +79,11 @@ def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, i
     # Return other primitive types (e.g., int, str) as-is
     return obj
 
+
 def generate_json(data: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     processed_data = serialize(data)
     return processed_data
+
 
 def get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Description]]:
     descriptions = []
@@ -94,11 +97,12 @@ def get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Descripti
         rows = cursor.fetchall()
 
         for row in rows:
-            _, type, description = row
+            _, description, type = row
             descriptions.append(Description(
                 description=description, type=type))
 
     return descriptions if descriptions else None
+
 
 def get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometry]:
     with connection.cursor() as cursor:
@@ -115,6 +119,7 @@ def get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometr
         else:
             return None
 
+
 def get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[ComplexGeometry]]:
     with connection.cursor() as cursor:
         complex_geometry = []
@@ -130,6 +135,7 @@ def get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[Compl
             complex_geometry.append(ComplexGeometry(
                 spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry))
         return complex_geometry if complex_geometry else None
+
 
 def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[MonumentDatedTypes]]:
     monument_dated_types = []
@@ -155,6 +161,7 @@ def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[M
 
     return monument_dated_types if monument_dated_types else None
 
+
 def get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFinds]]:
     object_finds = []
     with connection.cursor() as cursor:
@@ -177,6 +184,7 @@ def get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFin
                 ))
 
     return object_finds if object_finds else None
+
 
 def get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[MaritimeCraft]]:
     with connection.cursor() as cursor:
@@ -203,6 +211,7 @@ def get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[Maritim
 
     return maritime_craft if maritime_craft else None
 
+
 def get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[HistoricAircraftData]]:
     with connection.cursor() as cursor:
         historic_aircraft = []
@@ -222,14 +231,17 @@ def get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[Hist
                     end_date = datetime.strptime(end_date, "%Y-%m-%d")
                 historic_aircraft.append(HistoricAircraftData(
                     type=_type,
-                    start_date=start_date.strftime("%Y-%m-%d") if start_date else None,
-                    end_date=end_date.strftime("%Y-%m-%d") if end_date else None,
+                    start_date=start_date.strftime(
+                        "%Y-%m-%d") if start_date else None,
+                    end_date=end_date.strftime(
+                        "%Y-%m-%d") if end_date else None,
                     display_date=display_date,
                     periods=periods,
                     materials=materials
                 ))
 
     return historic_aircraft if historic_aircraft else None
+
 
 def get_related_monument_records(resource_instance_id: uuid.UUID) -> Optional[List[RelatedMonumentRecord]]:
     with connection.cursor() as cursor:
@@ -244,11 +256,12 @@ def get_related_monument_records(resource_instance_id: uuid.UUID) -> Optional[Li
         for row in rows:
             _, primary_reference_number, relationship = row
             related_monument_records.append(RelatedMonumentRecord(
-                primary_reference_number=primary_reference_number, 
+                primary_reference_number=primary_reference_number,
                 relationship=relationship
             ))
 
     return related_monument_records if related_monument_records else None
+
 
 def get_images(resource_instance_id: uuid.UUID) -> Optional[List[Image]]:
     images = []
@@ -270,6 +283,7 @@ def get_images(resource_instance_id: uuid.UUID) -> Optional[List[Image]]:
 
     return images if images else None
 
+
 def get_other_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
@@ -286,13 +300,15 @@ def get_other_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
             if source and reference:
                 row_elements.append(f"{source}: {reference}")
             if description:
-                row_elements.append(html.unescape(strip_tags(description)).replace("\n", ""))
+                row_elements.append(html.unescape(
+                    strip_tags(description)).replace("\n", ""))
             if url:
                 row_elements.append(f"URL: {url}")
             if row_elements:
                 other_statuses.append('; '.join(row_elements))
-    
+
     return other_statuses if other_statuses else None
+
 
 def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[RelatedEvent]]:
     with connection.cursor() as cursor:
@@ -307,13 +323,14 @@ def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[Related
         for row in rows:
             _, primary_reference_number, types, name, description = row
             related_events.append(RelatedEvent(
-                primary_reference_number=primary_reference_number, 
+                primary_reference_number=primary_reference_number,
                 types=types,
                 name=name,
                 description=description
             ))
 
     return related_events if related_events else None
+
 
 def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
     with connection.cursor() as cursor:

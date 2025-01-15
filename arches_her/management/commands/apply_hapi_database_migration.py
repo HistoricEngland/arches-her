@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.db import connection, transaction
 from tqdm import tqdm
 
+
 class Command(BaseCommand):
     help = 'Apply standalone migration for H.API'
 
@@ -35,21 +36,25 @@ class Command(BaseCommand):
             refresh_option = 'WITH NO DATA'
         else:
             refresh_option = None
-        
+
         if refresh_option:
             try:
-                self.refresh_materialized_views(connection.cursor(), refresh_option, use_tqdm=True)
-                self.stdout.write(self.style.SUCCESS('Materialized views refreshed ' + refresh_option))
+                self.refresh_materialized_views(
+                    connection.cursor(), refresh_option, use_tqdm=True)
+                self.stdout.write(self.style.SUCCESS(
+                    'Materialized views refreshed ' + refresh_option))
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f'Error refreshing materialized views {refresh_option} {e}'))
+                self.stdout.write(self.style.ERROR(
+                    f'Error refreshing materialized views {refresh_option} {e}'))
             return
-        
+
         if delete:
             try:
                 self.delete_schema(connection.cursor())
                 self.stdout.write(self.style.SUCCESS('Schema deleted'))
             except Exception as e:
-                self.stdout.write(self.style.ERROR(f'Error deleting schema {e}'))
+                self.stdout.write(self.style.ERROR(
+                    f'Error deleting schema {e}'))
             return
 
         try:
@@ -132,26 +137,30 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.descriptions
                         TABLESPACE pg_default
                         AS
-                        SELECT d.resourceinstanceid,
-                            v.value AS type,
-                            d.description
-                        FROM monument.descriptions d
-                            JOIN "values" v ON d.description_type = v.valueid
-                        WHERE lower(v.value) = ANY (ARRAY['full'::text, 'summary'::text])
-                        UNION ALL
-                        SELECT d.resourceinstanceid,
-                            v.value AS type,
-                            d.description
-                        FROM historic_aircraft.descriptions d
-                            JOIN "values" v ON d.description_type = v.valueid
-                        WHERE lower(v.value) = ANY (ARRAY['full'::text, 'summary'::text])
-                        UNION ALL
-                        SELECT d.resourceinstanceid,
-                            v.value AS type,
-                            d.description
-                        FROM maritime_vessel.descriptions d
-                            JOIN "values" v ON d.description_type = v.valueid
-                        WHERE lower(v.value) = ANY (ARRAY['full'::text, 'summary'::text])
+                        WITH descriptions AS
+                        (
+                            SELECT d.resourceinstanceid,
+                                d.description,
+                                d.description_type
+                            FROM monument.descriptions d
+                            UNION ALL
+                            SELECT d.resourceinstanceid,
+                                d.description,
+                                d.description_type
+                            FROM historic_aircraft.descriptions d
+                            UNION ALL
+                            SELECT d.resourceinstanceid,
+                                d.description,
+                                d.description_type
+                            FROM maritime_vessel.descriptions d
+                        )
+                        SELECT 
+                            d.resourceinstanceid,
+                            d.description,
+                            v.value as type
+                        FROM descriptions d
+                        JOIN public.values v ON d.description_type = v.valueid
+                        WHERE lower(v.value) = ANY (ARRAY['full', 'summary'])
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -495,14 +504,17 @@ class Command(BaseCommand):
                                 SELECT dpa.resourceinstanceid,
                                     dpa.designation_or_protection_type
                                 FROM monument.designation_and_protection_assignment dpa
+                                WHERE dpa.designation_or_protection_type IS NOT NULL
                                 UNION ALL
                                 SELECT dpa.resourceinstanceid,
                                     dpa.designation_or_protection_type
                                 FROM maritime_vessel.designation_and_protection_assignment dpa
+                                WHERE dpa.designation_or_protection_type IS NOT NULL
                                 UNION ALL
                                 SELECT dpa.resourceinstanceid,
                                     dpa.designation_or_protection_type
                                 FROM historic_aircraft.designation_and_protection_assignment dpa
+                                WHERE dpa.designation_or_protection_type IS NOT NULL
                                 )
                         SELECT dpt.resourceinstanceid,
                             array_agg(v.value) AS protectedstatuses
@@ -521,6 +533,7 @@ class Command(BaseCommand):
                             (resourceinstanceid)
                             TABLESPACE pg_default;
                     """)
+                    # If there is more than one Primary activity name, none are returned
                     cursor.execute("""
                         CREATE MATERIALIZED VIEW hapi.related_events_activity_names
                         TABLESPACE pg_default
@@ -848,91 +861,144 @@ class Command(BaseCommand):
                             (resourceinstanceid)
                             TABLESPACE pg_default;
                     """)
+                    # cursor.execute("""
+                    #     CREATE MATERIALIZED VIEW hapi.historic_aircraft_mv
+                    #     TABLESPACE pg_default
+                    #     AS
+                    #     WITH associated_resources AS (
+                    #         SELECT
+                    #             amaa.resourceinstanceid,
+                    #             jsonb_array_elements(amaa.associated_monument_area_or_artefact) AS artefact
+                    #         FROM
+                    #             monument.associated_monuments_areas_and_artefacts amaa
+                    #         UNION ALL
+                    #         SELECT
+                    #             amaa.resourceinstanceid,
+                    #             jsonb_array_elements(amaa.monument_area_or_artefact) AS artefact
+                    #         FROM
+                    #             maritime_vessel.associated_monuments_areas_and_artefacts amaa
+                    #         UNION ALL
+                    #         SELECT
+                    #             amaa.resourceinstanceid,
+                    #             jsonb_array_elements(amaa.associated_monument_area_or_artefact) AS artefact
+                    #         FROM
+                    #             historic_aircraft.associated_monuments_areas_and_artefacts amaa
+                    #     ), artefact_ids AS (
+                    #         SELECT
+                    #             ar.resourceinstanceid AS main_resourceinstanceid,
+                    #             (ar.artefact ->> 'resourceId'::text)::uuid AS artefact_resourceinstanceid
+                    #         FROM associated_resources ar
+                    #     ), aircraft_data AS (
+                    #         SELECT
+                    #             ids.main_resourceinstanceid,
+                    #             acp.resourceinstanceid,
+                    #             acp.tileid,
+                    #             acp.aircraft_type,
+                    #             acp.start_date,
+                    #             acp.end_date,
+                    #             acp.display_date,
+                    #             acp.period,
+                    #             acp.main_construction_material
+                    #         FROM historic_aircraft.aircraft_construction_phase acp
+                    #         JOIN artefact_ids ids ON ids.artefact_resourceinstanceid = acp.resourceinstanceid
+                    #     ), aircraft_types AS (
+                    #         SELECT
+                    #             ad_1.resourceinstanceid,
+                    #             ad_1.tileid,
+                    #             jsonb_agg(pv.value) AS aircraft_types
+                    #         FROM aircraft_data ad_1
+                    #         JOIN "values" pv ON pv.valueid = ad_1.aircraft_type
+                    #         GROUP BY ad_1.resourceinstanceid, ad_1.tileid
+                    #     ), cultural_periods AS (
+                    #         SELECT
+                    #             ad_1.resourceinstanceid,
+                    #             ad_1.tileid,
+                    #             jsonb_agg(pn.period_name) AS periods
+                    #         FROM aircraft_data ad_1
+                    #         JOIN LATERAL jsonb_array_elements(ad_1.period) cp_1(value) ON true
+                    #         JOIN period.period_names pn ON pn.resourceinstanceid = ((cp_1.value ->> 'resourceId'::text)::uuid)
+                    #         GROUP BY ad_1.resourceinstanceid, ad_1.tileid
+                    #     ), materials AS (
+                    #         SELECT
+                    #             ad_1.resourceinstanceid,
+                    #             ad_1.tileid,
+                    #             jsonb_agg(pv.value) AS materials
+                    #         FROM (
+                    #             SELECT
+                    #                 aircraft_data.resourceinstanceid,
+                    #                 aircraft_data.tileid,
+                    #                 unnest(aircraft_data.main_construction_material) AS material
+                    #             FROM aircraft_data
+                    #         ) ad_1
+                    #         JOIN "values" pv ON pv.valueid = ad_1.material
+                    #         GROUP BY ad_1.resourceinstanceid, ad_1.tileid
+                    #     )
+                    #     SELECT
+                    #         ad.main_resourceinstanceid AS resourceinstanceid,
+                    #         ad.resourceinstanceid AS associated_resourceinstanceid,
+                    #         at.aircraft_types,
+                    #         ad.start_date,
+                    #         ad.end_date,
+                    #         ad.display_date,
+                    #         cp.periods,
+                    #         m.materials
+                    #     FROM aircraft_data ad
+                    #     LEFT JOIN aircraft_types at ON ad.resourceinstanceid = at.resourceinstanceid AND ad.tileid = at.tileid
+                    #     LEFT JOIN cultural_periods cp ON ad.resourceinstanceid = cp.resourceinstanceid AND ad.tileid = cp.tileid
+                    #     LEFT JOIN materials m ON ad.resourceinstanceid = m.resourceinstanceid AND ad.tileid = m.tileid
+                    #     WITH NO DATA;
+                    # """)
                     cursor.execute("""
                         CREATE MATERIALIZED VIEW hapi.historic_aircraft_mv
                         TABLESPACE pg_default
                         AS
-                        WITH associated_resources AS (
-                            SELECT 
+                        WITH associated_historic_aircraft AS
+                        (
+                            SELECT
                                 amaa.resourceinstanceid,
-                                jsonb_array_elements(amaa.associated_monument_area_or_artefact) AS artefact
-                            FROM 
-                                monument.associated_monuments_areas_and_artefacts amaa
-                            UNION ALL
-                            SELECT 
-                                amaa.resourceinstanceid,
-                                jsonb_array_elements(amaa.monument_area_or_artefact) AS artefact
-                            FROM 
-                                maritime_vessel.associated_monuments_areas_and_artefacts amaa
-                            UNION ALL
-                            SELECT 
-                                amaa.resourceinstanceid,
-                                jsonb_array_elements(amaa.associated_monument_area_or_artefact) AS artefact
-                            FROM 
-                                historic_aircraft.associated_monuments_areas_and_artefacts amaa
-                        ), artefact_ids AS (
-                            SELECT 
-                                ar.resourceinstanceid AS main_resourceinstanceid,
-                                (ar.artefact ->> 'resourceId'::text)::uuid AS artefact_resourceinstanceid
-                            FROM associated_resources ar
-                        ), aircraft_data AS (
-                            SELECT 
-                                ids.main_resourceinstanceid,
-                                acp.resourceinstanceid,
-                                acp.tileid,
+                                amaa.associated_resourceid
+                            FROM hapi.associated_monuments_areas_and_artefacts_mv amaa
+                            JOIN public.resource_instances ri ON amaa.associated_resourceId = ri.resourceinstanceid
+                            JOIN public.graphs g ON ri.graphid = g.graphid
+                            WHERE g.name = 'Historic Aircraft'
+                        ),
+                        aircraft_data AS
+                        (
+                            SELECT
+                                aha.resourceinstanceid,
                                 acp.aircraft_type,
-                                acp.start_date,
-                                acp.end_date,
+                                acp.start_date AS from_date,
+                                acp.end_date AS to_date,
                                 acp.display_date,
-                                acp.period,
+                                ARRAY(
+                                    SELECT (elem->>'resourceId')::uuid
+                                    FROM jsonb_array_elements(acp.period) AS elem
+                                ) AS cultural_periods,
                                 acp.main_construction_material
-                            FROM historic_aircraft.aircraft_construction_phase acp
-                            JOIN artefact_ids ids ON ids.artefact_resourceinstanceid = acp.resourceinstanceid
-                        ), aircraft_types AS (
-                            SELECT 
-                                ad_1.resourceinstanceid,
-                                ad_1.tileid,
-                                jsonb_agg(pv.value) AS aircraft_types
-                            FROM aircraft_data ad_1
-                            JOIN "values" pv ON pv.valueid = ad_1.aircraft_type
-                            GROUP BY ad_1.resourceinstanceid, ad_1.tileid
-                        ), cultural_periods AS (
-                            SELECT 
-                                ad_1.resourceinstanceid,
-                                ad_1.tileid,
-                                jsonb_agg(pn.period_name) AS periods
-                            FROM aircraft_data ad_1
-                            JOIN LATERAL jsonb_array_elements(ad_1.period) cp_1(value) ON true
-                            JOIN period.period_names pn ON pn.resourceinstanceid = ((cp_1.value ->> 'resourceId'::text)::uuid)
-                            GROUP BY ad_1.resourceinstanceid, ad_1.tileid
-                        ), materials AS (
-                            SELECT 
-                                ad_1.resourceinstanceid,
-                                ad_1.tileid,
-                                jsonb_agg(pv.value) AS materials
-                            FROM (
-                                SELECT 
-                                    aircraft_data.resourceinstanceid,
-                                    aircraft_data.tileid,
-                                    unnest(aircraft_data.main_construction_material) AS material
-                                FROM aircraft_data
-                            ) ad_1
-                            JOIN "values" pv ON pv.valueid = ad_1.material
-                            GROUP BY ad_1.resourceinstanceid, ad_1.tileid
+                            FROM associated_historic_aircraft aha 
+                            LEFT JOIN historic_aircraft.aircraft_construction_phase acp ON aha.associated_resourceId = acp.resourceinstanceid 
                         )
-                        SELECT 
-                            ad.main_resourceinstanceid AS resourceinstanceid,
-                            ad.resourceinstanceid AS associated_resourceinstanceid,
-                            at.aircraft_types,
-                            ad.start_date,
-                            ad.end_date,
-                            ad.display_date,
-                            cp.periods,
-                            m.materials
+                        SELECT
+                            ad.resourceinstanceid,
+                            (
+                                SELECT v.value
+                                FROM public.values v
+                                WHERE v.valueid = ad.aircraft_type
+                            ) AS aircraft_type,
+                            from_date,
+                            to_date,
+                            display_date,
+                            ARRAY(
+                                SELECT pn.period_name
+                                FROM unnest(ad.cultural_periods) AS uuid
+                                LEFT JOIN hapi.period_names_mv pn ON uuid = pn.resourceinstanceid
+                            ) AS cultural_periods,
+                            ARRAY(
+                                SELECT v.value
+                                FROM unnest(ad.main_construction_material) AS uuid
+                                LEFT JOIN public.values v ON uuid = v.valueid
+                            ) AS materials
                         FROM aircraft_data ad
-                        LEFT JOIN aircraft_types at ON ad.resourceinstanceid = at.resourceinstanceid AND ad.tileid = at.tileid
-                        LEFT JOIN cultural_periods cp ON ad.resourceinstanceid = cp.resourceinstanceid AND ad.tileid = cp.tileid
-                        LEFT JOIN materials m ON ad.resourceinstanceid = m.resourceinstanceid AND ad.tileid = m.tileid
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -1030,7 +1096,7 @@ class Command(BaseCommand):
                     #                 JOIN "values" pv ON pv.valueid = vd_1.material
                     #             GROUP BY vd_1.resourceinstanceid
                     #             )
-                    #     SELECT DISTINCT 
+                    #     SELECT DISTINCT
                     #         vd.main_resourceinstanceid AS resourceinstanceid,
                     #         vd.resourceinstanceid AS associated_resourceinstanceid,
                     #         vt.vessel_types,
@@ -1230,29 +1296,29 @@ class Command(BaseCommand):
                     #     TABLESPACE pg_default
                     #     AS
                     #     WITH associated_resources AS (
-                    #         SELECT 
+                    #         SELECT
                     #             associated_monuments_areas_and_artefacts.resourceinstanceid,
                     #             jsonb_array_elements(associated_monuments_areas_and_artefacts.associated_monument_area_or_artefact) AS artefact
                     #         FROM monument.associated_monuments_areas_and_artefacts
                     #         UNION ALL
-                    #         SELECT 
+                    #         SELECT
                     #             associated_monuments_areas_and_artefacts.resourceinstanceid,
                     #             jsonb_array_elements(associated_monuments_areas_and_artefacts.monument_area_or_artefact) AS artefact
                     #         FROM maritime_vessel.associated_monuments_areas_and_artefacts
                     #         UNION ALL
-                    #         SELECT 
+                    #         SELECT
                     #             associated_monuments_areas_and_artefacts.resourceinstanceid,
                     #             jsonb_array_elements(associated_monuments_areas_and_artefacts.associated_monument_area_or_artefact) AS artefact
                     #         FROM historic_aircraft.associated_monuments_areas_and_artefacts
-                    #     ), 
+                    #     ),
                     #     artefact_ids AS (
-                    #         SELECT 
+                    #         SELECT
                     #             associated_resources.resourceinstanceid,
                     #             (associated_resources.artefact ->> 'resourceId'::text)::uuid AS associated_resourceinstanceid
                     #         FROM associated_resources
-                    #     ), 
+                    #     ),
                     #     artefact_data AS (
-                    #         SELECT 
+                    #         SELECT
                     #             ap.resourceinstanceid,
                     #             ap.artefact_type,
                     #             ap.from_date,
@@ -1261,33 +1327,33 @@ class Command(BaseCommand):
                     #             ap.material
                     #         FROM artefact.production ap
                     #         WHERE ap.resourceinstanceid IN (SELECT artefact_ids.associated_resourceinstanceid FROM artefact_ids)
-                    #     ), 
+                    #     ),
                     #     artefact_types AS (
-                    #         SELECT 
+                    #         SELECT
                     #             ad_1.resourceinstanceid,
                     #             jsonb_agg(pv.value) AS artefact_types
                     #         FROM artefact_data ad_1
                     #         JOIN "values" pv ON pv.valueid = ANY (ad_1.artefact_type)
                     #         GROUP BY ad_1.resourceinstanceid
-                    #     ), 
+                    #     ),
                     #     cultural_periods AS (
-                    #         SELECT 
+                    #         SELECT
                     #             ad_1.resourceinstanceid,
                     #             jsonb_agg(pn.period_name) AS cultural_periods
                     #         FROM artefact_data ad_1
                     #         JOIN LATERAL jsonb_array_elements(ad_1.cultural_period) cp_1(value) ON true
                     #         JOIN period.period_names pn ON pn.resourceinstanceid = ((cp_1.value ->> 'resourceId'::text)::uuid)
                     #         GROUP BY ad_1.resourceinstanceid
-                    #     ), 
+                    #     ),
                     #     materials AS (
-                    #         SELECT 
+                    #         SELECT
                     #             ad_1.resourceinstanceid,
                     #             jsonb_agg(pv.value) AS materials
                     #         FROM artefact_data ad_1
                     #         JOIN "values" pv ON pv.valueid = ANY (ad_1.material)
                     #         GROUP BY ad_1.resourceinstanceid
                     #     )
-                    #     SELECT 
+                    #     SELECT
                     #         ai.resourceinstanceid,
                     #         ad.resourceinstanceid AS associated_resourceinstanceid,
                     #         at.artefact_types,
@@ -1397,7 +1463,7 @@ class Command(BaseCommand):
                         SELECT 
                             ar.resourceinstanceid,
                             prn.primary_reference_number,
-                            v.value
+                            v.value AS association_type
                         FROM hapi.associated_resources_mv ar
                         JOIN primary_reference_numbers prn 
                             ON ar.associated_resource = prn.associated_resource
@@ -1456,30 +1522,33 @@ class Command(BaseCommand):
                             OWNER TO postgres;
                     """)
 
-            self.stdout.write(self.style.SUCCESS('Standalone H.API database migration applied successfully'))
+            self.stdout.write(self.style.SUCCESS(
+                'Standalone H.API database migration applied successfully'))
         except Exception as e:
-            self.stdout.write(self.style.ERROR(f'Error applying standalone migration: {e}'))
+            self.stdout.write(self.style.ERROR(
+                f'Error applying standalone migration: {e}'))
 
     @staticmethod
     def refresh_materialized_views(cursor, refresh_option, use_tqdm=False):
-            # Extract materialized views from this file
-            with open(__file__, 'r') as file:
-                content = file.read()
+        # Extract materialized views from this file
+        with open(__file__, 'r') as file:
+            content = file.read()
 
-            # Regex to find materialized view names
-            pattern = re.compile(r'CREATE MATERIALIZED VIEW (\w+\.\w+)')
-            views = pattern.findall(content)
+        # Regex to find materialized view names
+        pattern = re.compile(r'CREATE MATERIALIZED VIEW (\w+\.\w+)')
+        views = pattern.findall(content)
 
-            # Refresh each materialized view
-            pbar = tqdm(views, disable=not use_tqdm)
-            max_len = max([len(view) for view in views])
-            for view in pbar:
-                if use_tqdm:
-                    pbar.set_description(view.ljust(max_len))
-                start_time = time.time()
-                cursor.execute(f'REFRESH MATERIALIZED VIEW {view} {refresh_option};')
-                duration = time.time() - start_time
-                tqdm.write(f'Refreshed {view} in {duration:.2f} seconds')
+        # Refresh each materialized view
+        pbar = tqdm(views, disable=not use_tqdm)
+        max_len = max([len(view) for view in views])
+        for view in pbar:
+            if use_tqdm:
+                pbar.set_description(view.ljust(max_len))
+            start_time = time.time()
+            cursor.execute(f'REFRESH MATERIALIZED VIEW {
+                           view} {refresh_option};')
+            duration = time.time() - start_time
+            tqdm.write(f'Refreshed {view} in {duration:.2f} seconds')
 
     def delete_schema(self, cursor):
         cursor.execute(f"""
