@@ -1,7 +1,6 @@
-from typing import List, Tuple
 import datetime
 import uuid
-
+from typing import List, Tuple
 from .historic_aircraft_data import HistoricAircraftData
 from .maritime_craft import MaritimeCraft
 from .object_finds import ObjectFinds

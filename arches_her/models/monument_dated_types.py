@@ -3,13 +3,13 @@ from typing import List
 
 class MonumentDatedTypes(object):
     def __init__(
-        self, 
-        type: str, 
-        start_date: str, 
-        end_date: str, 
-        display_date: str, 
-        periods: List[str], 
-        materials: List[str], 
+        self,
+        type: str,
+        start_date: str,
+        end_date: str,
+        display_date: str,
+        periods: List[str],
+        materials: List[str],
         evidences: List[str]
     ):
         self.type = type
@@ -20,5 +20,5 @@ class MonumentDatedTypes(object):
         self.materials = materials
         self.evidences = evidences
 
-    def __str__(self):
+    def __repr__(self):
         return f"MonumentDatedTypes(type={self.type}, startDate={self.startDate}, endDate={self.endDate}, displayDate={self.displayDate}, periods={self.periods}, materials={self.materials}, evidences={self.evidences})"

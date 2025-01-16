@@ -27,10 +27,10 @@ from datetime import datetime
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from colorama import Fore, init
-from ...services import generate as generate_service
-from ...services import validate as validate_service
-from ...services import authenticate as authenticate_service
-from ...services import batch_create as batch_create_service
+from arches_her.services import generate as generate_service
+from arches_her.services import validate as validate_service
+from arches_her.services import authenticate as authenticate_service
+from arches_her.services import batch_create as batch_create_service
 
 logger = logging.getLogger(__name__)
 init(autoreset=True)
@@ -141,7 +141,8 @@ class Command(BaseCommand):
         parser.add_argument(
             "operation",
             nargs="?",
-            choices=["upload", "validate", "generate", "authenticate", "batch_create"],
+            choices=["upload", "validate", "generate",
+                     "authenticate", "batch_create"],
         )
         parser.add_argument(
             "-u", "--uuid",
@@ -231,7 +232,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         operation = options["operation"]
         internal_call = options["internal_call"]
-        internal_call = (internal_call.lower() == "true") if internal_call else False
+        internal_call = (internal_call.lower() ==
+                         "true") if internal_call else False
         counts_str = options["counts"]
         counts = {}
         if counts_str:
@@ -267,7 +269,7 @@ class Command(BaseCommand):
             )
         elif operation == "batch_create":
             self.batch_create(
-                counts = counts,
+                counts=counts,
                 bearer_token=options["bearer_token"],
                 username=options["username"],
                 password=options["password"]
@@ -283,7 +285,8 @@ class Command(BaseCommand):
             # fmt: on
             return
 
-        result = validate_service(resource_uuid=resource_uuid, input=input, output=output)
+        result = validate_service(
+            resource_uuid=resource_uuid, input=input, output=output)
         if result is not None:
             response, status_code = result
             response = json.dumps(response, indent=4)
@@ -294,8 +297,7 @@ class Command(BaseCommand):
             else:
                 print(f"{Fore.RED}{response}{Fore.RESET}")
 
-
-    def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool =False) -> None:
+    def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool = False) -> None:
         start_date = parse_date(start_date)
         end_date = parse_date(end_date)
 
@@ -331,8 +333,7 @@ class Command(BaseCommand):
                 self.stdout.write(message)
             else:
                 print(message)
- 
-    
+
     def generate(self, resource_uuid=None, input: str = None, output: str = None) -> Optional[str]:
         """Generate data based on the provided UUID or input file."""
         if (resource_uuid and input) or (not resource_uuid and not input):
@@ -344,7 +345,8 @@ class Command(BaseCommand):
             # fmt: on
             return
 
-        data = generate_service(resource_uuid=resource_uuid, input=input, output=output)
+        data = generate_service(
+            resource_uuid=resource_uuid, input=input, output=output)
         if data:
             print(f"{Fore.GREEN}{json.dumps(data, indent=4)}{Fore.RESET}")
 
@@ -353,7 +355,8 @@ class Command(BaseCommand):
         print(bearer) if bearer else None
 
     def batch_create(self, counts: Dict, bearer_token: str = None, username: str = None, password: str = None) -> Optional[int]:
-        required_count_keys = {"total_count", "published_count", "submitted_count"}
+        required_count_keys = {"total_count",
+                               "published_count", "submitted_count"}
         if not required_count_keys.issubset(counts.keys()):
             # fmt: off
             print(

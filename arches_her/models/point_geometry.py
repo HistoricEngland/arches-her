@@ -4,5 +4,5 @@ class PointGeometry(object):
         self.xCoordinate = x_coordinate
         self.yCoordinate = y_coordinate
 
-    def __str__(self):
+    def __repr__(self):
         return f"PointGeometry(referenceSystem={self.referenceSystem}, xCoordinate={self.xCoordinate}, yCoordinate={self.yCoordinate})"

@@ -8,5 +8,5 @@ class RelatedEvent:
         self.name = name
         self.description = description
 
-    def __str__(self):
+    def __repr__(self):
         return f"RelatedEvent(primaryReferenceNumber={self.primaryReferenceNumber}, types={self.types}, name={self.name}, description={self.description})"
