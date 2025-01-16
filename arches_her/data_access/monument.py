@@ -50,29 +50,3 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
                 source_url=source_url
             ))
     return sources if sources else None
-
-
-def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[MonumentDatedTypes]]:
-    monument_dated_types = []
-    with connection.cursor() as cursor:
-        # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi.monument_dated_types WHERE resourceinstanceid = %s;"
-        params = [str(resource_instance_id)]
-
-        # Execute the query
-        cursor.execute(query, params)
-        rows = cursor.fetchall()
-        for row in rows:
-            _, types, start_date, end_date, display_date, periods, materials, evidences = row
-            for _type in types:
-                monument_dated_types.append(MonumentDatedTypes(
-                    type=_type,
-                    start_date=start_date,
-                    end_date=end_date,
-                    display_date=display_date,
-                    periods=periods,
-                    materials=materials,
-                    evidences=evidences
-                ))
-
-    return monument_dated_types if monument_dated_types else None

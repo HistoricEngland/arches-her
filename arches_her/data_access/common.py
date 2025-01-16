@@ -53,6 +53,10 @@ def get_resources(
     return results
 
 
+def convert_empty_array_to_none(array):
+    return None if array == {} else array
+
+
 def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     if isinstance(obj, dict):
         # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
@@ -146,15 +150,16 @@ def get_monument_dated_types(resource_instance_id: uuid.UUID) -> Optional[List[M
         rows = cursor.fetchall()
         for row in rows:
             _, types, start_date, end_date, display_date, periods, materials, evidences = row
-            monument_dated_types = MonumentDatedTypes(
-                type=types,
-                start_date=start_date,
-                end_date=end_date,
-                display_date=display_date,
-                periods=periods,
-                materials=materials,
-                evidences=evidences
-            )
+            for _type in types:
+                monument_dated_types.append(MonumentDatedTypes(
+                    type=_type,
+                    start_date=start_date,
+                    end_date=end_date,
+                    display_date=display_date,
+                    periods=convert_empty_array_to_none(periods),
+                    materials=convert_empty_array_to_none(materials),
+                    evidences=convert_empty_array_to_none(evidences)
+                ))
 
     return monument_dated_types if monument_dated_types else None
 

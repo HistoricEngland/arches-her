@@ -18,16 +18,17 @@ from .data_access.common import (
     get_images,
     get_other_statuses,
     generate_json,
-    get_protected_statuses
+    get_protected_statuses,
+    get_monument_dated_types
 )
 from .data_access.monument import (
-    get_monument_dated_types,
     get_monument_sources
 )
 from .models.factory import create_resource
 
 
 logger = logging.getLogger(__name__)
+
 
 def is_valid_uuid(uuid_to_test: str) -> bool:
     """Check if the provided UUID is valid."""
@@ -51,6 +52,7 @@ def validate_uuids(uuid_input: str) -> List[str]:
             raise ValueError(f"Invalid UUID: {u}")
     return uuid_list
 
+
 def validate_filename(filename: str):
     """Validate if the provided filename or path is valid."""
     if not os.path.isfile(filename) and not os.path.isdir(os.path.dirname(filename)):
@@ -68,14 +70,15 @@ def validate(resource_uuid=None, input: str = None, output: str = None) -> Union
         if response.status_code not in [200, 422]:
             response.raise_for_status()
     except requests.RequestException as e:
-        logger.error(f"HTTP request failed: {e}")    
-    
-    if response.status_code == 200: # No errors
+        logger.error(f"HTTP request failed: {e}")
+
+    if response.status_code == 200:  # No errors
         returnVal = (True, response.status_code)
-    elif response.status_code == 422: # Validation errors present
-        returnVal =  ({"response": response.json(), "data": data}, response.status_code)
+    elif response.status_code == 422:  # Validation errors present
+        returnVal = ({"response": response.json(), "data": data},
+                     response.status_code)
     else:
-        returnVal =  ({"reason": response.reason}, response.status_code)
+        returnVal = ({"reason": response.reason}, response.status_code)
 
     if output:
         validate_filename(output)
@@ -84,6 +87,7 @@ def validate(resource_uuid=None, input: str = None, output: str = None) -> Union
         return None
     else:
         return returnVal
+
 
 def generate(resource_uuid=None, input: str = None, output: str = None, batch_id: str = None) -> Optional[str]:
     if resource_uuid:
@@ -101,6 +105,7 @@ def generate(resource_uuid=None, input: str = None, output: str = None, batch_id
         return None
     else:
         return data
+
 
 def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
     results = get_resources(resource_instance_ids=uuid_list)
@@ -147,19 +152,22 @@ def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
     json = generate_json(data)
     return json
 
+
 def authenticate(username: str, password: str) -> Optional[str]:
     url = settings.HAPI_AUTHENTICATE_URL
     try:
-        response = requests.post(url, json={"username": username, "password": password})
+        response = requests.post(
+            url, json={"username": username, "password": password})
         if response.status_code != 200:
             response.raise_for_status()
     except requests.RequestException as e:
         logger.error(f"HTTP request failed: {e}")
-    
+
     token = None
     if response.status_code == 200:
         token = response.json()["token"]
     return token
+
 
 def batch_create(counts: Dict, bearer_token: str = None, username: str = None, password: str = None) -> Optional[int]:
     url = settings.HAPI_BATCH_CREATE_URL
@@ -175,6 +183,7 @@ def batch_create(counts: Dict, bearer_token: str = None, username: str = None, p
     except requests.RequestException as e:
         logger.error(f"H.API batch creation failed: {e}")
         return None
+
 
 def batch_submit(self, batch_id: str) -> bool:
     url = settings.HAPI_BATCH_SUBMIT_URL
