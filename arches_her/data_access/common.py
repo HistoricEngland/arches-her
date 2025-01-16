@@ -54,7 +54,7 @@ def get_resources(
 
 
 def convert_empty_array_to_none(array):
-    return None if array == {} else array
+    return None if array == [] else array
 
 
 def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
@@ -181,8 +181,8 @@ def get_object_finds(resource_instance_id: uuid.UUID) -> Optional[List[ObjectFin
                     type=_type,
                     start_date=from_date,
                     end_date=end_date,
-                    periods=cultural_periods,
-                    materials=materials
+                    periods=convert_empty_array_to_none(cultural_periods),
+                    materials=convert_empty_array_to_none(materials)
                 ))
 
     return object_finds if object_finds else None
@@ -207,8 +207,8 @@ def get_maritime_craft(resource_instance_id: uuid.UUID) -> Optional[List[Maritim
                     start_date=start_date,
                     end_date=end_date,
                     display_date=display_date,
-                    periods=periods,
-                    materials=materials
+                    periods=convert_empty_array_to_none(periods),
+                    materials=convert_empty_array_to_none(materials)
                 ))
 
     return maritime_craft if maritime_craft else None
@@ -238,8 +238,8 @@ def get_historic_aircraft(resource_instance_id: uuid.UUID) -> Optional[List[Hist
                     end_date=end_date.strftime(
                         "%Y-%m-%d") if end_date else None,
                     display_date=display_date,
-                    periods=periods,
-                    materials=materials
+                    periods=convert_empty_array_to_none(periods),
+                    materials=convert_empty_array_to_none(materials)
                 ))
 
     return historic_aircraft if historic_aircraft else None
