@@ -1222,8 +1222,7 @@ class Command(BaseCommand):
             if use_tqdm:
                 pbar.set_description(view.ljust(max_len))
             start_time = time.time()
-            cursor.execute(f'REFRESH MATERIALIZED VIEW {
-                           view} {refresh_option};')
+            cursor.execute(f'REFRESH MATERIALIZED VIEW {view} {refresh_option};')
             duration = time.time() - start_time
             tqdm.write(f'Refreshed {view} in {duration:.2f} seconds')
 
