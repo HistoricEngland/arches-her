@@ -784,6 +784,25 @@ class Command(BaseCommand):
                             TABLESPACE pg_default;
                     """)
                     cursor.execute("""
+                        CREATE MATERIALIZED VIEW hapi.period_names_mv
+                        TABLESPACE pg_default
+                        AS
+                        SELECT resourceinstanceid,
+                            period_name
+                        FROM period.period_names
+                        WITH NO DATA;
+                    """)
+                    cursor.execute("""
+                        ALTER TABLE hapi.period_names_mv
+                            OWNER TO postgres;
+                    """)
+                    cursor.execute("""
+                        CREATE INDEX idx_period_names
+                            ON hapi.period_names_mv USING btree
+                            (resourceinstanceid)
+                            TABLESPACE pg_default;
+                    """)
+                    cursor.execute("""
                         CREATE MATERIALIZED VIEW hapi.historic_aircraft_mv
                         TABLESPACE pg_default
                         AS
@@ -843,25 +862,6 @@ class Command(BaseCommand):
                     cursor.execute("""
                         CREATE INDEX historic_aircraft_resourceinstanceid
                             ON hapi.historic_aircraft_mv USING btree
-                            (resourceinstanceid)
-                            TABLESPACE pg_default;
-                    """)
-                    cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.period_names_mv
-                        TABLESPACE pg_default
-                        AS
-                        SELECT resourceinstanceid,
-                            period_name
-                        FROM period.period_names
-                        WITH NO DATA;
-                    """)
-                    cursor.execute("""
-                        ALTER TABLE hapi.period_names_mv
-                            OWNER TO postgres;
-                    """)
-                    cursor.execute("""
-                        CREATE INDEX idx_period_names
-                            ON hapi.period_names_mv USING btree
                             (resourceinstanceid)
                             TABLESPACE pg_default;
                     """)
