@@ -31,7 +31,7 @@ class Base(object):
         protected_statuses: List[str],
         last_updated: datetime.datetime
     ):
-        self._resource_instance_id = resource_instance_id
+        self.resourceInstanceId = resource_instance_id
         self.primaryReferenceNumber = primary_reference_number
         self.heritageAssetName = heritage_asset_name
         self.descriptions = descriptions
