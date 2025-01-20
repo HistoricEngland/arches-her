@@ -16,11 +16,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
+from collections import defaultdict
 import logging
+import shutil
 import uuid
 import os
 import json
 import re
+import glob
+import time
 from django.core.management.base import BaseCommand
 from typing import Dict, List, Optional
 from datetime import datetime
@@ -31,6 +35,7 @@ from arches_her.services import generate as generate_service
 from arches_her.services import validate as validate_service
 from arches_her.services import authenticate as authenticate_service
 from arches_her.services import batch_create as batch_create_service
+from django.db import connection
 
 logger = logging.getLogger(__name__)
 init(autoreset=True)
@@ -142,7 +147,7 @@ class Command(BaseCommand):
             "operation",
             nargs="?",
             choices=["upload", "validate", "generate",
-                     "authenticate", "batch_create"],
+                     "authenticate", "batch_create", "test", "test_report"],
         )
         parser.add_argument(
             "-u", "--uuid",
@@ -274,6 +279,10 @@ class Command(BaseCommand):
                 username=options["username"],
                 password=options["password"]
             )
+        elif operation == "test":
+            self.test()
+        elif operation == "test_report":
+            self.test_report()
 
     def validate(self, resource_uuid=None, input: str = None, output: str = None) -> str:
         if (resource_uuid and input) or (not resource_uuid and not input):
@@ -365,3 +374,71 @@ class Command(BaseCommand):
             return
         batch_number = batch_create_service(counts, bearer_token, username, password)
         print(batch_number) if batch_number else None
+
+    def test(self):
+        with connection.cursor() as cursor:
+            page_size = 100
+            offset = 54700
+            counter = 1
+            wait_duration = 0.5
+            test_folder = "/web_root/hapi_test"
+            self.setup_test_folder(test_folder)
+            while True:
+                cursor.execute("""
+                    SELECT resource_instance_id
+                    FROM hapi.get_resources(interval_param:='10 years'::interval)
+                    WHERE resource_type = 'Monument'
+                    ORDER BY primary_reference_number
+                    LIMIT %s OFFSET %s;                           
+                """, (page_size, offset))
+                records = cursor.fetchall()
+                if not records:
+                    break
+                self.process_records(records, counter, test_folder)
+                offset += page_size
+                counter += 1
+                time.sleep(wait_duration)
+                return
+
+    def setup_test_folder(self, folder_path):
+        if os.path.exists(folder_path):
+            shutil.rmtree(folder_path)
+        os.makedirs(folder_path)
+
+    def process_records(self, records, counter, test_folder):
+        resource_uuids = ",".join([str(record[0]) for record in records])
+        result, status_code = validate_service(resource_uuid=resource_uuids)
+        counter = str(counter).zfill(5)
+        if isinstance(result, dict) and 'response' in result and 'message' in result['response']:
+            print(counter, result['response']['message'])
+        filename = f"{test_folder}/{counter}.json"
+        with open(filename, 'w') as file:
+            file.write(json.dumps(result, indent=4))
+
+    def load_json_file(self, file_path):
+        with open(file_path, "r") as file:
+            return json.load(file)
+
+    def test_report(self):
+        file_paths = sorted(glob.glob("/web_root/test/*.json"))
+        all_errors_count = defaultdict(int)
+
+        for file_path in file_paths:
+            data = self.load_json_file(file_path)
+            errors = data.get("response", {}).get("errors", [])
+
+            for error in errors:
+                for _, value in error.items():
+                    for key, value in value.items():
+                        strip_key = self.strip_dot_number(key)
+                        for _value in value:
+                            strip_value = self.strip_dot_number(_value)
+                            combined_key = (strip_key, strip_value)
+                            all_errors_count[combined_key] += 1
+
+        for key, value in sorted(all_errors_count.items()):
+            print(f"Key: {key}, Count: {value}")
+
+    def strip_dot_number(self, text):
+        return re.sub(r"\.\d+", "", text)
+
