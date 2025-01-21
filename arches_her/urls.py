@@ -40,5 +40,7 @@ urlpatterns = [
     url(r'^'+settings.APP_PATHNAME+'/plugins/communication-workflow', PluginView.as_view(), name='communication-workflow'),
     url(r'^'+settings.APP_PATHNAME+'/plugins/init-workflow', PluginView.as_view(), name='init-workflow'),
     url(r'^hapi/validate/(?P<resource_uuid>%s)$' % uuid_regex, ValidateResourceView.as_view(), name="validate_resource"),
+    url(r'^hapi/validate$', ValidateResourceView.as_view(), name="validate_resource"),
     url(r'^hapi/generate/(?P<resource_uuid>%s)$' % uuid_regex, GenerateResourceView.as_view(), name="generate_resource"),
+    url(r'^hapi/generate$', GenerateResourceView.as_view(), name="generate_resource_no_uuid"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

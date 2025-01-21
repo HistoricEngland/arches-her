@@ -1,7 +1,6 @@
-from typing import List, Tuple
 import datetime
 import uuid
-
+from typing import List, Tuple
 from .descriptions import Description
 from .point_geometry import PointGeometry
 from .base import Base
@@ -26,5 +25,5 @@ class HistoricAircraftModel(Base):
             last_updated=last_updated
         )
 
-    def __str__(self):
+    def __repr__(self):
         return f"{self.primaryReferenceNumber} {self.heritageAssetName} ({self._resource_instance_id}) {self.primaryReferenceNumber} {self.heritageAssetName} ({self._resource_instance_id})"

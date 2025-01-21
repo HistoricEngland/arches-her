@@ -17,9 +17,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import uuid
+import datetime
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
-import datetime
 from django.dispatch import receiver
 from django.db.models.signals import post_delete
 from arches.app.models.models import EditLog, ResourceInstance

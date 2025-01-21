@@ -1,7 +1,6 @@
-from typing import List, Tuple
 import datetime
 import uuid
-
+from typing import List, Tuple
 from .historic_aircraft_data import HistoricAircraftData
 from .maritime_craft import MaritimeCraft
 from .object_finds import ObjectFinds
@@ -32,7 +31,7 @@ class Base(object):
         protected_statuses: List[str],
         last_updated: datetime.datetime
     ):
-        self._resource_instance_id = resource_instance_id
+        self.resourceInstanceId = resource_instance_id
         self.primaryReferenceNumber = primary_reference_number
         self.heritageAssetName = heritage_asset_name
         self.descriptions = descriptions

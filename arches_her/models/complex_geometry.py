@@ -11,7 +11,7 @@ class ComplexGeometry(object):
         self.spatialFeatureGeometryFormat = spatial_feature_geometry_format
         self.spatialFeatureGeometry = spatial_feature_geometry
 
-    def __str__(self):
+    def __repr__(self):
         return (
             f"ComplexGeometry(spatialFeatureType={self.spatialFeatureType}, "
             f"referenceSystem={self.referenceSystem}, "

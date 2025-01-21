@@ -1,7 +1,6 @@
-from typing import List, Tuple
 import datetime
 import uuid
-
+from typing import List, Tuple
 from .historic_aircraft_data import HistoricAircraftData
 from .maritime_craft import MaritimeCraft
 from .complex_geometry import ComplexGeometry
@@ -19,14 +18,14 @@ from .related_events import RelatedEvent
 
 
 def create_resource(
-    resource_type: str, 
-    resource_instance_id: uuid.UUID, 
-    primary_reference_number: str, 
-    heritage_asset_name: str, 
-    descriptions: List[Description], 
-    point_geometry: PointGeometry, 
-    complex_geometry: ComplexGeometry, 
-    last_updated: datetime.datetime, 
+    resource_type: str,
+    resource_instance_id: uuid.UUID,
+    primary_reference_number: str,
+    heritage_asset_name: str,
+    descriptions: List[Description],
+    point_geometry: PointGeometry,
+    complex_geometry: ComplexGeometry,
+    last_updated: datetime.datetime,
     monument_sources: List[MonumentSource] = None,
     object_finds: List[ObjectFinds] = None,
     monument_dated_types: List[MonumentDatedTypes] = None,
