@@ -420,7 +420,7 @@ class Command(BaseCommand):
             return json.load(file)
 
     def test_report(self):
-        file_paths = sorted(glob.glob("/web_root/test/*.json"))
+        file_paths = sorted(glob.glob("/web_root/hapi_test/*.json"))
         all_errors_count = defaultdict(int)
 
         for file_path in file_paths:
