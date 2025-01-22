@@ -10,7 +10,12 @@ from arches_her.views.active_consultations import ActiveConsultationsView
 from arches.app.views import main
 from arches.app.views.user import UserManagerView
 from arches.app.views.auth import PasswordResetView
-from .views.hapi import ValidateResourceView, GenerateResourceView
+from .views.hapi import (
+    ValidateResourceView, 
+    GenerateResourceView, 
+    AuthenticateView, 
+    BatchCreateView
+)
 
 uuid_regex = settings.UUID_REGEX
 
@@ -42,5 +47,7 @@ urlpatterns = [
     url(r'^hapi/validate/(?P<resource_uuid>%s)$' % uuid_regex, ValidateResourceView.as_view(), name="validate_resource"),
     url(r'^hapi/validate$', ValidateResourceView.as_view(), name="validate_resource"),
     url(r'^hapi/generate/(?P<resource_uuid>%s)$' % uuid_regex, GenerateResourceView.as_view(), name="generate_resource"),
-    url(r'^hapi/generate$', GenerateResourceView.as_view(), name="generate_resource_no_uuid"),
+    url(r'^hapi/generate$', GenerateResourceView.as_view(), name="generate_resource"),
+    url(r'^hapi/authenticate$', AuthenticateView.as_view(), name="authenticate"),
+    url(r'^hapi/batch/create$', BatchCreateView.as_view(), name="batch_create"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

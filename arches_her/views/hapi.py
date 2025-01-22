@@ -4,7 +4,9 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from ..services import (
     validate as validate_service,
-    generate as generate_service
+    generate as generate_service,
+    authenticate as authenticate_service,
+    batch_create as batch_create_service,
 )
 
 
@@ -57,3 +59,47 @@ class GenerateResourceView(View):
 
         result = generate_service(resource_uuid)
         return JsonResponse(result)
+
+
+@method_decorator(superuser_required, name='dispatch')
+class AuthenticateView(View):
+    def get(self, request):
+        try:
+            body = json.loads(request.body)
+            username = body.get("username")
+            password = body.get("password")
+        except:
+            return HttpResponse(status=401)
+
+        token = authenticate_service(username, password)
+        if not token:
+            return HttpResponse(status=401)
+        return HttpResponse(token, status=200)
+
+
+@method_decorator(superuser_required, name='dispatch')
+class BatchCreateView(View):
+    def get(self, request):
+        try:
+            body = json.loads(request.body)
+            token = body.get("token")
+            username = body.get("username")
+            password = body.get("password")
+            counts = {
+                "total_count": body.get("total_count", 0),
+                "published_count": body.get("published_count", 0),
+                "submitted_count": body.get("submitted_count", 0),
+            }
+        except:
+            return HttpResponse(status=401)
+
+        batch_number = batch_create_service(bearer_token=token, username=username, password=password,
+                                            counts=counts)
+        if not batch_number:
+            return HttpResponse(status=401)
+        return HttpResponse(batch_number, status=200)
+
+
+@method_decorator(superuser_required, name='dispatch')
+class BatchSubmitView(View):
+    pass
