@@ -1,5 +1,6 @@
 import datetime
 from typing import List
+from arches_her.hapi.helper import parse_date
 
 
 class ObjectFinds(object):
@@ -12,8 +13,8 @@ class ObjectFinds(object):
         materials: List[str]
     ):
         self.type = type
-        self.startDate = start_date
-        self.endDate = end_date
+        self.startDate = parse_date(start_date)
+        self.endDate = parse_date(end_date)
         self.periods = periods
         self.materials = materials
 

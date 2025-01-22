@@ -388,6 +388,7 @@ class Command(BaseCommand):
                     SELECT resource_instance_id
                     FROM hapi.get_resources(interval_param:='10 years'::interval)
                     WHERE resource_type = 'Monument'
+                    AND resource_instance_id <> 'f493b504-44e3-41c6-a645-178ee98d4612'
                     ORDER BY primary_reference_number
                     LIMIT %s OFFSET %s;                           
                 """, (page_size, offset))

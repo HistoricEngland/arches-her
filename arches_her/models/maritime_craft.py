@@ -1,5 +1,6 @@
 import datetime
 from typing import List
+from arches_her.hapi.helper import parse_date
 
 
 class MaritimeCraft(object):
@@ -13,8 +14,8 @@ class MaritimeCraft(object):
         materials: List[str]
     ):
         self.type = type
-        self.start_date = start_date
-        self.end_date = end_date
+        self.start_date = parse_date(start_date)
+        self.end_date = parse_date(end_date)
         self.display_date = display_date
         self.periods = periods
         self.materials = materials
