@@ -13,6 +13,7 @@ from arches_her.models.monument_sources import MonumentSource
 
 def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
     sources = []
+    set_bibliography_reference = True
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
         query = "SELECT * FROM hapi.monument_sources_mv WHERE resourceinstanceid = (%s);"
@@ -22,19 +23,28 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
         cursor.execute(query, params)
         rows = cursor.fetchall()
 
+        if not rows:
+            sources.append(MonumentSource(
+                set_bibliography_reference=set_bibliography_reference))
+
         for row in rows:
             _, information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
             if isinstance(statement_of_authority, list):
-                statement_of_authority = ', '.join(html.unescape(strip_tags(item)).replace("\n", "") for item in statement_of_authority)
+                statement_of_authority = ', '.join(html.unescape(strip_tags(
+                    item)).replace("\n", "") for item in statement_of_authority)
 
             source_reference_parts = []
             if 'pages' in source_reference:
-                source_reference_parts.append(f"pages: {source_reference['pages']}")
+                source_reference_parts.append(
+                    f"pages: {source_reference['pages']}")
             if 'figures' in source_reference:
-                source_reference_parts.append(f"figures: {source_reference['figures']}")
+                source_reference_parts.append(
+                    f"figures: {source_reference['figures']}")
             if 'plates' in source_reference:
-                source_reference_parts.append(f"plates: {source_reference['plates']}")
-            source_reference_str = ', '.join(source_reference_parts) if source_reference_parts else None
+                source_reference_parts.append(
+                    f"plates: {source_reference['plates']}")
+            source_reference_str = ', '.join(
+                source_reference_parts) if source_reference_parts else None
 
             sources.append(MonumentSource(
                 information_source_title=information_source_title,
@@ -43,6 +53,7 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
                 source_reference=source_reference_str,
                 date_of_origination=date_of_origination,
                 source_digital_object_identifier=source_digital_object_identifier,
-                source_url=source_url
+                source_url=source_url,
+                set_bibliography_reference=set_bibliography_reference,
             ))
     return sources if sources else None
