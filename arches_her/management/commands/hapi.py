@@ -312,15 +312,6 @@ class Command(BaseCommand):
 
     @staticmethod
     def upload(self, interval=None, start_date=None, end_date=None):
-        # start_date = parse_date(start_date)
-        # end_date = parse_date(end_date)
-
-        # parsed_interval = parse_postgresql_interval(interval)
-        # #start_date = end_date - parsed_interval
-        # resources =
-        # records = generate_service()
-        # batch_submit_service(start_date, end_date)
-        # return
         pass
 
     def generate(self, resource_uuid=None, input: str = None, output: str = None) -> Optional[str]:
@@ -406,15 +397,6 @@ class Command(BaseCommand):
         for file_path in file_paths:
             data = self.load_json_file(file_path)
             errors = data.get("response", {}).get("errors", [])
-
-            # for error in errors:
-            #     for _, value in error.items():
-            #         for key, value in value.items():
-            #             strip_key = self.strip_dot_number(key)
-            #             for _value in value:
-            #                 strip_value = self.strip_dot_number(_value)
-            #                 combined_key = (strip_key, strip_value)
-            #                 all_errors_count[combined_key] += 1
 
         if isinstance(errors, list):
             for error in errors:
