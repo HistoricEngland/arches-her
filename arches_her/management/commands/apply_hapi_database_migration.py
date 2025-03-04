@@ -107,20 +107,28 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.complex_geometry
                         TABLESPACE pg_default
                         AS
-                        SELECT geometry.resourceinstanceid,
-                            "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS "SpatialFeatureType",
-                            st_astext(geometry.geospatial_coordinates, 6) AS "SpatialFeatureGeometry"
-                        FROM monument.geometry
-                        UNION ALL
-                        SELECT geometry.resourceinstanceid,
-                            "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS "SpatialFeatureType",
-                            st_astext(geometry.geospatial_coordinates, 6) AS "SpatialFeatureGeometry"
-                        FROM maritime_vessel.geometry
-                        UNION ALL
-                        SELECT geometry.resourceinstanceid,
-                            "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS "SpatialFeatureType",
-                            st_astext(geometry.geospatial_coordinates, 6) AS "SpatialFeatureGeometry"
-                        FROM historic_aircraft.geometry
+                        WITH complex_geometry AS (
+                            SELECT geometry.resourceinstanceid,
+                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
+                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
+                            FROM monument.geometry
+                            UNION ALL
+                            SELECT geometry.resourceinstanceid,
+                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
+                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
+                            FROM maritime_vessel.geometry
+                            UNION ALL
+                            SELECT geometry.resourceinstanceid,
+                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
+                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
+                            FROM historic_aircraft.geometry
+                        )
+                        SELECT DISTINCT
+                            resourceinstanceid,
+                            spatialfeaturetype,
+                            spatialfeaturegeometry
+                        FROM complex_geometry
+                        WHERE spatialfeaturetype IS NOT NULL AND spatialfeaturegeometry IS NOT NULL
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -245,6 +253,10 @@ class Command(BaseCommand):
                         FROM bibliographic_source.bibliographic_source_names;
                     """)
                     cursor.execute("""
+                        ALTER TABLE hapi.bibliographic_source_name_mv
+                            OWNER TO postgres;
+                    """)
+                    cursor.execute("""
                         CREATE INDEX idx_bibliographic_source_name
                         ON hapi.bibliographic_source_name_mv(resourceinstanceid);
                     """)
@@ -255,6 +267,10 @@ class Command(BaseCommand):
                             statement_of_responsibility 
                         FROM bibliographic_source.bibliographic_source_creation
                         WHERE statement_of_responsibility IS NOT NULL;
+                    """)
+                    cursor.execute("""
+                        ALTER TABLE hapi.bibliographic_source_creation_mv
+                            OWNER TO postgres;
                     """)
                     cursor.execute("""
                         CREATE INDEX idx_bibliographic_source_creation
@@ -290,6 +306,10 @@ class Command(BaseCommand):
                         FROM maritime_vessel.bibliographic_source_citation;
                     """)
                     cursor.execute("""
+                        ALTER TABLE hapi.bibliographic_source_creation_mv
+                            OWNER TO postgres;
+                    """)
+                    cursor.execute("""
                         CREATE INDEX idx_bibliographic_source_citation
                         ON hapi.bibliographic_source_citation_mv(resourceinstanceid);
                     """)
@@ -299,6 +319,10 @@ class Command(BaseCommand):
                             resourceinstanceid,
                             date_of_publication
                         FROM bibliographic_source.publication;
+                    """)
+                    cursor.execute("""
+                        ALTER TABLE hapi.bibliographic_source_publication_mv
+                            OWNER TO postgres;
                     """)
                     cursor.execute("""
                         CREATE INDEX idx_bibliographic_source_publication
@@ -392,20 +416,28 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.point_geometry
                         TABLESPACE pg_default
                         AS
-                        SELECT resourceinstanceid,
-                            round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                            round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                        FROM monument.geometry
-                        UNION ALL
-                        SELECT resourceinstanceid,
-                            round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                            round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                        FROM maritime_vessel.geometry
-                        UNION ALL
-                        SELECT resourceinstanceid,
-                            round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                            round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                        FROM historic_aircraft.geometry
+                        WITH point_geometry AS (
+                            SELECT resourceinstanceid,
+                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
+                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
+                            FROM monument.geometry
+                            UNION ALL
+                            SELECT resourceinstanceid,
+                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
+                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
+                            FROM maritime_vessel.geometry
+                            UNION ALL
+                            SELECT resourceinstanceid,
+                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
+                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
+                            FROM historic_aircraft.geometry
+                        )
+                        SELECT DISTINCT
+                            resourceinstanceid,
+                            x_coordinate,
+                            y_coordinate
+                        FROM point_geometry
+                        WHERE x_coordinate IS NOT NULL AND y_coordinate IS NOT NULL
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -610,15 +642,25 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.related_events_type_names
                         TABLESPACE pg_default
                         AS
-                        SELECT 
-                            related_events_activity_types.resource_id,
-                            array_agg("values".value) AS types
-                        FROM 
-                            hapi.related_events_activity_types
-                        JOIN 
-                            "values" ON related_events_activity_types.type_id = "values".valueid
-                        GROUP BY 
-                            related_events_activity_types.resource_id
+                        WITH associated AS (
+                            SELECT resourceinstanceid,
+                                (activity->>'resourceId')::uuid AS associated_activity_resourceId
+                            FROM hapi.related_events_associated_activities
+                        ),
+                        activity_type AS (
+                            SELECT
+                                at.resourceinstanceid,
+                                unnest(at.activity_type) AS activity_type
+                            FROM activity.activity_type AS at
+                        )
+                        SELECT
+                            assoc.resourceinstanceid,
+                            assoc.associated_activity_resourceId AS resource_id,
+                            array_agg(v.value) AS types
+                        FROM associated assoc
+                        JOIN activity_type at ON assoc.associated_activity_resourceId = at.resourceinstanceid
+                        JOIN public.values v ON at.activity_type = v.valueid
+                        GROUP BY assoc.resourceinstanceid, assoc.associated_activity_resourceId
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -635,23 +677,62 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.resource_names_mv
                         TABLESPACE pg_default
                         AS
+                        WITH ranked_tiles_1 AS (
+                            SELECT 
+                                tiles.resourceinstanceid,
+                                tiles.tiledata ->> '676d47ff-9c1c-11ea-b07f-f875a44e0e11'::text AS resource_name,
+                                tiles.sortorder,
+                                row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
+                            FROM 
+                                tiles
+                            WHERE 
+                                tiles.nodegroupid = '676d47f9-9c1c-11ea-9aa0-f875a44e0e11'::uuid
+                        ),
+                        ranked_tiles_2 AS (
+                            SELECT 
+                                tiles.resourceinstanceid,
+                                tiles.tiledata ->> '490c26da-efe9-11eb-abc4-a87eeabdefba'::text AS resource_name,
+                                tiles.sortorder,
+                                row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
+                            FROM 
+                                tiles
+                            WHERE 
+                                tiles.nodegroupid = '490c26d5-efe9-11eb-8e93-a87eeabdefba'::uuid
+                        ),
+                        ranked_tiles_3 AS (
+                            SELECT 
+                                tiles.resourceinstanceid,
+                                tiles.tiledata ->> 'd00d4c8c-299f-11eb-bc0e-f875a44e0e11'::text AS resource_name,
+                                tiles.sortorder,
+                                row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
+                            FROM 
+                                tiles
+                            WHERE 
+                                tiles.nodegroupid = 'd00d4c87-299f-11eb-b05e-f875a44e0e11'::uuid
+                        )
                         SELECT 
-                            mn.resourceinstanceid,
-                            mn.monument_name AS resource_name
+                            resourceinstanceid,
+                            resource_name
                         FROM 
-                            monument.monument_names mn
+                            ranked_tiles_1
+                        WHERE 
+                            rn = 1
                         UNION ALL
                         SELECT 
-                            ha.resourceinstanceid,
-                            ha.name AS resource_name
+                            resourceinstanceid,
+                            resource_name
                         FROM 
-                            historic_aircraft.names ha
+                            ranked_tiles_2
+                        WHERE 
+                            rn = 1
                         UNION ALL
                         SELECT 
-                            mv.resourceinstanceid,
-                            mv.name AS resource_name
+                            resourceinstanceid,
+                            resource_name
                         FROM 
-                            maritime_vessel.names mv
+                            ranked_tiles_3
+                        WHERE 
+                            rn = 1
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -665,6 +746,7 @@ class Command(BaseCommand):
                         TABLESPACE pg_default;
                     """)
                     cursor.execute("""
+                        -- Primary Reference Number 206832 is a bogus duplicate
                         CREATE MATERIALIZED VIEW hapi.system_reference_numbers_mv
                         TABLESPACE pg_default
                         AS
@@ -673,18 +755,24 @@ class Command(BaseCommand):
                             ms.primary_reference_number
                         FROM 
                             monument.system_reference_numbers ms
+                        WHERE
+                            ms.primary_reference_number <> 206832
                         UNION ALL
                         SELECT 
                             has.resourceinstanceid,
                             has.primary_reference_number
                         FROM 
                             historic_aircraft.system_reference_numbers has
+                        WHERE
+                            has.primary_reference_number <> 206832
                         UNION ALL
                         SELECT 
                             mvs.resourceinstanceid,
                             mvs.primary_reference_number
                         FROM 
                             maritime_vessel.system_reference_numbers mvs
+                        WHERE
+                            mvs.primary_reference_number <> 206832
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -696,6 +784,35 @@ class Command(BaseCommand):
                             ON hapi.system_reference_numbers_mv USING btree
                             (resourceinstanceid)
                             TABLESPACE pg_default;
+                    """)
+                    cursor.execute("""
+                        CREATE MATERIALIZED VIEW hapi.inclusions_mv AS
+                        SELECT
+                            i.resource_id AS resourceinstanceid,
+                            g.name AS resource_type,
+                            rn.resource_name,
+                            s.primary_reference_number,
+                            false AS deleted,
+                            i.created AS most_recent_timestamp
+                        FROM
+                            public.hapi_inclusion i
+                        LEFT JOIN
+                            public.resource_instances ri
+                        ON
+                            i.resource_id = ri.resourceinstanceid
+                        LEFT JOIN
+                            public.graphs g
+                        ON
+                            ri.graphid = g.graphid
+                        LEFT JOIN
+                            hapi.resource_names_mv rn
+                        ON
+                            i.resource_id = rn.resourceinstanceid
+                        LEFT JOIN
+                            hapi.system_reference_numbers_mv s
+                        ON
+                            i.resource_id = s.resourceinstanceid                                   
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         CREATE MATERIALIZED VIEW hapi.associated_monuments_areas_and_artefacts_mv
@@ -729,42 +846,29 @@ class Command(BaseCommand):
                         TABLESPACE pg_default
                         AS
                         WITH edit_log_cte AS (
-                            SELECT DISTINCT ON (e.resourceinstanceid) 
-                                e.resourceinstanceid::uuid AS resourceinstanceid,
+                            SELECT DISTINCT ON (e.resourceinstanceid) e.resourceinstanceid::uuid AS resourceinstanceid,
                                 g.name,
-                                e."timestamp"
-                            FROM 
-                                edit_log e
-                            JOIN 
-                                graphs g ON e.resourceclassid = g.graphid::text
-                            WHERE 
-                                e."timestamp" >= '0001-01-01 00:00:00+00'::timestamp with time zone 
-                                AND NOT (e.resourceinstanceid IN (
-                                    SELECT e2.resourceinstanceid
-                                    FROM edit_log e2
-                                    WHERE e2.edittype = 'delete'::text
-                                )) 
-                                AND NOT (e.resourceinstanceid IN (
-                                    SELECT resource_id::text AS resource_id
-                                    FROM hapi_exclusion
-                                )) 
-                                AND (e.edittype = ANY (ARRAY['create'::text, 'bulk_create'::text, 'tile edit'::text, 'tile delete'::text, 'tile create'::text])) 
-                                AND (g.name = ANY (ARRAY['Monument'::text, 'Maritime Vessel'::text, 'Historic Aircraft'::text]))
-                            ORDER BY 
-                                e.resourceinstanceid, e."timestamp" DESC
+                                e."timestamp",
+                                CASE 
+                                    WHEN e.edittype = 'delete' THEN true
+                                    ELSE false
+                                END AS "deleted"
+                            FROM edit_log e
+                            JOIN graphs g ON e.resourceclassid = g.graphid::text
+                            WHERE e."timestamp" >= '0001-01-01 00:00:00+00'::timestamp with time zone
+                            AND (g.name = ANY (ARRAY['Monument'::text, 'Maritime Vessel'::text, 'Historic Aircraft'::text]))
+                            ORDER BY e.resourceinstanceid, e."timestamp" DESC
                         )
-                        SELECT 
+                        SELECT
                             el.resourceinstanceid,
                             el.name AS resource_type,
                             rn.resource_name,
                             srn.primary_reference_number,
+                            el.deleted,
                             el."timestamp" AS most_recent_timestamp
-                        FROM 
-                            edit_log_cte el
-                        LEFT JOIN 
-                            hapi.resource_names_mv rn ON el.resourceinstanceid = rn.resourceinstanceid
-                        LEFT JOIN 
-                            hapi.system_reference_numbers_mv srn ON el.resourceinstanceid = srn.resourceinstanceid
+                        FROM edit_log_cte el
+                        LEFT JOIN hapi.resource_names_mv rn ON el.resourceinstanceid = rn.resourceinstanceid
+                        LEFT JOIN hapi.system_reference_numbers_mv srn ON el.resourceinstanceid = srn.resourceinstanceid
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -772,15 +876,42 @@ class Command(BaseCommand):
                             OWNER TO postgres;
                     """)
                     cursor.execute("""
-                        CREATE INDEX resources_most_recent_timestamp
-                            ON hapi.resources_mv USING btree
-                            (most_recent_timestamp)
-                            TABLESPACE pg_default;
-                    """)
-                    cursor.execute("""
                         CREATE INDEX resources_resourceinstanceid
                             ON hapi.resources_mv USING btree
                             (resourceinstanceid)
+                            TABLESPACE pg_default;
+                    """)
+                    cursor.execute("""
+                        CREATE MATERIALIZED VIEW hapi.resources_inclusions_exclusions_mv
+                        TABLESPACE pg_default
+                        AS
+                        SELECT *
+                        FROM hapi.inclusions_mv AS i
+                        UNION ALL 
+                        SELECT *
+                        FROM hapi.resources_mv AS r
+                        WHERE NOT EXISTS (
+                            SELECT 1
+                            FROM hapi.inclusions_mv AS i
+                            WHERE i.resourceinstanceid = r.resourceinstanceid
+                        )
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM public.hapi_exclusion e
+                            WHERE e.resource_id = r.resourceinstanceid
+                        )
+                        WITH NO DATA;                       
+                    """)
+                    cursor.execute("""
+                        CREATE INDEX resources_i_e_resourceinstanceid
+                            ON hapi.resources_inclusions_exclusions_mv USING btree
+                            (resourceinstanceid)
+                            TABLESPACE pg_default;
+                    """)
+                    cursor.execute("""
+                        CREATE INDEX resources_i_e_most_recent_timestamp
+                            ON hapi.resources_inclusions_exclusions_mv USING btree
+                            (most_recent_timestamp)
                             TABLESPACE pg_default;
                     """)
                     cursor.execute("""
@@ -936,102 +1067,69 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.monument_dated_types
                         TABLESPACE pg_default
                         AS
-                        SELECT 
-                            cp.resourceinstanceid,
-                            ARRAY(
-                                SELECT v.value
+                        SELECT cp.resourceinstanceid,
+                            ARRAY( SELECT DISTINCT v.value
                                 FROM unnest(cp.monument_type) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS monument_types,
+                                    JOIN "values" v ON mt.mt = v.valueid) AS monument_types,
                             cp.construction_phase_start_date AS start_date,
                             cp.construction_phase_end_date AS end_date,
                             cp.construction_phase_display_date AS display_date,
-                            ARRAY(
-                                SELECT pn.period_name
-                                FROM unnest(
-                                    (SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
-                                    FROM jsonb_array_elements(cp.cultural_period) elem(value))
-                                ) cp_1(cp)
-                                JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid
-                            ) AS periods,
-                            ARRAY(
-                                SELECT v.value
+                            ARRAY( SELECT DISTINCT pn.period_name
+                                FROM unnest(( SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
+                                        FROM jsonb_array_elements(cp.cultural_period) elem(value))) cp_1(cp)
+                                    JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid) AS periods,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.main_construction_material) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
+                                    JOIN "values" v ON mt.mt = v.valueid
                                 UNION ALL
                                 SELECT v.value
                                 FROM unnest(cp.covering_material) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS materials,
-                            ARRAY(
-                                SELECT v.value
+                                    JOIN "values" v ON mt.mt = v.valueid) AS materials,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.construction_phase_evidence_type) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS evidences
+                                    JOIN "values" v ON mt.mt = v.valueid) AS evidences
                         FROM monument.construction_phases cp
                         UNION ALL
-                        SELECT 
-                            cp.resourceinstanceid,
-                            ARRAY(
-                                SELECT v.value
+                        SELECT cp.resourceinstanceid,
+                            ARRAY( SELECT DISTINCT v.value
                                 FROM "values" v
-                                WHERE cp.aircraft_type = v.valueid
-                            ) AS monument_types,
+                                WHERE cp.aircraft_type = v.valueid) AS monument_types,
                             to_char(cp.start_date, 'YYYY-MM-DD'::text) AS start_date,
                             to_char(cp.end_date, 'YYYY-MM-DD'::text) AS end_date,
                             cp.display_date,
-                            ARRAY(
-                                SELECT pn.period_name
-                                FROM unnest(
-                                    (SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
-                                    FROM jsonb_array_elements(cp.period) elem(value))
-                                ) cp_1(cp)
-                                JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid
-                            ) AS periods,
-                            ARRAY(
-                                SELECT v.value
+                            ARRAY( SELECT DISTINCT pn.period_name
+                                FROM unnest(( SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
+                                        FROM jsonb_array_elements(cp.period) elem(value))) cp_1(cp)
+                                    JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid) AS periods,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.main_construction_material) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS materials,
-                            ARRAY(
-                                SELECT v.value
+                                    JOIN "values" v ON mt.mt = v.valueid) AS materials,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.phase_evidence_type) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS evidences
+                                    JOIN "values" v ON mt.mt = v.valueid) AS evidences
                         FROM historic_aircraft.aircraft_construction_phase cp
                         UNION ALL
-                        SELECT 
-                            cp.resourceinstanceid,
-                            ARRAY(
-                                SELECT v.value
+                        SELECT cp.resourceinstanceid,
+                            ARRAY( SELECT DISTINCT v.value
                                 FROM unnest(cp.maritime_vessel_type) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS monument_types,
+                                    JOIN "values" v ON mt.mt = v.valueid) AS monument_types,
                             cp.construction_phase_start_date AS start_date,
                             cp.construction_phase_end_date AS end_date,
                             cp.construction_phase_display_date AS display_date,
-                            ARRAY(
-                                SELECT pn.period_name
-                                FROM unnest(
-                                    (SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
-                                    FROM jsonb_array_elements(cp.cultural_period) elem(value))
-                                ) cp_1(cp)
-                                JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid
-                            ) AS periods,
-                            ARRAY(
-                                SELECT v.value
+                            ARRAY( SELECT DISTINCT pn.period_name
+                                FROM unnest(( SELECT array_agg((elem.value ->> 'resourceId'::text)::uuid) AS array_agg
+                                        FROM jsonb_array_elements(cp.cultural_period) elem(value))) cp_1(cp)
+                                    JOIN hapi.period_names_mv pn ON cp_1.cp = pn.resourceinstanceid) AS periods,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.main_construction_material) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
+                                    JOIN "values" v ON mt.mt = v.valueid
                                 UNION ALL
                                 SELECT v.value
                                 FROM unnest(cp.covering_material) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS materials,
-                            ARRAY(
-                                SELECT v.value
+                                    JOIN "values" v ON mt.mt = v.valueid) AS materials,
+                            ARRAY( SELECT v.value
                                 FROM unnest(cp.construction_phase_evidence_type) mt(mt)
-                                JOIN "values" v ON mt.mt = v.valueid
-                            ) AS evidences
+                                    JOIN "values" v ON mt.mt = v.valueid) AS evidences
                         FROM maritime_vessel.construction_phases cp
                         WITH NO DATA;
                     """)
@@ -1102,14 +1200,14 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.related_events
                         TABLESPACE pg_default
                         AS
-                        SELECT 
+                        SELECT
                             aa.resourceinstanceid,
                             prn.primary_reference_number AS primaryreferencenumber,
                             tn.types,
                             an.name,
                             d.description
                         FROM hapi.related_events_associated_activities aa
-                        LEFT JOIN hapi.related_events_type_names tn ON ((aa.activity ->> 'resourceId'::text)::uuid) = tn.resource_id
+                        LEFT JOIN hapi.related_events_type_names tn ON ((aa.activity ->> 'resourceId'::text)::uuid) = tn.resource_id AND aa.resourceinstanceid =  tn.resourceinstanceid
                         LEFT JOIN hapi.related_events_activity_names an ON ((aa.activity ->> 'resourceId'::text)::uuid) = an.resource_id
                         LEFT JOIN hapi.related_events_descriptions d ON ((aa.activity ->> 'resourceId'::text)::uuid) = d.resource_id
                         LEFT JOIN hapi.related_events_primary_reference_numbers prn ON ((aa.activity ->> 'resourceId'::text)::uuid) = prn.resource_id
@@ -1178,13 +1276,13 @@ class Command(BaseCommand):
                         AS $BODY$
                         BEGIN
                             RETURN QUERY
-                            SELECT 
+                            SELECT DISTINCT
                                 rv.resourceinstanceid, 
                                 rv.resource_type, 
                                 rv.resource_name, 
                                 rv.primary_reference_number, 
                                 rv.most_recent_timestamp
-                            FROM hapi.resources_mv rv
+                            FROM hapi.resources_inclusions_exclusions_mv rv
                             WHERE 
                                 (resource_instance_ids IS NOT NULL AND rv.resourceinstanceid = ANY(string_to_array(resource_instance_ids, ',')::uuid[]))
                                 OR (resource_instance_ids IS NULL AND start_date IS NOT NULL AND end_date IS NOT NULL AND rv.most_recent_timestamp BETWEEN start_date AND end_date)
@@ -1197,6 +1295,23 @@ class Command(BaseCommand):
                     cursor.execute("""
                         ALTER FUNCTION hapi.get_resources(interval, timestamp with time zone, timestamp with time zone, text)
                             OWNER TO postgres;
+                    """)
+                    cursor.execute("""
+                        CREATE VIEW hapi.initial_seed AS
+                        SELECT
+                            ri.resourceinstanceid AS resource_instance_id,
+                            g.name AS resource_type,
+                            rn.resource_name,
+                            srn.primary_reference_number,
+                            false AS deleted,
+                            CURRENT_TIMESTAMP AS most_recent_timestamp
+                        FROM public.resource_instances AS ri
+                        LEFT JOIN graphs g ON ri.graphid = g.graphid
+                        LEFT JOIN hapi.resource_names_mv rn ON ri.resourceinstanceid = rn.resourceinstanceid
+                        LEFT JOIN hapi.system_reference_numbers_mv srn ON ri.resourceinstanceid = srn.resourceinstanceid
+                        WHERE g.name in ('Monument', 'Maritime Vessel', 'Historic Aircraft')
+                        -- AND (srn.primary_reference_number IS NOT NULL AND rn.resource_name IS NOT NULL)
+                        ORDER BY primary_reference_number
                     """)
 
             self.stdout.write(self.style.SUCCESS(
@@ -1222,7 +1337,8 @@ class Command(BaseCommand):
             if use_tqdm:
                 pbar.set_description(view.ljust(max_len))
             start_time = time.time()
-            cursor.execute(f'REFRESH MATERIALIZED VIEW {view} {refresh_option};')
+            cursor.execute(f'''REFRESH MATERIALIZED VIEW {
+                           view} {refresh_option};''')
             duration = time.time() - start_time
             tqdm.write(f'Refreshed {view} in {duration:.2f} seconds')
 

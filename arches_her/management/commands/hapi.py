@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 import logging
 import shutil
 import uuid
@@ -29,13 +29,17 @@ from django.core.management.base import BaseCommand
 from typing import Dict, List, Optional
 from datetime import datetime
 from django.utils import timezone
+from django.db import connection
 from dateutil.relativedelta import relativedelta
 from colorama import Fore, init
-from arches_her.services import generate as generate_service
-from arches_her.services import validate as validate_service
-from arches_her.services import authenticate as authenticate_service
-from arches_her.services import batch_create as batch_create_service
-from django.db import connection
+from arches_her.services import (
+    generate as generate_service,
+    validate as validate_service,
+    authenticate as authenticate_service,
+    batch_create as batch_create_service,
+    batch_submit as batch_submit_service,
+)
+
 
 logger = logging.getLogger(__name__)
 init(autoreset=True)
@@ -280,7 +284,7 @@ class Command(BaseCommand):
                 password=options["password"]
             )
         elif operation == "test":
-            self.test()
+            self.test(self)
         elif operation == "test_report":
             self.test_report()
 
@@ -306,42 +310,18 @@ class Command(BaseCommand):
             else:
                 print(f"{Fore.RED}{response}{Fore.RESET}")
 
-    def upload(self, interval=None, start_date=None, end_date=None, internal_call: bool = False) -> None:
-        start_date = parse_date(start_date)
-        end_date = parse_date(end_date)
+    @staticmethod
+    def upload(self, interval=None, start_date=None, end_date=None):
+        # start_date = parse_date(start_date)
+        # end_date = parse_date(end_date)
 
-        if interval and end_date:
-            parsed_interval = parse_postgresql_interval(interval)
-            start_date = end_date - parsed_interval
-            # fmt: off
-            message = (
-                f"Uploading data for the last {interval} ({parsed_interval}) "
-                f"using a start date of {start_date} and end date of {end_date}"
-            )
-            # fmt: on
-            if internal_call:
-                self.stdout.write(message)
-            else:
-                print(message)
-        elif start_date and end_date:
-            message = (f"Uploading data from {start_date} to {end_date}")
-            if internal_call:
-                self.stdout.write(message)
-            else:
-                print(message)
-        else:
-            # fmt: off
-            message = (
-                f"{Fore.RED}Specify either interval {Fore.GREEN}-int {Fore.CYAN}--interval{Fore.RED} "
-                f"or start_date {Fore.GREEN}-sd {Fore.CYAN}--start_date{Fore.RED} and end_date "
-                f"{Fore.GREEN}-ed {Fore.CYAN}--end_date{Fore.RED}. If end_date is not provided, "
-                f"the current date and time will be used.{Fore.RESET}"
-            )
-            # fmt: on
-            if internal_call:
-                self.stdout.write(message)
-            else:
-                print(message)
+        # parsed_interval = parse_postgresql_interval(interval)
+        # #start_date = end_date - parsed_interval
+        # resources =
+        # records = generate_service()
+        # batch_submit_service(start_date, end_date)
+        # return
+        pass
 
     def generate(self, resource_uuid=None, input: str = None, output: str = None) -> Optional[str]:
         """Generate data based on the provided UUID or input file."""
@@ -378,7 +358,7 @@ class Command(BaseCommand):
     def test(self):
         with connection.cursor() as cursor:
             page_size = 100
-            offset = 54700
+            offset = 0
             counter = 1
             wait_duration = 0.5
             test_folder = "/web_root/hapi_test"
@@ -388,7 +368,7 @@ class Command(BaseCommand):
                     SELECT resource_instance_id
                     FROM hapi.get_resources(interval_param:='10 years'::interval)
                     WHERE resource_type = 'Monument'
-                    AND resource_instance_id <> 'f493b504-44e3-41c6-a645-178ee98d4612'
+                    -- AND resource_instance_id <> 'f493b504-44e3-41c6-a645-178ee98d4612'
                     ORDER BY primary_reference_number
                     LIMIT %s OFFSET %s;                           
                 """, (page_size, offset))
@@ -399,7 +379,6 @@ class Command(BaseCommand):
                 offset += page_size
                 counter += 1
                 time.sleep(wait_duration)
-                return
 
     def setup_test_folder(self, folder_path):
         if os.path.exists(folder_path):
@@ -428,6 +407,16 @@ class Command(BaseCommand):
             data = self.load_json_file(file_path)
             errors = data.get("response", {}).get("errors", [])
 
+            # for error in errors:
+            #     for _, value in error.items():
+            #         for key, value in value.items():
+            #             strip_key = self.strip_dot_number(key)
+            #             for _value in value:
+            #                 strip_value = self.strip_dot_number(_value)
+            #                 combined_key = (strip_key, strip_value)
+            #                 all_errors_count[combined_key] += 1
+
+        if isinstance(errors, list):
             for error in errors:
                 for _, value in error.items():
                     for key, value in value.items():
@@ -436,10 +425,16 @@ class Command(BaseCommand):
                             strip_value = self.strip_dot_number(_value)
                             combined_key = (strip_key, strip_value)
                             all_errors_count[combined_key] += 1
+        elif isinstance(errors, dict):
+            for key, value in errors.items():
+                strip_key = self.strip_dot_number(key)
+                for _value in value:
+                    strip_value = self.strip_dot_number(_value)
+                    combined_key = (strip_key, strip_value)
+                    all_errors_count[combined_key] += 1
 
         for key, value in sorted(all_errors_count.items()):
             print(f"Key: {key}, Count: {value}")
 
     def strip_dot_number(self, text):
         return re.sub(r"\.\d+", "", text)
-

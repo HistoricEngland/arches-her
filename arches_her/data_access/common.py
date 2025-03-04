@@ -1,11 +1,13 @@
 import uuid
-import json
 import decimal
 import html
+import logging
+import re
 from django.db import connection
 from typing import Any, List, Optional, Tuple, Union
 from collections import OrderedDict
 from datetime import datetime
+from django.utils import timezone
 from django.utils.html import strip_tags
 from arches_her.models.monument_dated_types import MonumentDatedTypes
 from arches_her.models.historic_aircraft_data import HistoricAircraftData
@@ -18,33 +20,41 @@ from arches_her.models.related_monument_records import RelatedMonumentRecord
 from arches_her.models.images import Image
 from arches_her.models.related_events import RelatedEvent
 
+logger = logging.getLogger(__name__)
+
 
 def get_resources(
     interval_param: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    resource_instance_ids: Optional[List[uuid.UUID]] = None
+    resource_instance_ids: Optional[List[uuid.UUID]] = None,
+    seed: bool = False
 ):
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi.get_resources("
         params = []
-        if interval_param:
-            query += "interval_param := %s, "
-            params.append(f"interval '{interval_param}'")
+        if not seed:
+            query = "SELECT * FROM hapi.get_resources("
+            if interval_param:
+                query += "interval_param := %s, "
+                params.append(f"interval '{interval_param}'")
 
-        if start_date and end_date:
-            query += "start_date := %s, end_date := %s, "
-            params.extend([start_date, end_date])
+            if start_date:
+                if not end_date:
+                    end_date = timezone.now()
+                query += "start_date := %s, end_date := %s, "
+                params.extend([start_date, end_date])
 
-        if resource_instance_ids:
-            resource_ids_str = ','.join([str(rid)
-                                        for rid in resource_instance_ids])
-            query += "resource_instance_ids := %s, "
-            params.append(resource_ids_str)
+            if resource_instance_ids:
+                resource_ids_str = ','.join([str(rid)
+                                            for rid in resource_instance_ids])
+                query += "resource_instance_ids := %s, "
+                params.append(resource_ids_str)
 
-        # Remove the trailing comma and space, and close the function call
-        query = query.rstrip(', ') + ");"
+            # Remove the trailing comma and space, and close the function call
+            query = query.rstrip(', ') + ");"
+        else:
+            query = "SELECT * FROM hapi.initial_seed;"
         # Execute the query
         cursor.execute(query, params)
         columns = [col[0] for col in cursor.description]
@@ -58,6 +68,7 @@ def convert_empty_array_to_none(array):
 
 
 def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
+    # logger.debug(f"Serializing {obj} ({type(obj)})")
     if isinstance(obj, dict):
         # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
         return OrderedDict(
@@ -76,8 +87,10 @@ def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, i
         )
     elif isinstance(obj, (uuid.UUID, decimal.Decimal, datetime)):
         # Convert specific types to string
+        # logger.error(f"Converting {obj} to string")
         return str(obj)
     # Return other primitive types (e.g., int, str) as-is
+    # logger.error(f"Returning {obj} as is ({type(obj)})")
     return obj
 
 
@@ -348,3 +361,8 @@ def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str
         protected_statuses = row[0]
         return protected_statuses if protected_statuses else None
     return None
+
+
+def refresh_materialized_views(with_data: bool):
+    from arches_her.management.commands.apply_hapi_database_migration import Command as rmv
+    rmv.refresh_materialized_views(connection.cursor(), refresh_option="WITH DATA" if with_data else "WITH NO DATA")

@@ -19,7 +19,8 @@ from .data_access.common import (
     get_other_statuses,
     generate_json,
     get_protected_statuses,
-    get_monument_dated_types
+    get_monument_dated_types,
+    serialize
 )
 from .data_access.monument import (
     get_monument_sources
@@ -59,11 +60,13 @@ def validate_filename(filename: str):
         raise ValueError(f"Invalid filename or path: {filename}")
 
 
-def validate(resource_uuid=None, input: str = None, output: str = None) -> Union[dict, bool]:
+def validate(resource_uuid=None, resource_object=None, input: str = None, output: str = None) -> Union[dict, bool]:
 
     url = settings.HAPI_VALIDATE_URL
 
-    data = generate(resource_uuid, input)
+    data = generate(resource_uuid=resource_uuid,
+                    resource_object=resource_object, input=input)
+    # data = json.dumps(data)  # String
 
     try:
         response = requests.post(url, json=data)
@@ -89,14 +92,17 @@ def validate(resource_uuid=None, input: str = None, output: str = None) -> Union
         return returnVal
 
 
-def generate(resource_uuid=None, input: str = None, output: str = None, batch_id: str = None) -> Optional[str]:
+def generate(resource_uuid=None, resource_object=None, input: str = None, output: str = None, batch_id: str = None) -> Optional[str]:
     if resource_uuid:
         uuid_list = validate_uuids(resource_uuid)
+    elif resource_object:
+        uuid_list = None
     else:
         validate_filename(input)
         uuid_list = validate_uuids(input)
 
-    data = generate_data(uuid_list, batch_id=batch_id)
+    data = generate_data(uuid_list=uuid_list,
+                         resource_object=resource_object, batch_id=batch_id)
 
     if output:
         validate_filename(output)
@@ -107,41 +113,45 @@ def generate(resource_uuid=None, input: str = None, output: str = None, batch_id
         return data
 
 
-def generate_data(uuid_list: List[uuid.UUID], batch_id: str = None) -> str:
-    results = get_resources(resource_instance_ids=uuid_list)
+def generate_data(uuid_list: List[uuid.UUID] = None, resource_object=None, batch_id: str = None) -> str:
+    if resource_object:
+        resources = resource_object
+    else:
+        resources = get_resources(resource_instance_ids=uuid_list)
+
     records = []
-    for result in results:
+    for resource in resources:
         resource = create_resource(
-            resource_type=result["resource_type"],
-            resource_instance_id=result["resource_instance_id"],
-            primary_reference_number=result["primary_reference_number"],
-            heritage_asset_name=result["resource_name"],
+            resource_instance_id=resource["resource_instance_id"],
+            primary_reference_number=resource["primary_reference_number"],
+            heritage_asset_name=resource["resource_name"],
             descriptions=get_descriptions(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             monument_dated_types=get_monument_dated_types(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             point_geometry=get_point_geometry(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             complex_geometry=get_complex_geometry(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             monument_sources=get_monument_sources(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             object_finds=get_object_finds(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             maritime_craft=get_maritime_craft(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             historic_aircraft=get_historic_aircraft(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             related_monument_records=get_related_monument_records(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
             related_events=get_related_events(
-                result["resource_instance_id"]),
-            images=get_images(result["resource_instance_id"]),
-            other_statuses=get_other_statuses(
-                result["resource_instance_id"]),
+                resource["resource_instance_id"]),
+            images=get_images(resource["resource_instance_id"]),
             protected_statuses=get_protected_statuses(
-                result["resource_instance_id"]),
-            last_updated=result["most_recent_timestamp"]
+                resource["resource_instance_id"]),
+            other_statuses=get_other_statuses(
+                resource["resource_instance_id"]),
+            last_updated=resource["most_recent_timestamp"],
+            delete=resource["deleted"]
         )
         records.append({"record": resource.__dict__})
 
@@ -185,7 +195,18 @@ def batch_create(counts: Dict, bearer_token: str = None, username: str = None, p
         return None
 
 
-def batch_submit(self, batch_id: str) -> bool:
+def batch_submit(bearer_token: str = None, batch_id: int = None, records: List = None) -> bool:
     url = settings.HAPI_BATCH_SUBMIT_URL
-    response = requests.post(url)
-    return response.status_code == 200
+
+    # records = generate_json(records)
+    data = {"batch_id": batch_id, "records": records}
+
+    try:
+        headers = {"Authorization": f"Bearer {bearer_token}"}
+        response = requests.post(url, json=data, headers=headers)
+        response.raise_for_status()
+        # return True, response.status_code
+        return response.status_code, response.reason, response.text
+    except Exception as e:
+        logger.error({"H.API batch submit failed: {e}"})
+        return False, getattr(response, 'status_code', None), None
