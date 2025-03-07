@@ -14,10 +14,14 @@ from .views.hapi import (
     ValidateResourceView, 
     GenerateResourceView, 
     AuthenticateView, 
-    BatchCreateView
+    BatchCreateView,
+    BatchSubmitView,
+    BatchSubmitCronView,
 )
+from arches_her.models import models
 
 uuid_regex = settings.UUID_REGEX
+settings
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='root'),
@@ -50,4 +54,7 @@ urlpatterns = [
     url(r'^hapi/generate$', GenerateResourceView.as_view(), name="generate_resource"),
     url(r'^hapi/authenticate$', AuthenticateView.as_view(), name="authenticate"),
     url(r'^hapi/batch/create$', BatchCreateView.as_view(), name="batch_create"),
+    url(r'^hapi/batch/submit$', BatchSubmitView.as_view(), name="batch_submit"),
+    url(r'^hapi/batch/submit/cron$', BatchSubmitCronView.as_view(), {'run_type': models.HeritageApiLog.MANUAL,}, name="batch_submit_cron"),
+    url(r'^hapi/batch/submit/cron/seed$', BatchSubmitCronView.as_view(), {'run_type': models.HeritageApiLog.MANUAL, 'seed': True}, name="batch_submit_cron_seed"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

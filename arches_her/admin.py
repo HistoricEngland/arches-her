@@ -16,10 +16,16 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from .models.models import HeritageApiLog, HeritageApiExclusion
+from .models.models import (
+    HeritageApiLog,
+    HeritageApiExclusion,
+    HeritageApiInclusion,
+    HeritageApiData,
+)
 from django.contrib import admin
 from guardian.admin import GuardedModelAdmin
 import json
+import logging
 from django.utils.safestring import mark_safe
 from pygments import highlight
 from pygments.lexers import JsonLexer
@@ -28,12 +34,40 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 
 
-def format_json_field(data, style="colorful"):
-    response = json.dumps(data, sort_keys=True, indent=2)
-    formatter = HtmlFormatter(style=style)
-    response = highlight(response, JsonLexer(), formatter)
-    style = "<style>" + formatter.get_style_defs() + "</style><br>"
-    return mark_safe(style + response)
+logger = logging.getLogger(__name__)
+
+
+def add_text_wrap_mode(style_defs):
+    # Find the .s2 class definition
+    start_index = style_defs.find('.s2 {')
+    if start_index == -1:
+        return style_defs  # .s2 class not found, return original string
+
+    # Find the end of the .s2 class definition
+    end_index = style_defs.find('}', start_index)
+    if end_index == -1:
+        return style_defs  # Malformed CSS, return original string
+
+    # Insert the new property before the closing brace
+    new_property = '; text-wrap-mode: wrap; '
+    updated_style_defs = style_defs[:end_index] + \
+        new_property + style_defs[end_index:]
+
+    return updated_style_defs
+
+
+formatter = HtmlFormatter(style="colorful")
+style_defs = add_text_wrap_mode(formatter.get_style_defs())
+maximum_pretty_print = 500
+
+def format_json_field(data, style="colorful", prettify=True, sort_keys=False):
+    response = json.dumps(data, sort_keys=sort_keys, indent=4)
+    if prettify:
+        response = highlight(response, JsonLexer(), formatter)
+        style = "<style>" + style_defs + "</style><br>"
+        return mark_safe(style + response)
+    else:
+        return mark_safe(f"<pre>{response}</pre>")
 
 
 class GuardedAdmin(GuardedModelAdmin):
@@ -62,8 +96,9 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         "pretty_messages",
         "pretty_resources",
         "pretty_exceptions",
+        "pretty_parameters",
     )
-    exclude = ("messages", "totals", "resources", "exceptions")
+    exclude = ("messages", "totals", "resources", "exceptions", "parameters")
     list_display = (
         "batch_id",
         "start",
@@ -72,6 +107,8 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         "id",
     )
     search_fields = ["batch_id"]
+    ordering = ["-start"]
+    list_per_page = 20
 
     def pretty_messages(self, instance):
         return format_json_field(instance.messages)
@@ -84,7 +121,8 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     pretty_totals.short_description = "Totals"
 
     def pretty_resources(self, instance):
-        return format_json_field(instance.resources)
+        prettify = len(instance.resources) <= maximum_pretty_print
+        return format_json_field(instance.resources, prettify=prettify)
 
     pretty_resources.short_description = "Resources"
 
@@ -92,6 +130,11 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
         return format_json_field(instance.exceptions)
 
     pretty_exceptions.short_description = "Exceptions"
+
+    def pretty_parameters(self, instance):
+        return format_json_field(instance.parameters)
+
+    pretty_parameters.short_description = "Parameters"
 
 
 class HeritageApiExclusionAdmin(NoEditAdminMixin, admin.ModelAdmin):
@@ -114,5 +157,59 @@ class HeritageApiExclusionAdmin(NoEditAdminMixin, admin.ModelAdmin):
                 messages.error(request, obj._validation_error.message)
 
 
+class HeritageApiInclusionAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+    readonly_fields = (
+        "id",
+        "created",
+    )
+    search_fields = ["resource_id"]
+    list_display = (
+        "resource_id",
+        "created",
+        "id",
+    )
+
+    def save_model(self, request, obj, form, change):
+        try:
+            super().save_model(request, obj, form, change)
+        except ValidationError:
+            if hasattr(obj, '_validation_error'):
+                messages.error(request, obj._validation_error.message)
+
+
+class HeritageApiDataAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
+    fields = ['batch_id', 'part', 'pretty_validation',
+              'pretty_data', 'id', 'hapi_log_id']
+    readonly_fields = (
+        "pretty_data",
+        "pretty_validation",
+    )
+    exclude = (
+        "data",
+        "validation",
+    )
+    list_display = (
+        "batch_id",
+        "part",
+        "id",
+        "hapi_log_id",
+    )
+    search_fields = ["batch_id"]
+    ordering = ["-batch_id", "-part"]
+    list_per_page = 20
+
+    def pretty_data(self, instance):
+        return format_json_field(instance.data, sort_keys=True)
+
+    pretty_data.short_description = "Data"
+
+    def pretty_validation(self, instance):
+        return format_json_field(instance.validation)
+
+    pretty_validation.short_description = "Validation"
+
+
 admin.site.register(HeritageApiLog, HeritageApiLogAdmin)
 admin.site.register(HeritageApiExclusion, HeritageApiExclusionAdmin)
+admin.site.register(HeritageApiInclusion, HeritageApiInclusionAdmin)
+admin.site.register(HeritageApiData, HeritageApiDataAdmin)

@@ -21,10 +21,28 @@ import datetime
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.dispatch import receiver
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from arches.app.models.models import EditLog, ResourceInstance
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+
+
+class HeritageApiData(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid1)
+    hapi_log_id = models.UUIDField(blank=False, null=False)
+    batch_id = models.PositiveIntegerField(blank=False, null=False)
+    part = models.PositiveIntegerField(blank=False, null=False)
+    validation = JSONField(blank=True, null=True)
+    data = JSONField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        verbose_name = "Heritage API Data"
+        verbose_name_plural = "Heritage API Data"
+        db_table = "hapi_data"
+        indexes = [
+            models.Index(fields=["batch_id", "part"]),
+        ]
 
 
 class HeritageApiLog(models.Model):
@@ -39,6 +57,7 @@ class HeritageApiLog(models.Model):
     batch_id = models.PositiveIntegerField(unique=True, blank=True, null=True)
     start = models.DateTimeField(default=datetime.datetime.now)
     finish = models.DateTimeField(blank=True, null=True)
+    parameters = JSONField(blank=True, null=True)
     run_type = models.CharField(
         max_length=10, choices=RUN_TYPE_CHOICES, default=MANUAL)
     totals = JSONField(blank=True, null=True)
@@ -56,6 +75,7 @@ class HeritageApiLog(models.Model):
         db_table = "hapi_log"
         indexes = [
             models.Index(fields=["batch_id"]),
+            models.Index(fields=["start"]),
         ]
 
 
@@ -93,10 +113,31 @@ class HeritageApiExclusion(models.Model):
 
 @receiver(post_delete, sender=HeritageApiExclusion)
 def log_heritage_api_exclusion_deletion(sender, instance, **kwargs):
-    if ResourceInstance.objects.filter(resourceinstanceid=instance.resource_id).exists():
-        EditLog.objects.create(
-            resourceinstanceid=instance.resource_id,
-            edittype="tile edit",
-            timestamp=timezone.now(),
-            note="Resource was removed from Heritage API exclusion list."
-        )
+    HeritageApiInclusion.objects.filter(
+        resource_id=instance.resource_id).delete()
+    HeritageApiInclusion.objects.create(resource_id=instance.resource_id)
+
+
+@receiver(post_save, sender=HeritageApiExclusion)
+def log_heritage_api_exclusion_post_save(sender, instance, **kwargs):
+    HeritageApiInclusion.objects.filter(
+        resource_id=instance.resource_id).delete()
+
+
+class HeritageApiInclusion(models.Model):
+    search_fields = ["resource_id"]
+    id = models.AutoField(primary_key=True)
+    resource_id = models.UUIDField(unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Resource ID: {self.resource_id} | Id: {self.id}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Heritage API Inclusion"
+        verbose_name_plural = "Heritage API Inclusions"
+        db_table = "hapi_inclusion"
+        indexes = [
+            models.Index(fields=["resource_id"]),
+        ]
