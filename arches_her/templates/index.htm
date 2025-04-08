@@ -49,21 +49,36 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <link href="{% static 'css/branding.css' %}" rel="stylesheet">
 
     <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
-    <script type="text/javascript">
-        // ##### APPINSIGHTS MONITORING #####
-        var aikey = '#{appinsights-key}#';
-        if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(aikey) == true) {
-            console.log("aikey valid", aikey);
-            var appInsights = window.appInsights || function (a) { function b(a) { c[a] = function () { var b = arguments; c.queue.push(function () { c[a].apply(c, b) }) } } var c = { config: a }, d = document, e = window; setTimeout(function () { var b = d.createElement("script"); b.src = a.url || "https://az416426.vo.msecnd.net/scripts/a/ai.0.js", d.getElementsByTagName("script")[0].parentNode.appendChild(b) }); try { c.cookie = d.cookie } catch (a) { } c.queue = []; for (var f = ["Event", "Exception", "Metric", "PageView", "Trace", "Dependency"]; f.length;)b("track" + f.pop()); if (b("setAuthenticatedUserContext"), b("clearAuthenticatedUserContext"), b("startTrackEvent"), b("stopTrackEvent"), b("startTrackPage"), b("stopTrackPage"), b("flush"), !a.disableExceptionTracking) { f = "onerror", b("_" + f); var g = e[f]; e[f] = function (a, b, d, e, h) { var i = g && g(a, b, d, e, h); return !0 !== i && c["_" + f](a, b, d, e, h), i } } return c }({ instrumentationKey: aikey }); window.appInsights = appInsights, appInsights.queue && 0 === appInsights.queue.length && appInsights.trackPageView();
-        }
-        else {
-            console.log("aikey not valid - app insights not instantiated");
-        }
-        //####################################
-    </script>
-
     <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.5.min.js"></script>
     <script src="{{ STATIC_URL }}js/cookieControl.js"></script>
+    <script src="https://js.monitor.azure.com/scripts/b/ot.js"></script>
+    <script>
+        // ##### OpenTelemetry Monitoring #####
+        var aikey = '#{appinsights-key}#';
+        if (/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(aikey) == true) {
+            console.log("aikey valid"); // Validating the instrumentation key format, do not log key in production
+            try {
+                // Initialize OpenTelemetry with Azure Monitor
+                const otel = new OpenTelemetry.ApplicationInsights({
+                    connectionString: `InstrumentationKey=${aikey}`
+                });
+
+                // Start tracking page views and other telemetry
+                otel.start();
+                otel.trackPageView(); // Tracks the initial page load
+                otel.trackEvent({ name: "Page Loaded" }); // Custom event for page load
+                otel.trackMetric({ name: "Page Load Time", value: performance.now() }); // Custom metric for page load time
+            }
+            catch (error) {
+                console.error("Error initializing OpenTelemetry:", error);
+            }
+        }
+        else {
+            console.log("aikey not valid - OpenTelemetry with Azure Monitor not instantiated");
+        }
+        //######################################
+        // ##### End OpenTelemetry Monitoring #####
+    </script>
 
 </head>
 
