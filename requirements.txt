@@ -1,8 +1,9 @@
-opencensus==0.7.7
-opencensus-context==0.1.1
-opencensus-ext-azure==1.0.2
-opencensus-ext-django==0.7.2
-opencensus-ext-httplib==0.7.3
-opencensus-ext-logging==0.1.0
-opencensus-ext-postgresql==0.1.2
+opentelemetry-api==1.31.1
+opentelemetry-sdk==1.31.1
+opentelemetry-instrumentation==0.52b1
+azure-monitor-opentelemetry-exporter==1.0.0b35
+opentelemetry-instrumentation-django==0.52b1
+opentelemetry-instrumentation-httpx==0.52b1
+opentelemetry-instrumentation-logging==0.52b1
+opentelemetry-instrumentation-psycopg2==0.52b1
 wfastcgi==3.0.0
