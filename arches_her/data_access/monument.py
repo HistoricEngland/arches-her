@@ -29,6 +29,8 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
 
         for row in rows:
             _, information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
+            if isinstance(source_reference, str):
+                source_reference = json.loads(source_reference)
             if isinstance(statement_of_authority, list):
                 statement_of_authority = ', '.join(html.unescape(strip_tags(
                     item)).replace("\n", "") for item in statement_of_authority)

@@ -121,8 +121,9 @@ class HeritageApiLogAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     pretty_totals.short_description = "Totals"
 
     def pretty_resources(self, instance):
-        prettify = len(instance.resources) <= maximum_pretty_print
-        return format_json_field(instance.resources, prettify=prettify)
+        resources = instance.resources or {}
+        prettify = len(resources) <= maximum_pretty_print
+        return format_json_field(resources, prettify=prettify)
 
     pretty_resources.short_description = "Resources"
 
@@ -178,7 +179,7 @@ class HeritageApiInclusionAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
 
 
 class HeritageApiDataAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
-    fields = ['batch_id', 'part', 'pretty_validation',
+    fields = ['batch_id', 'part', 'timestamp', 'pretty_validation',
               'pretty_data', 'id', 'hapi_log_id']
     readonly_fields = (
         "pretty_data",
@@ -190,12 +191,13 @@ class HeritageApiDataAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     )
     list_display = (
         "batch_id",
+        "timestamp",
         "part",
         "id",
         "hapi_log_id",
     )
     search_fields = ["batch_id"]
-    ordering = ["-batch_id", "-part"]
+    ordering = ["-batch_id", "-timestamp"]
     list_per_page = 20
 
     def pretty_data(self, instance):

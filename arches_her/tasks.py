@@ -1,17 +1,16 @@
-from datetime import datetime
-
 import json
-from arches_her.data_access.common import get_resources
+from math import ceil
+from datetime import datetime
+from arches_her.data_access.common import get_resources, get_counts
 from celery import shared_task
 from arches.app.models.system_settings import settings
-# from django.db.models import Max, F, Value
-# from django.db.models.functions import Coalesce
+from django.db.models import Max, Min
 from arches_her.services import (
     authenticate as authenticate_service,
     batch_submit as batch_submit_service,
     batch_create as batch_create_service,
     validate as validate_service,
-    generate as generate_service,
+    batch_finalise as batch_finalise_service
 )
 from arches_her.models import models
 import logging
@@ -29,12 +28,17 @@ def add(x, y):
 
 
 @shared_task
-def hapi_upload(*args, **kwargs) -> str:
+def hapi_upload(self, *args, **kwargs) -> str:
   
     from arches_her.data_access.common import refresh_materialized_views
     logger = logging.getLogger(__name__)
     start_date = datetime(1, 1, 1)
+    latest_timestamp = None
+    log_id = None
   
+    # Initialize a list to store results from all batches
+    batch_results = []
+
     run_type = kwargs.get("run_type", models.HeritageApiLog.AUTOMATIC)
     if run_type not in [models.HeritageApiLog.AUTOMATIC, models.HeritageApiLog.MANUAL]:
         raise ValueError(f"Invalid run type: {run_type}")
@@ -46,12 +50,20 @@ def hapi_upload(*args, **kwargs) -> str:
     try:
         start_time = timezone.now()
 
-        # refresh_materialized_views(with_data=True)
+        refresh_materialized_views(with_data=True)
 
         if not seed:
-            latest_timestamp = models.HeritageApiLog.objects.filter(
-                finish__isnull=False
-            ).order_by('-start').values('start').first()
+            max_batch_id = models.HeritageApiLog.objects.aggregate(
+                max_batch_id=Max('batch_id')
+            )['max_batch_id']
+
+            if max_batch_id:
+                latest_timestamp = models.HeritageApiLog.objects.filter(
+                    batch_id=max_batch_id
+                ).aggregate(
+                    batch_id=Max('batch_id'),
+                    start=Min('start')
+                )
 
             if latest_timestamp:
                 start_date = latest_timestamp['start']
@@ -73,7 +85,28 @@ def hapi_upload(*args, **kwargs) -> str:
         max_batch_size = 5000
         max_submission_size = 100
 
-        for i in range(0, len(resources), max_batch_size):
+        submission_total_count = len(resources)
+        total_parts = ceil(submission_total_count / max_batch_size)
+        total_count, published_count = get_counts()
+        counts = {
+            "total_count": total_count,
+            "published_count": published_count,
+            "submitted_count": submission_total_count
+        }
+
+        bearer_token = authenticate_service(
+            username=username, password=password)
+        if not bearer_token:
+            return "Failed to authenticate with H.API"
+
+        batch_id = batch_create_service(
+            bearer_token=bearer_token, counts=counts)
+        if not batch_id:
+            return "Failed to create new batch"
+
+        submission_count = 0
+
+        for i in range(0, submission_total_count, max_batch_size):
             start_time = timezone.now()
             new_log = models.HeritageApiLog.objects.create(
                 start=start_time,
@@ -83,97 +116,65 @@ def hapi_upload(*args, **kwargs) -> str:
 
             log_id = new_log.id
             batch_resources = resources[i:i + max_batch_size]
+            submission_count += 1
 
-            bearer_token = authenticate_service(
-                username=username, password=password)
-            if not bearer_token:
-                return "Failed to authenticate with H.API"
-
-            update_log_messages(log_id, "bearer_token", bearer_token)
-
-            total_count = len(batch_resources)
-
-            # TODO Get the counts of the total and published records
-            counts = {
-                "total_count": 0,
-                "published_count": 0,
-                "submitted_count": total_count
-            }
-
-            models.HeritageApiLog.objects.filter(id=log_id).update(totals=counts)
-
-            batch_id = batch_create_service(
-                bearer_token=bearer_token, counts=counts)
-            if not batch_id:
-                return "Failed to create new batch"
+            models.HeritageApiLog.objects.filter(
+                id=log_id).update(totals=counts)
 
             models.HeritageApiLog.objects.filter(
                 id=log_id).update(batch_id=batch_id)
 
-            update_log_messages(log_id, "batch_id", batch_id)
+            update_log_messages(log_id, "part", f"{submission_count} of {total_parts}")
 
             models.HeritageApiLog.objects.filter(
                 id=log_id).update(resources=serialize(batch_resources))
 
             part = 1
             
-            for i in range(0, len(batch_resources), max_submission_size):
-                submission_batch = batch_resources[i:i + max_submission_size]
-            
+            for s in range(0, len(batch_resources), max_submission_size):
+                submission_batch = batch_resources[s:s + max_submission_size]
                 resource_instance_ids = [
                     str(resource['resource_instance_id']) for resource in submission_batch]
                 resource_instance_ids = ",".join(resource_instance_ids)
 
-                # results[0]['data'] is a string - need to convert it back in to a JSON object
-                results = validate_service(resource_object=submission_batch) # response, data
+                results, status_code = validate_service(resource_object=submission_batch)
 
                 if not results:
                     return f"No records generated for {resource_instance_ids}"
-
-                # data = results[0]['data']
-
-                # validation = results[0]['response']
-                # validation = serialize(validation)
 
                 models.HeritageApiData.objects.create(
                     hapi_log_id=log_id,
                     batch_id=batch_id,
                     part=part,
-                    validation=serialize(results[0]['response']),
-                    data=serialize(results[0]['data'])
+                    validation=serialize(results['response']),
+                    data=serialize(results['data'])
                 )
 
-                # records = json.loads(results[0]['data'])
-                
                 status_code, reason, text = batch_submit_service(
-                    bearer_token=bearer_token, batch_id=batch_id, records=results[0]['data']['records'])
+                    bearer_token=bearer_token, batch_id=batch_id, records=results['data']['records'])
                 
-                # text = json.loads(text)
-                # message = {"part": part, "result": reason, "status_code": status_code, **text}
-
-                # messages = models.HeritageApiLog.objects.filter(
-                #     id=log_id).values('messages').first()
-                
-                # # messages is an array
-                # if not messages['messages']:
-                #     messages = []
-                # else:
-                #     messages = messages['messages']
-                # # messages = messages['messages']
-                # # messages = serialize(messages)
-                # # message = {**messages, **message}
-                # messages.append(message)
-                
-                # models.HeritageApiLog.objects.filter(
-                #     id=log_id).update(messages=serialize(messages))
+                # Append the current batch result to the batch_results list
+                batch_results.append({
+                    "status_code": status_code,
+                    "batch": batch_id,
+                    "resources": len(submission_batch),
+                    "records": len(results['data']['records']),
+                    "reason": reason,
+                    "text": json.loads(text)
+                })
 
                 part += 1
 
-        if True:
-            models.HeritageApiLog.objects.filter(
-                id=log_id).update(finish=timezone.now())
+        models.HeritageApiLog.objects.filter(id=log_id).update(messages=serialize(batch_results))
+        
+        batch_finalise_service(
+            bearer_token=bearer_token, batch_id=batch_id)
 
-        return f"{'Success' if True else 'Failure'}, status code: {status_code}, resources: {len(resources)}, records: {len(results)}"
+        models.HeritageApiLog.objects.filter(
+            id=log_id).update(finish=timezone.now())
+
+        # Return the complete collection of batch results
+        return {"status": "completed", "results": batch_results, "task_id": self.request.id}
 
     except Exception as e:
         logger.error(f"Error running H.API upload: {e.with_traceback}")
@@ -181,12 +182,10 @@ def hapi_upload(*args, **kwargs) -> str:
             id=log_id).update(exceptions=e.with_traceback)
         return e.with_traceback
     finally:
-        pass
-        # refresh_materialized_views(with_data=False)
+        refresh_materialized_views(with_data=False)
 
 
 def update_log_messages(log_id, key, value):
-    return
     # Retrieve the current messages field
     log_entry = models.HeritageApiLog.objects.get(id=log_id)
     current_messages = log_entry.messages or {}

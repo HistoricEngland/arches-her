@@ -77,11 +77,11 @@ def validate(resource_uuid=None, resource_object=None, input: str = None, output
 
     if response.status_code == 200:  # No errors
         returnVal = (True, response.status_code)
-    elif response.status_code == 422:  # Validation errors present
+    elif response.status_code in [200, 422]:  # Validation errors present
         returnVal = ({"response": response.json(), "data": data},
                      response.status_code)
     else:
-        returnVal = ({"reason": response.reason}, response.status_code)
+        returnVal = ({"response": {"reason": response.reason}, "data": data}, response.status_code)
 
     if output:
         validate_filename(output)
@@ -209,4 +209,23 @@ def batch_submit(bearer_token: str = None, batch_id: int = None, records: List =
         return response.status_code, response.reason, response.text
     except Exception as e:
         logger.error({"H.API batch submit failed: {e}"})
-        return False, getattr(response, 'status_code', None), None
+        return getattr(response, 'status_code', None), response.reason, response.text
+
+
+def batch_finalise(bearer_token: str = None, username: str = None, password: str = None, batch_id: int = None) -> Optional[int]:
+    url = settings.HAPI_BATCH_FINALISE_URL
+    bearer_token = bearer_token or authenticate(username, password)
+
+    if not bearer_token:
+        return None
+
+    headers = {"Authorization": f"Bearer {bearer_token}"}
+    payload = {"batch_id": batch_id}
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+    except Exception as e:
+        logger.error({"H.API batch finalise failed: {e}"})
+    
+    return response.status_code

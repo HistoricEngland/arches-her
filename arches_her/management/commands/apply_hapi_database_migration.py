@@ -857,7 +857,7 @@ class Command(BaseCommand):
                             JOIN graphs g ON e.resourceclassid = g.graphid::text
                             WHERE e."timestamp" >= '0001-01-01 00:00:00+00'::timestamp with time zone
                             AND (g.name = ANY (ARRAY['Monument'::text, 'Maritime Vessel'::text, 'Historic Aircraft'::text]))
-                            ORDER BY e.resourceinstanceid, e."timestamp" DESC
+                            -- ORDER BY e.resourceinstanceid, e."timestamp" DESC
                         )
                         SELECT
                             el.resourceinstanceid,
@@ -1310,8 +1310,6 @@ class Command(BaseCommand):
                         LEFT JOIN hapi.resource_names_mv rn ON ri.resourceinstanceid = rn.resourceinstanceid
                         LEFT JOIN hapi.system_reference_numbers_mv srn ON ri.resourceinstanceid = srn.resourceinstanceid
                         WHERE g.name in ('Monument', 'Maritime Vessel', 'Historic Aircraft')
-                        -- AND (srn.primary_reference_number IS NOT NULL AND rn.resource_name IS NOT NULL)
-                        ORDER BY primary_reference_number
                     """)
 
             self.stdout.write(self.style.SUCCESS(

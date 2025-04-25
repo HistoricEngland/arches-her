@@ -54,7 +54,7 @@ def get_resources(
             # Remove the trailing comma and space, and close the function call
             query = query.rstrip(', ') + ");"
         else:
-            query = "SELECT * FROM hapi.initial_seed;"
+            query = "SELECT * FROM hapi.initial_seed ORDER BY primary_reference_number;"
         # Execute the query
         cursor.execute(query, params)
         columns = [col[0] for col in cursor.description]
@@ -366,3 +366,22 @@ def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str
 def refresh_materialized_views(with_data: bool):
     from arches_her.management.commands.apply_hapi_database_migration import Command as rmv
     rmv.refresh_materialized_views(connection.cursor(), refresh_option="WITH DATA" if with_data else "WITH NO DATA")
+
+
+def get_counts():
+    """
+    Get counts of total records and published records from the database.
+    
+    Returns:
+        tuple: (total_count, published_count)
+    """
+    # TODO: Need to work out what total_count and published_count should be
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                (SELECT COUNT(*) FROM hapi.initial_seed) AS total_count,
+                (SELECT COUNT(*) FROM hapi.initial_seed) AS published_count
+        """)
+        result = cursor.fetchone()
+        
+    return result if result else (0, 0)

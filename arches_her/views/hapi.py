@@ -138,7 +138,7 @@ class BatchSubmitCronView(View):
         try:
             self.run_type = self.kwargs.get('run_type',)
             self.seed = self.kwargs.get('run_type', False)
-            hapi_upload(run_type=run_type, seed=seed)
+            hapi_upload(self, run_type=run_type, seed=seed)
             return HttpResponse(status=200)
         except:
             return HttpResponse(status=500)
