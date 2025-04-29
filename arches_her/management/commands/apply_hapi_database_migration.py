@@ -857,7 +857,7 @@ class Command(BaseCommand):
                             JOIN graphs g ON e.resourceclassid = g.graphid::text
                             WHERE e."timestamp" >= '0001-01-01 00:00:00+00'::timestamp with time zone
                             AND (g.name = ANY (ARRAY['Monument'::text, 'Maritime Vessel'::text, 'Historic Aircraft'::text]))
-                            -- ORDER BY e.resourceinstanceid, e."timestamp" DESC
+                            ORDER BY e.resourceinstanceid, e."timestamp" DESC
                         )
                         SELECT
                             el.resourceinstanceid,
