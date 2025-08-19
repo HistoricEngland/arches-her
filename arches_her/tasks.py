@@ -1,6 +1,7 @@
 import json
 import traceback
 import logging
+import time
 from math import ceil
 from datetime import datetime
 from uuid import UUID
@@ -258,6 +259,7 @@ def hapi_upload(self, *args, **kwargs) -> str:
 @shared_task(bind=True)
 def data_refresh_task(self):
     try:
+        start_time = time.time()
 
         def progress_callback(message):
             self.update_state(state="PROGRESS", meta={"message": message})
@@ -272,11 +274,13 @@ def data_refresh_task(self):
             "--with_data",
             progress_callback=progress_callback,
         )
-        return {"status": "success", "message": "Data refresh completed successfully."}
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        minutes, seconds = divmod(int(elapsed_time), 60)
+        elapsed_time_formatted = f"{minutes}m {seconds}s"
+        return {"status": "success", "message": f"Data refresh completed successfully in {elapsed_time}"}
     except Exception as e:
         return {"status": "failure", "message": str(e)}
-    # finally:
-    #     cache.delete("data_refresh_running")
 
 
 def update_log_messages(log_id, key, value):
