@@ -24,8 +24,14 @@ class Command(BaseCommand):
             action='store_true',
             help='Delete H.API schema',
         )
+        parser.add_argument(
+            '--progress_callback',
+            action='store_true',
+            help='Sets progress callback function. Internal use only.',
+        )
 
     def handle(self, *args, **kwargs):
+        progress_callback = kwargs.get('progress_callback', None)
         with_data = kwargs.get('with_data', False)
         with_no_data = kwargs.get('with_no_data', False)
         delete = kwargs.get('delete', False)
@@ -40,7 +46,7 @@ class Command(BaseCommand):
         if refresh_option:
             try:
                 self.refresh_materialized_views(
-                    connection.cursor(), refresh_option, use_tqdm=True)
+                    connection.cursor(), refresh_option, use_tqdm=True, progress_callback=progress_callback)
                 self.stdout.write(self.style.SUCCESS(
                     'Materialized views refreshed ' + refresh_option))
             except Exception as e:
@@ -246,11 +252,14 @@ class Command(BaseCommand):
                             TABLESPACE pg_default;
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_name_mv AS
+                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_name_mv
+                        TABLESPACE pg_default
+                        AS
                         SELECT
                             resourceinstanceid,
                             bibliographic_source_name
-                        FROM bibliographic_source.bibliographic_source_names;
+                        FROM bibliographic_source.bibliographic_source_names
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         ALTER TABLE hapi.bibliographic_source_name_mv
@@ -261,12 +270,15 @@ class Command(BaseCommand):
                         ON hapi.bibliographic_source_name_mv(resourceinstanceid);
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_creation_mv AS
+                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_creation_mv
+                        TABLESPACE pg_default
+                        AS
                         SELECT
                             resourceinstanceid,
                             statement_of_responsibility 
                         FROM bibliographic_source.bibliographic_source_creation
-                        WHERE statement_of_responsibility IS NOT NULL;
+                        WHERE statement_of_responsibility IS NOT NULL
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         ALTER TABLE hapi.bibliographic_source_creation_mv
@@ -277,7 +289,9 @@ class Command(BaseCommand):
                         ON hapi.bibliographic_source_creation_mv(resourceinstanceid);
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_citation_mv AS
+                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_citation_mv
+                        TABLESPACE pg_default
+                        AS
                         SELECT
                             resourceinstanceid, 
                             ((bibliographic_source_citation->0)->>'resourceId'::text)::uuid as bibliographic_source_citation, 
@@ -303,7 +317,8 @@ class Command(BaseCommand):
                             page_s_, 
                             figs_, 
                             plate_s_   
-                        FROM maritime_vessel.bibliographic_source_citation;
+                        FROM maritime_vessel.bibliographic_source_citation
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         ALTER TABLE hapi.bibliographic_source_creation_mv
@@ -314,11 +329,14 @@ class Command(BaseCommand):
                         ON hapi.bibliographic_source_citation_mv(resourceinstanceid);
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_publication_mv AS
+                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_publication_mv
+                        TABLESPACE pg_default        
+                        AS
                         SELECT
                             resourceinstanceid,
                             date_of_publication
-                        FROM bibliographic_source.publication;
+                        FROM bibliographic_source.publication
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         ALTER TABLE hapi.bibliographic_source_publication_mv
@@ -329,19 +347,24 @@ class Command(BaseCommand):
                         ON hapi.bibliographic_source_publication_mv(resourceinstanceid);
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_url_mv AS
+                        CREATE MATERIALIZED VIEW hapi.bibliographic_source_url_mv
+                        TABLESPACE pg_default
+                        AS
                         SELECT
                             resourceinstanceid,
                             url ->> 'url'::text url
                         FROM bibliographic_source.external_cross_references
-                        WHERE url ->> 'url' IS NOT NULL;
+                        WHERE url ->> 'url' IS NOT NULL
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         CREATE INDEX idx_bibliographic_source_url
                         ON hapi.bibliographic_source_url_mv(resourceinstanceid);
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.monument_sources_mv AS
+                        CREATE MATERIALIZED VIEW hapi.monument_sources_mv
+                        TABLESPACE pg_default           
+                        AS
                         SELECT bsc.resourceinstanceid,
                             bsn.bibliographic_source_name AS information_source_title,
                             ( SELECT jsonb_agg(statement_of_responsibility) AS jsonb_agg
@@ -361,7 +384,8 @@ class Command(BaseCommand):
                         FROM hapi.bibliographic_source_citation_mv bsc
                         LEFT JOIN hapi.bibliographic_source_name_mv bsn ON bsc.bibliographic_source_citation = bsn.resourceinstanceid
                         LEFT JOIN hapi.bibliographic_source_url_mv bsu ON bsc.bibliographic_source_citation = bsu.resourceinstanceid
-                        LEFT JOIN hapi.bibliographic_source_publication_mv bsp ON bsc.bibliographic_source_citation = bsp.resourceinstanceid;
+                        LEFT JOIN hapi.bibliographic_source_publication_mv bsp ON bsc.bibliographic_source_citation = bsp.resourceinstanceid
+                        WITH NO DATA;
                     """)
                     cursor.execute("""
                         CREATE INDEX idx_monument_sources
@@ -786,7 +810,9 @@ class Command(BaseCommand):
                             TABLESPACE pg_default;
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.inclusions_mv AS
+                        CREATE MATERIALIZED VIEW hapi.inclusions_mv
+                        TABLESPACE pg_default
+                        AS
                         SELECT
                             i.resource_id AS resourceinstanceid,
                             g.name AS resource_type,
@@ -885,10 +911,22 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.resources_inclusions_exclusions_mv
                         TABLESPACE pg_default
                         AS
-                        SELECT *
+                        SELECT
+                            resourceinstanceid,
+                            resource_type,
+                            resource_name,
+                            primary_reference_number,
+                            deleted,
+                            most_recent_timestamp
                         FROM hapi.inclusions_mv AS i
                         UNION ALL 
-                        SELECT *
+                        SELECT
+                            resourceinstanceid,
+                            resource_type,
+                            resource_name,
+                            primary_reference_number,
+                            deleted,
+                            most_recent_timestamp
                         FROM hapi.resources_mv AS r
                         WHERE NOT EXISTS (
                             SELECT 1
@@ -997,7 +1035,9 @@ class Command(BaseCommand):
                             TABLESPACE pg_default;
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.maritime_craft AS
+                        CREATE MATERIALIZED VIEW hapi.maritime_craft
+                        TABLESPACE pg_default           
+                        AS
                         WITH associated_maritime_vessels AS
                         (
                             SELECT
@@ -1267,7 +1307,8 @@ class Command(BaseCommand):
                             resource_type text, 
                             resource_name text, 
                             primary_reference_number numeric, 
-                            most_recent_timestamp timestamp with time zone) 
+                            most_recent_timestamp timestamp with time zone,
+                            deleted boolean) 
                         LANGUAGE 'plpgsql'
                         COST 100
                         VOLATILE PARALLEL UNSAFE
@@ -1281,7 +1322,8 @@ class Command(BaseCommand):
                                 rv.resource_type, 
                                 rv.resource_name, 
                                 rv.primary_reference_number, 
-                                rv.most_recent_timestamp
+                                rv.most_recent_timestamp,
+                                rv.deleted
                             FROM hapi.resources_inclusions_exclusions_mv rv
                             WHERE 
                                 (resource_instance_ids IS NOT NULL AND rv.resourceinstanceid = ANY(string_to_array(resource_instance_ids, ',')::uuid[]))
@@ -1319,28 +1361,40 @@ class Command(BaseCommand):
                 f'Error applying standalone migration: {e}'))
 
     @staticmethod
-    def refresh_materialized_views(cursor, refresh_option, use_tqdm=False):
+    def refresh_materialized_views(cursor, refresh_option, use_tqdm=False, progress_callback=None):
         # Extract materialized views from this file
         with open(__file__, 'r') as file:
             content = file.read()
 
         # Regex to find materialized view names
-        pattern = re.compile(r'CREATE MATERIALIZED VIEW (\w+\.\w+)')
+        pattern = re.compile(
+            r'^(?!\s*#).*CREATE MATERIALIZED VIEW (\w+\.\w+)', re.MULTILINE)
         views = pattern.findall(content)
 
         # Refresh each materialized view
         pbar = tqdm(views, disable=not use_tqdm)
         max_len = max([len(view) for view in views])
+        total_count = len(views)
+        counter = 0
+        total_start_time = time.time()
         for view in pbar:
+            counter += 1
             if use_tqdm:
                 pbar.set_description(view.ljust(max_len))
             start_time = time.time()
-            cursor.execute(f'''REFRESH MATERIALIZED VIEW {
-                           view} {refresh_option};''')
+            cursor.execute(
+                f'REFRESH MATERIALIZED VIEW {view} {refresh_option};')
             duration = time.time() - start_time
-            tqdm.write(f'Refreshed {view} in {duration:.2f} seconds')
+            message = f'Refreshed {view} in {duration:.2f} seconds ({counter} of {total_count})'
+            if progress_callback:
+                progress_callback(message)
+            tqdm.write(message)
+        total_duration = time.time() - total_start_time
+        message = f'Total MV refresh time: {total_duration:.2f} seconds'
+        tqdm.write(message)
 
     def delete_schema(self, cursor):
-        cursor.execute(f"""
-            DROP SCHEMA IF EXISTS hapi CASCADE;
-        """)
+        with transaction.atomic():
+            cursor.execute(f"""
+                DROP SCHEMA IF EXISTS hapi CASCADE;
+            """)

@@ -1,7 +1,10 @@
 from arches_her.hapi.helper import parse_date
+from .base_serializable import BaseSerializable
 
 
-class MonumentSource(object):
+class MonumentSource(BaseSerializable):
+    excluded_fields = set()
+
     def __init__(
         self,
         information_source_title: str = None,

@@ -2,7 +2,7 @@ import uuid
 import decimal
 import html
 import logging
-import re
+import json
 from django.db import connection
 from typing import Any, List, Optional, Tuple, Union
 from collections import OrderedDict
@@ -19,6 +19,7 @@ from arches_her.models.descriptions import Description
 from arches_her.models.related_monument_records import RelatedMonumentRecord
 from arches_her.models.images import Image
 from arches_her.models.related_events import RelatedEvent
+from arches_her.models.monument_sources import MonumentSource
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,14 @@ def get_resources(
         results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     return results
+
+
+def is_empty_or_whitespace(s: str) -> bool:
+    return s is None or (isinstance(s, str) and s.strip() == '')
+
+
+def filtered_string(strings: str) -> Optional[str]:
+    return [s.strip() if isinstance(s, str) else s for s in strings if not is_empty_or_whitespace(s)]
 
 
 def convert_empty_array_to_none(array):
@@ -366,6 +375,56 @@ def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str
 def refresh_materialized_views(with_data: bool):
     from arches_her.management.commands.apply_hapi_database_migration import Command as rmv
     rmv.refresh_materialized_views(connection.cursor(), refresh_option="WITH DATA" if with_data else "WITH NO DATA")
+
+
+def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
+    sources = []
+    set_bibliography_reference = True
+    with connection.cursor() as cursor:
+        # Construct the SQL query based on the provided parameters
+        query = "SELECT * FROM hapi.monument_sources_mv WHERE resourceinstanceid = (%s);"
+        params = [str(resource_instance_id)]
+
+        # Execute the query
+        cursor.execute(query, params)
+        rows = cursor.fetchall()
+
+        if not rows:
+            sources.append(MonumentSource(
+                set_bibliography_reference=set_bibliography_reference))
+
+        for row in rows:
+            _, information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
+            if isinstance(source_reference, str):
+                source_reference = json.loads(source_reference)
+            if isinstance(statement_of_authority, list):
+                statement_of_authority = ', '.join(html.unescape(strip_tags(
+                    item)).replace("\n", "") for item in statement_of_authority)
+
+            source_reference_parts = []
+            if 'pages' in source_reference:
+                source_reference_parts.append(
+                    f"pages: {source_reference['pages']}")
+            if 'figures' in source_reference:
+                source_reference_parts.append(
+                    f"figures: {source_reference['figures']}")
+            if 'plates' in source_reference:
+                source_reference_parts.append(
+                    f"plates: {source_reference['plates']}")
+            source_reference_str = ', '.join(
+                source_reference_parts) if source_reference_parts else None
+
+            sources.append(MonumentSource(
+                information_source_title=information_source_title,
+                statement_of_authority=statement_of_authority,
+                source_no=source_no,
+                source_reference=source_reference_str,
+                date_of_origination=date_of_origination,
+                source_digital_object_identifier=source_digital_object_identifier,
+                source_url=source_url,
+                set_bibliography_reference=set_bibliography_reference,
+            ))
+    return sources if sources else None
 
 
 def get_counts():

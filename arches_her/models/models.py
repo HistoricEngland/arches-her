@@ -17,7 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 import uuid
-import datetime
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import JSONField
 from django.dispatch import receiver
@@ -32,7 +31,7 @@ class HeritageApiData(models.Model):
     hapi_log_id = models.UUIDField(blank=False, null=False)
     batch_id = models.PositiveIntegerField(blank=False, null=False)
     part = models.PositiveIntegerField(blank=False, null=False)
-    timestamp = models.DateTimeField(default=datetime.datetime.now)
+    timestamp = models.DateTimeField(default=timezone.now)
     validation = JSONField(blank=True, null=True)
     data = JSONField(blank=True, null=True)
 
@@ -56,7 +55,7 @@ class HeritageApiLog(models.Model):
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid1)
     batch_id = models.PositiveIntegerField(unique=False, blank=True, null=True)
-    start = models.DateTimeField(default=datetime.datetime.now)
+    start = models.DateTimeField(default=timezone.now)
     finish = models.DateTimeField(blank=True, null=True)
     parameters = JSONField(blank=True, null=True)
     run_type = models.CharField(

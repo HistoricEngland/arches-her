@@ -1,9 +1,12 @@
 import datetime
 from typing import List
 from arches_her.hapi.helper import parse_date
+from .base_serializable import BaseSerializable
 
 
-class MaritimeCraft(object):
+class MaritimeCraft(BaseSerializable):
+    excluded_fields = set()
+
     def __init__(
         self,
         type: List[str],

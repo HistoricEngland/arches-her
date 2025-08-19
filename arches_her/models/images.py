@@ -1,7 +1,9 @@
 from arches.app.models.system_settings import settings
+from .base_serializable import BaseSerializable
 
 
 class SettingsSingleton:
+    excluded_fields = set()
     _instance = None
 
     def __new__(cls):
@@ -11,7 +13,7 @@ class SettingsSingleton:
         return cls._instance
 
 
-class Image:
+class Image(BaseSerializable):
     def __init__(self, url: str, caption: str, copyright: str):
         settings_singleton = SettingsSingleton()
         self.url = settings_singleton.ARCHES_NAMESPACE_FOR_DATA_EXPORT + url

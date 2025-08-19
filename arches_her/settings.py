@@ -6,6 +6,7 @@ import os
 from arches import __version__
 import inspect
 from celery.schedules import crontab
+from urllib.parse import urljoin
 
 try:
     from arches.settings import *
@@ -66,26 +67,6 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": CELERY_SEARCH_EXPORT_CHECK,
         "args": ("Celery Beat is Running",),
     },
-    # Every minute between 9am and 4:59pm, Monday to Friday
-    'add-every-one-minute': {
-        'task': '.tasks.add',
-        'schedule': crontab(
-            minute='*/1',
-            hour='9-16',
-            day_of_week='1-5',
-        ),
-        'args': (16, 16),
-    },
-    # Every weekday day at 9pm
-    # 'add-once-at-21-00-weekdays': {
-    #     'task': 'arches.app.tasks.add',
-    #     'schedule': crontab(
-    #         minute=0,
-    #         hour=21,
-    #         day_of_week='1-5',
-    #     ),
-    #     'args': (16, 16),
-    # },
 }
 
 DATABASES = {
@@ -259,6 +240,37 @@ EXTRA_EMAIL_CONTEXT = {"contact_email":CONTACT_EMAIL,
                  "contact_website":CONTACT_WEBSITE,
                  "expiration":(datetime.now() + timedelta(seconds=CELERY_SEARCH_EXPORT_EXPIRES)).strftime("%A, %d %B %Y")
 }
+
+TIME_ZONE = "Europe/London"
+USE_TZ = True
+
+HAPI_BASE_API_ENDPOINT = None
+HAPI_VALIDATE_URL = urljoin(HAPI_BASE_API_ENDPOINT,"validate/hgr")
+HAPI_AUTHENTICATE_URL = urljoin(HAPI_BASE_API_ENDPOINT, "auth/token/create")
+HAPI_BATCH_CREATE_URL = urljoin(HAPI_BASE_API_ENDPOINT, "batch/create")
+HAPI_BATCH_SUBMIT_URL = urljoin(HAPI_BASE_API_ENDPOINT,"batch/submit")
+HAPI_BATCH_FINALISE_URL = urljoin(HAPI_BASE_API_ENDPOINT, "batch/finalise")
+HAPI_USERNAME = None
+HAPI_PASSWORD = None
+# e.g. {"day_of_week": "1-5", "hour": "9-19", "minute": "*/5", "description": "hapi upload every five minutes", "task": "arches_her.tasks.hapi_upload", "args": ["5 minutes"]}
+# See https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html#crontab-schedules
+HAPI_CRON_UPLOAD_TASK = None
+HAPI_ERROR_EMAIL = None
+
+if HAPI_CRON_UPLOAD_TASK:
+    hapi_cron = json.loads(HAPI_CRON_UPLOAD_TASK)
+    hapi_celery_beat_schedule = {
+        hapi_cron["description"]: {
+            "task": hapi_cron["task"],
+            "schedule": crontab(
+                minute=hapi_cron["minute"],
+                hour=hapi_cron["hour"],
+                day_of_week=hapi_cron["day_of_week"],
+            ),
+            "args": tuple(hapi_cron["args"]),
+        }
+    }
+    CELERY_BEAT_SCHEDULE.update(hapi_celery_beat_schedule)
 
 try:
     from .package_settings import *

@@ -1,8 +1,11 @@
 from typing import List
 from arches_her.hapi.helper import parse_date
+from .base_serializable import BaseSerializable
 
 
-class MonumentDatedTypes(object):
+class MonumentDatedTypes(BaseSerializable):
+    excluded_fields = set()
+
     def __init__(
         self,
         type: str,

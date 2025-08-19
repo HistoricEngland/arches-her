@@ -1,7 +1,10 @@
 from typing import List
+from .base_serializable import BaseSerializable
 
 
-class RelatedEvent:
+class RelatedEvent(BaseSerializable):
+    excluded_fields = set()
+
     def __init__(self, primary_reference_number: str, types: List[str], name: str, description: str):
         self.primaryReferenceNumber = primary_reference_number
         self.types = types

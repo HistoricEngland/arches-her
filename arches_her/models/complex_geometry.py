@@ -1,4 +1,8 @@
-class ComplexGeometry(object):
+from .base_serializable import BaseSerializable
+
+class ComplexGeometry(BaseSerializable):
+    excluded_fields = set()
+
     def __init__(
         self,
         spatial_feature_type: str,
