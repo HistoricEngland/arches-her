@@ -77,15 +77,20 @@ def convert_empty_array_to_none(array):
 
 
 def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
-    # logger.debug(f"Serializing {obj} ({type(obj)})")
+    if hasattr(obj, "to_dict") and callable(obj.to_dict):
+        return serialize(obj.to_dict())
     if isinstance(obj, dict):
         # Recursively call serialize on each item in the dictionary, excluding keys that start with "_" and None values
         return OrderedDict(
-            (k, serialize(v)) for k, v in obj.items() if not k.startswith("_") and v is not None
+            (k, v_serialized)
+            for k, v in obj.items()
+            if not k.startswith("_")
+            and (v_serialized := serialize(v)) not in (None, [], {})
         )
     elif isinstance(obj, list):
         # Recursively call serialize on each item in the list, excluding None values
-        return [serialize(item) for item in obj if item is not None]
+        return [item for item in (serialize(i) for i in obj) if item is not None]
+        # return [serialize(item) for item in obj if item is not None]
     elif isinstance(obj, tuple):
         # Handle tuples, excluding (None,)
         return tuple(serialize(item) for item in obj if item is not None)
@@ -96,10 +101,8 @@ def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, i
         )
     elif isinstance(obj, (uuid.UUID, decimal.Decimal, datetime)):
         # Convert specific types to string
-        # logger.error(f"Converting {obj} to string")
         return str(obj)
     # Return other primitive types (e.g., int, str) as-is
-    # logger.error(f"Returning {obj} as is ({type(obj)})")
     return obj
 
 
