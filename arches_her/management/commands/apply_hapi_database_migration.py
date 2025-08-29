@@ -1393,6 +1393,8 @@ class Command(BaseCommand):
         total_duration = time.time() - total_start_time
         minutes, seconds = divmod(int(total_duration), 60)
         message = f'Total MV refresh time: {minutes} minutes {seconds} seconds'
+        if progress_callback:
+            progress_callback(message)
         tqdm.write(message)
 
     def delete_schema(self, cursor):
