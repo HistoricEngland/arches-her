@@ -871,25 +871,39 @@ class Command(BaseCommand):
                         CREATE MATERIALIZED VIEW hapi.resources_mv
                         TABLESPACE pg_default
                         AS
-                        WITH edit_log_cte AS (
-                            SELECT DISTINCT ON (e.resourceinstanceid) e.resourceinstanceid::uuid AS resourceinstanceid,
+                        WITH mapping(name, field_uuid) AS (
+                            VALUES 
+                                ('Monument','325a2f33-efe4-11eb-b0bb-a87eeabdefba'),
+                                ('Maritime Vessel','f1cbd897-f007-11eb-8b4b-a87eeabdefba'),
+                                ('Historic Aircraft','7f5591c5-efed-11eb-8e44-a87eeabdefba')
+                        ),
+                        edit_log_cte AS (
+                            SELECT DISTINCT ON (e.resourceinstanceid)
+                                e.resourceinstanceid::uuid AS resourceinstanceid,
                                 g.name,
                                 e."timestamp",
+                                e.edittype = 'delete' AS "deleted",
                                 CASE 
-                                    WHEN e.edittype = 'delete' THEN true
-                                    ELSE false
-                                END AS "deleted"
+                                    WHEN e.edittype = 'delete' THEN (
+                                        SELECT el2.newvalue->>m.field_uuid
+                                        FROM public.edit_log el2
+                                        WHERE el2.resourceinstanceid = e.resourceinstanceid
+                                        AND el2.newvalue ? m.field_uuid
+                                        LIMIT 1
+                                    )
+                                    ELSE NULL
+                                END AS primary_reference_number
                             FROM edit_log e
                             JOIN graphs g ON e.resourceclassid = g.graphid::text
-                            WHERE e."timestamp" >= '0001-01-01 00:00:00+00'::timestamp with time zone
-                            AND (g.name = ANY (ARRAY['Monument'::text, 'Maritime Vessel'::text, 'Historic Aircraft'::text]))
+                            LEFT JOIN mapping m ON m.name = g.name
+                            WHERE g.name IN ('Monument', 'Maritime Vessel', 'Historic Aircraft')
                             ORDER BY e.resourceinstanceid, e."timestamp" DESC
                         )
                         SELECT
                             el.resourceinstanceid,
                             el.name AS resource_type,
                             rn.resource_name,
-                            srn.primary_reference_number,
+                            COALESCE(srn.primary_reference_number, el.primary_reference_number::numeric) AS primary_reference_number,
                             el.deleted,
                             el."timestamp" AS most_recent_timestamp
                         FROM edit_log_cte el
