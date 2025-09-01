@@ -315,12 +315,12 @@ class BatchSubmitCronStatusView(View):
     def get(self, request, task_id):
         result = AsyncResult(task_id)
         if result.state == 'PENDING':
-            return JsonResponse({"status": "pending", "message": "Please wait..."})
+            return JsonResponse({"status": "pending", "message": "Please wait..."}, status=202)
         elif result.state == 'PROGRESS':
             return JsonResponse({
                 "status": "progress",
                 "message": result.info.get('message', 'Task is in progress.')
-            })
+            }, status=202)
         elif result.state == 'SUCCESS':
             return JsonResponse(result.result)
         elif result.state == 'FAILURE':
@@ -365,12 +365,12 @@ class DataRefreshStatusView(View):
     def get(self, request, task_id):
         result = AsyncResult(task_id)
         if result.state == 'PENDING':
-            return JsonResponse({"status": "pending", "message": "Please wait..."})
+            return JsonResponse({"status": "pending", "message": "Please wait..."}, status=202)
         elif result.state == 'PROGRESS':
             return JsonResponse({
                 "status": "progress",
                 "message": result.info.get('message', 'Task is in progress.')
-            })
+            }, status=202)
         elif result.state == 'SUCCESS':
             return JsonResponse(result.result)
         elif result.state == 'FAILURE':

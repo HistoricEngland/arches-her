@@ -349,6 +349,7 @@ def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[Related
         rows = cursor.fetchall()
         for row in rows:
             _, primary_reference_number, types, name, description = row
+            description = html.unescape(strip_tags(description)).replace("\n", "")
             related_events.append(RelatedEvent(
                 primary_reference_number=primary_reference_number,
                 types=types,

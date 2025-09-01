@@ -154,17 +154,17 @@ class Command(BaseCommand):
                         WITH descriptions AS
                         (
                             SELECT d.resourceinstanceid,
-                                d.description,
+                                trim(d.description) AS description,
                                 d.description_type
                             FROM monument.descriptions d
                             UNION ALL
                             SELECT d.resourceinstanceid,
-                                d.description,
+                                trim(d.description) AS description,
                                 d.description_type
                             FROM historic_aircraft.descriptions d
                             UNION ALL
                             SELECT d.resourceinstanceid,
-                                d.description,
+                                trim(d.description) AS description,
                                 d.description_type
                             FROM maritime_vessel.descriptions d
                         )
@@ -174,7 +174,7 @@ class Command(BaseCommand):
                             v.value as type
                         FROM descriptions d
                         JOIN public.values v ON d.description_type = v.valueid
-                        WHERE lower(v.value) = ANY (ARRAY['full', 'summary'])
+                        WHERE lower(v.value) IN ('full', 'summary')
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -257,7 +257,7 @@ class Command(BaseCommand):
                         AS
                         SELECT
                             resourceinstanceid,
-                            bibliographic_source_name
+                            trim(bibliographic_source_name) AS bibliographic_source_name
                         FROM bibliographic_source.bibliographic_source_names
                         WITH NO DATA;
                     """)
@@ -275,7 +275,7 @@ class Command(BaseCommand):
                         AS
                         SELECT
                             resourceinstanceid,
-                            statement_of_responsibility 
+                            trim(statement_of_responsibility) AS statement_of_responsibility
                         FROM bibliographic_source.bibliographic_source_creation
                         WHERE statement_of_responsibility IS NOT NULL
                         WITH NO DATA;
@@ -295,28 +295,28 @@ class Command(BaseCommand):
                         SELECT
                             resourceinstanceid, 
                             ((bibliographic_source_citation->0)->>'resourceId'::text)::uuid as bibliographic_source_citation, 
-                            source_number_value, 
-                            page_s_, 
-                            figs_, 
-                            plate_s_   
+                            trim(source_number_value) AS source_number_value, 
+                            trim(page_s_) AS page_s_, 
+                            trim(figs_) AS figs_, 
+                            trim(plate_s_) AS plate_s_   
                         FROM monument.bibliographic_source_citation
                         UNION ALL
                         SELECT
                             resourceinstanceid, 
                             ((bibliographic_source_citation->0)->>'resourceId'::text)::uuid as bibliographic_source_citation, 
-                            source_number_value, 
-                            page_s_, 
-                            figs_, 
-                            plate_s_   
+                            trim(source_number_value) AS source_number_value, 
+                            trim(page_s_) AS page_s_, 
+                            trim(figs_) AS figs_, 
+                            trim(plate_s_) AS plate_s_   
                         FROM historic_aircraft.bibliographic_source_citation
                         UNION ALL
                         SELECT
                             resourceinstanceid, 
                             ((bibliographic_source_citation->0)->>'resourceId'::text)::uuid as bibliographic_source_citation, 
-                            source_number_value, 
-                            page_s_, 
-                            figs_, 
-                            plate_s_   
+                            trim(source_number_value) AS source_number_value, 
+                            trim(page_s_) AS page_s_, 
+                            trim(figs_) AS figs_, 
+                            trim(plate_s_) AS plate_s_   
                         FROM maritime_vessel.bibliographic_source_citation
                         WITH NO DATA;
                     """)
@@ -366,8 +366,8 @@ class Command(BaseCommand):
                         TABLESPACE pg_default           
                         AS
                         SELECT bsc.resourceinstanceid,
-                            bsn.bibliographic_source_name AS information_source_title,
-                            ( SELECT jsonb_agg(statement_of_responsibility) AS jsonb_agg
+                            trim(bsn.bibliographic_source_name) AS information_source_title,
+                            (SELECT jsonb_agg(statement_of_responsibility) AS jsonb_agg
                                 FROM hapi.bibliographic_source_creation_mv bscr
                                 WHERE bsc.bibliographic_source_citation = bscr.resourceinstanceid) AS statement_of_authority,
                             bsc.source_number_value AS source_no,
@@ -419,8 +419,8 @@ class Command(BaseCommand):
                                 )
                         SELECT os.resourceinstanceid,
                             v.value AS external_cross_reference_source,
-                            os.external_cross_reference,
-                            os.external_cross_reference_description,
+                            trim(os.external_cross_reference) AS external_cross_reference,
+                            trim(os.external_cross_reference_description) AS external_cross_reference_description,
                             os.url
                         FROM other_statuses os
                             LEFT JOIN "values" v ON os.external_cross_reference_source = v.valueid
@@ -518,7 +518,7 @@ class Command(BaseCommand):
                         AS
                         WITH primary_names AS (
                                 SELECT aan.resourceinstanceid AS resource_id,
-                                    aan.activity_name AS name,
+                                    trim(aan.activity_name) AS name,
                                     count(*) OVER (PARTITION BY aan.resourceinstanceid) AS primary_count,
                                     row_number() OVER (PARTITION BY aan.resourceinstanceid ORDER BY aan.activity_name) AS rn
                                 FROM activity.activity_names aan
@@ -573,12 +573,12 @@ class Command(BaseCommand):
                         TABLESPACE pg_default
                         AS
                         SELECT ad.resourceinstanceid,
-                            ad.activity_description,
+                            trim(ad.activity_description) AS activity_description,
                             v.value,
                             row_number() OVER (PARTITION BY ad.resourceinstanceid, v.value ORDER BY ad.activity_description_type) AS rn
                         FROM activity.activity_descriptions ad
                             JOIN "values" v ON ad.activity_description_type = v.valueid
-                        WHERE v.value = ANY (ARRAY['Full'::text, 'Summary'::text])
+                        WHERE v.value IN ('Full', 'Summary')
                         WITH NO DATA;
                     """)
                     cursor.execute("""
@@ -704,7 +704,7 @@ class Command(BaseCommand):
                         WITH ranked_tiles_1 AS (
                             SELECT 
                                 tiles.resourceinstanceid,
-                                tiles.tiledata ->> '676d47ff-9c1c-11ea-b07f-f875a44e0e11'::text AS resource_name,
+                                trim(tiles.tiledata ->> '676d47ff-9c1c-11ea-b07f-f875a44e0e11'::text) AS resource_name,
                                 tiles.sortorder,
                                 row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
                             FROM 
@@ -715,7 +715,7 @@ class Command(BaseCommand):
                         ranked_tiles_2 AS (
                             SELECT 
                                 tiles.resourceinstanceid,
-                                tiles.tiledata ->> '490c26da-efe9-11eb-abc4-a87eeabdefba'::text AS resource_name,
+                                trim(tiles.tiledata ->> '490c26da-efe9-11eb-abc4-a87eeabdefba'::text) AS resource_name,
                                 tiles.sortorder,
                                 row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
                             FROM 
@@ -726,7 +726,7 @@ class Command(BaseCommand):
                         ranked_tiles_3 AS (
                             SELECT 
                                 tiles.resourceinstanceid,
-                                tiles.tiledata ->> 'd00d4c8c-299f-11eb-bc0e-f875a44e0e11'::text AS resource_name,
+                                trim(tiles.tiledata ->> 'd00d4c8c-299f-11eb-bc0e-f875a44e0e11'::text) AS resource_name,
                                 tiles.sortorder,
                                 row_number() OVER (PARTITION BY tiles.resourceinstanceid ORDER BY tiles.sortorder) AS rn
                             FROM 
@@ -1296,7 +1296,7 @@ class Command(BaseCommand):
                         FROM hapi.associated_resources_mv ar
                         JOIN primary_reference_numbers prn 
                             ON ar.associated_resource = prn.associated_resource
-                        JOIN "values" v 
+                        LEFT JOIN "values" v 
                             ON ar.association_type = v.valueid
                         WITH NO DATA;
                     """)
