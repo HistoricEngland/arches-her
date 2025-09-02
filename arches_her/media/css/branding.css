@@ -702,6 +702,43 @@
 
 /* Featurettes - End */
 
+/* Notification Banner Styles - Start*/
+
+.notification-banner {
+    background: #d1691e;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 1.6em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 20px 0;
+    width: 100%;
+    max-width: 1090px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .notification-banner {
+        border-radius: 0;
+        font-size: 1.2em;
+    }
+    .notification-banner + .featurette1-left-container {
+        margin-top: 56px;
+    }
+}
+
+@media (max-width: 767px) {
+    .featurette1-left-container--with-notification {
+    top: calc(62vw + 80px) !important;
+    }
+
+}
+
+/* Notification Banner Styles - End */
+
 /* Footer - Start */
 
 .landing-page footer {
