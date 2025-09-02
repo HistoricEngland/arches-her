@@ -50,6 +50,6 @@ class IndexView(TemplateView):
                     context["plugins"].append(plugin)
 
         context["user_is_reviewer"] = request.user.groups.filter(name="Resource Reviewer").exists()
-        context["notification"] = getattr(settings, "NOTIFICATION", None)
+        context["notification"] = getattr(settings, "MAINTENANCE_NOTIFICATION", None)
 
         return render(request, "index.htm", context)
