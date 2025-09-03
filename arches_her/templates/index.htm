@@ -134,12 +134,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         </p>
         <div class="container">
             <div class="row featurette1">
-                <div class="featurette1-left-container">
+                <div class="featurette1-left-container{% if notification %} featurette1-left-container--with-notification{% endif %}">
                     <h1>Greater London Historic Environment Record<br/>
                         (GLHER)</h1>
                     <p class="lead">The online heritage information and management system for London.</p>
                 </div>
                 <div class="featurette1-right-container pull-right">
+                    {% if notification %}
+                    <div class="notification-banner" aria-live="assertive">
+                        {{ notification|safe }}
+                    </div>
+                    {% endif %}
                     <img src="{% static 'img/landing/featurette1.png' %}" alt="Photo of the London landscape" class="img-rounded img-responsive">
                 </div>
             </div>
