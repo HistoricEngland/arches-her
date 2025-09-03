@@ -141,7 +141,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div class="featurette1-right-container pull-right">
                     {% if notification %}
-                    <div class="notification-banner">
+                    <div class="notification-banner" aria-live="assertive">
                         {{ notification|safe }}
                     </div>
                     {% endif %}
