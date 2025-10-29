@@ -1,0 +1,53 @@
+
+services:
+    archesher:
+      container_name: archesher
+      image: he/arches_her_keystone:dev_build
+      build:
+        args:
+          - "PROJ_NAME=arches_her"
+          - "DOCKER_PATH=./arches_her/.ac_arches_her/docker"
+        context: ../..
+        dockerfile: ./arches_her/.ac_arches_her/Dockerfile
+      command: run_arches
+      volumes:
+        - ../../arches:/web_root/arches
+        - ../../arches_her:/web_root/arches_her
+        - ./docker:/web_root/docker
+        - ../../arches_her-package:/web_root/arches_her_package
+        - ../../arches_her-data:/web_root/arches_her_data
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 8002:8000
+        - 5678:5678
+      stdin_open: true
+      tty: true
+    
+    archesher-livereload:
+      profiles:
+        - livereload
+      container_name: archesher_livereload
+      image: he/arches_her_keystone:dev_build
+      command: run_livereload
+      volumes:
+        - ../../arches:/web_root/arches
+        - ../../arches_her:/web_root/arches_her
+      env_file:
+        - ./docker/env_file.env
+      ports:
+        - 35729:35729      
+      depends_on:
+          - archesher
+      stdin_open: true
+      tty: true
+    
+
+networks:
+  default:
+    external: true
+    name: archesher-network
+
+volumes:
+    arches-log:
+    arches-static:
