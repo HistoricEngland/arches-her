@@ -13,6 +13,7 @@ services:
       volumes:
         - ../../arches:/web_root/arches
         - ../../arches_her:/web_root/arches_her
+        - ../../keystone_data:/web_root/keystone_data
         - ./docker:/web_root/docker
         - ../../arches_her-package:/web_root/arches_her_package
         - ../../arches_her-data:/web_root/arches_her_data

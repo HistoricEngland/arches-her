@@ -10,6 +10,7 @@
 This project is configured to Arches container tools (ACT), so only provides instructions for setting up the development environment that way.  Instructions assume your workspace is in WSL or macOS.
 
 1. Clone this repo to your vscode workspace into a directory call `arches_her`: `git clone https://github.com/HistoricEngland/arhces-her arches_her`
+1. Clone Keystone-data repo to your vscode workspace into a directory call `keystone_data`: `git clone https://github.com/HistoricEngland/keystone-data.git keystone_data`
 1. Checkout the Keystone branch: `cd arches_her && git checkout keystone/main && cd ..`
 1. Create virtual env in the workspace: `python -m venv env && source ./env/bin/activate`.
 1. Install ACT: `pip install arches-containers`

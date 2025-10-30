@@ -12,6 +12,7 @@ ENV WEB_ROOT=/web_root
 ENV APP_ROOT=${WEB_ROOT}/${ARCHES_PROJECT}
 ENV PKG_ROOT=${APP_ROOT}_package
 ENV DATA_ROOT=${APP_ROOT}_data
+ENV KEYSTONE_DATA=${WEB_ROOT}/keystone_data
 # Root project folder
 ENV ARCHES_ROOT=${WEB_ROOT}/arches
 ENV WHEELS=/wheels
