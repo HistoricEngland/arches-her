@@ -179,23 +179,28 @@ run_setup_db() {
 		python3 manage.py packages -o load_package -s ./${ARCHES_PROJECT}/pkg -db -dev -y
 		# If there is a keystone_data/pkg, we can load that too
 		if [[ -d ${WEB_ROOT}/keystone_data/pkg ]];then
-
+			echo ""
+			echo "----- LOADING KEYSTONE_DATA PACKAGE -----"
+			echo ""
 			# we must only register the functions, and ignore all the map layers and business_data
 			# rename the pkg/business_data to pkg/business_data_ignore and create an empty business_data folder
-			mv ${WEB_ROOT}/keystone_data/pkg/business_data ${WEB_ROOT}/keystone_data/pkg/business_data_ignore
+			echo "... renaming business_data and map_layers folders to ignore them ..."
+			mv ${WEB_ROOT}/keystone_data/pkg/business_data ${WEB_ROOT}/keystone_data/pkg/ignore_business_data_ignore
 			mkdir ${WEB_ROOT}/keystone_data/pkg/business_data
 
 			# do the same with the map_layers
-			mv ${WEB_ROOT}/keystone_data/pkg/map_layers ${WEB_ROOT}/keystone_data/pkg/map_layers_ignore
+			mv ${WEB_ROOT}/keystone_data/pkg/map_layers ${WEB_ROOT}/keystone_data/pkg/ignore_map_layers_ignore
 			mkdir ${WEB_ROOT}/keystone_data/pkg/map_layers	
 
+			echo "... loading keystone_data package ..."
 			python3 manage.py packages -o load_package -s ${WEB_ROOT}/keystone_data/pkg -y
 
+			echo "... restoring business_data and map_layers folders ..."
 			# now restore the renamed folders
 			rm -rf ${WEB_ROOT}/keystone_data/pkg/business_data
-			mv ${WEB_ROOT}/keystone_data/pkg/business_data_ignore ${WEB_ROOT}/keystone_data/pkg/business_data
+			mv ${WEB_ROOT}/keystone_data/pkg/ignore_business_data_ignore ${WEB_ROOT}/keystone_data/pkg/business_data
 			rm -rf ${WEB_ROOT}/keystone_data/pkg/map_layers
-			mv ${WEB_ROOT}/keystone_data/pkg/map_layers_ignore ${WEB_ROOT}/keystone_data/pkg/map_layers
+			mv ${WEB_ROOT}/keystone_data/pkg/ignore_map_layers_ignore ${WEB_ROOT}/keystone_data/pkg/map_layers
 		fi
 	else
 		cd ${WEB_ROOT}/${ARCHES_PROJECT}
