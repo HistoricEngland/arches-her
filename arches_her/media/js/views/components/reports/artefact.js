@@ -6,6 +6,7 @@ define([
     'utils/resource',
     'utils/report',
     'views/components/reports/scenes/name',
+    'views/components/reports/scenes/referenced-by',
     'views/components/reports/scenes/json',
     'views/components/reports/scenes/archive'
 ], function($, _, ko, arches, resourceUtils, reportUtils) {
@@ -45,6 +46,7 @@ define([
             self.resource = ko.observable(self.reportMetadata()?.resource);
             self.displayname = ko.observable(ko.unwrap(self.reportMetadata)?.displayname);
             self.activeSection = ko.observable('name');
+            self.resourceinstanceid = ko.observable(params.report?.report_json?.resourceinstanceid);
 
             self.nameDataConfig = {
                 name: 'artefact',
