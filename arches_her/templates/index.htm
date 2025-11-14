@@ -51,7 +51,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
     <!-- To collect end-user usage analytics about your application, insert the following script into each page you want to track. Place this code immediately before the closing </head> tag, and before any other scripts. Your first data will appear automatically in just a few seconds. -->
     <script type="text/javascript">
         // ##### APPINSIGHTS MONITORING #####
-        var connectionString = '#{appinsights-key}#';
+        var connectionString = '#{appinsights-connectionstring}#';
         // Support both connection string and legacy instrumentation key formats
         var isConnectionString = connectionString.includes('InstrumentationKey=');
         
