@@ -10,7 +10,7 @@ define([
             const self = this;
             Object.assign(self, reportUtils);
             self.resourceinstanceid = params.resourceInstanceId;
-            self.graphs_array = params.graphs
+            self.graphs_array = params.graphs || [];
             self.graphs_list = []
             self.graphs = []
             self.relations = ko.observableArray();
@@ -53,12 +53,25 @@ define([
                 })
                     .done(function(response) {
                         self.getGraphs().then(function(){
-                            var response_related_resources = response.related_resources.related_resources
+                            let this_rid = response.related_resources.resource_instance.resourceinstanceid;
+                            //need to look at the resource_relationships and find other resources that are pointing TO this one
+                            other_resource_ids = [];
+                            for(const rr of response.related_resources.resource_relationships){
+                                if(rr.resourceinstanceidto == self.resourceinstanceid){
+                                    other_resource_ids.push(rr.resourceinstanceidfrom)
+                            }
+                            }
+                            // we now have the resources that point at this one.
+                            var response_related_resources = response.related_resources.related_resources.filter((x) => other_resource_ids.includes(x.resourceinstanceid));
                             self.relations.removeAll()
                             for(r in response_related_resources){
                                 var response_related_resource = response_related_resources[r]
-                                if(self.graphs_list.includes(response_related_resource["graph_id"] )){
-                                    var graph_name = (self.graphs.find((gr) => gr.graphid === response_related_resource["graph_id"]))["name"]
+                                if (
+                                    self.graphs_list.length === 0 ||
+                                    self.graphs_list.includes(response_related_resource["graph_id"])
+                                ) {
+                                    var graph_obj = self.graphs.find((gr) => gr.graphid === response_related_resource["graph_id"]);
+                                    var graph_name = graph_obj ? graph_obj.name : "unknown";
                                     self.relations.push({"related_resource_name": response_related_resource["displayname"], "related_resource_link": arches.urls.resource_report + response_related_resource["resourceinstanceid"], "related_resource_type": graph_name})
                                 }
                             }
@@ -70,8 +83,9 @@ define([
                     });
             };
 
-
-
+            // Call getRelatedResources to trigger data loading on component initialization
+            self.getRelatedResources();
+            
         },
         template: { require: 'text!templates/views/components/reports/scenes/referenced-by.htm' }
     });
