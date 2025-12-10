@@ -121,9 +121,19 @@
                                     {% if location_data|has_key:"Location Descriptions" %}
                                     <h4>Location Descriptions</h4>
                                     <p>
+                                       {# Show 'Summary' type first if present #}
                                        {% for desc in location_data|val_from_key:"Location Descriptions" %}
-                                          <strong>{{ desc|val_from_key:"Location Description Type"|val_from_key:"@display_value" }}:</strong><br>
-                                          {{ desc|val_from_key:"Location Description"|val_from_key:"@display_value"|safe }}<br>
+                                          {% if desc|val_from_key:"Location Description Type"|val_from_key:"@display_value" == "Summary" %}
+                                             <strong>{{ desc|val_from_key:"Location Description Type"|val_from_key:"@display_value" }}:</strong><br>
+                                             {{ desc|val_from_key:"Location Description"|val_from_key:"@display_value"|safe }}<br>
+                                          {% endif %}
+                                       {% endfor %}
+                                       {# Then show all others except 'Summary' #}
+                                       {% for desc in location_data|val_from_key:"Location Descriptions" %}
+                                          {% if desc|val_from_key:"Location Description Type"|val_from_key:"@display_value" != "Summary" %}
+                                             <strong>{{ desc|val_from_key:"Location Description Type"|val_from_key:"@display_value" }}:</strong><br>
+                                             {{ desc|val_from_key:"Location Description"|val_from_key:"@display_value"|safe }}<br>
+                                          {% endif %}
                                        {% endfor %}
                                     </p>
                                     {% endif %}
