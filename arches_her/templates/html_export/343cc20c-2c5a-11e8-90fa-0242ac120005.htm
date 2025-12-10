@@ -443,7 +443,7 @@
                         {% for assocAAAVA in resource_data|val_from_key:"Associated Monuments, Areas and Artefacts" %}
                         <div class="rrow">
                            <div class="rcell" data-title="Associated Monument/Area/Artefact">
-                              {{ assocAAAVA|val_from_key:"Associated Monument, Area or Artefact"|val_from_key:"@display_value" }}
+                              {{ assocAAAVA|val_from_key:"Monument, Area or Artefact"|val_from_key:"@display_value" }}
                            </div>
                            <div class="rcell" data-title="Association Type">
                               {{ assocAAAVA|val_from_key:"Association Type"|val_from_key:"@display_value" }}
