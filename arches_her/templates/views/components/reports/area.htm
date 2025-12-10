@@ -142,6 +142,13 @@
                 <p class="sr-only" data-bind="let: {tabTitleText: document.querySelector('.aher-report-anchors li.active').innerText + ' tab now displayed'}">
                     <span data-bind="text: {% trans "tabTitleText" %}"></span>
                 </p>
+                <!-- Referenced By section -->
+                <div data-bind="component: {
+                    name: 'views/components/reports/scenes/referenced-by',
+                    params: {
+                        resourceInstanceId: ko.unwrap(resourceinstanceid),
+                    }
+                }"></div>
                 <div data-bind="component: {
                     name: 'views/components/reports/scenes/resources',
                     params: {

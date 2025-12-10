@@ -6,6 +6,7 @@ define([
     'utils/resource',
     'utils/report',
     'views/components/reports/scenes/name',
+    'views/components/reports/scenes/referenced-by',
     'views/components/reports/scenes/audit',
     'views/components/reports/scenes/default',
     'views/components/reports/scenes/json'
@@ -31,6 +32,7 @@ define([
             self.resource = ko.observable(self.reportMetadata()?.resource);
             self.displayname = ko.observable(ko.unwrap(self.reportMetadata)?.displayname);
             self.activeSection = ko.observable('source');
+            self.resourceinstanceid = ko.observable(params.report?.report_json?.resourceinstanceid);
 
             self.publicationTableConfig = {
                 ...self.defaultTableConfig,
