@@ -2,96 +2,120 @@
 /* Login page                                                                      */
 /***********************************************************************************/
 
-/* General - Start */
-
-.arches-login {
-    font-family: Source Sans Pro, Arial, Helvetica;
-    font-size: 1.125rem;
-    font-weight: 300;
-}
-
-.arches-login a:focus,
-.arches-login input:focus,
-.arches-login button:focus,
-.arches-login .form-control:focus {
-    outline: 2px solid #EC6625!important;
-}
-
-/* General - End */
-
-/* Header - Start */
-
-.arches-login header {
-    width: 100%;
-    height: 80px;
-    box-shadow: 0px 3px 6px #00000029;
-}
-
-.arches-login .header-bar {
-    display: flex;
-    max-width: 1439px;
-    margin: 0 auto;
-    justify-content: space-between;
-}
-
-.arches-login .header-bar__logo {
-    padding: 17px 30px;
-}
-
-.arches-login .header-bar__logo-heading {
-    margin-top: 0;
-    font-size: 1.125rem;
-    line-height: 0;
-}
-
-.arches-login .header-bar__logo-image {
-    width: 200px;
-}
-
-/* Header - End */
-
 /* Login Page - Start */
 
-#container.cls-container.arches-login {
+.login-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    font-weight: 300;
     background: #fff;
     overflow-y: auto;
     height: 100vh;
 }
 
-#login-form {
-    position: relative;
-    top: 80px;
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 40px 108px;
-    background: transparent linear-gradient(123deg, #FFFFFF 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
-    box-shadow: 10px 10px 20px #0000001A;
-    border: 2px solid #FFFFFF;
-    border-radius: 5px;
-    opacity: 1;
-    text-align: left;
-}
-
-#login-form p,
-#login-form label {
-    color: #000;
-    font-size: 1.8rem;
-}
-
-#login-form label {
-    font-weight: 500;
-}
-
-#login-form a {
-    color: #2579A4;
+.login-container a:not(.he-button):not(footer a):not(.header-bar__logo-link) {
+    color: #1a1a1a;
     text-decoration: underline;
 }
 
-#login-form a:hover {
-    color: #B62126;
+.login-container a:not(.he-button):not(footer a):not(.header-bar__logo-link):hover {
+    text-decoration: underline 2px;
 }
 
-#login-form input {
+.login-container a:not(.he-button):not(footer a):not(.header-bar__logo-link):focus {
+    box-shadow: 0 -2px #fd0, 0 4px #000 !important;
+    background-color: #fd0;
+    text-decoration: none;
+    outline: none !important;
+    outline-offset: 0;
+}
+
+.login-container header {
+    width: 100%;
+    height: 80px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1607843137);
+    margin-bottom: 30px;
+}
+
+.login-container header .header-bar {
+    align-items: baseline;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1439px;
+}
+
+.login-container header .header-bar .header-bar__logo {
+    padding: 16px 60px;
+}
+
+.login-container header .header-bar .header-bar__logo .header-bar__logo-image {
+    height: 47px;
+    width: auto;
+}
+
+.login-container header .header-bar .hp-header__link-container {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.login-container header .header-bar .hp-header__link-container .hp-header__return-link-wrapper {
+    display: flex;
+    margin-right: 80px;
+    align-items: center;
+}
+
+.login-container main {
+    display: flex;
+    flex-grow: 1;
+    padding-bottom: 60px;
+    position: relative;
+}
+
+.login-container main .login-form-container {
+    margin: 0 auto;
+}
+
+.login-container main .login-form-container #login-form {
+    position: relative;
+    top: 70px;
+    max-width: 650px;
+    padding: 20px;
+    background-color: #edfafd;
+}
+
+.login-container main .login-form-container #login-form.forgot-password-form {
+    background-color: #fff;
+}
+
+.login-container main .login-form-container #login-form .arches-signin-subtext {
+    border-bottom: none;
+    color: #333;
+    font-size: 3.2rem;
+    padding: 0;
+}
+
+.login-container main .login-form-container #login-form p,
+.login-container main .login-form-container #login-form label {
+    color: #333;
+    font-size: 1.76rem;
+}
+
+.login-container main .login-form-container #login-form label {
+    font-weight: 600;
+}
+
+.login-container main .login-form-container #login-form .form-group {
+    margin-bottom: 19px;
+}
+
+.login-container main .login-form-container #login-form .form-group:nth-of-type(1) {
+    margin-top: 15px;
+}
+
+.login-container main .login-form-container #login-form .form-group input {
     width: 100%;
     height: 40px;
     border: 1px solid #808080;
@@ -100,77 +124,172 @@
     font-weight: inherit;
 }
 
-#login-form .form-group {
+.login-container main .login-form-container #login-form .form-group .he-button {
+    align-content: center;
+    border-radius: 5px;
+    box-shadow: none;
+    display: inline-block;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    margin: 5px;
+    padding: 12px 30px;
+    text-decoration: none !important;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    white-space: normal;
+    background-color: #f8bb25;
+    border: 1px solid #0b0c0c;
+    color: #0b0c0c;
+}
+
+.login-container main .login-form-container #login-form .form-group .he-button:hover {
+    background-color: #fcdd92;
+    color: #0b0c0c;
+}
+
+.login-container main .login-form-container #login-form .form-group .he-button:focus {
+    background-color: rgb(11, 12, 12);
+    box-shadow: rgb(11, 12, 12) 0px 0px 0px 3px inset, rgb(255, 221, 0) 0px 0px 0px 3px !important;
+    color: rgb(255, 255, 255);
+    outline-offset: 2px;
+    border-color: rgba(0, 0, 0, 0);
+    outline: rgb(255, 255, 255) solid 2px;
+}
+
+.login-container main .login-form-container #login-form .form-group .errorlist {
+    color: red;
+    font-size: 1.4rem;
     margin-bottom: 19px;
 }
 
-#login-form .form-group:nth-of-type(1) {
-    margin-top: 15px;
-}
-
-.arches-signin-subtext {
-    border-bottom: none;
-    color: #555555;
-    font-size: 3.2rem;
-    padding: 0;
-}
-
-#sign-in-button,
-#login-cancel-button {
-    padding: 14px 20px;
-    background: #2579A4;
-    border: 1px solid #E3EFFA;
-    border-radius: 5px;
-    font-size: 1.8rem;
-    margin: 10px 0 5px;
-}
-
-#sign-in-button:hover {
-    border-color: #2579a4;
-    color: #2579a4;
-    background: #fff;
-}
-
-#login-cancel-button {
-    background: #E3EFFA;
-    color: #0D2937;
-    border: 1px solid #0D2937;
-    margin-top: 0;
-}
-
-#login-cancel-button:hover {
-    background: #fff;
-}
-
-.arches-login .row-cancel-button {
-    position: relative;
-    top: 180px;
-}
-
-#login-failed-alert {
+.login-container main .login-form-container #login-failed-alert {
     background-color: #943725;
     border-radius: 5px;
     font-size: 1.8rem;
 }
 
-#login-failed-alert button.close {
-    opacity: 1; 
-}
-
-#login-form .alert-title {
+.login-container main .login-form-container #login-failed-alert .alert-title {
     font-size: 2rem;
     font-weight: 600;
     color: #fff;
     margin-bottom: 10px;
 }
 
-#login-form .errorlist {
-    color: red;
-    font-size: 1.4rem;
-    margin-bottom: 19px;
+.login-container main .login-form-container #login-failed-alert button.close {
+    opacity: 1;
 }
 
+.login-container footer {
+    margin-top: 80px;
+    position: relative;
+    bottom: 0;
+}
+
+.login-container footer p,
+.login-container footer a {
+    color: #fff;
+    font-size: 1.8rem;
+}
+
+.login-container footer a {
+    margin-right: 25px;
+}
+
+.login-container footer .footer-bottom {
+    min-height: 60px;
+    background: #2A2A2A;
+}
+
+.login-container footer .footer-bottom .footer-container {
+    min-height: 60px;
+}
+
+.login-container footer .footer-bottom .footer-container .footer-links {
+    min-height: 60px;
+}
+
+.login-container footer .footer-bottom .footer-container .footer-links a {
+    white-space: nowrap;
+    text-decoration: underline;
+    font-size: 1.8rem;
+    line-height: 60px;
+    color: #fff;
+}
+
+.login-container footer .footer-bottom .footer-container .footer-links a:hover {
+    text-decoration: underline 2px;
+}
+
+.login-container footer .footer-bottom .footer-container .footer-links a:focus {
+    box-shadow: 0 -2px #fd0, 0 4px #fff !important;
+    color: #1a1a1a !important;
+    background-color: #fd0;
+    text-decoration: none;
+    outline: none !important;
+    outline-offset: 0;
+}
+
+.login-container footer .footer-bottom .footer-container .footer-copyright .copyright {
+    text-align: right;
+    line-height: 60px;
+}
+
+/* Media Queries - Start */
+
+@media screen and (max-width: 768px) {
+    .login-container header .header-bar .header-bar__logo {
+        padding: 16px 15px;
+    }
+
+    .login-container main .login-form-container #login-form {
+        top: 0;
+    }
+
+    .login-container footer {
+        margin-top: 40px;
+    }
+
+    .login-container footer .footer-bottom .footer-container .footer-links a {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .login-container footer .footer-bottom .footer-container .footer-copyright .copyright {
+        text-align: left;
+    }
+}
+
+/* Media Queries - End */
+
 /* Login Page - End */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Cookie Management - Start */
 
@@ -270,47 +389,6 @@
 }
 
 /* Cookie Management - End */
-
-/* Media Queries - Start */
-
-@media screen and (max-width: 768px) {
-    .arches-login header {
-        height: 60px;
-        box-shadow: none;
-        border-bottom: 1px solid #d4d4d4;
-    }
-
-    .arches-login .header-bar__logo {
-        padding: 13px 20px;
-    }
-
-    .arches-login .header-bar__logo-image {
-        width: 150px;
-    }
-    
-    #login-form {
-        background: none;
-        box-shadow: none;
-        border: none;
-        border-radius: 0;
-        padding: 20px;
-        top: 50px;
-    }
-
-    #sign-in-button,
-    #login-cancel-button {
-        width: 100%;
-    }
-
-    .arches-login .row-cancel-button {
-        margin: 5px auto;
-        padding: 20px;
-        top: 0;
-        max-width: 650px;
-    }
-}
-
-/* Media Queries - End */
 
 /***********************************************************************************/
 /* Landing page                                                                    */

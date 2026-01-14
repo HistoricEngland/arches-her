@@ -7,14 +7,20 @@
 
 {% block body %}
 
-<div id="container" class="cls-container arches-login">
+<div class="login-container">
 
-	<header>
+	<header class="header">
 		<div class="header-bar">
-			<div title="Keystone - login page" class="header-bar__logo">
-				<div class="header-bar__logo-heading">
-					<a href="/" class="header-bar__logo-link" aria-label="Link to homepage">
-						<img class="header-bar__logo-image" src="{{ STATIC_URL }}img/HE_Logo_RGB.svg" alt="Historic England logo">
+			<div class="header-bar__logo">
+				<a href="https://historicengland.org.uk" aria-label="Keystone - login page" class="header-bar__logo-link">
+					<img class="header-bar__logo-image" src="{{ STATIC_URL }}img/HE_Logo_Stacked_RGB.svg" alt="Historic England logo">
+				</a>
+			</div>
+			<div class="hp-header__link-container hidden-xs">
+				<div class="hp-header__return-link-wrapper">
+					&lt;&nbsp;
+					<a href="/" title="Return to Historic England" class="hp-header__return-link">
+						Return to main site
 					</a>
 				</div>
 			</div>
@@ -22,44 +28,59 @@
 	</header>
 
 	<main>
-		<form id="login-form" action="?next={{ next }}" method='POST' {% if auth_failed %} autocomplete="off" {% endif %}>
-			<fieldset>
-				<legend class="arches-signin-subtext">
-					{% trans "Sign In" %}
-				</legend>
-				<p>
-					Login access to this site is by invitation only. More information on the GLHER is available on 
-					<a href="https://historicengland.org.uk/services-skills/our-planning-services/greater-london-archaeology-advisory-service/greater-london-historic-environment-record/" target="_blank">
-					our website</a>.
-				</p>
-				{% csrf_token %}
-				<input type="hidden" name="next" value="{{ next }}" />
-				<div class="form-group">
-					<label class="reqlabel control-label widget-input-label" for="username">Username</label>
-					<input id="username" type="text" class="form-control input-lg" name="username" autofocus aria-required="true" required>
-				</div>
-				<div class="form-group">
-					<label class="reqlabel control-label widget-input-label" for="password">Password</label>
-					<input id="password" type="password" class="form-control input-lg" name="password" aria-required="true" required>
-				</div>
-				<div class="form-group">
-					<p><a href="{% url 'password_reset' %}">{% trans "Forgotten your password?" %}</a></p>
-					{% if user_signup_enabled %}
-					<p><a href="{% url 'signup' %}" target="_blank">{% trans "Create a new account" %}</a></p>
-					{% endif %}
-					<button id ="sign-in-button" class="btn btn-primary btn-lg" type="submit">{% trans "Sign in" %}</button>
-				</div>
-				<div style="display:none;" id="login-failed-alert" class="alert alert-danger fade in" role="alert" aria-live="assertive">
-					<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
-					<p class="alert-title">{% trans "Login failed" %}</p>
-					<span>{% trans "Invalid username and/or password." %}</span>
-				</div>
-			</fieldset>
-		</form>
-		<div class="row row-cancel-button">
-			<button id="login-cancel-button" class="btn btn-lg btn-default" onclick="location.href='/';" onkeyup="if(event.which == 13 || event.keyCode == 13){ location.href='/'; }">Return to GLHER home</button>
+		<div class="login-form-container">
+			<form id="login-form" action="?next={{ next }}" method='POST' {% if auth_failed %} autocomplete="off" {% endif %}>
+				<fieldset>
+					<legend class="arches-signin-subtext">
+						{% trans "Sign In" %}
+					</legend>
+					<p>
+						{% trans "Login access to this site is by invitation only. More information on the NMHR is available on <a href=\"https://historicengland.org.uk/research/support-and-collaboration/heritage-information-access-simplified/national-marine-heritage-record/\" target=\"_blank\">our website</a>." %}
+					</p>
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ next }}" />
+					<div class="form-group">
+						<label class="reqlabel control-label widget-input-label" for="username">{% trans "Username" %}</label>
+						<input id="username" type="text" class="form-control input-lg" name="username" autofocus aria-required="true" required>
+					</div>
+					<div class="form-group">
+						<label class="reqlabel control-label widget-input-label" for="password">{% trans "Password" %}</label>
+						<input id="password" type="password" class="form-control input-lg" name="password" aria-required="true" required>
+					</div>
+					<div class="form-group">
+						<p><a href="{% url 'password_reset' %}">{% trans "Forgotten your password?" %}</a></p>
+						{% if user_signup_enabled %}
+						<p><a href="{% url 'signup' %}" target="_blank">{% trans "Create a new account" %}</a></p>
+						{% endif %}
+						<button class="he-button" type="submit">{% trans "Sign in" %}</button>
+					</div>
+					<div style="{% if not auth_failed %}display:none;{% endif %}" id="login-failed-alert" class="alert alert-danger fade in" role="alert" aria-live="Assertive">
+						<button type="button" class="close" data-dismiss="alert" onclick="document.getElementById('login-failed-alert').remove();"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans "Close" %}</span></button>
+						<p class="alert-title">{% trans "Login failed" %}</p>
+						<span role="alert" id="login-fail-message">{% if rate_limited %}{% trans "Too many requests." %}{% else %}{% trans "Invalid username and/or password." %}{% endif %}</span>
+					</div>
+				</fieldset>
+			</form>
 		</div>
 	</main>
+
+	<footer>
+		<div class="footer-bottom">
+			<div class="container">
+				<div class="footer-container">
+					<div class="col-xs-12 col-sm-8 footer-links">
+						<a href="https://historicengland.org.uk/access/" target="_blank">Accessibility</a>
+						<a href="#" onclick="CookieControl.open();">Manage Cookies</a>
+						<a href="https://historicengland.org.uk/terms/privacy/" target="_blank">Privacy Policy</a>
+						<a href="https://historicengland.org.uk/terms/" target="_blank">Terms &amp; Conditions</a>
+					</div>
+					<div class="col-xs-12 col-sm-4 footer-copyright">
+						<p class="copyright">&copy; Historic England <script>document.write(new Date().getFullYear());</script></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 </div>
 
