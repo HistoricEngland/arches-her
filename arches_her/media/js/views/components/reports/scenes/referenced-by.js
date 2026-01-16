@@ -51,36 +51,38 @@ define([
                     url: arches.urls.related_resources + self.resourceinstanceid,
                     context: self,
                 })
-                    .done(function(response) {
-                        self.getGraphs().then(function(){
-                            let this_rid = response.related_resources.resource_instance.resourceinstanceid;
-                            //need to look at the resource_relationships and find other resources that are pointing TO this one
-                            other_resource_ids = [];
-                            for(const rr of response.related_resources.resource_relationships){
-                                if(rr.resourceinstanceidto == self.resourceinstanceid){
-                                    other_resource_ids.push(rr.resourceinstanceidfrom)
+                .done(function(response) {
+                    self.getGraphs().then(function(){
+                        const relationships = response.related_resources.resource_relationships;
+                        const relatedResources = response.related_resources.related_resources;
+                        // Collect resource IDs that point to this resource
+                        const otherResourceIds = relationships
+                            .filter(rr => rr.resourceinstanceidto === self.resourceinstanceid)
+                            .map(rr => rr.resourceinstanceidfrom);
+
+                        // Filter related resources that reference this one
+                        const filteredResources = relatedResources.filter(x => otherResourceIds.includes(x.resourceinstanceid));
+
+                        self.relations.removeAll();
+                        filteredResources.forEach(resource => {
+                            if (
+                                self.graphs_list.length === 0 ||
+                                self.graphs_list.includes(resource.graph_id)
+                            ) {
+                                const graphObj = self.graphs.find(gr => gr.graphid === resource.graph_id);
+                                const graphName = graphObj ? graphObj.name : "unknown";
+                                self.relations.push({
+                                    related_resource_name: resource.displayname,
+                                    related_resource_link: arches.urls.resource_report + resource.resourceinstanceid,
+                                    related_resource_type: graphName
+                                });
                             }
-                            }
-                            // we now have the resources that point at this one.
-                            var response_related_resources = response.related_resources.related_resources.filter((x) => other_resource_ids.includes(x.resourceinstanceid));
-                            self.relations.removeAll()
-                            for(r in response_related_resources){
-                                var response_related_resource = response_related_resources[r]
-                                if (
-                                    self.graphs_list.length === 0 ||
-                                    self.graphs_list.includes(response_related_resource["graph_id"])
-                                ) {
-                                    var graph_obj = self.graphs.find((gr) => gr.graphid === response_related_resource["graph_id"]);
-                                    var graph_name = graph_obj ? graph_obj.name : "unknown";
-                                    self.relations.push({"related_resource_name": response_related_resource["displayname"], "related_resource_link": arches.urls.resource_report + response_related_resource["resourceinstanceid"], "related_resource_type": graph_name})
-                                }
-                            }
-                            return
-                        })
-                    })
-                    .fail(function() {
-                         // error
+                        });
                     });
+                })
+                .fail(function() {
+                    // error
+                });
             };
 
             // Call getRelatedResources to trigger data loading on component initialization
