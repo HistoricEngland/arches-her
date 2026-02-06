@@ -173,7 +173,7 @@
 .landing-page header .navbar-collapse.collapse.in {
     z-index: 9999;
     position: absolute;
-    top: 58px;
+    top: 57px;
     right: 31px;
     width: 40vw;
     background: #fff;
@@ -209,7 +209,7 @@
 }
 .landing-page .navbar .container .navbar-header .navbar-toggle {
     padding: 12px;
-    right: 32px;
+    right: 16px;
 }
 .landing-page .navbar .container .navbar-header .navbar-toggle:hover {
     background-color: #f8bb25;
@@ -470,9 +470,11 @@
     font-size: 1.8rem;
     line-height: 60px;
 }
+.landing-page footer .footer-top .footer-top-first-row .footer-top-contact-details a:hover,
 .landing-page footer .footer-bottom .footer-container .footer-links a:hover {
     text-decoration: underline 2px;
 }
+.landing-page footer .footer-top .footer-top-first-row .footer-top-contact-details a:focus,
 .landing-page footer .footer-bottom .footer-container .footer-links a:focus {
     box-shadow: 0 -2px #fd0, 0 4px #fff !important;
     color: #1a1a1a !important;
@@ -510,7 +512,6 @@
     }
     .landing-page header .navbar .container .navbar-header .header-bar__logo-link .header-bar__logo-image {
         height: 38px;
-        padding-left: 10px;
     }
     .landing-page header .navbar,
     .landing-page header .navbar .container,
@@ -675,10 +676,17 @@
     .landing-page header {
         margin: 0;
         padding-left: 15px;
-        width: calc(100vw - 15px);
+        width: 100vw;
+    }
+    .landing-page header .navbar-collapse.collapse.in {
+        right: 32px;
     }
     .landing-page .img-rounded {
         border-radius: 0;
+        min-width: calc(100vw + 27px);
+    }
+    .landing-page .navbar .container .navbar-header .navbar-toggle {
+        right: 16px;
     }
     .landing-page .caption {
         font-size: 1.8rem;
@@ -692,6 +700,7 @@
     }
     .landing-page footer {
         margin-top: 40px;
+        width: 100vw;
     }
     .landing-page footer .footer-top .footer-top-first-row .footer-he-logo,
     .landing-page footer .footer-top .footer-top-first-row .footer-getty-logo,
@@ -710,15 +719,16 @@
         text-align: left;
     }
     .featurette1 .featurette1-left-container {
-        padding: 0 47px 0 0;
+        padding: 0 15px;
         width: 100vw;
         border-radius: 0;
-        top: 59vw;
-        margin-left: 15px;
+        top: 63vw;
     }
     .featurette1 .featurette1-right-container {
         width: 100vw;
-        margin-top: -2px;
+        float: none !important;
+        position: relative;
+        top: -2px;
     }
     .featurette1 h1 {
         margin-top: 0;
@@ -747,7 +757,7 @@
     .featurette5,
     .featurette6,
     .featurette7 {
-        margin: 40px 30px 0 15px;
+        margin: 40px 15px 0 15px;
     }
     .featurette2 {
         margin-top: 253px;
@@ -767,6 +777,10 @@
     }
     .featurette7 .jumbotron {
         border-radius: 0;
+    }
+    .navbar-collapse .collapsing {
+        display: none!important;
+        transition: none!important;
     }
 }
 
