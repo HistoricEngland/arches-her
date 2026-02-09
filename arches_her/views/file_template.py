@@ -216,7 +216,9 @@ class FileTemplateView(View):
             "Archaeological Priority Area": "",
             "Assessment of Significance": "",
             "Condition": "",
+            "Condition Type": "",
             "Mitigation": "",
+            "Mitigation Type": "",
             "Casework Officer Email": "",
             "Casework Officer Number": "",
             "Contact Name": "",
@@ -401,6 +403,19 @@ class FileTemplateView(View):
 
         for condition in conditions:
             mapping_dict["Condition"] += "<b>{}</b>{}<br>".format(condition["type"], condition["content"])
+
+        # Populate individual type fields
+        mitigation_types = []
+        for mitigation in mitigations:
+            if mitigation["type"] and mitigation["type"] not in mitigation_types:
+                mitigation_types.append(mitigation["type"])
+        mapping_dict["Mitigation Type"] = "<br>".join(mitigation_types)
+
+        condition_types = []
+        for condition in conditions:
+            if condition["type"] and condition["type"] not in condition_types:
+                condition_types.append(condition["type"])
+        mapping_dict["Condition Type"] = "<br>".join(condition_types)
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
