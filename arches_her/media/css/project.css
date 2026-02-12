@@ -1121,6 +1121,16 @@ span.rp-tile-title {
     display: none;
 }
 
+#mainnav-container .toggle-leftnav-container .navbar-brand .brand-icon {
+    float: none;
+}
+
+#mainnav-container.menu-expanded .toggle-leftnav-container .navbar-brand .brand-icon {
+    float: left;
+    position: relative;
+    top: 2px;
+}
+
 @keyframes loading {
     from {
         transform: rotate(0turn);
