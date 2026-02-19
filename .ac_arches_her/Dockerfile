@@ -77,16 +77,17 @@ RUN rm -rf /root/.cache/pip/*
 COPY $ARCHES_PATH ${ARCHES_ROOT}
 RUN chmod +x ${ARCHES_ROOT}/arches/install/arches-project
 
-RUN pip install --upgrade pip==23.1.2 setuptools wheel
+#RUN pip install --upgrade pip==23.1.2 setuptools wheel
 
 # Install arches_her
-#WORKDIR ${APP_ROOT}
-#RUN pip install -e . --user --no-use-pep517
+COPY ./${ARCHES_PROJECT} ${APP_ROOT}
+WORKDIR ${APP_ROOT}
+RUN pip install -e .
 
 # From here, run commands from ARCHES_ROOT
 WORKDIR ${ARCHES_ROOT}
 
-RUN pip install -e . --user --no-use-pep517 && pip install -r arches/install/requirements_dev.txt
+RUN pip install -e . && pip install -r arches/install/requirements_dev.txt
 
 COPY $DOCKER_PATH/entrypoint.sh /entrypoint.sh
 RUN chmod -R 700 /entrypoint.sh &&\
