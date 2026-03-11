@@ -27,6 +27,7 @@ from arches.app.datatypes.datatypes import DataTypeFactory
 from arches.app.utils.permission_backend import get_createable_resource_types
 from django.utils.decorators import method_decorator
 from arches.app.utils.decorators import login_required
+import json
 
 
 @method_decorator(login_required, name="dispatch")
@@ -51,5 +52,16 @@ class IndexView(TemplateView):
 
         context["user_is_reviewer"] = request.user.groups.filter(name="Resource Reviewer").exists()
         context["notification"] = getattr(settings, "MAINTENANCE_NOTIFICATION", None)
+        
+        cookie_key = "CookieControl"
+        if cookie_key in self.request.COOKIES:
+            cookie_control = json.loads(self.request.COOKIES[cookie_key])
+            optional_cookies = cookie_control["optionalCookies"]
+            context["analytics_cookies"] = self.get_optional_cookie_value_as_boolean(optional_cookies, "analytics")
+        else:
+            context["accept_all_cookies"] = True
 
         return render(request, "index.htm", context)
+    
+    def get_optional_cookie_value_as_boolean(self, cookie, key, value="accepted"):
+        return cookie[key] == value if key in cookie else False
