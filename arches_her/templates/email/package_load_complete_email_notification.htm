@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% include 'custom_email_css.htm' %}
-</head>
-<body>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" bgcolor="#fff">
+
+<head></head>
+
+<body style="font-family:'Source Sans Pro', Arial;">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0" bgcolor="#fff" style="padding-bottom:14px;">
         <tbody>
             <tr>
                 <td>
                     {% include 'custom_email_header.htm' %}
-                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0" style="padding-bottom:14px;">
                         <tbody>
                             <tr>
                                 <td>
-                                    <table border="0" width="600" cellspacing="0" cellpadding="0">
+                                    <table border="0" width="600" cellspacing="0" cellpadding="0" style="padding-bottom:14px;">
                                         <tbody>
                                             <tr>
                                                 <td>
@@ -22,7 +22,24 @@
                                                     {% endif %}
                                                     <p>{{greeting}}</p>
                                                     {% if link != "" %}
-                                                        <p><a class="btn" href="{{link}}">{{link_text}}</a></p>
+                                                        <table border="0" cellspacing="0" cellpadding="0" role="presentation">
+                                                            <tr>
+                                                                <td align="center" bgcolor="#2579A4" style="border-radius: 5px;">
+                                                                    <a href="{{link}}" target="_blank" style="
+                                                                        font-size: 16px;
+                                                                        font-family:Arial,Helvetica,sans-serif;
+                                                                        color: #ffffff;
+                                                                        text-decoration: none;
+                                                                        padding: 12px 24px;
+                                                                        display: inline-block;
+                                                                        border-radius: 5px;
+                                                                        font-weight: bold;
+                                                                    ">
+                                                                        {{link_text}}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     {% endif %}
                                                     <p>If you experience any problems then please email <a href="mailto:{{contact_email}}">{{contact_email}}</a></p>
                                                 </td>
