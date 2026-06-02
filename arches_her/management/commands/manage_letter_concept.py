@@ -1,4 +1,5 @@
 import uuid
+import logging
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -6,6 +7,8 @@ from django.db import transaction
 from arches.app.models import models
 from arches.app.search.search_engine_factory import SearchEngineInstance as se
 from arches.app.search.mappings import CONCEPTS_INDEX
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -42,17 +45,26 @@ class Command(BaseCommand):
 
     @staticmethod
     def _index_concept_value(value_obj, top_concept_id):
-        """Index a single concept value to ElasticSearch"""
-        doc = {
-            "category": "label",
-            "conceptid": str(value_obj.concept_id),
-            "language": value_obj.language_id,
-            "value": value_obj.value,
-            "type": value_obj.valuetype_id,
-            "id": str(value_obj.valueid),
-            "top_concept": str(top_concept_id),
-        }
-        se.index_data(index=CONCEPTS_INDEX, body=doc, idfield="id")
+        """Index a single concept value to ElasticSearch
+        
+        Returns:
+            bool: True if indexing succeeded, False otherwise
+        """
+        try:
+            doc = {
+                "category": "label",
+                "conceptid": str(value_obj.concept_id),
+                "language": value_obj.language_id,
+                "value": value_obj.value,
+                "type": value_obj.valuetype_id,
+                "id": str(value_obj.valueid),
+                "top_concept": str(top_concept_id),
+            }
+            se.index_data(index=CONCEPTS_INDEX, body=doc, idfield="id")
+            return True
+        except Exception as e:
+            logger.error(f"Failed to index concept value {value_obj.valueid}: {e}")
+            return False
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -135,15 +147,18 @@ class Command(BaseCommand):
         )
 
         # --- Index concept values to ElasticSearch ---
-        # Refresh the value objects to ensure we have the latest data
-        pref_label_value = models.Value.objects.get(valueid=label_valueid)
-        identifier_value = models.Value.objects.get(valueid=identifier_valueid)
-        
         # Index with the scheme_id as the top_concept
-        self._index_concept_value(pref_label_value, scheme_id)
-        self._index_concept_value(identifier_value, scheme_id)
+        pref_indexed = self._index_concept_value(pref_label_value, scheme_id)
+        identifier_indexed = self._index_concept_value(identifier_value, scheme_id)
 
         # --- Output result ---
         action = "Created" if created else "Updated"
         self.stdout.write(self.style.SUCCESS(f"{action} letter concept {concept_id} ({label})"))
-        self.stdout.write(self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch"))
+        
+        if pref_indexed and identifier_indexed:
+            self.stdout.write(self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch"))
+        elif not pref_indexed and not identifier_indexed:
+            self.stdout.write(self.style.WARNING(f"Failed to index both values to ElasticSearch. Run: python manage.py es index_concepts"))
+        else:
+            failed = "prefLabel" if not pref_indexed else "identifier"
+            self.stdout.write(self.style.WARNING(f"Failed to index {failed} to ElasticSearch. Run: python manage.py es index_concepts"))
