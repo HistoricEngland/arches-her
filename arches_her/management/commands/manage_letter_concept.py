@@ -46,7 +46,7 @@ class Command(BaseCommand):
     @staticmethod
     def _index_concept_value(value_obj, top_concept_id):
         """Index a single concept value to ElasticSearch
-        
+
         Returns:
             bool: True if indexing succeeded, False otherwise
         """
@@ -154,9 +154,11 @@ class Command(BaseCommand):
         # --- Output result ---
         action = "Created" if created else "Updated"
         self.stdout.write(self.style.SUCCESS(f"{action} letter concept {concept_id} ({label})"))
-        
+
         if pref_indexed and identifier_indexed:
-            self.stdout.write(self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch"))
+            self.stdout.write(
+                self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch")
+            )
         elif not pref_indexed and not identifier_indexed:
             self.stdout.write(self.style.WARNING(f"Failed to index both values to ElasticSearch. Run: python manage.py es index_concepts"))
         else:
