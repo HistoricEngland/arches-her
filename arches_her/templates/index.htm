@@ -68,6 +68,18 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
         }});
     </script>
 
+    {% if app_settings.GOOGLE_ANALYTICS_TRACKING_ID != None %}
+        {% if analytics_cookies or accept_all_cookies %}
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{app_settings.GOOGLE_ANALYTICS_TRACKING_ID}}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{app_settings.GOOGLE_ANALYTICS_TRACKING_ID}}');
+            </script>
+        {% endif %}
+    {% endif %}
+
     <script src="https://cc.cdn.civiccomputing.com/9/cookieControl-9.5.min.js"></script>
     <script src="{{ STATIC_URL }}js/cookieControl.js"></script>
 
