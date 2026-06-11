@@ -65,8 +65,8 @@ class Command(BaseCommand):
             }
             se.index_data(index=CONCEPTS_INDEX, body=doc, idfield="id")
             return True
-        except Exception as e:
-            logger.error(f"Failed to index concept value {value_obj.valueid}: {e}")
+        except Exception:
+            logger.exception("Failed to index concept value %s", value_obj.valueid)
             return False
 
     @transaction.atomic
@@ -149,21 +149,27 @@ class Command(BaseCommand):
             relationtype_id="member",
         )
 
-        # --- Index concept values to ElasticSearch ---
-        # Index with the scheme_id as the top_concept
-        pref_indexed = self._index_concept_value(pref_label_value, scheme_id)
-        identifier_indexed = self._index_concept_value(identifier_value, scheme_id)
-
         # --- Output result ---
         action = "Created" if created else "Updated"
         self.stdout.write(self.style.SUCCESS(f"{action} letter concept {concept_id} ({label})"))
 
-        if pref_indexed and identifier_indexed:
-            self.stdout.write(
-                self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch")
-            )
-        elif not pref_indexed and not identifier_indexed:
-            self.stdout.write(self.style.WARNING(f"Failed to index both values to ElasticSearch. Run: python manage.py es index_concepts"))
-        else:
-            failed = "prefLabel" if not pref_indexed else "identifier"
-            self.stdout.write(self.style.WARNING(f"Failed to index {failed} to ElasticSearch. Run: python manage.py es index_concepts"))
+        # --- Index concept values to ElasticSearch ---
+        # Defer indexing until after the DB transaction commits to avoid ES/DB inconsistencies.
+        def index_after_commit():
+            # Index with the scheme_id as the top_concept
+            pref_indexed = self._index_concept_value(pref_label_value, scheme_id)
+            identifier_indexed = self._index_concept_value(identifier_value, scheme_id)
+
+            if pref_indexed and identifier_indexed:
+                self.stdout.write(
+                    self.style.SUCCESS(f"Indexed {label_valueid} (prefLabel) and {identifier_valueid} (identifier) to ElasticSearch")
+                )
+            elif not pref_indexed and not identifier_indexed:
+                self.stdout.write(
+                    self.style.WARNING("Failed to index both values to ElasticSearch. Run: python manage.py es index_concepts")
+                )
+            else:
+                failed = "prefLabel" if not pref_indexed else "identifier"
+                self.stdout.write(self.style.WARNING(f"Failed to index {failed} to ElasticSearch. Run: python manage.py es index_concepts"))
+
+        transaction.on_commit(index_after_commit)
