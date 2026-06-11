@@ -15,22 +15,25 @@ class Command(BaseCommand):
     help = "Idempotently create/update a Letter concept and wire it into the Letters scheme + collection."
 
     def add_arguments(self, parser):
-        parser.add_argument("--concept-id", required=True, help="Concept UUID for the letter concept")
-        parser.add_argument("--label-valueid", required=True, help="Value UUID for prefLabel")
-        parser.add_argument("--identifier-valueid", required=True, help="Value UUID for identifier")
-        parser.add_argument("--label", required=True, help="Display label, e.g. 'Letter Z - Test'")
+        parser.add_argument("-ci", "--concept-id", required=True, help="Concept UUID for the letter concept")
+        parser.add_argument("-lv", "--label-valueid", required=True, help="Value UUID for prefLabel")
+        parser.add_argument("-iv", "--identifier-valueid", required=True, help="Value UUID for identifier")
+        parser.add_argument("-l", "--label", required=True, help="Display label, e.g. 'Letter Z - Test'")
 
         parser.add_argument(
+            "-si",
             "--scheme-id",
             default="15c95776-1eda-43de-bdb7-54c32e984379",
             help="Letters concept scheme UUID",
         )
         parser.add_argument(
+            "-co",
             "--collection-id",
             default="e49a01b7-c018-4c35-af8b-5641fe1d25b4",
             help="Letters collection UUID used by Letter Type dropdown",
         )
         parser.add_argument(
+            "-bu",
             "--base-uri",
             default="http://localhost:8000",
             help="Base URI used in legacy identifier values",
