@@ -1,0 +1,108 @@
+
+services:
+    nginx-archesher:
+      container_name: nginx-archesher
+      image: nginx:latest
+      ports:
+        - "8080:80"
+      volumes:
+        - ./docker/nginx-config/default.conf:/etc/nginx/conf.d/default.conf
+      networks:
+        - archesher-network
+
+    db-archesher:
+      container_name: db-archesher
+      image: postgis/postgis:12-3.2
+      volumes:
+        - postgres-data-keystone:/var/lib/postgresql/data
+        - postgres-log-keystone:/var/log/postgresql
+        - ./docker/init-unix.sql:/docker-entrypoint-initdb.d/init.sql # to set up the DB template
+      ports:
+        - '5433:5432'
+      env_file: 
+        - ./docker/env_file.env
+      networks:
+        - archesher-network
+
+    elasticsearch-archesher:
+      container_name: elasticsearch-archesher
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.17.14
+      #platform: linux/arm64
+      volumes:
+        - elasticsearch-data-keystone:/usr/share/elasticsearch/data
+      ports:
+        - "9201:9200"
+        - "9301:9300"
+      env_file: 
+        - ./docker/env_file.env
+      networks:
+        - archesher-network
+
+    rabbitmq-archesher:
+      container_name: rabbitmq-archesher
+      image: rabbitmq:3.12.6-management
+      hostname: my-rabbit
+      volumes:
+        - rabbitmq-data-keystone:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
+        - rabbitmq-logs-keystone:/var/log/rabbitmq/log
+      ports:
+        - 5673:5672
+        - 15673:15672
+      networks:
+        - archesher-network
+
+    couchdb-archesher:
+      container_name: couchdb-archesher
+      image: couchdb:2.1.1
+      ports:
+        - "5985:5984"
+      env_file: 
+        - ./docker/env_file.env
+      volumes:
+        - couchdb-data-keystone:/usr/local/var/lib/couchdb
+        - couchdb-log-keystone:/usr/local/var/log/couchdb
+      networks:
+        - archesher-network
+
+    #pg-feat-archesher:
+    #  container_name: pg-feat-archesher
+    #  image: pramsey/pg_featureserv
+    #  volumes:
+    #    - ../../pg_featureserv_config_arches_her:/config
+    #  environment:
+    #    - DATABASE_URL=postgresql://arches_spatial_views:arches_spatial_views@db-archesher:5432/arches_her
+    #  ports:
+    #    - 9000:9000
+    #  depends_on:
+    #    - db-archesher
+    #  networks:
+    #    - archesher-network
+    
+    #pg-tile-archesher:
+    #  container_name: pg-tile-archesher
+    #  image: pramsey/pg_tileserv
+    #  volumes:
+    #    - ../../pg_tileserv_config_arches_her:/config
+    #  environment:
+    #    - DATABASE_URL=postgresql://arches_spatial_views:arches_spatial_views@db-archesher:5432/arches_her
+    #  ports:
+    #    - 7800:7800
+    #  depends_on:
+    #    - db-archesher
+    #  networks:
+    #    - archesher-network
+
+
+networks:
+  archesher-network:
+    name: archesher-network
+    driver: bridge
+
+volumes:
+    postgres-data-keystone:
+    postgres-log-keystone:
+    elasticsearch-data-keystone:
+    rabbitmq-logs-keystone:
+    rabbitmq-data-keystone:
+    couchdb-data-keystone:
+    couchdb-log-keystone:
