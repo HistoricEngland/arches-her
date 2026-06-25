@@ -44,8 +44,10 @@ def hapi_upload(self, *args, **kwargs) -> str:
 
     def check_termination(log_id: UUID):
         if self.request.id and AsyncResult(self.request.id).state == "REVOKED":
-            logger.info(f"H.API Upload task {self.request.id} was terminated by user.")
-            update_log_messages(log_id, "termination", "Task was terminated by user.")
+            logger.info(
+                f"H.API Upload task {self.request.id} was terminated by user.")
+            update_log_messages(log_id, "termination",
+                                "Task was terminated by user.")
             return {"status": "terminated", "message": "Task was terminated by user."}
 
     self.update_state(
@@ -87,7 +89,8 @@ def hapi_upload(self, *args, **kwargs) -> str:
                 .first()
             )
             start_date = (
-                start_date_dict["start"] if start_date_dict else datetime(1, 1, 1)
+                start_date_dict["start"] if start_date_dict else datetime(
+                    1, 1, 1)
             )
 
         resources = get_resources(start_date=start_date, seed=seed)
@@ -127,9 +130,11 @@ def hapi_upload(self, *args, **kwargs) -> str:
             "submitted_count": submission_total_count,
         }
 
-        bearer_token = authenticate_service(username=username, password=password)
+        bearer_token = authenticate_service(
+            username=username, password=password)
 
-        batch_id = batch_create_service(bearer_token=bearer_token, counts=counts)
+        batch_id = batch_create_service(
+            bearer_token=bearer_token, counts=counts)
 
         submission_count = 0
         processed_resources = 0
@@ -143,14 +148,17 @@ def hapi_upload(self, *args, **kwargs) -> str:
             )
 
             log_id = new_log.id
-            batch_resources = resources[i : i + MAX_BATCH_SIZE]
+            batch_resources = resources[i: i + MAX_BATCH_SIZE]
             submission_count += 1
 
-            models.HeritageApiLog.objects.filter(id=log_id).update(totals=counts)
+            models.HeritageApiLog.objects.filter(
+                id=log_id).update(totals=counts)
 
-            models.HeritageApiLog.objects.filter(id=log_id).update(batch_id=batch_id)
+            models.HeritageApiLog.objects.filter(
+                id=log_id).update(batch_id=batch_id)
 
-            update_log_messages(log_id, "part", f"{submission_count} of {total_parts}")
+            update_log_messages(
+                log_id, "part", f"{submission_count} of {total_parts}")
 
             models.HeritageApiLog.objects.filter(id=log_id).update(
                 resources=serialize(batch_resources)
@@ -159,7 +167,7 @@ def hapi_upload(self, *args, **kwargs) -> str:
             part = 1
 
             for s in range(0, len(batch_resources), MAX_SUBMISSION_SIZE):
-                submission_batch = batch_resources[s : s + MAX_SUBMISSION_SIZE]
+                submission_batch = batch_resources[s: s + MAX_SUBMISSION_SIZE]
                 resource_instance_ids = [
                     str(resource["resource_instance_id"])
                     for resource in submission_batch
@@ -200,7 +208,8 @@ def hapi_upload(self, *args, **kwargs) -> str:
                 )
 
                 processed_resources += len(submission_batch)
-                percent_complete = (processed_resources / submission_total_count) * 100
+                percent_complete = (processed_resources /
+                                    submission_total_count) * 100
                 self.update_state(
                     state="PROGRESS",
                     meta={
@@ -216,7 +225,8 @@ def hapi_upload(self, *args, **kwargs) -> str:
             messages=serialize(batch_results)
         )
 
-        response = batch_finalise_service(bearer_token=bearer_token, batch_id=batch_id)
+        response = batch_finalise_service(
+            bearer_token=bearer_token, batch_id=batch_id)
 
         if response == 200:
             models.HeritageApiLog.objects.filter(id=log_id).update(
@@ -233,7 +243,8 @@ def hapi_upload(self, *args, **kwargs) -> str:
         }
 
     except Exception as e:
-        tb_str = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        tb_str = "".join(traceback.format_exception(
+            type(e), e, e.__traceback__))
         logger.error(f"Error running H.API upload: {tb_str}")
         if not log_id:
             log_id = models.HeritageApiLog.objects.create(
@@ -268,10 +279,11 @@ def data_refresh_task(self):
             state="PROGRESS", meta={"message": "Applying database migrations..."}
         )
         call_command("apply_hapi_database_migration")
-        self.update_state(state="PROGRESS", meta={"message": "Refreshing data..."})
+        self.update_state(state="PROGRESS", meta={
+                          "message": "Refreshing data..."})
         call_command(
             "apply_hapi_database_migration",
-            "--with_data",
+            "--with-data",
             progress_callback=progress_callback,
         )
         end_time = time.time()

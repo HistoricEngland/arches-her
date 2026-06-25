@@ -10,12 +10,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--with_data',
+            '--with-data',
             action='store_true',
             help='Refresh materialized views WITH DATA',
         )
         parser.add_argument(
-            '--with_no_data',
+            '--with-no-data',
             action='store_true',
             help='Refresh materialized views WITH NO DATA',
         )
@@ -25,7 +25,7 @@ class Command(BaseCommand):
             help='Delete H.API schema',
         )
         parser.add_argument(
-            '--progress_callback',
+            '--progress-callback',
             action='store_true',
             help='Sets progress callback function. Internal use only.',
         )
@@ -1403,7 +1403,7 @@ class Command(BaseCommand):
             if progress_callback:
                 progress_callback(message)
             tqdm.write(message)
-        
+
         total_duration = time.time() - total_start_time
         minutes, seconds = divmod(int(total_duration), 60)
         message = f'Total MV refresh time: {minutes} minutes {seconds} seconds'
