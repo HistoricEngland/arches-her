@@ -29,11 +29,14 @@ from django.core.exceptions import ValidationError
 class HeritageApiData(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid1)
     hapi_log_id = models.UUIDField(blank=False, null=False)
-    batch_id = models.PositiveIntegerField(blank=False, null=False)
-    part = models.PositiveIntegerField(blank=False, null=False)
+    # Allow negative values for validation-only entries
+    batch_id = models.IntegerField(blank=True, null=True)
+    part = models.IntegerField(blank=False, null=False)
     timestamp = models.DateTimeField(default=timezone.now)
     validation = JSONField(blank=True, null=True)
     data = JSONField(blank=True, null=True)
+    # Store actual submission response from HAPI API
+    submission_response = JSONField(blank=True, null=True)
 
     class Meta:
         managed = True
@@ -54,7 +57,8 @@ class HeritageApiLog(models.Model):
         (MANUAL, "Manual"),
     ]
     id = models.UUIDField(primary_key=True, default=uuid.uuid1)
-    batch_id = models.PositiveIntegerField(unique=False, blank=True, null=True)
+    # Allow negative values for validation-only
+    batch_id = models.IntegerField(unique=False, blank=True, null=True)
     start = models.DateTimeField(default=timezone.now)
     finish = models.DateTimeField(blank=True, null=True)
     parameters = JSONField(blank=True, null=True)
@@ -141,3 +145,18 @@ class HeritageApiInclusion(models.Model):
         indexes = [
             models.Index(fields=["resource_id"]),
         ]
+
+
+class HeritageApiProtectedStatus(models.Model):
+    source_concept = models.CharField(max_length=255, primary_key=True)
+    heritage_gateway_concept = models.CharField(
+        max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.source_concept} -> {self.heritage_gateway_concept}"
+
+    class Meta:
+        managed = True
+        verbose_name = "Heritage API Protected Status"
+        verbose_name_plural = "Heritage API Protected Statuses"
+        db_table = "hapi_protected_status"
