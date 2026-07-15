@@ -306,3 +306,68 @@ def update_log_messages(log_id, key, value):
     # Save the updated messages field back to the database
     log_entry.messages = current_messages
     log_entry.save()
+
+
+MONUMENT_SOURCES_ERROR_PREFIX = "record.monumentSources"
+
+
+def build_hapi_log_parameters(from_date, operation):
+    """Build a consistent HeritageApiLog.parameters payload.
+
+    The operation field encodes the run type unambiguously:
+      'cron'     - incremental batch upload
+      'seed'     - full-dataset batch upload
+      'validate' - validation-only (no submission)
+      'dry-run'  - validation-only dry run (no submission)
+    """
+    return {
+        "from": from_date.isoformat(),
+        "operation": operation,
+    }
+
+
+def classify_validation_response_records(validation_response):
+    """Classify validation response records by error type.
+
+    Returns counts for all invalid records plus the subset whose errors are
+    exclusively within ``record.monumentSources``.
+    """
+    logger = logging.getLogger(__name__)
+    counts = {
+        "invalid_records": 0,
+        "non_monument_source_invalid_records": 0,
+        "monument_sources_only_invalid_records": 0,
+    }
+
+    if not isinstance(validation_response, dict):
+        return counts
+
+    errors = validation_response.get("errors", [])
+    if not errors:
+        return counts
+
+    def classify_record_errors(record_errors):
+        counts["invalid_records"] += 1
+        if isinstance(record_errors, dict) and record_errors:
+            error_paths = [key for key in record_errors.keys()
+                           if isinstance(key, str)]
+            if error_paths and all(path.startswith(MONUMENT_SOURCES_ERROR_PREFIX) for path in error_paths):
+                counts["monument_sources_only_invalid_records"] += 1
+                return
+        counts["non_monument_source_invalid_records"] += 1
+
+    if isinstance(errors, dict):
+        for record_errors in errors.values():
+            classify_record_errors(record_errors)
+        return counts
+
+    if isinstance(errors, list):
+        for error_entry in errors:
+            if isinstance(error_entry, dict) and error_entry:
+                for record_errors in error_entry.values():
+                    classify_record_errors(record_errors)
+            else:
+                classify_record_errors(error_entry)
+        return counts
+
+    return counts

@@ -20,8 +20,231 @@ from arches_her.models.related_monument_records import RelatedMonumentRecord
 from arches_her.models.images import Image
 from arches_her.models.related_events import RelatedEvent
 from arches_her.models.monument_sources import MonumentSource
+from arches_her.models.protected_status import ProtectedStatus
+from arches_her.models.models import HeritageApiConceptMapping
 
 logger = logging.getLogger(__name__)
+
+
+def _get_concept_mappings() -> List[Tuple[str, str, bool, Optional[str]]]:
+    # Read mappings fresh each call so admin updates apply immediately in long-lived workers.
+    return [
+        (
+            obj.hapi_field,
+            obj.source_concept,
+            obj.mandatory,
+            obj.heritage_gateway_concept,
+        )
+        for obj in HeritageApiConceptMapping.objects.all()
+    ]
+
+
+def _source_value_matches(current_value: Any, source_value: str) -> bool:
+    if current_value == source_value:
+        return True
+
+    if isinstance(current_value, str) and isinstance(source_value, str):
+        return current_value.strip() == source_value.strip()
+
+    return False
+
+
+def _is_empty_mapping_target(target_value: Optional[str]) -> bool:
+    return target_value is None or (
+        isinstance(target_value, str) and target_value.strip() == ""
+    )
+
+
+def _apply_mapping_at_terminal(
+    parent: dict,
+    key: str,
+    source_value: str,
+    mandatory: bool,
+    target_value: Optional[str],
+) -> Tuple[bool, bool]:
+    if key not in parent:
+        return False, False
+
+    current_value = parent[key]
+
+    if isinstance(current_value, list):
+        updated_list = []
+        changed = False
+
+        for item in current_value:
+            if _source_value_matches(item, source_value):
+                changed = True
+                if not _is_empty_mapping_target(target_value):
+                    updated_list.append(target_value)
+            else:
+                updated_list.append(item)
+
+        if changed:
+            parent[key] = updated_list
+
+        return changed, False
+
+    if _source_value_matches(current_value, source_value):
+        if _is_empty_mapping_target(target_value):
+            if mandatory:
+                return True, True
+
+            parent.pop(key, None)
+            return True, False
+
+        parent[key] = target_value
+        return True, False
+
+    return False, False
+
+
+def _apply_mapping_for_path(
+    current: Any,
+    path_parts: List[str],
+    path_index: int,
+    source_value: str,
+    mandatory: bool,
+    target_value: Optional[str],
+) -> Tuple[bool, bool]:
+    if isinstance(current, list):
+        changed = False
+        retained_items = []
+
+        for item in current:
+            item_changed, remove_item = _apply_mapping_for_path(
+                item,
+                path_parts,
+                path_index,
+                source_value,
+                mandatory,
+                target_value,
+            )
+            changed = changed or item_changed
+            if not remove_item:
+                retained_items.append(item)
+
+        if len(retained_items) != len(current):
+            changed = True
+            current[:] = retained_items
+
+        return changed, False
+
+    if not isinstance(current, dict):
+        return False, False
+
+    path_key = path_parts[path_index]
+    if path_key not in current:
+        return False, False
+
+    if path_index == len(path_parts) - 1:
+        return _apply_mapping_at_terminal(
+            current,
+            path_key,
+            source_value,
+            mandatory,
+            target_value,
+        )
+
+    next_value = current[path_key]
+    changed, remove_current = _apply_mapping_for_path(
+        next_value,
+        path_parts,
+        path_index + 1,
+        source_value,
+        mandatory,
+        target_value,
+    )
+
+    if remove_current:
+        if isinstance(next_value, list):
+            current[path_key] = []
+        else:
+            current.pop(path_key, None)
+        changed = True
+
+    return changed, False
+
+
+def _apply_mapping_for_path_anywhere(
+    current: Any,
+    path_parts: List[str],
+    source_value: str,
+    mandatory: bool,
+    target_value: Optional[str],
+) -> bool:
+    changed = False
+
+    applied_here, _ = _apply_mapping_for_path(
+        current=current,
+        path_parts=path_parts,
+        path_index=0,
+        source_value=source_value,
+        mandatory=mandatory,
+        target_value=target_value,
+    )
+    changed = changed or applied_here
+
+    if isinstance(current, dict):
+        for child in current.values():
+            changed = _apply_mapping_for_path_anywhere(
+                current=child,
+                path_parts=path_parts,
+                source_value=source_value,
+                mandatory=mandatory,
+                target_value=target_value,
+            ) or changed
+    elif isinstance(current, list):
+        for item in current:
+            changed = _apply_mapping_for_path_anywhere(
+                current=item,
+                path_parts=path_parts,
+                source_value=source_value,
+                mandatory=mandatory,
+                target_value=target_value,
+            ) or changed
+
+    return changed
+
+
+def _prune_empty_containers(value: Any) -> Any:
+    if isinstance(value, dict):
+        cleaned = OrderedDict()
+        for key, item in value.items():
+            pruned = _prune_empty_containers(item)
+            if pruned not in (None, [], {}):
+                cleaned[key] = pruned
+        return cleaned
+
+    if isinstance(value, list):
+        cleaned_list = [_prune_empty_containers(item) for item in value]
+        return [item for item in cleaned_list if item not in (None, [], {})]
+
+    return value
+
+
+def _apply_concept_mappings_to_json(data: Any) -> Any:
+    concept_mappings = _get_concept_mappings()
+    if not concept_mappings:
+        return data
+
+    for hapi_field, source_concept, mandatory, gateway_concept in concept_mappings:
+        if not hapi_field or source_concept is None:
+            continue
+
+        path_parts = [part.strip()
+                      for part in hapi_field.split(".") if part.strip()]
+        if not path_parts:
+            continue
+
+        _apply_mapping_for_path_anywhere(
+            current=data,
+            path_parts=path_parts,
+            source_value=source_concept,
+            mandatory=mandatory,
+            target_value=gateway_concept,
+        )
+
+    return _prune_empty_containers(data)
 
 
 def get_resources(
@@ -29,35 +252,44 @@ def get_resources(
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
     resource_instance_ids: Optional[List[uuid.UUID]] = None,
-    seed: bool = False
+    seed: bool = False,
+    seed_limit_count: int = 0,
 ):
     with connection.cursor() as cursor:
-        # Construct the SQL query based on the provided parameters
         params = []
+        func_args = []
+
         if not seed:
             query = "SELECT * FROM hapi.get_resources("
+
             if interval_param:
-                query += "interval_param := %s, "
-                params.append(f"interval '{interval_param}'")
+                func_args.append("interval_param := %s::interval")
+                params.append(interval_param)
 
             if start_date:
                 if not end_date:
-                    end_date = timezone.now()
-                query += "start_date := %s, end_date := %s, "
+                    end_date = timezone.now().isoformat()
+                func_args.append("start_date := %s")
+                func_args.append("end_date := %s")
                 params.extend([start_date, end_date])
 
             if resource_instance_ids:
-                resource_ids_str = ','.join([str(rid)
-                                            for rid in resource_instance_ids])
-                query += "resource_instance_ids := %s, "
+                resource_ids_str = ",".join(
+                    [str(rid) for rid in resource_instance_ids])
+                func_args.append("resource_instance_ids := %s")
                 params.append(resource_ids_str)
 
-            # Remove the trailing comma and space, and close the function call
-            query = query.rstrip(', ') + ");"
+            query = f"{query}{', '.join(func_args) if func_args else ''});"
         else:
-            query = "SELECT * FROM hapi.initial_seed ORDER BY primary_reference_number;"
-        # Execute the query
+            if seed_limit_count > 0:
+                query = "SELECT * FROM hapi.initial_seed ORDER BY primary_reference_number LIMIT %s;"
+                params.append(seed_limit_count)
+            else:
+                query = "SELECT * FROM hapi.initial_seed ORDER BY primary_reference_number;"
+
         cursor.execute(query, params)
+        if cursor.description is None:
+            return []
         columns = [col[0] for col in cursor.description]
         results = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
@@ -108,7 +340,7 @@ def serialize(obj: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, i
 
 def generate_json(data: Any) -> Union[OrderedDict, List[Any], Tuple[Any, ...], str, int, float, bool, None]:
     processed_data = serialize(data)
-    return processed_data
+    return _apply_concept_mappings_to_json(processed_data)
 
 
 def get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Description]]:
@@ -133,14 +365,14 @@ def get_descriptions(resource_instance_id: uuid.UUID) -> Optional[List[Descripti
 def get_point_geometry(resource_instance_id: uuid.UUID) -> Optional[PointGeometry]:
     with connection.cursor() as cursor:
         # Construct the SQL query based on the provided parameters
-        query = "SELECT * FROM hapi.point_geometry WHERE resourceinstanceid = %s;"
+        query = "SELECT x_coordinate, y_coordinate FROM hapi.geometry WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         row = cursor.fetchone()
         if row:
-            _, x_coordinate, y_coordinate = row
+            x_coordinate, y_coordinate = row
             return PointGeometry(x_coordinate=float(x_coordinate), y_coordinate=float(y_coordinate))
         else:
             return None
@@ -150,14 +382,14 @@ def get_complex_geometry(resource_instance_id: uuid.UUID) -> Optional[List[Compl
     with connection.cursor() as cursor:
         complex_geometry = []
         # Construct the SQL query based on the provided parameters
-        query = 'SELECT * FROM hapi.complex_geometry WHERE resourceinstanceid = %s;'
+        query = 'SELECT spatialfeaturetype, spatialfeaturegeometry FROM hapi.geometry WHERE resourceinstanceid = %s;'
         params = [str(resource_instance_id)]
 
         # Execute the query
         cursor.execute(query, params)
         row = cursor.fetchone()
         if row:
-            _, spatial_feature_type, spatial_feature_geometry = row
+            spatial_feature_type, spatial_feature_geometry = row
             complex_geometry.append(ComplexGeometry(
                 spatial_feature_type=spatial_feature_type, spatial_feature_geometry=spatial_feature_geometry))
         return complex_geometry if complex_geometry else None
@@ -349,7 +581,8 @@ def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[Related
         rows = cursor.fetchall()
         for row in rows:
             _, primary_reference_number, types, name, description = row
-            description = html.unescape(strip_tags(description)).replace("\n", "")
+            description = html.unescape(
+                strip_tags(description)).replace("\n", "")
             related_events.append(RelatedEvent(
                 primary_reference_number=primary_reference_number,
                 types=types,
@@ -360,42 +593,39 @@ def get_related_events(resource_instance_id: uuid.UUID) -> Optional[List[Related
     return related_events if related_events else None
 
 
-def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[List[str]]:
+def get_protected_statuses(resource_instance_id: uuid.UUID) -> Optional[ProtectedStatus]:
     with connection.cursor() as cursor:
-        # Construct the SQL query based on the provided parameters
         query = "SELECT protectedstatuses FROM hapi.protected_statuses_mv WHERE resourceinstanceid = %s;"
         params = [str(resource_instance_id)]
-
-        # Execute the query
         cursor.execute(query, params)
         row = cursor.fetchone()
 
+    protected_statuses = ProtectedStatus()
     if row:
-        protected_statuses = row[0]
-        return protected_statuses if protected_statuses else None
-    return None
+        for status in (row[0] or []):
+            protected_statuses.protectedStatuses.append(status)
+
+    return protected_statuses if protected_statuses else None
 
 
 def refresh_materialized_views(with_data: bool):
     from arches_her.management.commands.apply_hapi_database_migration import Command as rmv
-    rmv.refresh_materialized_views(connection.cursor(), refresh_option="WITH DATA" if with_data else "WITH NO DATA")
+    rmv.refresh_materialized_views(connection.cursor(
+    ), refresh_option="WITH DATA" if with_data else "WITH NO DATA")
 
 
 def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
+    """Get raw monument sources (for validation reporting)."""
     sources = []
-    set_bibliography_reference = True
     with connection.cursor() as cursor:
-        # Construct the SQL query based on the provided parameters
         query = "SELECT * FROM hapi.monument_sources_mv WHERE resourceinstanceid = (%s);"
         params = [str(resource_instance_id)]
 
-        # Execute the query
         cursor.execute(query, params)
         rows = cursor.fetchall()
 
         if not rows:
-            sources.append(MonumentSource(
-                set_bibliography_reference=set_bibliography_reference))
+            sources.append(MonumentSource())
 
         for row in rows:
             _, information_source_title, statement_of_authority, source_no, source_reference, date_of_origination, source_digital_object_identifier, source_url = row
@@ -426,15 +656,22 @@ def get_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[Monum
                 date_of_origination=date_of_origination,
                 source_digital_object_identifier=source_digital_object_identifier,
                 source_url=source_url,
-                set_bibliography_reference=set_bibliography_reference,
             ))
     return sources if sources else None
+
+
+def get_processed_monument_sources(resource_instance_id: uuid.UUID) -> Optional[List[MonumentSource]]:
+    """Get processed monument sources with mandatory field validation applied (for API submission)."""
+    raw_sources = get_monument_sources(resource_instance_id)
+    if not raw_sources:
+        return None
+    return [source.get_processed_version() for source in raw_sources]
 
 
 def get_counts():
     """
     Get counts of total records and published records from the database.
-    
+
     Returns:
         tuple: (total_count, published_count)
     """
@@ -446,5 +683,5 @@ def get_counts():
                 (SELECT COUNT(*) FROM hapi.initial_seed) AS published_count
         """)
         result = cursor.fetchone()
-        
+
     return result if result else (0, 0)

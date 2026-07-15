@@ -7,6 +7,7 @@ from .object_finds import ObjectFinds
 from .descriptions import Description
 from .complex_geometry import ComplexGeometry
 from .point_geometry import PointGeometry
+from .protected_status import ProtectedStatus
 from .related_monument_records import RelatedMonumentRecord
 from .images import Image
 from .related_events import RelatedEvent
@@ -28,7 +29,7 @@ class Base(object):
         images: List[Image],
         other_statuses: List[str],
         related_events: List[RelatedEvent],
-        protected_statuses: List[str],
+        protected_statuses: ProtectedStatus,
         last_updated: datetime.datetime
     ):
         self.resourceInstanceId = resource_instance_id
@@ -46,5 +47,6 @@ class Base(object):
         self.relatedEvents = related_events
         self.protectedStatuses = protected_statuses
         if type(last_updated) is str:
-            last_updated = datetime.datetime.strptime(last_updated, "%Y-%m-%dT%H:%M:%S")
+            last_updated = datetime.datetime.strptime(
+                last_updated, "%Y-%m-%dT%H:%M:%S")
         self.lastUpdated = last_updated.strftime("%Y-%m-%dT%H:%M:%S")

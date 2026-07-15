@@ -37,6 +37,7 @@ from .data_access.common import (
     get_protected_statuses,
     get_monument_dated_types,
     get_monument_sources,
+    get_processed_monument_sources,
 )
 from .models.factory import create_resource
 
@@ -247,7 +248,7 @@ def generate_data(uuid_list: List[uuid.UUID] = None, resource_object=None, batch
                     resource["resource_instance_id"]),
                 complex_geometry=get_complex_geometry(
                     resource["resource_instance_id"]),
-                monument_sources=get_monument_sources(
+                monument_sources=get_processed_monument_sources(
                     resource["resource_instance_id"]),
                 object_finds=get_object_finds(
                     resource["resource_instance_id"]),

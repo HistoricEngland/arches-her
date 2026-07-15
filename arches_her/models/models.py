@@ -147,16 +147,25 @@ class HeritageApiInclusion(models.Model):
         ]
 
 
-class HeritageApiProtectedStatus(models.Model):
-    source_concept = models.CharField(max_length=255, primary_key=True)
+class HeritageApiConceptMapping(models.Model):
+    id = models.AutoField(primary_key=True)
+    hapi_field = models.CharField(max_length=255)
+    source_concept = models.CharField(max_length=255)
+    mandatory = models.BooleanField(default=False)
     heritage_gateway_concept = models.CharField(
         max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.source_concept} -> {self.heritage_gateway_concept}"
+        return f"{self.hapi_field}: {self.source_concept} -> {self.heritage_gateway_concept}"
 
     class Meta:
         managed = True
-        verbose_name = "Heritage API Protected Status"
-        verbose_name_plural = "Heritage API Protected Statuses"
-        db_table = "hapi_protected_status"
+        verbose_name = "Heritage API Concept Mapping"
+        verbose_name_plural = "Heritage API Concept Mappings"
+        db_table = "hapi_concept_mapping"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["hapi_field", "source_concept"],
+                name="hapi_concept_mapping_hapi_field_source_concept_uniq",
+            ),
+        ]

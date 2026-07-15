@@ -36,7 +36,16 @@ def superuser_required(view_func):
     return _wrapped_view
 
 
-@method_decorator(superuser_required, name='dispatch')
+def hapi_enabled_required(view_func):
+    """Decorator to ensure HAPI API is enabled, returns 404 if disabled"""
+    def _wrapped_view(request, *args, **kwargs):
+        if not settings.HAPI_ENABLE_API:
+            return HttpResponse(status=404)
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class ValidateResourceView(View):
     def get(self, request, resource_uuid=None):
         if not resource_uuid:
@@ -70,7 +79,7 @@ class ValidateResourceView(View):
         return JsonResponse(error_response, status=status_code)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class GenerateResourceView(View):
     def get(self, request, resource_uuid=None):
         try:
@@ -116,7 +125,7 @@ class GenerateResourceView(View):
             }, status=500)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class AuthenticateView(View):
     def get(self, request):
 
@@ -147,7 +156,7 @@ class AuthenticateView(View):
         }, status=200)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchCreateView(View):
     def get(self, request):
         try:
@@ -189,7 +198,7 @@ class BatchCreateView(View):
         }, status=200)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchFinaliseView(View):
     def get(self, request):
         try:
@@ -219,7 +228,7 @@ class BatchFinaliseView(View):
         }, status=status_code)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchSubmitView(View):
     def get(self, request):
         try:
@@ -263,7 +272,7 @@ class BatchSubmitView(View):
         return JsonResponse(response_data, status=status_code)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchSubmitCronView(View):
     run_type = None
     seed = None
@@ -310,7 +319,7 @@ class BatchSubmitCronView(View):
             }, status=500)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchSubmitCronStatusView(View):
     def get(self, request, task_id):
         result = AsyncResult(task_id)
@@ -333,7 +342,7 @@ class BatchSubmitCronStatusView(View):
             return JsonResponse({"status": result.state.lower(), "message": "Task is processing."})
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class DataRefreshView(View):
     CACHE_KEY = "data_refresh_task_id"
 
@@ -360,7 +369,7 @@ class DataRefreshView(View):
         }, status=202)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class DataRefreshStatusView(View):
     def get(self, request, task_id):
         result = AsyncResult(task_id)
@@ -383,7 +392,7 @@ class DataRefreshStatusView(View):
             return JsonResponse({"status": result.state.lower(), "message": "Task is processing."})
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class DataRemoveView(View):
     def get(self, request):
         try:
@@ -403,7 +412,7 @@ class DataRemoveView(View):
             }, status=500)
 
 
-@method_decorator(superuser_required, name='dispatch')
+@method_decorator([hapi_enabled_required, superuser_required], name='dispatch')
 class BatchSubmitCronTerminateView(View):
     CACHE_KEY = "batch_submit_cron_task_id"
 

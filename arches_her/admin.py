@@ -17,12 +17,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from .models.models import (
+    HeritageApiConceptMapping,
     HeritageApiLog,
     HeritageApiExclusion,
     HeritageApiInclusion,
     HeritageApiData,
 )
 from django.contrib import admin
+from django import forms
 from guardian.admin import GuardedModelAdmin
 import json
 import logging
@@ -59,6 +61,7 @@ def add_text_wrap_mode(style_defs):
 formatter = HtmlFormatter(style="colorful")
 style_defs = add_text_wrap_mode(formatter.get_style_defs())
 maximum_pretty_print = 500
+
 
 def format_json_field(data, style="colorful", prettify=True, sort_keys=False):
     response = json.dumps(data, sort_keys=sort_keys, indent=4)
@@ -211,7 +214,35 @@ class HeritageApiDataAdmin(ReadOnlyAdminMixin, admin.ModelAdmin):
     pretty_validation.short_description = "Validation"
 
 
+class HeritageApiConceptMappingAdmin(admin.ModelAdmin):
+    class ConceptMappingAdminForm(forms.ModelForm):
+        class Meta:
+            model = HeritageApiConceptMapping
+            fields = "__all__"
+            labels = {
+                "hapi_field": "H.API field",
+                "source_concept": "Source concept  (narrow)",
+                "heritage_gateway_concept": "Heritage Gateway concept (broad)",
+            }
+
+    form = ConceptMappingAdminForm
+    list_display = (
+        "hapi_field",
+        "source_concept",
+        "mandatory",
+        "heritage_gateway_concept",
+    )
+    search_fields = [
+        "hapi_field",
+        "source_concept",
+        "mandatory",
+        "heritage_gateway_concept",
+    ]
+    ordering = ["hapi_field"]
+
+
 admin.site.register(HeritageApiLog, HeritageApiLogAdmin)
 admin.site.register(HeritageApiExclusion, HeritageApiExclusionAdmin)
 admin.site.register(HeritageApiInclusion, HeritageApiInclusionAdmin)
 admin.site.register(HeritageApiData, HeritageApiDataAdmin)
+admin.site.register(HeritageApiConceptMapping, HeritageApiConceptMappingAdmin)

@@ -110,40 +110,72 @@ class Command(BaseCommand):
                         TABLESPACE pg_default;
                     """)
                     cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.complex_geometry
+                        CREATE MATERIALIZED VIEW hapi.geometry
                         TABLESPACE pg_default
                         AS
-                        WITH complex_geometry AS (
-                            SELECT geometry.resourceinstanceid,
-                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
-                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
-                            FROM monument.geometry
+                        WITH source_geometries AS (
+                            SELECT
+                                g.resourceinstanceid,
+                                g.geospatial_coordinates AS geometry
+                            FROM monument.geometry g
+                            WHERE g.geospatial_coordinates IS NOT NULL
                             UNION ALL
-                            SELECT geometry.resourceinstanceid,
-                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
-                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
-                            FROM maritime_vessel.geometry
+                            SELECT
+                                g.resourceinstanceid,
+                                g.geospatial_coordinates AS geometry
+                            FROM maritime_vessel.geometry g
+                            WHERE g.geospatial_coordinates IS NOT NULL
                             UNION ALL
-                            SELECT geometry.resourceinstanceid,
-                                "left"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), "position"("substring"(st_astext(geometry.geospatial_coordinates), 1, 20), '('::text) - 1) AS spatialfeaturetype,
-                                st_astext(geometry.geospatial_coordinates, 6) AS spatialfeaturegeometry
-                            FROM historic_aircraft.geometry
+                            SELECT
+                                g.resourceinstanceid,
+                                g.geospatial_coordinates AS geometry
+                            FROM historic_aircraft.geometry g
+                            WHERE g.geospatial_coordinates IS NOT NULL
+                        ), normalized_geometries AS (
+                            SELECT
+                                resourceinstanceid,
+                                ST_MakeValid(geometry) AS geometry
+                            FROM source_geometries
+                        ), deduplicated_geometries AS (
+                            SELECT DISTINCT
+                                resourceinstanceid,
+                                ST_AsBinary(geometry) AS geom_wkb,
+                                ST_SRID(geometry) AS srid
+                            FROM normalized_geometries
+                            WHERE NOT ST_IsEmpty(geometry)
+                        ), merged_geometry AS (
+                            SELECT
+                                resourceinstanceid,
+                                ST_UnaryUnion(
+                                    ST_Collect(ST_GeomFromWKB(geom_wkb, srid))
+                                ) AS geometry
+                            FROM deduplicated_geometries
+                            GROUP BY resourceinstanceid
                         )
-                        SELECT DISTINCT
+                        SELECT
                             resourceinstanceid,
-                            spatialfeaturetype,
-                            spatialfeaturegeometry
-                        FROM complex_geometry
-                        WHERE spatialfeaturetype IS NOT NULL AND spatialfeaturegeometry IS NOT NULL
+                            CASE
+                                WHEN lower(GeometryType(geometry)) = 'geometrycollection' THEN 'collection'
+                                ELSE lower(GeometryType(geometry))
+                            END AS spatialfeaturetype,
+                            ST_AsText(geometry, 6) AS spatialfeaturegeometry,
+                            round(ST_X(ST_Centroid(ST_ConvexHull(geometry)))::numeric, 6) AS x_coordinate,
+                            round(ST_Y(ST_Centroid(ST_ConvexHull(geometry)))::numeric, 6) AS y_coordinate
+                        FROM merged_geometry
+                        WHERE geometry IS NOT NULL
+                          AND GeometryType(geometry) IS NOT NULL
+                          AND ST_AsText(geometry, 6) IS NOT NULL
+                          AND ST_X(ST_Centroid(ST_ConvexHull(geometry))) IS NOT NULL
+                          AND ST_Y(ST_Centroid(ST_ConvexHull(geometry))) IS NOT NULL
                         WITH NO DATA;
                     """)
                     cursor.execute("""
-                        ALTER TABLE hapi.complex_geometry
+                        ALTER TABLE hapi.geometry
                             OWNER TO postgres;
                     """)
                     cursor.execute("""
-                        CREATE INDEX complex_geometry_resourceinstanceid
-                            ON hapi.complex_geometry USING btree
+                        CREATE INDEX geometry_resourceinstanceid
+                            ON hapi.geometry USING btree
                             (resourceinstanceid)
                             TABLESPACE pg_default;
                     """)
@@ -433,44 +465,6 @@ class Command(BaseCommand):
                     cursor.execute("""
                         CREATE INDEX os_resourceinstanceid
                             ON hapi.other_statuses_mv USING btree
-                            (resourceinstanceid)
-                            TABLESPACE pg_default;
-                    """)
-                    cursor.execute("""
-                        CREATE MATERIALIZED VIEW hapi.point_geometry
-                        TABLESPACE pg_default
-                        AS
-                        WITH point_geometry AS (
-                            SELECT resourceinstanceid,
-                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                            FROM monument.geometry
-                            UNION ALL
-                            SELECT resourceinstanceid,
-                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                            FROM maritime_vessel.geometry
-                            UNION ALL
-                            SELECT resourceinstanceid,
-                                round(st_x(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS x_coordinate,
-                                round(st_y(st_centroid(st_convexhull(geospatial_coordinates)))::numeric, 6) AS y_coordinate
-                            FROM historic_aircraft.geometry
-                        )
-                        SELECT DISTINCT
-                            resourceinstanceid,
-                            x_coordinate,
-                            y_coordinate
-                        FROM point_geometry
-                        WHERE x_coordinate IS NOT NULL AND y_coordinate IS NOT NULL
-                        WITH NO DATA;
-                    """)
-                    cursor.execute("""
-                        ALTER TABLE hapi.point_geometry
-                            OWNER TO postgres;
-                    """)
-                    cursor.execute("""
-                        CREATE INDEX point_geometry_resourceinstanceid
-                            ON hapi.point_geometry USING btree
                             (resourceinstanceid)
                             TABLESPACE pg_default;
                     """)
@@ -885,10 +879,11 @@ class Command(BaseCommand):
                                 e.edittype = 'delete' AS "deleted",
                                 CASE 
                                     WHEN e.edittype = 'delete' THEN (
-                                        SELECT el2.newvalue->>m.field_uuid
+                                        SELECT el2.newvalue->>'primary_reference_number'
                                         FROM public.edit_log el2
                                         WHERE el2.resourceinstanceid = e.resourceinstanceid
-                                        AND el2.newvalue ? m.field_uuid
+                                        AND el2.edittype = 'delete'
+                                        AND el2.newvalue ? 'primary_reference_number'
                                         LIMIT 1
                                     )
                                     ELSE NULL
