@@ -6,5 +6,9 @@
     },
     "dependencies": {
         "arches": "HistoricEngland/arches#dev/6.1.x"
+    },
+    "resolutions": {
+		"jquery": "3.3.1",
+		"@mapbox/jsonlint-lines-primitives": "2.0.2"
     }
 }
