@@ -159,22 +159,25 @@ class FileTemplateView(View):
 
     def get_template_path(self, template_id):
         template_dict = {
-            "01dec356-e72e-40e6-b1b1-b847b9799d2f": "No progression letter.docx",
-            "320abc26-db82-44a6-be11-8d44aaa23365": "No Need to Consult letter.docx",
-            "fd15c6c7-e94d-4914-8d51-a98bda6f4a7b": "Pre-app Predetermination letter.docx",
-            "8cc91474-11ce-47d9-b886-f0e3fc49d277": "Predetermination Letter.docx",
-            "08bb630d-a27b-45bc-a13f-567b428018c5": "Condition Two-Stage Letter.docx",
-            "e14bd058-e9f2-48f8-8ef5-337310c3420f": "Pre-App Recommend Condition Letter.docx",
-            "92e745c3-7157-4831-bce9-73792d32abec": "Condition Investigation Letter.docx",
-            "41f3d0bb-a94d-469f-80c8-85ab03283972": "Condition Historic Building Recording Letter.docx",
-            "7f1e7061-8bb0-4338-9342-118f1e9214aa": "WSI Approval Letter.docx",
-            "eaa8a075-50e6-4c3d-ac08-fbe84865f577": "WSI Amend Letter.docx",
-            "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",
-            "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",
-            "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",
-            "84748575-02ea-4a12-adc7-c373ebc5b496": "Test.docx",
-            "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",
-            "8c12a812-8000-4ec9-913d-c6fd516117f2": "",
+            "01dec356-e72e-40e6-b1b1-b847b9799d2f": "No progression letter.docx",  # Letter A
+            "320abc26-db82-44a6-be11-8d44aaa23365": "No Need to Consult letter.docx",  # Letter A2
+            "fd15c6c7-e94d-4914-8d51-a98bda6f4a7b": "Pre-app Predetermination letter.docx",  # Letter B1
+            "8cc91474-11ce-47d9-b886-f0e3fc49d277": "Predetermination Letter.docx",  # Letter B2
+            "08bb630d-a27b-45bc-a13f-567b428018c5": "Condition Two-Stage Letter.docx",  # Letter C
+            "e14bd058-e9f2-48f8-8ef5-337310c3420f": "Pre-App Recommend Condition Letter.docx",  # Letter D1
+            "92e745c3-7157-4831-bce9-73792d32abec": "Condition Investigation Letter.docx",  # Letter D2
+            "41f3d0bb-a94d-469f-80c8-85ab03283972": "Condition Historic Building Recording Letter.docx",  # Letter D3
+            "7f1e7061-8bb0-4338-9342-118f1e9214aa": "WSI Approval Letter.docx",  # Letter F1
+            "eaa8a075-50e6-4c3d-ac08-fbe84865f577": "WSI Amend Letter.docx",  # Letter F2
+            "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",  # Letter G - PXA Approval
+            "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",  # Letter H
+            "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",  # Letter I - Bespoke Letter
+            # No template available yet
+            "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",  # Additional Condition Text
+            "8c12a812-8000-4ec9-913d-c6fd516117f2": "",  # Archaeological Recommendation Text
+            # No concept selection available
+            "missing 0": "Conditions Scope Notes.docx",
+            "missing 1": "Mitigation Scope Notes.docx",
         }
 
         return template_dict.get(template_id)
