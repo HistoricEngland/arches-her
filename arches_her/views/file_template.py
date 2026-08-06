@@ -18,7 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import json
-import logging
 import os
 import re
 import uuid
@@ -44,8 +43,6 @@ from arches.app.models.tile import Tile
 from arches.app.utils.response import JSONResponse
 from arches.app.views.tile import TileData
 import re
-
-logger = logging.getLogger("arches")
 
 class FileTemplateView(View):
     def __init__(self):
@@ -316,13 +313,6 @@ class FileTemplateView(View):
                 condition_scopenote = condition_scope_dict.get(condition_scope_key, "")
                 insert_break = len(condition_scopenote) > 0
                 advice_text = get_value_from_tile(tile, advice_node_id)
-                logger.warning(
-                    "CONDITION_SCOPE_LOOKUP type='%s' key='%s' has_note=%s advice_text_len=%d",
-                    condition_type_value,
-                    condition_scope_key,
-                    bool(condition_scopenote),
-                    len(advice_text),
-                )
                 if insert_break and advice_text:
                     condition["content"] = f"{condition_scopenote}<br>{advice_text}"
                 elif insert_break:
