@@ -158,7 +158,7 @@ class FileTemplateView(View):
         return HttpResponseNotFound(response.status_code)
 
     def get_template_path(self, template_id):
-        template_dict = {
+        template_dict = { # keys are valueids from "Letters" concept list; values are known file names
             "01dec356-e72e-40e6-b1b1-b847b9799d2f": "No progression letter.docx",  # Letter A
             "320abc26-db82-44a6-be11-8d44aaa23365": "No Need to Consult letter.docx",  # Letter A2
             "fd15c6c7-e94d-4914-8d51-a98bda6f4a7b": "Pre-app Predetermination letter.docx",  # Letter B1
