@@ -18,6 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 """
 
 import json
+import logging
 import os
 import re
 import uuid
@@ -43,6 +44,8 @@ from arches.app.models.tile import Tile
 from arches.app.utils.response import JSONResponse
 from arches.app.views.tile import TileData
 import re
+
+logger = logging.getLogger("arches")
 
 class FileTemplateView(View):
     def __init__(self):
@@ -81,8 +84,7 @@ class FileTemplateView(View):
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
         uploaded_docx_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")
-        if not os.path.exists(uploaded_docx_path):
-            os.mkdir(uploaded_docx_path)
+        os.makedirs(uploaded_docx_path, exist_ok=True)
 
         try:
             self.doc = Document(template_path)
@@ -156,32 +158,26 @@ class FileTemplateView(View):
         return HttpResponseNotFound(response.status_code)
 
     def get_template_path(self, template_id):
-        template_dict = {  # keys are valueids from "Letters" concept list; values are known file names
-            "01dec356-e72e-40e6-b1b1-b847b9799d2f": "No progression letter.docx",  # Letter A
-            "320abc26-db82-44a6-be11-8d44aaa23365": "No Need to Consult letter.docx",  # Letter A2
-            "fd15c6c7-e94d-4914-8d51-a98bda6f4a7b": "Pre-app Predetermination letter.docx",  # Letter B1
-            "8cc91474-11ce-47d9-b886-f0e3fc49d277": "Predetermination Letter.docx",  # Letter B2
-            "08bb630d-a27b-45bc-a13f-567b428018c5": "Condition Two-Stage Letter.docx",  # Letter C
-            "e14bd058-e9f2-48f8-8ef5-337310c3420f": "Pre-App Recommend Condition Letter.docx",  # Letter D1
-            "92e745c3-7157-4831-bce9-73792d32abec": "Condition Investigation Letter.docx",  # Letter D2
-            "41f3d0bb-a94d-469f-80c8-85ab03283972": "Condition Historic Building Recording Letter.docx",  # Letter D3
-            "7f1e7061-8bb0-4338-9342-118f1e9214aa": "WSI Approval Letter.docx",  # Letter F1
-            "eaa8a075-50e6-4c3d-ac08-fbe84865f577": "WSI Amend Letter.docx",  # Letter F2
-            "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",  # Letter G - PXA Approval
-            "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",  # Letter H
-            "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",  # Letter I - Bespoke Letter
-            # No template available yet
-            "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",  # Additional Condition Text
-            "8c12a812-8000-4ec9-913d-c6fd516117f2": "",  # Archaeological Recommendation Text
-            # No concept selection available
-            "missing 0": "Conditions Scope Notes.docx",
-            "missing 1": "Mitigation Scope Notes.docx",
+        template_dict = {
+            "01dec356-e72e-40e6-b1b1-b847b9799d2f": "No progression letter.docx",
+            "320abc26-db82-44a6-be11-8d44aaa23365": "No Need to Consult letter.docx",
+            "fd15c6c7-e94d-4914-8d51-a98bda6f4a7b": "Pre-app Predetermination letter.docx",
+            "8cc91474-11ce-47d9-b886-f0e3fc49d277": "Predetermination Letter.docx",
+            "08bb630d-a27b-45bc-a13f-567b428018c5": "Condition Two-Stage Letter.docx",
+            "e14bd058-e9f2-48f8-8ef5-337310c3420f": "Pre-App Recommend Condition Letter.docx",
+            "92e745c3-7157-4831-bce9-73792d32abec": "Condition Investigation Letter.docx",
+            "41f3d0bb-a94d-469f-80c8-85ab03283972": "Condition Historic Building Recording Letter.docx",
+            "7f1e7061-8bb0-4338-9342-118f1e9214aa": "WSI Approval Letter.docx",
+            "eaa8a075-50e6-4c3d-ac08-fbe84865f577": "WSI Amend Letter.docx",
+            "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",
+            "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",
+            "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",
+            "84748575-02ea-4a12-adc7-c373ebc5b496": "Test.docx",
+            "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",
+            "8c12a812-8000-4ec9-913d-c6fd516117f2": "",
         }
-        for key, value in list(template_dict.items()):
-            if key == template_id:
-                return value
 
-        return None
+        return template_dict.get(template_id)
 
     def edit_letter(self, consultation, datatype_factory):
         template_dict = {
@@ -256,7 +252,21 @@ class FileTemplateView(View):
         advice_nodegroup_id = "8d41e49f-a250-11e9-b6b3-00224800b26d"
         advice_node_id = "c36808b0-952c-11ea-9ff0-f875a44e0e11"
         advice_type_node_id = "56fa335d-06fa-11eb-8328-f875a44e0e11"
+        conditions_concept_id = "65065b3a-5174-4dac-8a04-aa30e5a9c246"
         conditions = []
+
+        condition_scope_dict = {}
+        concepts_from_condition_group = models.Relation.objects.filter(conceptfrom=conditions_concept_id)
+        for condition_concept in concepts_from_condition_group:
+            condition_concept_to_value = models.Value.objects.filter(concept=condition_concept.conceptto_id)
+            for condition_value in condition_concept_to_value:
+                if str(condition_value.valuetype_id) == "prefLabel":
+                    condition_scope_dict[condition_value.value] = str(condition_value.valueid)
+                elif str(condition_value.valuetype_id) == "scopeNote":
+                    value_id = models.Value.objects.filter(concept=condition_value.concept_id, valuetype="prefLabel")
+                    condition_scope_dict[str(value_id[0].valueid)] = condition_value.value
+                else:
+                    pass
 
         # Action and Mitigations.
 
@@ -298,12 +308,30 @@ class FileTemplateView(View):
                 ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id)}"
                 mitigation["type"] = get_value_from_tile(tile, action_type_node_id)
             elif str(tile.nodegroup_id) == advice_nodegroup_id:
-                condition["content"] = get_value_from_tile(tile, advice_node_id)
+                condition_type_value = get_value_from_tile(tile, advice_type_node_id)
+                condition_scope_key = condition_scope_dict.get(condition_type_value)
+                condition_scopenote = condition_scope_dict.get(condition_scope_key, "")
+                insert_break = len(condition_scopenote) > 0
+                advice_text = get_value_from_tile(tile, advice_node_id)
+                logger.warning(
+                    "CONDITION_SCOPE_LOOKUP type='%s' key='%s' has_note=%s advice_text_len=%d",
+                    condition_type_value,
+                    condition_scope_key,
+                    bool(condition_scopenote),
+                    len(advice_text),
+                )
+                if insert_break and advice_text:
+                    condition["content"] = f"{condition_scopenote}<br>{advice_text}"
+                elif insert_break:
+                    condition["content"] = condition_scopenote
+                else:
+                    condition["content"] = advice_text
+                condition["has_scopenote"] = insert_break
                 template_name = self.get_template_path(self.request._post["template_id"])
                 if template_name == "WSI Amend Letter.docx" or template_name == "WSI Approval Letter.docx":
                     condition["type"] = ""
                 else:
-                    condition["type"] = f"{get_value_from_tile(tile, advice_type_node_id)}"
+                    condition["type"] = f"{condition_type_value}"
             else:
                 for key, value in list(template_dict.items()):
                     if value in tile.data:
@@ -395,12 +423,26 @@ class FileTemplateView(View):
 
         for mitigation in mitigations:
             add_break = len(mitigation["content"]) > 0
+            type_heading = f'<b>{mitigation["type"]}</b>' if mitigation["type"] else ""
             mapping_dict[
                 "Mitigation"
-            ] += f'<br><b>{mitigation["type"]}</b>{"<br>"if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
+            ] += f'<br>{type_heading}{"<br>" if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
+
+        mapping_dict["Mitigation"] = re.sub(r"(?i)(<br\s*/?>){2,}$", "<br>", mapping_dict["Mitigation"])
 
         for condition in conditions:
-            mapping_dict["Condition"] += "<b>{}</b>{}<br>".format(condition["type"], condition["content"])
+            add_break = len(condition["content"]) > 0
+            type_heading = f'<b>{condition["type"]}</b>' if condition["type"] else ""
+            if add_break and type_heading:
+                separator = "<br><br>" if condition.get("has_scopenote") else "<br>"
+            else:
+                separator = ""
+            mapping_dict[
+                "Condition"
+            ] += f'<br>{type_heading}{separator}{condition["content"]}{"<br>" if add_break else ""}'
+
+        # Keep a single trailing break for advice text in condition output.
+        mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>){2,}$", "<br>", mapping_dict["Condition"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
