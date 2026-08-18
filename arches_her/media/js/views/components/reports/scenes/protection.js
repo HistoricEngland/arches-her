@@ -114,7 +114,10 @@ function(_, ko, arches, reportUtils, ProtectionTemplate) {
                         const amendmentDate = self.getNodeValue(x, 'designation and protection timespan', 'designation amendment date');
                         const displayDate = self.getNodeValue(x, 'designation and protection timespan', 'display date');
                         const reference = self.getNodeValue(x, 'reference url', 'url');
-                        const localHeritageListCriteria = self.getNodeValue(x, 'local heritage list criteria type');
+                        const rawLhlc = self.getRawNodeValue(x, 'local heritage list criteria type');
+                        const localHeritageListCriteria = Array.isArray(rawLhlc)
+                            ? rawLhlc.map(item => self.getNodeValue(item)).filter(v => v && v !== '--').join(', ') || '--'
+                            : self.getNodeValue(x, 'local heritage list criteria type');
                         const tileid = self.getTileId(x);
                         const geometry = self.getNodeValue(x, 'designation mapping', 'designation geometry');
                         return {
