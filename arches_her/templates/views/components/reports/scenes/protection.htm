@@ -76,6 +76,7 @@
                                     <th class="none">{% trans "Amendment Date" %}</th>
                                     <th class="none">{% trans "Display Date" %}</th>
                                     <th class="none">{% trans "Reference" %}</th>
+                                    <th class="none">{% trans "Local Heritage List Criteria" %}</th>
                                     <th class="aher-table-control all">{% trans "Actions" %}</th>
                                 </tr>
                             </thead>
@@ -94,6 +95,7 @@
                                         <a data-bind="text: reference, attr: {href: reference, target: '_blank'}"></a>
                                         <!-- /ko -->
                                     </td>
+                                    <td data-bind="text: localHeritageListCriteria"></td>
                                     <td class="aher-table-control">
                                         <div data-bind="if: $parent.cards.designations">
                                             <a href="#" data-bind="click: function() {$parent.editTile(tileid, $parent.cards.designations)}" onkeyup="if(event.which == 13 || event.keyCode == 13){ $(this).trigger('click'); }">
