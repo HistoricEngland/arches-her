@@ -46,7 +46,7 @@ function(_, ko, arches, reportUtils, ProtectionTemplate) {
 
             self.designationTableConfig = {
                 ...this.defaultTableConfig,
-                columns: Array(10).fill(null)
+                columns: Array(11).fill(null)
             };
 
             self.currentDesignation = ko.observable();
@@ -114,6 +114,7 @@ function(_, ko, arches, reportUtils, ProtectionTemplate) {
                         const amendmentDate = self.getNodeValue(x, 'designation and protection timespan', 'designation amendment date');
                         const displayDate = self.getNodeValue(x, 'designation and protection timespan', 'display date');
                         const reference = self.getNodeValue(x, 'reference url', 'url');
+                        const localHeritageListCriteria = self.getNodeValue(x, 'local heritage list criteria type');
                         const tileid = self.getTileId(x);
                         const geometry = self.getNodeValue(x, 'designation mapping', 'designation geometry');
                         return {
@@ -122,6 +123,7 @@ function(_, ko, arches, reportUtils, ProtectionTemplate) {
                             endDate,
                             geometry,
                             grade,
+                            localHeritageListCriteria,
                             name,
                             protectionType,
                             reference,
