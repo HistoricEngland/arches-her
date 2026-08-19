@@ -298,21 +298,21 @@ class FileTemplateView(View):
 
                 mitigation_scopenote = mitigation_scope_dict.get(
                     mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id)), ""
-                )
+                ).rstrip()
 
                 # if len(mitigation_scopenote) > 0:
                 #     mitigation_scopenote = "<i>" + mitigation_scopenote + "</i>"
                 insert_break = len(mitigation_scopenote) > 0
                 mitigation[
                     "content"
-                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id)}"
+                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id).rstrip()}"
                 mitigation["type"] = get_value_from_tile(tile, action_type_node_id)
             elif str(tile.nodegroup_id) == advice_nodegroup_id:
                 condition_type_value = get_value_from_tile(tile, advice_type_node_id)
                 condition_scope_key = condition_scope_dict.get(condition_type_value)
-                condition_scopenote = condition_scope_dict.get(condition_scope_key, "")
+                condition_scopenote = condition_scope_dict.get(condition_scope_key, "").rstrip()
                 insert_break = len(condition_scopenote) > 0
-                advice_text = get_value_from_tile(tile, advice_node_id)
+                advice_text = get_value_from_tile(tile, advice_node_id).rstrip()
                 if insert_break and advice_text:
                     condition["content"] = f"{condition_scopenote}<br>{advice_text}"
                 elif insert_break:
@@ -421,7 +421,7 @@ class FileTemplateView(View):
                 "Mitigation"
             ] += f'<br>{type_heading}{"<br>" if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
 
-        mapping_dict["Mitigation"] = re.sub(r"(?i)(<br\s*/?>){2,}$", "<br>", mapping_dict["Mitigation"])
+        mapping_dict["Mitigation"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Mitigation"])
 
         for condition in conditions:
             add_break = len(condition["content"]) > 0
@@ -435,7 +435,7 @@ class FileTemplateView(View):
             ] += f'<br>{type_heading}{separator}{condition["content"]}{"<br>" if add_break else ""}'
 
         # Keep a single trailing break for advice text in condition output.
-        mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>){2,}$", "<br>", mapping_dict["Condition"])
+        mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Condition"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
@@ -624,7 +624,7 @@ class DocumentHTMLParser(HTMLParser):
         return hyperlink
 
     def insert_into_paragraph_and_feed(self, html):
-        html = html.replace("\n\n", "<br>")
+        html = html.replace("\n", "<br>")
         self.run = self.paragraph.add_run()
         self.feed(html)
 
