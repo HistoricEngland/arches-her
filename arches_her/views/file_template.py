@@ -415,7 +415,7 @@ class FileTemplateView(View):
             mapping_dict["Signature"] = mapping_dict["Casework Officer"]
 
         for mitigation in mitigations:
-            add_break = len(mitigation["content"]) > 0
+            add_break = bool(re.sub(r"<[^>]+>", "", mitigation["content"]).strip())
             type_heading = f'<b>{mitigation["type"]}</b>' if mitigation["type"] else ""
             mapping_dict[
                 "Mitigation"
@@ -424,7 +424,7 @@ class FileTemplateView(View):
         mapping_dict["Mitigation"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Mitigation"])
 
         for condition in conditions:
-            add_break = len(condition["content"]) > 0
+            add_break = bool(re.sub(r"<[^>]+>", "", condition["content"]).strip())
             type_heading = f'<b>{condition["type"]}</b>' if condition["type"] else ""
             if add_break and type_heading:
                 separator = "<br><br>" if condition.get("has_scopenote") else "<br>"
@@ -447,7 +447,7 @@ class FileTemplateView(View):
                 associate_heritage
             )
 
-        if mapping_dict["Assessment of Significance"] != "":
+        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
             mapping_dict["Assessment of Significance"] += "<br>"
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
@@ -486,6 +486,7 @@ class FileTemplateView(View):
         def replace_in_runs(p_list, k, v):
             pattern = "(?:\|\|([^<>]+)\|\|([^<>]+))?"
             for paragraph in p_list:
+                had_placeholder = k in paragraph.text
                 if is_html:
                     parse_html_to_docx(paragraph, k, v)
                 for i, run in enumerate(paragraph.runs):
@@ -518,6 +519,17 @@ class FileTemplateView(View):
                             i == (len(paragraph.runs) - 1) and k in paragraph.text
                         ):  # backstop case: rogue text outside of run obj - must fix template
                             paragraph.text = paragraph.text.replace(k, v)
+                # Remove the paragraph if the placeholder was the sole content and value is empty.
+                # Guard: never remove from a table cell (w:tc requires at least one w:p),
+                # and never remove the last paragraph in any container.
+                if had_placeholder and not paragraph.text.strip():
+                    p_elem = paragraph._element
+                    parent = p_elem.getparent()
+                    if parent is not None:
+                        parent_local = parent.tag.split("}")[1] if "}" in parent.tag else parent.tag
+                        siblings = [c for c in parent if c.tag == p_elem.tag]
+                        if parent_local != "tc" and len(siblings) > 1:
+                            parent.remove(p_elem)
 
         def iterate_tables(t_list, k, v):
             for table in t_list:
