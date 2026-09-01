@@ -248,6 +248,9 @@ class FileTemplateView(View):
                 or 0xE000 <= ord(char) <= 0xFFFD
             )
 
+        def normalize_rich_text_paragraphs(text):
+            return re.sub(r"</p>\s*<p", "</p>\n<p", text)
+
         # Advice and Conditions.
         advice_nodegroup_id = "8d41e49f-a250-11e9-b6b3-00224800b26d"
         advice_node_id = "c36808b0-952c-11ea-9ff0-f875a44e0e11"
@@ -305,14 +308,14 @@ class FileTemplateView(View):
                 insert_break = len(mitigation_scopenote) > 0
                 mitigation[
                     "content"
-                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id).rstrip()}"
+                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{normalize_rich_text_paragraphs(get_value_from_tile(tile, action_node_id).rstrip())}"
                 mitigation["type"] = get_value_from_tile(tile, action_type_node_id)
             elif str(tile.nodegroup_id) == advice_nodegroup_id:
                 condition_type_value = get_value_from_tile(tile, advice_type_node_id)
                 condition_scope_key = condition_scope_dict.get(condition_type_value)
                 condition_scopenote = condition_scope_dict.get(condition_scope_key, "").rstrip()
                 insert_break = len(condition_scopenote) > 0
-                advice_text = get_value_from_tile(tile, advice_node_id).rstrip()
+                advice_text = normalize_rich_text_paragraphs(get_value_from_tile(tile, advice_node_id).rstrip())
                 if insert_break and advice_text:
                     condition["content"] = f"{condition_scopenote}<br>{advice_text}"
                 elif insert_break:
@@ -639,6 +642,13 @@ class DocumentHTMLParser(HTMLParser):
         html = html.replace("\n", "<br>")
         self.run = self.paragraph.add_run()
         self.feed(html)
+
+    def handle_startendtag(self, tag, attrs):
+        if tag == "br":
+            self.run = self.paragraph.add_run()
+            self.run.add_break()
+            return
+        HTMLParser.handle_startendtag(self, tag, attrs)
 
     def handle_starttag(self, tag, attrs):
         self.run = self.paragraph.add_run()
