@@ -587,6 +587,7 @@ class DocumentHTMLParser(HTMLParser):
         self.hyperlink = False
         self.list_style = "ul"
         self.ol_counter = 1
+        self.just_closed_list = False
         self.run = self.paragraph.add_run()
 
     def insert_paragraph_after(self, paragraph, text=None, style=None):
@@ -639,6 +640,9 @@ class DocumentHTMLParser(HTMLParser):
         return hyperlink
 
     def insert_into_paragraph_and_feed(self, html):
+        html = re.sub(r"(</?(?:ul|ol|li)>)\s+(?=</?(?:ul|ol|li)>)", r"\1", html)
+        html = re.sub(r"(</p>)\s+(?=<(?:ul|ol)>)", r"\1", html)
+        html = re.sub(r"(</(?:ul|ol)>)\s+(?=<p>)", r"\1", html)
         html = html.replace("\n", "<br>")
         self.run = self.paragraph.add_run()
         self.feed(html)
@@ -666,16 +670,19 @@ class DocumentHTMLParser(HTMLParser):
             self.list_style = "ul"
         if tag in ["br", "ul", "ol"]:
             self.run.add_break()
+        if tag in ["ul", "ol"]:
+            self.run.add_break()
         if tag == "li":
             if self.list_style == "ul":
                 self.run.add_text("● ")
             else:
                 self.run.add_text(str(self.ol_counter) + ". ")
                 self.ol_counter += 1
-        if tag == "p":
+        if tag == "p" and not self.just_closed_list:
             self.run.add_break()
             # self.run.add_break()
             # self.run.add_tab()
+        self.just_closed_list = False
         if tag == "a":
             self.hyperlink = attrs[0][1]
         if tag == "table":
@@ -691,11 +698,14 @@ class DocumentHTMLParser(HTMLParser):
             self.td_cursor = True
 
     def handle_endtag(self, tag):
-        if tag in ["br", "li", "ul", "ol"]:
+        if tag in ["br", "li"]:
             self.run.add_break()
         self.run = self.paragraph.add_run()
         if tag == "ol":
             self.ol_counter = 1
+        if tag in ["ul", "ol"]:
+            self.run.add_break()
+            self.just_closed_list = True
         if tag == "table":
             tbl = self.table._tbl
             p = self.paragraph._p
