@@ -588,6 +588,7 @@ class DocumentHTMLParser(HTMLParser):
         self.list_style = "ul"
         self.ol_counter = 1
         self.just_closed_list = False
+        self.list_has_item = False
         self.run = self.paragraph.add_run()
 
     def insert_paragraph_after(self, paragraph, text=None, style=None):
@@ -641,6 +642,8 @@ class DocumentHTMLParser(HTMLParser):
 
     def insert_into_paragraph_and_feed(self, html):
         html = re.sub(r"(</?(?:ul|ol|li)>)\s+(?=</?(?:ul|ol|li)>)", r"\1", html)
+        html = re.sub(r"<p>\s*(?=<(?:ul|ol)>)", "", html)
+        html = re.sub(r"(</(?:ul|ol)>)\s*</p>", r"\1", html)
         html = re.sub(r"(</p>)\s+(?=<(?:ul|ol)>)", r"\1", html)
         html = re.sub(r"(</(?:ul|ol)>)\s+(?=<p>)", r"\1", html)
         html = html.replace("\n", "<br>")
@@ -652,7 +655,6 @@ class DocumentHTMLParser(HTMLParser):
             self.run = self.paragraph.add_run()
             self.run.add_break()
             return
-        HTMLParser.handle_startendtag(self, tag, attrs)
 
     def handle_starttag(self, tag, attrs):
         self.run = self.paragraph.add_run()
@@ -668,16 +670,28 @@ class DocumentHTMLParser(HTMLParser):
             self.list_style = "ol"
         if tag == "ul":
             self.list_style = "ul"
-        if tag in ["br", "ul", "ol"]:
+        if tag in ["ul", "ol"] and self.just_closed_list:
+            removed_breaks = 0
+            for element in reversed(list(self.paragraph._p.iter())):
+                if element.tag.endswith("}br"):
+                    element.getparent().remove(element)
+                    removed_breaks += 1
+                    if removed_breaks == 1:
+                        break
+        if tag == "br":
             self.run.add_break()
-        if tag in ["ul", "ol"]:
+        elif tag in ["ul", "ol"] and not self.just_closed_list:
+            self.run.add_break()
             self.run.add_break()
         if tag == "li":
+            if self.list_has_item:
+                self.run.add_break()
             if self.list_style == "ul":
                 self.run.add_text("● ")
             else:
                 self.run.add_text(str(self.ol_counter) + ". ")
                 self.ol_counter += 1
+            self.list_has_item = True
         if tag == "p" and not self.just_closed_list:
             self.run.add_break()
             # self.run.add_break()
@@ -698,14 +712,16 @@ class DocumentHTMLParser(HTMLParser):
             self.td_cursor = True
 
     def handle_endtag(self, tag):
-        if tag in ["br", "li"]:
+        if tag == "br":
             self.run.add_break()
         self.run = self.paragraph.add_run()
         if tag == "ol":
             self.ol_counter = 1
         if tag in ["ul", "ol"]:
             self.run.add_break()
+            self.run.add_break()
             self.just_closed_list = True
+            self.list_has_item = False
         if tag == "table":
             tbl = self.table._tbl
             p = self.paragraph._p
