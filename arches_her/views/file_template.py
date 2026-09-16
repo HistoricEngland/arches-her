@@ -81,8 +81,7 @@ class FileTemplateView(View):
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
         uploaded_docx_path = os.path.join(settings.APP_ROOT, "uploadedfiles", "docx")
-        if not os.path.exists(uploaded_docx_path):
-            os.mkdir(uploaded_docx_path)
+        os.makedirs(uploaded_docx_path, exist_ok=True)
 
         try:
             self.doc = Document(template_path)
@@ -177,11 +176,8 @@ class FileTemplateView(View):
             "missing 0": "Conditions Scope Notes.docx",
             "missing 1": "Mitigation Scope Notes.docx",
         }
-        for key, value in list(template_dict.items()):
-            if key == template_id:
-                return value
 
-        return None
+        return template_dict.get(template_id)
 
     def edit_letter(self, consultation, datatype_factory):
         template_dict = {
@@ -252,11 +248,28 @@ class FileTemplateView(View):
                 or 0xE000 <= ord(char) <= 0xFFFD
             )
 
+        def normalize_rich_text_paragraphs(text):
+            return re.sub(r"</p>\s*<p", "</p>\n<p", text)
+
         # Advice and Conditions.
         advice_nodegroup_id = "8d41e49f-a250-11e9-b6b3-00224800b26d"
         advice_node_id = "c36808b0-952c-11ea-9ff0-f875a44e0e11"
         advice_type_node_id = "56fa335d-06fa-11eb-8328-f875a44e0e11"
+        conditions_concept_id = "65065b3a-5174-4dac-8a04-aa30e5a9c246"
         conditions = []
+
+        condition_scope_dict = {}
+        concepts_from_condition_group = models.Relation.objects.filter(conceptfrom=conditions_concept_id)
+        for condition_concept in concepts_from_condition_group:
+            condition_concept_to_value = models.Value.objects.filter(concept=condition_concept.conceptto_id)
+            for condition_value in condition_concept_to_value:
+                if str(condition_value.valuetype_id) == "prefLabel":
+                    condition_scope_dict[condition_value.value] = str(condition_value.valueid)
+                elif str(condition_value.valuetype_id) == "scopeNote":
+                    value_id = models.Value.objects.filter(concept=condition_value.concept_id, valuetype="prefLabel")
+                    condition_scope_dict[str(value_id[0].valueid)] = condition_value.value
+                else:
+                    pass
 
         # Action and Mitigations.
 
@@ -288,22 +301,33 @@ class FileTemplateView(View):
 
                 mitigation_scopenote = mitigation_scope_dict.get(
                     mitigation_scope_dict.get(get_value_from_tile(tile, action_type_node_id)), ""
-                )
+                ).rstrip()
 
                 # if len(mitigation_scopenote) > 0:
                 #     mitigation_scopenote = "<i>" + mitigation_scopenote + "</i>"
                 insert_break = len(mitigation_scopenote) > 0
                 mitigation[
                     "content"
-                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{get_value_from_tile(tile, action_node_id)}"
+                ] = f"{'<br>' if insert_break else ''}{mitigation_scopenote}{'<br>' if insert_break else ''}{normalize_rich_text_paragraphs(get_value_from_tile(tile, action_node_id).rstrip())}"
                 mitigation["type"] = get_value_from_tile(tile, action_type_node_id)
             elif str(tile.nodegroup_id) == advice_nodegroup_id:
-                condition["content"] = get_value_from_tile(tile, advice_node_id)
+                condition_type_value = get_value_from_tile(tile, advice_type_node_id)
+                condition_scope_key = condition_scope_dict.get(condition_type_value)
+                condition_scopenote = condition_scope_dict.get(condition_scope_key, "").rstrip()
+                insert_break = len(condition_scopenote) > 0
+                advice_text = normalize_rich_text_paragraphs(get_value_from_tile(tile, advice_node_id).rstrip())
+                if insert_break and advice_text:
+                    condition["content"] = f"{condition_scopenote}<br>{advice_text}"
+                elif insert_break:
+                    condition["content"] = condition_scopenote
+                else:
+                    condition["content"] = advice_text
+                condition["has_scopenote"] = insert_break
                 template_name = self.get_template_path(self.request._post["template_id"])
                 if template_name == "WSI Amend Letter.docx" or template_name == "WSI Approval Letter.docx":
                     condition["type"] = ""
                 else:
-                    condition["type"] = f"{get_value_from_tile(tile, advice_type_node_id)}"
+                    condition["type"] = f"{condition_type_value}"
             else:
                 for key, value in list(template_dict.items()):
                     if value in tile.data:
@@ -394,13 +418,27 @@ class FileTemplateView(View):
             mapping_dict["Signature"] = mapping_dict["Casework Officer"]
 
         for mitigation in mitigations:
-            add_break = len(mitigation["content"]) > 0
+            add_break = bool(re.sub(r"<[^>]+>", "", mitigation["content"]).strip())
+            type_heading = f'<b>{mitigation["type"]}</b>' if mitigation["type"] else ""
             mapping_dict[
                 "Mitigation"
-            ] += f'<br><b>{mitigation["type"]}</b>{"<br>"if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
+            ] += f'<br>{type_heading}{"<br>" if add_break else ""}{mitigation["content"]}{"<br>" if add_break else ""}'
+
+        mapping_dict["Mitigation"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Mitigation"])
 
         for condition in conditions:
-            mapping_dict["Condition"] += "<b>{}</b>{}<br>".format(condition["type"], condition["content"])
+            add_break = bool(re.sub(r"<[^>]+>", "", condition["content"]).strip())
+            type_heading = f'<b>{condition["type"]}</b>' if condition["type"] else ""
+            if add_break and type_heading:
+                separator = "<br><br>" if condition.get("has_scopenote") else "<br>"
+            else:
+                separator = ""
+            mapping_dict[
+                "Condition"
+            ] += f'<br>{type_heading}{separator}{condition["content"]}{"<br>" if add_break else ""}'
+
+        # Keep a single trailing break for advice text in condition output.
+        mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Condition"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
         if associate_heritage == "":
@@ -412,7 +450,7 @@ class FileTemplateView(View):
                 associate_heritage
             )
 
-        if mapping_dict["Assessment of Significance"] != "":
+        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
             mapping_dict["Assessment of Significance"] += "<br>"
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
@@ -451,6 +489,7 @@ class FileTemplateView(View):
         def replace_in_runs(p_list, k, v):
             pattern = "(?:\|\|([^<>]+)\|\|([^<>]+))?"
             for paragraph in p_list:
+                had_placeholder = k in paragraph.text
                 if is_html:
                     parse_html_to_docx(paragraph, k, v)
                 for i, run in enumerate(paragraph.runs):
@@ -483,6 +522,17 @@ class FileTemplateView(View):
                             i == (len(paragraph.runs) - 1) and k in paragraph.text
                         ):  # backstop case: rogue text outside of run obj - must fix template
                             paragraph.text = paragraph.text.replace(k, v)
+                # Remove the paragraph if the placeholder was the sole content and value is empty.
+                # Guard: never remove from a table cell (w:tc requires at least one w:p),
+                # and never remove the last paragraph in any container.
+                if had_placeholder and not paragraph.text.strip():
+                    p_elem = paragraph._element
+                    parent = p_elem.getparent()
+                    if parent is not None:
+                        parent_local = parent.tag.split("}")[1] if "}" in parent.tag else parent.tag
+                        siblings = [c for c in parent if c.tag == p_elem.tag]
+                        if parent_local != "tc" and len(siblings) > 1:
+                            parent.remove(p_elem)
 
         def iterate_tables(t_list, k, v):
             for table in t_list:
@@ -537,6 +587,8 @@ class DocumentHTMLParser(HTMLParser):
         self.hyperlink = False
         self.list_style = "ul"
         self.ol_counter = 1
+        self.just_closed_list = False
+        self.list_has_item = False
         self.run = self.paragraph.add_run()
 
     def insert_paragraph_after(self, paragraph, text=None, style=None):
@@ -589,9 +641,20 @@ class DocumentHTMLParser(HTMLParser):
         return hyperlink
 
     def insert_into_paragraph_and_feed(self, html):
-        html = html.replace("\n\n", "<br>")
+        html = re.sub(r"(</?(?:ul|ol|li)>)\s+(?=</?(?:ul|ol|li)>)", r"\1", html)
+        html = re.sub(r"<p>\s*(?=<(?:ul|ol)>)", "", html)
+        html = re.sub(r"(</(?:ul|ol)>)\s*</p>", r"\1", html)
+        html = re.sub(r"(</p>)\s+(?=<(?:ul|ol)>)", r"\1", html)
+        html = re.sub(r"(</(?:ul|ol)>)\s+(?=<p>)", r"\1", html)
+        html = html.replace("\n", "<br>")
         self.run = self.paragraph.add_run()
         self.feed(html)
+
+    def handle_startendtag(self, tag, attrs):
+        if tag == "br":
+            self.run = self.paragraph.add_run()
+            self.run.add_break()
+            return
 
     def handle_starttag(self, tag, attrs):
         self.run = self.paragraph.add_run()
@@ -607,18 +670,33 @@ class DocumentHTMLParser(HTMLParser):
             self.list_style = "ol"
         if tag == "ul":
             self.list_style = "ul"
-        if tag in ["br", "ul", "ol"]:
+        if tag in ["ul", "ol"] and self.just_closed_list:
+            removed_breaks = 0
+            for element in reversed(list(self.paragraph._p.iter())):
+                if element.tag.endswith("}br"):
+                    element.getparent().remove(element)
+                    removed_breaks += 1
+                    if removed_breaks == 1:
+                        break
+        if tag == "br":
+            self.run.add_break()
+        elif tag in ["ul", "ol"] and not self.just_closed_list:
+            self.run.add_break()
             self.run.add_break()
         if tag == "li":
+            if self.list_has_item:
+                self.run.add_break()
             if self.list_style == "ul":
                 self.run.add_text("● ")
             else:
                 self.run.add_text(str(self.ol_counter) + ". ")
                 self.ol_counter += 1
-        if tag == "p":
+            self.list_has_item = True
+        if tag == "p" and not self.just_closed_list:
             self.run.add_break()
             # self.run.add_break()
             # self.run.add_tab()
+        self.just_closed_list = False
         if tag == "a":
             self.hyperlink = attrs[0][1]
         if tag == "table":
@@ -634,11 +712,16 @@ class DocumentHTMLParser(HTMLParser):
             self.td_cursor = True
 
     def handle_endtag(self, tag):
-        if tag in ["br", "li", "ul", "ol"]:
+        if tag == "br":
             self.run.add_break()
         self.run = self.paragraph.add_run()
         if tag == "ol":
             self.ol_counter = 1
+        if tag in ["ul", "ol"]:
+            self.run.add_break()
+            self.run.add_break()
+            self.just_closed_list = True
+            self.list_has_item = False
         if tag == "table":
             tbl = self.table._tbl
             p = self.paragraph._p
