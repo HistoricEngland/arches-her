@@ -169,6 +169,7 @@ class FileTemplateView(View):
             "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",  # Letter G - PXA Approval
             "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",  # Letter H
             "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",  # Letter I - Bespoke Letter
+            "6fd61572-63ca-493f-994d-d90b44c364cc": "Opt out Implications Letter.docx",  # Letter J - Opt out Implications Letter
             # No template available yet
             "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",  # Additional Condition Text
             "8c12a812-8000-4ec9-913d-c6fd516117f2": "",  # Archaeological Recommendation Text
