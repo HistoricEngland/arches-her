@@ -21,6 +21,7 @@ import json
 import os
 import re
 import uuid
+from copy import deepcopy
 from datetime import datetime
 import docx
 import textwrap
@@ -48,6 +49,7 @@ class FileTemplateView(View):
     def __init__(self):
         self.doc = None
         self.resource = None
+        self.template_name = None
 
     def get(self, request):
         parenttile_id = request.GET.get("parenttile_id")
@@ -77,6 +79,7 @@ class FileTemplateView(View):
         self.resource.load_tiles()
 
         template_name = self.get_template_path(template_id)
+        self.template_name = template_name
         filename, file_extension = os.path.splitext(template_name)
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
@@ -451,7 +454,21 @@ class FileTemplateView(View):
                 associate_heritage
             )
 
-        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
+        if self.template_name == "Opt out Implications Letter.docx":
+            if associate_heritage:
+                mapping_dict["Archaeological Priority Area"] = associate_heritage
+                self.remove_paragraphs_starting_with(self.doc, "Even though this planning application is not located within")
+            else:
+                self.copy_paragraph_format(
+                    self.doc, "This application site lies within", "Even though this planning application is not located within"
+                )
+                self.remove_paragraphs_starting_with(self.doc, "This application site lies within")
+
+        if self.template_name == "Opt out Implications Letter.docx":
+            mapping_dict["Assessment of Significance"] = re.sub(
+                r"(?i)(<br\s*/?>|\n)+$", "", mapping_dict["Assessment of Significance"]
+            )
+        elif re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
             mapping_dict["Assessment of Significance"] += "<br>"
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
@@ -474,6 +491,25 @@ class FileTemplateView(View):
 
             xml_compatible_string = remove_non_xml_compatible_chars(mapping_dict[key])
             self.replace_string(self.doc, key, xml_compatible_string, is_html)
+
+    def copy_paragraph_format(self, document, source_prefix, target_prefix):
+        paragraphs = list(document.paragraphs)
+        source = next((p for p in paragraphs if p.text.strip().startswith(source_prefix)), None)
+        target = next((p for p in paragraphs if p.text.strip().startswith(target_prefix)), None)
+        if source is None or target is None or source._element.pPr is None:
+            return
+        if target._element.pPr is not None:
+            target._element.remove(target._element.pPr)
+        target._element.insert(0, deepcopy(source._element.pPr))
+
+    def remove_paragraphs_starting_with(self, document, prefix):
+        paragraphs = list(document.paragraphs)
+        for i, paragraph in enumerate(paragraphs):
+            if paragraph.text.strip().startswith(prefix):
+                # Also drop the blank spacer paragraph that follows, so no extra line break is left.
+                if i + 1 < len(paragraphs) and not paragraphs[i + 1].text.strip():
+                    paragraphs[i + 1]._element.getparent().remove(paragraphs[i + 1]._element)
+                paragraph._element.getparent().remove(paragraph._element)
 
     def replace_string(self, document, key, v, is_html=False):
         # Note that the intent here is to preserve how things are styled in the docx
