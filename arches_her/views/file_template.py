@@ -457,11 +457,10 @@ class FileTemplateView(View):
         if self.template_name == "Opt out Implications Letter.docx" and associate_heritage:
             mapping_dict["Archaeological Priority Area"] = associate_heritage
 
-        if self.template_name == "Opt out Implications Letter.docx":
-            mapping_dict["Assessment of Significance"] = re.sub(
-                r"(?i)^(\s|<br\s*/?>|<p>|&nbsp;)+|(\s|<br\s*/?>)+$", "", mapping_dict["Assessment of Significance"]
-            )
-        elif re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
+        mapping_dict["Assessment of Significance"] = re.sub(
+            r"(?i)^(\s|<br\s*/?>|<p>|&nbsp;)+|(\s|<br\s*/?>)+$", "", mapping_dict["Assessment of Significance"]
+        )
+        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
             mapping_dict["Assessment of Significance"] += "<br>"
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
