@@ -21,7 +21,6 @@ import json
 import os
 import re
 import uuid
-from copy import deepcopy
 from datetime import datetime
 import docx
 import textwrap
@@ -445,6 +444,7 @@ class FileTemplateView(View):
         mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Condition"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
+        self.apply_conditional_blocks(self.doc, mapping_dict)
         if associate_heritage == "":
             mapping_dict["Archaeological Priority Area"] = "The planning application is not in an Archaeological Priority Area."
         else:
@@ -454,19 +454,12 @@ class FileTemplateView(View):
                 associate_heritage
             )
 
-        if self.template_name == "Opt out Implications Letter.docx":
-            if associate_heritage:
-                mapping_dict["Archaeological Priority Area"] = associate_heritage
-                self.remove_paragraphs_starting_with(self.doc, "Even though this planning application is not located within")
-            else:
-                self.copy_paragraph_format(
-                    self.doc, "This application site lies within", "Even though this planning application is not located within"
-                )
-                self.remove_paragraphs_starting_with(self.doc, "This application site lies within")
+        if self.template_name == "Opt out Implications Letter.docx" and associate_heritage:
+            mapping_dict["Archaeological Priority Area"] = associate_heritage
 
         if self.template_name == "Opt out Implications Letter.docx":
             mapping_dict["Assessment of Significance"] = re.sub(
-                r"(?i)(<br\s*/?>|\n)+$", "", mapping_dict["Assessment of Significance"]
+                r"(?i)^(\s|<br\s*/?>|<p>|&nbsp;)+|(\s|<br\s*/?>)+$", "", mapping_dict["Assessment of Significance"]
             )
         elif re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
             mapping_dict["Assessment of Significance"] += "<br>"
@@ -492,24 +485,33 @@ class FileTemplateView(View):
             xml_compatible_string = remove_non_xml_compatible_chars(mapping_dict[key])
             self.replace_string(self.doc, key, xml_compatible_string, is_html)
 
-    def copy_paragraph_format(self, document, source_prefix, target_prefix):
-        paragraphs = list(document.paragraphs)
-        source = next((p for p in paragraphs if p.text.strip().startswith(source_prefix)), None)
-        target = next((p for p in paragraphs if p.text.strip().startswith(target_prefix)), None)
-        if source is None or target is None or source._element.pPr is None:
-            return
-        if target._element.pPr is not None:
-            target._element.remove(target._element.pPr)
-        target._element.insert(0, deepcopy(source._element.pPr))
-
-    def remove_paragraphs_starting_with(self, document, prefix):
-        paragraphs = list(document.paragraphs)
-        for i, paragraph in enumerate(paragraphs):
-            if paragraph.text.strip().startswith(prefix):
-                # Also drop the blank spacer paragraph that follows, so no extra line break is left.
-                if i + 1 < len(paragraphs) and not paragraphs[i + 1].text.strip():
-                    paragraphs[i + 1]._element.getparent().remove(paragraphs[i + 1]._element)
-                paragraph._element.getparent().remove(paragraph._element)
+    def apply_conditional_blocks(self, document, values):
+        # Each marker must sit alone in its own paragraph.
+        if_tag = re.compile(r'<IF (.+?) (is not empty|is empty|==\s*""|!=\s*"")>')
+        while True:
+            paragraphs = list(document.paragraphs)
+            texts = [p.text.strip() for p in paragraphs]
+            start = next((i for i, t in enumerate(texts) if if_tag.fullmatch(t)), None)
+            if start is None:
+                return
+            end = next((i for i in range(start + 1, len(texts)) if texts[i] == "<END IF>"), None)
+            if end is None:
+                return
+            else_idx = next((i for i in range(start + 1, end) if texts[i] == "<ELSE>"), None)
+            field, operator = if_tag.fullmatch(texts[start]).groups()
+            value = str(values.get(field) or "").strip()
+            negated = operator.startswith(("is not", "!="))
+            condition_met = (not value) != negated
+            if condition_met:
+                keep = set(range(start + 1, else_idx if else_idx is not None else end))
+            elif else_idx is not None:
+                keep = set(range(else_idx + 1, end))
+            else:
+                keep = set()
+            for i in range(start, end + 1):
+                if i not in keep:
+                    element = paragraphs[i]._element
+                    element.getparent().remove(element)
 
     def replace_string(self, document, key, v, is_html=False):
         # Note that the intent here is to preserve how things are styled in the docx
