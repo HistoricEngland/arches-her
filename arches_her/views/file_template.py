@@ -486,7 +486,7 @@ class FileTemplateView(View):
 
     def apply_conditional_blocks(self, document, values):
         # Each marker must sit alone in its own paragraph.
-        if_tag = re.compile(r'<IF (.+?) (is not empty|is empty|==\s*""|!=\s*"")>')
+        if_tag = re.compile(r'<IF (.+?) (is not empty|is empty|==\s*""|!=\s*""|<>\s*"")>')
         while True:
             paragraphs = list(document.paragraphs)
             texts = [p.text.strip() for p in paragraphs]
@@ -499,7 +499,7 @@ class FileTemplateView(View):
             else_idx = next((i for i in range(start + 1, end) if texts[i] == "<ELSE>"), None)
             field, operator = if_tag.fullmatch(texts[start]).groups()
             value = str(values.get(field) or "").strip()
-            negated = operator.startswith(("is not", "!="))
+            negated = operator.startswith(("is not", "!=", "<>"))
             condition_met = (not value) != negated
             if condition_met:
                 keep = set(range(start + 1, else_idx if else_idx is not None else end))
