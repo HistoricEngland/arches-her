@@ -457,11 +457,21 @@ class FileTemplateView(View):
         if self.template_name == "Opt out Implications Letter.docx" and associate_heritage:
             mapping_dict["Archaeological Priority Area"] = associate_heritage
 
-        mapping_dict["Assessment of Significance"] = re.sub(
-            r"(?i)^(\s|<br\s*/?>|<p>|&nbsp;)+|(\s|<br\s*/?>)+$", "", mapping_dict["Assessment of Significance"]
-        )
-        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
-            mapping_dict["Assessment of Significance"] += "<br>"
+        # Opt out already has a spacer paragraph before the placeholder, so only it trims a leading <p>.
+        ws = r"(?:\s|&nbsp;|<br\s*/?>)"
+        lead = rf"(?:{ws}|<p>)+" if self.template_name == "Opt out Implications Letter.docx" else rf"{ws}+"
+        aos = mapping_dict["Assessment of Significance"]
+        for pattern, repl in (
+            (rf"(?<=<p>){ws}+|{ws}+(?=</p>)", ""),  # breaks at the edges of a paragraph
+            (r"<p></p>", ""),
+            (r"</p>\s*<p>", "</p><br><p>"),  # one blank line between paragraphs
+            (r"(?:\s*(?:<br\s*/?>|\n)\s*){3,}", "<br><br>"),
+            (rf"^{lead}|(?:\s|<br\s*/?>)+$", ""),
+        ):
+            aos = re.sub(pattern, repl, aos, flags=re.I)
+        if re.sub(r"<[^>]+>", "", aos).strip():
+            aos += "<br>"
+        mapping_dict["Assessment of Significance"] = aos
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
         for key in mapping_dict:
