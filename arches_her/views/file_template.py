@@ -48,6 +48,7 @@ class FileTemplateView(View):
     def __init__(self):
         self.doc = None
         self.resource = None
+        self.template_name = None
 
     def get(self, request):
         parenttile_id = request.GET.get("parenttile_id")
@@ -77,6 +78,7 @@ class FileTemplateView(View):
         self.resource.load_tiles()
 
         template_name = self.get_template_path(template_id)
+        self.template_name = template_name
         filename, file_extension = os.path.splitext(template_name)
         template_path = os.path.join(settings.APP_ROOT, "docx", template_name)
 
@@ -169,6 +171,7 @@ class FileTemplateView(View):
             "8d605e5c-d0da-4b72-9ce3-2f7dac3381d1": "Post Excavation Assessment Approval Letter.docx",  # Letter G - PXA Approval
             "a31061ea-9b80-435f-82c8-94dc10afcbae": "Condition Satisfied Letter.docx",  # Letter H
             "eed24dd2-85a0-4402-a6ba-bda426b5da89": "Blank Adviser Letter.docx",  # Letter I - Bespoke Letter
+            "6fd61572-63ca-493f-994d-d90b44c364cc": "Opt out Implications Letter.docx",  # Letter J - Opt out Implications Letter
             # No template available yet
             "a26c77ff-1d04-4b76-a45f-417f7ed24333": "",  # Additional Condition Text
             "8c12a812-8000-4ec9-913d-c6fd516117f2": "",  # Archaeological Recommendation Text
@@ -441,6 +444,7 @@ class FileTemplateView(View):
         mapping_dict["Condition"] = re.sub(r"(?i)(<br\s*/?>|\n)+$", "<br>", mapping_dict["Condition"])
 
         associate_heritage = mapping_dict["Archaeological Priority Area"]
+        self.apply_conditional_blocks(self.doc, mapping_dict)
         if associate_heritage == "":
             mapping_dict["Archaeological Priority Area"] = "The planning application is not in an Archaeological Priority Area."
         else:
@@ -450,8 +454,24 @@ class FileTemplateView(View):
                 associate_heritage
             )
 
-        if re.sub(r"<[^>]+>", "", mapping_dict["Assessment of Significance"]).strip():
-            mapping_dict["Assessment of Significance"] += "<br>"
+        if self.template_name == "Opt out Implications Letter.docx" and associate_heritage:
+            mapping_dict["Archaeological Priority Area"] = associate_heritage
+
+        # Opt out already has a spacer paragraph before the placeholder, so only it trims a leading <p>.
+        ws = r"(?:\s|&nbsp;|<br\s*/?>)"
+        lead = rf"(?:{ws}|<p>)+" if self.template_name == "Opt out Implications Letter.docx" else rf"{ws}+"
+        aos = mapping_dict["Assessment of Significance"]
+        for pattern, repl in (
+            (rf"(?<=<p>){ws}+|{ws}+(?=</p>)", ""),  # breaks at the edges of a paragraph
+            (r"<p></p>", ""),
+            (r"</p>\s*<p>", "</p><br><p>"),  # one blank line between paragraphs
+            (r"(?:\s*(?:<br\s*/?>|\n)\s*){3,}", "<br><br>"),
+            (rf"^{lead}|(?:\s|<br\s*/?>)+$", ""),
+        ):
+            aos = re.sub(pattern, repl, aos, flags=re.I)
+        if re.sub(r"<[^>]+>", "", aos).strip():
+            aos += "<br>"
+        mapping_dict["Assessment of Significance"] = aos
 
         htmlTags = re.compile(r"<(?:\"[^\"]*\"['\"]*|'[^']*'['\"]*|[^'\">])+>")
         for key in mapping_dict:
@@ -473,6 +493,34 @@ class FileTemplateView(View):
 
             xml_compatible_string = remove_non_xml_compatible_chars(mapping_dict[key])
             self.replace_string(self.doc, key, xml_compatible_string, is_html)
+
+    def apply_conditional_blocks(self, document, values):
+        # Each marker must sit alone in its own paragraph.
+        if_tag = re.compile(r'<IF (.+?) (is not empty|is empty|==\s*""|!=\s*""|<>\s*"")>')
+        while True:
+            paragraphs = list(document.paragraphs)
+            texts = [p.text.strip() for p in paragraphs]
+            start = next((i for i, t in enumerate(texts) if if_tag.fullmatch(t)), None)
+            if start is None:
+                return
+            end = next((i for i in range(start + 1, len(texts)) if texts[i] == "<END IF>"), None)
+            if end is None:
+                return
+            else_idx = next((i for i in range(start + 1, end) if texts[i] == "<ELSE>"), None)
+            field, operator = if_tag.fullmatch(texts[start]).groups()
+            value = str(values.get(field) or "").strip()
+            negated = operator.startswith(("is not", "!=", "<>"))
+            condition_met = (not value) != negated
+            if condition_met:
+                keep = set(range(start + 1, else_idx if else_idx is not None else end))
+            elif else_idx is not None:
+                keep = set(range(else_idx + 1, end))
+            else:
+                keep = set()
+            for i in range(start, end + 1):
+                if i not in keep:
+                    element = paragraphs[i]._element
+                    element.getparent().remove(element)
 
     def replace_string(self, document, key, v, is_html=False):
         # Note that the intent here is to preserve how things are styled in the docx
